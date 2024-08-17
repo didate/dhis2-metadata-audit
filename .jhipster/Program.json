@@ -1,0 +1,210 @@
+{
+  "annotations": {
+    "changelogDate": "20240817154931"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "created",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastUpdated",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "shortName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "version",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "enrollmentDateLabel",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "incidentDateLabel",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "programType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayIncidentDate",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "ignoreOverdueEvents",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "userRoles",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "programIndicators",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "programRuleVariables",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "onlyEnrollOnce",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "notificationTemplates",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "selectEnrollmentDatesInFuture",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "selectIncidentDatesInFuture",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "trackedEntityType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "style",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "categoryCombo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "skipOffline",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "displayFrontPageList",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "useFirstStageDuringRegistration",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "expiryDays",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "completeEventsExpiryDays",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "openDaysAfterCoEndDate",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "minAttributesRequiredToSearch",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "maxTeiCountToReturn",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "accessLevel",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayEnrollmentDateLabel",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayIncidentDateLabel",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "registration",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "withoutRegistration",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "displayShortName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayDescription",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayFormName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "attributeValuesCount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "organisationUnitsCount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "programStagesCount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "programSectionsCount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "programTrackedEntityAttributesCount",
+      "fieldType": "Integer"
+    }
+  ],
+  "name": "Program",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "project",
+      "relationshipName": "project",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "dHISUser",
+      "relationshipName": "createdBy",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "dHISUser",
+      "relationshipName": "lastUpdatedBy",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

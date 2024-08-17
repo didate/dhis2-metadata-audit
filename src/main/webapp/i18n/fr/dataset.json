@@ -1,0 +1,55 @@
+{
+  "dhis2AuditApp": {
+    "dataset": {
+      "home": {
+        "title": "Datasets",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Dataset",
+        "createOrEditLabel": "Créer ou éditer un Dataset",
+        "notFound": "Aucun Dataset trouvé"
+      },
+      "created": "Un nouveau Dataset a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Dataset avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Dataset avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Dataset {{ id }} ?"
+      },
+      "detail": {
+        "title": "Dataset"
+      },
+      "id": "Id",
+      "name": "Name",
+      "created": "Created",
+      "lastUpdated": "Last Updated",
+      "shortName": "Short Name",
+      "description": "Description",
+      "dimensionItemType": "Dimension Item Type",
+      "periodType": "Period Type",
+      "categoryCombo": "Category Combo",
+      "mobile": "Mobile",
+      "version": "Version",
+      "expiryDays": "Expiry Days",
+      "timelyDays": "Timely Days",
+      "notifyCompletingUser": "Notify Completing User",
+      "openFuturePeriods": "Open Future Periods",
+      "openPeriodsAfterCoEndDate": "Open Periods After Co End Date",
+      "fieldCombinationRequired": "Field Combination Required",
+      "validCompleteOnly": "Valid Complete Only",
+      "noValueRequiresComment": "No Value Requires Comment",
+      "skipOffline": "Skip Offline",
+      "dataElementDecoration": "Data Element Decoration",
+      "renderAsTabs": "Render As Tabs",
+      "renderHorizontally": "Render Horizontally",
+      "compulsoryFieldsCompleteOnly": "Compulsory Fields Complete Only",
+      "formType": "Form Type",
+      "displayName": "Display Name",
+      "dimensionItem": "Dimension Item",
+      "displayShortName": "Display Short Name",
+      "displayDescription": "Display Description",
+      "displayFormName": "Display Form Name",
+      "project": "Project",
+      "createdBy": "Created By",
+      "lastUpdatedBy": "Last Updated By"
+    }
+  }
+}

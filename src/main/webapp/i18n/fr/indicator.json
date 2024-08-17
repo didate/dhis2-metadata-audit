@@ -1,0 +1,44 @@
+{
+  "dhis2AuditApp": {
+    "indicator": {
+      "home": {
+        "title": "Indicators",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Indicator",
+        "createOrEditLabel": "Créer ou éditer un Indicator",
+        "notFound": "Aucun Indicator trouvé"
+      },
+      "created": "Un nouveau Indicator a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Indicator avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Indicator avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Indicator {{ id }} ?"
+      },
+      "detail": {
+        "title": "Indicator"
+      },
+      "id": "Id",
+      "name": "Name",
+      "shortName": "Short Name",
+      "displayShortName": "Display Short Name",
+      "displayName": "Display Name",
+      "displayFormName": "Display Form Name",
+      "created": "Created",
+      "lastUpdated": "Last Updated",
+      "publicAccess": "Public Access",
+      "dimensionItemType": "Dimension Item Type",
+      "annualized": "Annualized",
+      "numerator": "Numerator",
+      "numeratorDescription": "Numerator Description",
+      "denominator": "Denominator",
+      "denominatorDescription": "Denominator Description",
+      "displayNumeratorDescription": "Display Numerator Description",
+      "displayDenominatorDescription": "Display Denominator Description",
+      "dimensionItem": "Dimension Item",
+      "project": "Project",
+      "createdBy": "Created By",
+      "lastUpdatedBy": "Last Updated By",
+      "indicatorType": "Indicator Type"
+    }
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "annotations": {
+    "changelogDate": "20240817154932"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "created",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastUpdated",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "shortName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dimensionItemType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "periodType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "categoryCombo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mobile",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "version",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "expiryDays",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "timelyDays",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "notifyCompletingUser",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "openFuturePeriods",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "openPeriodsAfterCoEndDate",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "fieldCombinationRequired",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "validCompleteOnly",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "noValueRequiresComment",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "skipOffline",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "dataElementDecoration",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "renderAsTabs",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "renderHorizontally",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "compulsoryFieldsCompleteOnly",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "formType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dimensionItem",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayShortName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayDescription",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayFormName",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Dataset",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "project",
+      "relationshipName": "project",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "dHISUser",
+      "relationshipName": "createdBy",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "dHISUser",
+      "relationshipName": "lastUpdatedBy",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

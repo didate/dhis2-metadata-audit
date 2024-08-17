@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (dHISUser()) {
+      <div>
+        <h2 data-cy="dHISUserDetailsHeading"><span jhiTranslate="dhis2AuditApp.dHISUser.detail.title">DHIS User</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.id">Id</span></dt>
+          <dd>
+            <span>{{ dHISUser()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.code">Code</span></dt>
+          <dd>
+            <span>{{ dHISUser()!.code }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.name">Name</span></dt>
+          <dd>
+            <span>{{ dHISUser()!.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.displayName">Display Name</span></dt>
+          <dd>
+            <span>{{ dHISUser()!.displayName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.username">Username</span></dt>
+          <dd>
+            <span>{{ dHISUser()!.username }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/dhis-user', dHISUser()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,45 @@
+{
+  "dhis2AuditApp": {
+    "dataelement": {
+      "home": {
+        "title": "Dataelements",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Dataelement",
+        "createOrEditLabel": "Create or edit a Dataelement",
+        "notFound": "No Dataelements found"
+      },
+      "created": "A new Dataelement is created with identifier {{ param }}",
+      "updated": "A Dataelement is updated with identifier {{ param }}",
+      "deleted": "A Dataelement is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Dataelement {{ id }}?"
+      },
+      "detail": {
+        "title": "Dataelement"
+      },
+      "id": "Id",
+      "name": "Name",
+      "shortName": "Short Name",
+      "formName": "Form Name",
+      "description": "Description",
+      "displayShortName": "Display Short Name",
+      "displayName": "Display Name",
+      "displayFormName": "Display Form Name",
+      "created": "Created",
+      "lastUpdated": "Last Updated",
+      "publicAccess": "Public Access",
+      "dimensionItemType": "Dimension Item Type",
+      "aggregationType": "Aggregation Type",
+      "valueType": "Value Type",
+      "domainType": "Domain Type",
+      "zeroIsSignificant": "Zero Is Significant",
+      "optionSetValue": "Option Set Value",
+      "dimensionItem": "Dimension Item",
+      "project": "Project",
+      "createdBy": "Created By",
+      "lastUpdatedBy": "Last Updated By",
+      "categoryCombo": "Category Combo",
+      "optionSet": "Option Set"
+    }
+  }
+}

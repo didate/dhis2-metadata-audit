@@ -1,0 +1,181 @@
+entity Project{
+	projectName String required
+    dhis2URL String required
+    dhis2Version Double required
+    token String required
+    emailNotification Boolean required
+}
+
+entity PersonNotifier{
+	personName String required
+    personPhone String required
+    personEmail String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    personOrganization String required 
+}
+entity Indicatortype {
+	id	String required
+    name String
+}
+entity Categorycombo{
+	id	String required
+    name String
+}
+entity Optionset{
+	id	String required
+    name String
+}
+entity DHISUser{
+	id	String required
+    code String
+    name String required
+    displayName	String
+    username String required
+}
+entity Dataelement{
+	id	String required 
+    name String required 
+    shortName	String required 
+    formName String 
+    description	String
+    displayShortName String 
+    displayName	String  
+    displayFormName	String  
+    created	Instant required
+    lastUpdated	Instant required
+    publicAccess String required 
+    dimensionItemType String required 
+    aggregationType	String required 
+    valueType	String required 
+    domainType	String required 
+    zeroIsSignificant Boolean 
+    optionSetValue String  
+    dimensionItem	String  
+}
+
+entity Indicator{
+	id	String required
+    name String required
+    shortName	String required
+    displayShortName	String
+    displayName	String 
+    displayFormName		String
+    created	Instant required
+    lastUpdated	Instant required
+    publicAccess	String required
+    dimensionItemType	String required
+    annualized Boolean required
+    numerator	String 
+    numeratorDescription	String 
+    denominator	String 
+    denominatorDescription	String 
+    displayNumeratorDescription	String 
+    displayDenominatorDescription	String 
+    dimensionItem	String 
+}
+
+entity Program {
+    id	 String 
+    name	 String 
+    created	 String 
+    lastUpdated	 String 
+    shortName	 String 
+    description	 String 
+    version	Double 
+    enrollmentDateLabel	 String 
+    incidentDateLabel	 String 
+    programType	 String 
+    displayIncidentDate	Boolean
+    ignoreOverdueEvents	Boolean
+    userRoles	 String 
+    programIndicators	 String 
+    programRuleVariables	 String 
+    onlyEnrollOnce	Boolean
+    notificationTemplates	 String 
+    selectEnrollmentDatesInFuture	Boolean
+    selectIncidentDatesInFuture	Boolean
+    trackedEntityType	 String 
+    style	 String 
+    categoryCombo	 String 
+    skipOffline	Boolean
+    displayFrontPageList	Boolean
+    useFirstStageDuringRegistration	Boolean
+    expiryDays	Double 
+    completeEventsExpiryDays	Double 
+    openDaysAfterCoEndDate	Double 
+    minAttributesRequiredToSearch	Double
+    maxTeiCountToReturn	Double 
+    accessLevel	 String 
+    displayEnrollmentDateLabel	 String 
+    displayIncidentDateLabel	 String 
+    registration	Boolean
+    withoutRegistration	Boolean
+    displayShortName	 String 
+    displayDescription	 String 
+    displayFormName	 String 
+    displayName	 String 
+    attributeValuesCount	 Integer 
+    organisationUnitsCount	 Integer 
+    programStagesCount	 Integer 
+    programSectionsCount	 Integer 
+    programTrackedEntityAttributesCount	 Integer 
+}
+
+entity Dataset {
+	id		 String
+    name	 String 
+    created	Instant required
+    lastUpdated	Instant required 
+    shortName	 String 
+    description	 String 
+    dimensionItemType	 String 
+    periodType	 String 
+    categoryCombo	 String 
+    mobile String 
+    version	 Double 
+    expiryDays	Double 
+    timelyDays	Double 
+    notifyCompletingUser String  
+    openFuturePeriods	Double 
+    openPeriodsAfterCoEndDate	Double 
+    fieldCombinationRequired	Boolean 
+    validCompleteOnly	Boolean 
+    noValueRequiresComment	Boolean 
+    skipOffline	Boolean 
+    dataElementDecoration	Boolean 
+    renderAsTabs	Boolean 
+    renderHorizontally	Boolean 
+    compulsoryFieldsCompleteOnly	Boolean 
+    formType	 String 
+    displayName	 String 
+    dimensionItem	 String 
+    displayShortName	 String 
+    displayDescription	 String 
+    displayFormName	 String
+}
+
+// defining multiple OneToMany relationships with comments
+relationship ManyToOne {
+	PersonNotifier{project} to Project 
+	Dataelement{project} to Project 
+	Indicator{project} to Project 
+	Dataset{project} to Project 
+	Program{project} to Project 
+    
+    Dataelement{createdBy required} to DHISUser 
+    Dataelement{lastUpdatedBy required} to DHISUser 
+	Dataelement{categoryCombo } to Categorycombo 
+	Dataelement{optionSet } to Optionset 
+    
+    Indicator{createdBy required} to DHISUser 
+    Indicator{lastUpdatedBy required} to DHISUser 
+    Indicator{indicatorType required} to Indicatortype 
+    
+    Dataset{createdBy required} to DHISUser 
+    Dataset{lastUpdatedBy required} to DHISUser 
+    
+    Program{createdBy required} to DHISUser 
+    Program{lastUpdatedBy required} to DHISUser
+}
+
+paginate * with pagination
+service all with serviceImpl

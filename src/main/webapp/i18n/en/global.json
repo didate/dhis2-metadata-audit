@@ -8,7 +8,16 @@
       "entities": {
         "main": "Entities",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
-        "adminAuthority": "Authority"
+        "project": "Project",
+        "personNotifier": "Person Notifier",
+        "indicatortype": "Indicatortype",
+        "categorycombo": "Categorycombo",
+        "optionset": "Optionset",
+        "dhisUser": "DHIS User",
+        "dataelement": "Dataelement",
+        "indicator": "Indicator",
+        "program": "Program",
+        "dataset": "Dataset"
       },
       "account": {
         "main": "Account",

@@ -1,0 +1,24 @@
+{
+  "dhis2AuditApp": {
+    "optionset": {
+      "home": {
+        "title": "Optionsets",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Optionset",
+        "createOrEditLabel": "Create or edit a Optionset",
+        "notFound": "No Optionsets found"
+      },
+      "created": "A new Optionset is created with identifier {{ param }}",
+      "updated": "A Optionset is updated with identifier {{ param }}",
+      "deleted": "A Optionset is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Optionset {{ id }}?"
+      },
+      "detail": {
+        "title": "Optionset"
+      },
+      "id": "Id",
+      "name": "Name"
+    }
+  }
+}
