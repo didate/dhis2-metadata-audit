@@ -1,0 +1,170 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (dataset()) {
+      <div>
+        <h2 data-cy="datasetDetailsHeading"><span jhiTranslate="dhis2AuditApp.dataset.detail.title">Dataset</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.id">Id</span></dt>
+          <dd>
+            <span>{{ dataset()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.name">Name</span></dt>
+          <dd>
+            <span>{{ dataset()!.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.created">Created</span></dt>
+          <dd>
+            <span>{{ dataset()!.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.lastUpdated">Last Updated</span></dt>
+          <dd>
+            <span>{{ dataset()!.lastUpdated | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.shortName">Short Name</span></dt>
+          <dd>
+            <span>{{ dataset()!.shortName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.description">Description</span></dt>
+          <dd>
+            <span>{{ dataset()!.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.dimensionItemType">Dimension Item Type</span></dt>
+          <dd>
+            <span>{{ dataset()!.dimensionItemType }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.periodType">Period Type</span></dt>
+          <dd>
+            <span>{{ dataset()!.periodType }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.categoryCombo">Category Combo</span></dt>
+          <dd>
+            <span>{{ dataset()!.categoryCombo }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.mobile">Mobile</span></dt>
+          <dd>
+            <span>{{ dataset()!.mobile }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.version">Version</span></dt>
+          <dd>
+            <span>{{ dataset()!.version }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.expiryDays">Expiry Days</span></dt>
+          <dd>
+            <span>{{ dataset()!.expiryDays }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.timelyDays">Timely Days</span></dt>
+          <dd>
+            <span>{{ dataset()!.timelyDays }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.notifyCompletingUser">Notify Completing User</span></dt>
+          <dd>
+            <span>{{ dataset()!.notifyCompletingUser }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.openFuturePeriods">Open Future Periods</span></dt>
+          <dd>
+            <span>{{ dataset()!.openFuturePeriods }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.openPeriodsAfterCoEndDate">Open Periods After Co End Date</span></dt>
+          <dd>
+            <span>{{ dataset()!.openPeriodsAfterCoEndDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.fieldCombinationRequired">Field Combination Required</span></dt>
+          <dd>
+            <span>{{ dataset()!.fieldCombinationRequired }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.validCompleteOnly">Valid Complete Only</span></dt>
+          <dd>
+            <span>{{ dataset()!.validCompleteOnly }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.noValueRequiresComment">No Value Requires Comment</span></dt>
+          <dd>
+            <span>{{ dataset()!.noValueRequiresComment }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.skipOffline">Skip Offline</span></dt>
+          <dd>
+            <span>{{ dataset()!.skipOffline }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.dataElementDecoration">Data Element Decoration</span></dt>
+          <dd>
+            <span>{{ dataset()!.dataElementDecoration }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.renderAsTabs">Render As Tabs</span></dt>
+          <dd>
+            <span>{{ dataset()!.renderAsTabs }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.renderHorizontally">Render Horizontally</span></dt>
+          <dd>
+            <span>{{ dataset()!.renderHorizontally }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.compulsoryFieldsCompleteOnly">Compulsory Fields Complete Only</span></dt>
+          <dd>
+            <span>{{ dataset()!.compulsoryFieldsCompleteOnly }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.formType">Form Type</span></dt>
+          <dd>
+            <span>{{ dataset()!.formType }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.displayName">Display Name</span></dt>
+          <dd>
+            <span>{{ dataset()!.displayName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.dimensionItem">Dimension Item</span></dt>
+          <dd>
+            <span>{{ dataset()!.dimensionItem }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.displayShortName">Display Short Name</span></dt>
+          <dd>
+            <span>{{ dataset()!.displayShortName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.displayDescription">Display Description</span></dt>
+          <dd>
+            <span>{{ dataset()!.displayDescription }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.displayFormName">Display Form Name</span></dt>
+          <dd>
+            <span>{{ dataset()!.displayFormName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.project">Project</span></dt>
+          <dd>
+            @if (dataset()!.project) {
+              <div>
+                <a [routerLink]="['/project', dataset()!.project?.id, 'view']">{{ dataset()!.project?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.createdBy">Created By</span></dt>
+          <dd>
+            @if (dataset()!.createdBy) {
+              <div>
+                <a [routerLink]="['/dhis-user', dataset()!.createdBy?.id, 'view']">{{ dataset()!.createdBy?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.lastUpdatedBy">Last Updated By</span></dt>
+          <dd>
+            @if (dataset()!.lastUpdatedBy) {
+              <div>
+                <a [routerLink]="['/dhis-user', dataset()!.lastUpdatedBy?.id, 'view']">{{ dataset()!.lastUpdatedBy?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/dataset', dataset()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

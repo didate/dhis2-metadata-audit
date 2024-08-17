@@ -1,0 +1,69 @@
+{
+  "dhis2AuditApp": {
+    "program": {
+      "home": {
+        "title": "Programs",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Program",
+        "createOrEditLabel": "Créer ou éditer un Program",
+        "notFound": "Aucun Program trouvé"
+      },
+      "created": "Un nouveau Program a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Program avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Program avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Program {{ id }} ?"
+      },
+      "detail": {
+        "title": "Program"
+      },
+      "id": "Id",
+      "name": "Name",
+      "created": "Created",
+      "lastUpdated": "Last Updated",
+      "shortName": "Short Name",
+      "description": "Description",
+      "version": "Version",
+      "enrollmentDateLabel": "Enrollment Date Label",
+      "incidentDateLabel": "Incident Date Label",
+      "programType": "Program Type",
+      "displayIncidentDate": "Display Incident Date",
+      "ignoreOverdueEvents": "Ignore Overdue Events",
+      "userRoles": "User Roles",
+      "programIndicators": "Program Indicators",
+      "programRuleVariables": "Program Rule Variables",
+      "onlyEnrollOnce": "Only Enroll Once",
+      "notificationTemplates": "Notification Templates",
+      "selectEnrollmentDatesInFuture": "Select Enrollment Dates In Future",
+      "selectIncidentDatesInFuture": "Select Incident Dates In Future",
+      "trackedEntityType": "Tracked Entity Type",
+      "style": "Style",
+      "categoryCombo": "Category Combo",
+      "skipOffline": "Skip Offline",
+      "displayFrontPageList": "Display Front Page List",
+      "useFirstStageDuringRegistration": "Use First Stage During Registration",
+      "expiryDays": "Expiry Days",
+      "completeEventsExpiryDays": "Complete Events Expiry Days",
+      "openDaysAfterCoEndDate": "Open Days After Co End Date",
+      "minAttributesRequiredToSearch": "Min Attributes Required To Search",
+      "maxTeiCountToReturn": "Max Tei Count To Return",
+      "accessLevel": "Access Level",
+      "displayEnrollmentDateLabel": "Display Enrollment Date Label",
+      "displayIncidentDateLabel": "Display Incident Date Label",
+      "registration": "Registration",
+      "withoutRegistration": "Without Registration",
+      "displayShortName": "Display Short Name",
+      "displayDescription": "Display Description",
+      "displayFormName": "Display Form Name",
+      "displayName": "Display Name",
+      "attributeValuesCount": "Attribute Values Count",
+      "organisationUnitsCount": "Organisation Units Count",
+      "programStagesCount": "Program Stages Count",
+      "programSectionsCount": "Program Sections Count",
+      "programTrackedEntityAttributesCount": "Program Tracked Entity Attributes Count",
+      "project": "Project",
+      "createdBy": "Created By",
+      "lastUpdatedBy": "Last Updated By"
+    }
+  }
+}

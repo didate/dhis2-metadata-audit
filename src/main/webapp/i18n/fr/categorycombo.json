@@ -1,0 +1,24 @@
+{
+  "dhis2AuditApp": {
+    "categorycombo": {
+      "home": {
+        "title": "Categorycombos",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Categorycombo",
+        "createOrEditLabel": "Créer ou éditer un Categorycombo",
+        "notFound": "Aucun Categorycombo trouvé"
+      },
+      "created": "Un nouveau Categorycombo a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Categorycombo avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Categorycombo avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Categorycombo {{ id }} ?"
+      },
+      "detail": {
+        "title": "Categorycombo"
+      },
+      "id": "Id",
+      "name": "Name"
+    }
+  }
+}

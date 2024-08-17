@@ -1,0 +1,54 @@
+import { IProject } from 'app/entities/project/project.model';
+import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
+
+export interface IProgram {
+  id: string;
+  name?: string | null;
+  created?: string | null;
+  lastUpdated?: string | null;
+  shortName?: string | null;
+  description?: string | null;
+  version?: number | null;
+  enrollmentDateLabel?: string | null;
+  incidentDateLabel?: string | null;
+  programType?: string | null;
+  displayIncidentDate?: boolean | null;
+  ignoreOverdueEvents?: boolean | null;
+  userRoles?: string | null;
+  programIndicators?: string | null;
+  programRuleVariables?: string | null;
+  onlyEnrollOnce?: boolean | null;
+  notificationTemplates?: string | null;
+  selectEnrollmentDatesInFuture?: boolean | null;
+  selectIncidentDatesInFuture?: boolean | null;
+  trackedEntityType?: string | null;
+  style?: string | null;
+  categoryCombo?: string | null;
+  skipOffline?: boolean | null;
+  displayFrontPageList?: boolean | null;
+  useFirstStageDuringRegistration?: boolean | null;
+  expiryDays?: number | null;
+  completeEventsExpiryDays?: number | null;
+  openDaysAfterCoEndDate?: number | null;
+  minAttributesRequiredToSearch?: number | null;
+  maxTeiCountToReturn?: number | null;
+  accessLevel?: string | null;
+  displayEnrollmentDateLabel?: string | null;
+  displayIncidentDateLabel?: string | null;
+  registration?: boolean | null;
+  withoutRegistration?: boolean | null;
+  displayShortName?: string | null;
+  displayDescription?: string | null;
+  displayFormName?: string | null;
+  displayName?: string | null;
+  attributeValuesCount?: number | null;
+  organisationUnitsCount?: number | null;
+  programStagesCount?: number | null;
+  programSectionsCount?: number | null;
+  programTrackedEntityAttributesCount?: number | null;
+  project?: IProject | null;
+  createdBy?: IDHISUser | null;
+  lastUpdatedBy?: IDHISUser | null;
+}
+
+export type NewProgram = Omit<IProgram, 'id'> & { id: null };

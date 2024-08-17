@@ -2,6 +2,7 @@
 name: dhis2audit
 services:
   postgresql:
+    container_name: dhis2auditdb
     image: postgres:16.3
     # volumes:
     #   - ~/volumes/jhipster/dhis2Audit/postgresql/:/var/lib/postgresql/data/

@@ -1,0 +1,415 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-indicator-heading" data-cy="IndicatorCreateUpdateHeading" jhiTranslate="dhis2AuditApp.indicator.home.createOrEditLabel">
+        Créer ou éditer un Indicator
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="dhis2AuditApp.indicator.id">Id</label>
+            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+            @if (editForm.get('id')!.invalid && (editForm.get('id')!.dirty || editForm.get('id')!.touched)) {
+              <div>
+                @if (editForm.get('id')?.errors?.required) {
+                  <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_name" jhiTranslate="dhis2AuditApp.indicator.name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          @if (editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)) {
+            <div>
+              @if (editForm.get('name')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_shortName" jhiTranslate="dhis2AuditApp.indicator.shortName">Short Name</label>
+          <input type="text" class="form-control" name="shortName" id="field_shortName" data-cy="shortName" formControlName="shortName" />
+          @if (editForm.get('shortName')!.invalid && (editForm.get('shortName')!.dirty || editForm.get('shortName')!.touched)) {
+            <div>
+              @if (editForm.get('shortName')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayShortName" jhiTranslate="dhis2AuditApp.indicator.displayShortName"
+            >Display Short Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayShortName"
+            id="field_displayShortName"
+            data-cy="displayShortName"
+            formControlName="displayShortName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayName" jhiTranslate="dhis2AuditApp.indicator.displayName">Display Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="displayName"
+            id="field_displayName"
+            data-cy="displayName"
+            formControlName="displayName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayFormName" jhiTranslate="dhis2AuditApp.indicator.displayFormName"
+            >Display Form Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayFormName"
+            id="field_displayFormName"
+            data-cy="displayFormName"
+            formControlName="displayFormName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_created" jhiTranslate="dhis2AuditApp.indicator.created">Created</label>
+          <div class="d-flex">
+            <input
+              id="field_created"
+              data-cy="created"
+              type="datetime-local"
+              class="form-control"
+              name="created"
+              formControlName="created"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('created')!.invalid && (editForm.get('created')!.dirty || editForm.get('created')!.touched)) {
+            <div>
+              @if (editForm.get('created')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('created')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Ce champ doit être une date et une heure.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastUpdated" jhiTranslate="dhis2AuditApp.indicator.lastUpdated">Last Updated</label>
+          <div class="d-flex">
+            <input
+              id="field_lastUpdated"
+              data-cy="lastUpdated"
+              type="datetime-local"
+              class="form-control"
+              name="lastUpdated"
+              formControlName="lastUpdated"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('lastUpdated')!.invalid && (editForm.get('lastUpdated')!.dirty || editForm.get('lastUpdated')!.touched)) {
+            <div>
+              @if (editForm.get('lastUpdated')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('lastUpdated')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Ce champ doit être une date et une heure.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_publicAccess" jhiTranslate="dhis2AuditApp.indicator.publicAccess">Public Access</label>
+          <input
+            type="text"
+            class="form-control"
+            name="publicAccess"
+            id="field_publicAccess"
+            data-cy="publicAccess"
+            formControlName="publicAccess"
+          />
+          @if (editForm.get('publicAccess')!.invalid && (editForm.get('publicAccess')!.dirty || editForm.get('publicAccess')!.touched)) {
+            <div>
+              @if (editForm.get('publicAccess')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dimensionItemType" jhiTranslate="dhis2AuditApp.indicator.dimensionItemType"
+            >Dimension Item Type</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="dimensionItemType"
+            id="field_dimensionItemType"
+            data-cy="dimensionItemType"
+            formControlName="dimensionItemType"
+          />
+          @if (
+            editForm.get('dimensionItemType')!.invalid &&
+            (editForm.get('dimensionItemType')!.dirty || editForm.get('dimensionItemType')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('dimensionItemType')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_annualized" jhiTranslate="dhis2AuditApp.indicator.annualized">Annualized</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="annualized"
+            id="field_annualized"
+            data-cy="annualized"
+            formControlName="annualized"
+          />
+          @if (editForm.get('annualized')!.invalid && (editForm.get('annualized')!.dirty || editForm.get('annualized')!.touched)) {
+            <div>
+              @if (editForm.get('annualized')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_numerator" jhiTranslate="dhis2AuditApp.indicator.numerator">Numerator</label>
+          <input type="text" class="form-control" name="numerator" id="field_numerator" data-cy="numerator" formControlName="numerator" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_numeratorDescription" jhiTranslate="dhis2AuditApp.indicator.numeratorDescription"
+            >Numerator Description</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="numeratorDescription"
+            id="field_numeratorDescription"
+            data-cy="numeratorDescription"
+            formControlName="numeratorDescription"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_denominator" jhiTranslate="dhis2AuditApp.indicator.denominator">Denominator</label>
+          <input
+            type="text"
+            class="form-control"
+            name="denominator"
+            id="field_denominator"
+            data-cy="denominator"
+            formControlName="denominator"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_denominatorDescription" jhiTranslate="dhis2AuditApp.indicator.denominatorDescription"
+            >Denominator Description</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="denominatorDescription"
+            id="field_denominatorDescription"
+            data-cy="denominatorDescription"
+            formControlName="denominatorDescription"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_displayNumeratorDescription"
+            jhiTranslate="dhis2AuditApp.indicator.displayNumeratorDescription"
+            >Display Numerator Description</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayNumeratorDescription"
+            id="field_displayNumeratorDescription"
+            data-cy="displayNumeratorDescription"
+            formControlName="displayNumeratorDescription"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_displayDenominatorDescription"
+            jhiTranslate="dhis2AuditApp.indicator.displayDenominatorDescription"
+            >Display Denominator Description</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayDenominatorDescription"
+            id="field_displayDenominatorDescription"
+            data-cy="displayDenominatorDescription"
+            formControlName="displayDenominatorDescription"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dimensionItem" jhiTranslate="dhis2AuditApp.indicator.dimensionItem">Dimension Item</label>
+          <input
+            type="text"
+            class="form-control"
+            name="dimensionItem"
+            id="field_dimensionItem"
+            data-cy="dimensionItem"
+            formControlName="dimensionItem"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_project" jhiTranslate="dhis2AuditApp.indicator.project">Project</label>
+          <select
+            class="form-control"
+            id="field_project"
+            data-cy="project"
+            name="project"
+            formControlName="project"
+            [compareWith]="compareProject"
+          >
+            <option [ngValue]="null"></option>
+            @for (projectOption of projectsSharedCollection; track $index) {
+              <option [ngValue]="projectOption">{{ projectOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_createdBy" jhiTranslate="dhis2AuditApp.indicator.createdBy">Created By</label>
+          <select
+            class="form-control"
+            id="field_createdBy"
+            data-cy="createdBy"
+            name="createdBy"
+            formControlName="createdBy"
+            [compareWith]="compareDHISUser"
+          >
+            @if (!editForm.get('createdBy')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
+              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['createdBy'])!.invalid && (editForm.get(['createdBy'])!.dirty || editForm.get(['createdBy'])!.touched)) {
+          <div>
+            @if (editForm.get(['createdBy'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastUpdatedBy" jhiTranslate="dhis2AuditApp.indicator.lastUpdatedBy">Last Updated By</label>
+          <select
+            class="form-control"
+            id="field_lastUpdatedBy"
+            data-cy="lastUpdatedBy"
+            name="lastUpdatedBy"
+            formControlName="lastUpdatedBy"
+            [compareWith]="compareDHISUser"
+          >
+            @if (!editForm.get('lastUpdatedBy')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
+              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (
+          editForm.get(['lastUpdatedBy'])!.invalid && (editForm.get(['lastUpdatedBy'])!.dirty || editForm.get(['lastUpdatedBy'])!.touched)
+        ) {
+          <div>
+            @if (editForm.get(['lastUpdatedBy'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_indicatorType" jhiTranslate="dhis2AuditApp.indicator.indicatorType">Indicator Type</label>
+          <select
+            class="form-control"
+            id="field_indicatorType"
+            data-cy="indicatorType"
+            name="indicatorType"
+            formControlName="indicatorType"
+            [compareWith]="compareIndicatortype"
+          >
+            @if (!editForm.get('indicatorType')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (indicatortypeOption of indicatortypesSharedCollection; track $index) {
+              <option [ngValue]="indicatortypeOption">{{ indicatortypeOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (
+          editForm.get(['indicatorType'])!.invalid && (editForm.get(['indicatorType'])!.dirty || editForm.get(['indicatorType'])!.touched)
+        ) {
+          <div>
+            @if (editForm.get(['indicatorType'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

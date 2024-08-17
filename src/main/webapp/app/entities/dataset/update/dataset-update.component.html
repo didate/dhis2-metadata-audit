@@ -1,0 +1,481 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-dataset-heading" data-cy="DatasetCreateUpdateHeading" jhiTranslate="dhis2AuditApp.dataset.home.createOrEditLabel">
+        Créer ou éditer un Dataset
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="dhis2AuditApp.dataset.id">Id</label>
+            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_name" jhiTranslate="dhis2AuditApp.dataset.name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_created" jhiTranslate="dhis2AuditApp.dataset.created">Created</label>
+          <div class="d-flex">
+            <input
+              id="field_created"
+              data-cy="created"
+              type="datetime-local"
+              class="form-control"
+              name="created"
+              formControlName="created"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('created')!.invalid && (editForm.get('created')!.dirty || editForm.get('created')!.touched)) {
+            <div>
+              @if (editForm.get('created')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('created')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Ce champ doit être une date et une heure.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastUpdated" jhiTranslate="dhis2AuditApp.dataset.lastUpdated">Last Updated</label>
+          <div class="d-flex">
+            <input
+              id="field_lastUpdated"
+              data-cy="lastUpdated"
+              type="datetime-local"
+              class="form-control"
+              name="lastUpdated"
+              formControlName="lastUpdated"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('lastUpdated')!.invalid && (editForm.get('lastUpdated')!.dirty || editForm.get('lastUpdated')!.touched)) {
+            <div>
+              @if (editForm.get('lastUpdated')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('lastUpdated')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Ce champ doit être une date et une heure.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_shortName" jhiTranslate="dhis2AuditApp.dataset.shortName">Short Name</label>
+          <input type="text" class="form-control" name="shortName" id="field_shortName" data-cy="shortName" formControlName="shortName" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_description" jhiTranslate="dhis2AuditApp.dataset.description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dimensionItemType" jhiTranslate="dhis2AuditApp.dataset.dimensionItemType"
+            >Dimension Item Type</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="dimensionItemType"
+            id="field_dimensionItemType"
+            data-cy="dimensionItemType"
+            formControlName="dimensionItemType"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_periodType" jhiTranslate="dhis2AuditApp.dataset.periodType">Period Type</label>
+          <input
+            type="text"
+            class="form-control"
+            name="periodType"
+            id="field_periodType"
+            data-cy="periodType"
+            formControlName="periodType"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_categoryCombo" jhiTranslate="dhis2AuditApp.dataset.categoryCombo">Category Combo</label>
+          <input
+            type="text"
+            class="form-control"
+            name="categoryCombo"
+            id="field_categoryCombo"
+            data-cy="categoryCombo"
+            formControlName="categoryCombo"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_mobile" jhiTranslate="dhis2AuditApp.dataset.mobile">Mobile</label>
+          <input type="text" class="form-control" name="mobile" id="field_mobile" data-cy="mobile" formControlName="mobile" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_version" jhiTranslate="dhis2AuditApp.dataset.version">Version</label>
+          <input type="number" class="form-control" name="version" id="field_version" data-cy="version" formControlName="version" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_expiryDays" jhiTranslate="dhis2AuditApp.dataset.expiryDays">Expiry Days</label>
+          <input
+            type="number"
+            class="form-control"
+            name="expiryDays"
+            id="field_expiryDays"
+            data-cy="expiryDays"
+            formControlName="expiryDays"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_timelyDays" jhiTranslate="dhis2AuditApp.dataset.timelyDays">Timely Days</label>
+          <input
+            type="number"
+            class="form-control"
+            name="timelyDays"
+            id="field_timelyDays"
+            data-cy="timelyDays"
+            formControlName="timelyDays"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notifyCompletingUser" jhiTranslate="dhis2AuditApp.dataset.notifyCompletingUser"
+            >Notify Completing User</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="notifyCompletingUser"
+            id="field_notifyCompletingUser"
+            data-cy="notifyCompletingUser"
+            formControlName="notifyCompletingUser"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_openFuturePeriods" jhiTranslate="dhis2AuditApp.dataset.openFuturePeriods"
+            >Open Future Periods</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="openFuturePeriods"
+            id="field_openFuturePeriods"
+            data-cy="openFuturePeriods"
+            formControlName="openFuturePeriods"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_openPeriodsAfterCoEndDate" jhiTranslate="dhis2AuditApp.dataset.openPeriodsAfterCoEndDate"
+            >Open Periods After Co End Date</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="openPeriodsAfterCoEndDate"
+            id="field_openPeriodsAfterCoEndDate"
+            data-cy="openPeriodsAfterCoEndDate"
+            formControlName="openPeriodsAfterCoEndDate"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_fieldCombinationRequired" jhiTranslate="dhis2AuditApp.dataset.fieldCombinationRequired"
+            >Field Combination Required</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="fieldCombinationRequired"
+            id="field_fieldCombinationRequired"
+            data-cy="fieldCombinationRequired"
+            formControlName="fieldCombinationRequired"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_validCompleteOnly" jhiTranslate="dhis2AuditApp.dataset.validCompleteOnly"
+            >Valid Complete Only</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="validCompleteOnly"
+            id="field_validCompleteOnly"
+            data-cy="validCompleteOnly"
+            formControlName="validCompleteOnly"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_noValueRequiresComment" jhiTranslate="dhis2AuditApp.dataset.noValueRequiresComment"
+            >No Value Requires Comment</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="noValueRequiresComment"
+            id="field_noValueRequiresComment"
+            data-cy="noValueRequiresComment"
+            formControlName="noValueRequiresComment"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_skipOffline" jhiTranslate="dhis2AuditApp.dataset.skipOffline">Skip Offline</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="skipOffline"
+            id="field_skipOffline"
+            data-cy="skipOffline"
+            formControlName="skipOffline"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataElementDecoration" jhiTranslate="dhis2AuditApp.dataset.dataElementDecoration"
+            >Data Element Decoration</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="dataElementDecoration"
+            id="field_dataElementDecoration"
+            data-cy="dataElementDecoration"
+            formControlName="dataElementDecoration"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_renderAsTabs" jhiTranslate="dhis2AuditApp.dataset.renderAsTabs">Render As Tabs</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="renderAsTabs"
+            id="field_renderAsTabs"
+            data-cy="renderAsTabs"
+            formControlName="renderAsTabs"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_renderHorizontally" jhiTranslate="dhis2AuditApp.dataset.renderHorizontally"
+            >Render Horizontally</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="renderHorizontally"
+            id="field_renderHorizontally"
+            data-cy="renderHorizontally"
+            formControlName="renderHorizontally"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_compulsoryFieldsCompleteOnly"
+            jhiTranslate="dhis2AuditApp.dataset.compulsoryFieldsCompleteOnly"
+            >Compulsory Fields Complete Only</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="compulsoryFieldsCompleteOnly"
+            id="field_compulsoryFieldsCompleteOnly"
+            data-cy="compulsoryFieldsCompleteOnly"
+            formControlName="compulsoryFieldsCompleteOnly"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_formType" jhiTranslate="dhis2AuditApp.dataset.formType">Form Type</label>
+          <input type="text" class="form-control" name="formType" id="field_formType" data-cy="formType" formControlName="formType" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayName" jhiTranslate="dhis2AuditApp.dataset.displayName">Display Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="displayName"
+            id="field_displayName"
+            data-cy="displayName"
+            formControlName="displayName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dimensionItem" jhiTranslate="dhis2AuditApp.dataset.dimensionItem">Dimension Item</label>
+          <input
+            type="text"
+            class="form-control"
+            name="dimensionItem"
+            id="field_dimensionItem"
+            data-cy="dimensionItem"
+            formControlName="dimensionItem"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayShortName" jhiTranslate="dhis2AuditApp.dataset.displayShortName"
+            >Display Short Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayShortName"
+            id="field_displayShortName"
+            data-cy="displayShortName"
+            formControlName="displayShortName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayDescription" jhiTranslate="dhis2AuditApp.dataset.displayDescription"
+            >Display Description</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayDescription"
+            id="field_displayDescription"
+            data-cy="displayDescription"
+            formControlName="displayDescription"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayFormName" jhiTranslate="dhis2AuditApp.dataset.displayFormName"
+            >Display Form Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayFormName"
+            id="field_displayFormName"
+            data-cy="displayFormName"
+            formControlName="displayFormName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_project" jhiTranslate="dhis2AuditApp.dataset.project">Project</label>
+          <select
+            class="form-control"
+            id="field_project"
+            data-cy="project"
+            name="project"
+            formControlName="project"
+            [compareWith]="compareProject"
+          >
+            <option [ngValue]="null"></option>
+            @for (projectOption of projectsSharedCollection; track $index) {
+              <option [ngValue]="projectOption">{{ projectOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_createdBy" jhiTranslate="dhis2AuditApp.dataset.createdBy">Created By</label>
+          <select
+            class="form-control"
+            id="field_createdBy"
+            data-cy="createdBy"
+            name="createdBy"
+            formControlName="createdBy"
+            [compareWith]="compareDHISUser"
+          >
+            @if (!editForm.get('createdBy')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
+              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['createdBy'])!.invalid && (editForm.get(['createdBy'])!.dirty || editForm.get(['createdBy'])!.touched)) {
+          <div>
+            @if (editForm.get(['createdBy'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastUpdatedBy" jhiTranslate="dhis2AuditApp.dataset.lastUpdatedBy">Last Updated By</label>
+          <select
+            class="form-control"
+            id="field_lastUpdatedBy"
+            data-cy="lastUpdatedBy"
+            name="lastUpdatedBy"
+            formControlName="lastUpdatedBy"
+            [compareWith]="compareDHISUser"
+          >
+            @if (!editForm.get('lastUpdatedBy')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
+              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (
+          editForm.get(['lastUpdatedBy'])!.invalid && (editForm.get(['lastUpdatedBy'])!.dirty || editForm.get(['lastUpdatedBy'])!.touched)
+        ) {
+          <div>
+            @if (editForm.get(['lastUpdatedBy'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

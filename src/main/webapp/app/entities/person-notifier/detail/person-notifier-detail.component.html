@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (personNotifier()) {
+      <div>
+        <h2 data-cy="personNotifierDetailsHeading">
+          <span jhiTranslate="dhis2AuditApp.personNotifier.detail.title">Person Notifier</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ personNotifier()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.personNotifier.personName">Person Name</span></dt>
+          <dd>
+            <span>{{ personNotifier()!.personName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.personNotifier.personPhone">Person Phone</span></dt>
+          <dd>
+            <span>{{ personNotifier()!.personPhone }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.personNotifier.personEmail">Person Email</span></dt>
+          <dd>
+            <span>{{ personNotifier()!.personEmail }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.personNotifier.personOrganization">Person Organization</span></dt>
+          <dd>
+            <span>{{ personNotifier()!.personOrganization }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.personNotifier.project">Project</span></dt>
+          <dd>
+            @if (personNotifier()!.project) {
+              <div>
+                <a [routerLink]="['/project', personNotifier()!.project?.id, 'view']">{{ personNotifier()!.project?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/person-notifier', personNotifier()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

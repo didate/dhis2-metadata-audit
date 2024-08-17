@@ -1,0 +1,647 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-program-heading" data-cy="ProgramCreateUpdateHeading" jhiTranslate="dhis2AuditApp.program.home.createOrEditLabel">
+        Créer ou éditer un Program
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="dhis2AuditApp.program.id">Id</label>
+            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_name" jhiTranslate="dhis2AuditApp.program.name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_created" jhiTranslate="dhis2AuditApp.program.created">Created</label>
+          <input type="text" class="form-control" name="created" id="field_created" data-cy="created" formControlName="created" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastUpdated" jhiTranslate="dhis2AuditApp.program.lastUpdated">Last Updated</label>
+          <input
+            type="text"
+            class="form-control"
+            name="lastUpdated"
+            id="field_lastUpdated"
+            data-cy="lastUpdated"
+            formControlName="lastUpdated"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_shortName" jhiTranslate="dhis2AuditApp.program.shortName">Short Name</label>
+          <input type="text" class="form-control" name="shortName" id="field_shortName" data-cy="shortName" formControlName="shortName" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_description" jhiTranslate="dhis2AuditApp.program.description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_version" jhiTranslate="dhis2AuditApp.program.version">Version</label>
+          <input type="number" class="form-control" name="version" id="field_version" data-cy="version" formControlName="version" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_enrollmentDateLabel" jhiTranslate="dhis2AuditApp.program.enrollmentDateLabel"
+            >Enrollment Date Label</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="enrollmentDateLabel"
+            id="field_enrollmentDateLabel"
+            data-cy="enrollmentDateLabel"
+            formControlName="enrollmentDateLabel"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_incidentDateLabel" jhiTranslate="dhis2AuditApp.program.incidentDateLabel"
+            >Incident Date Label</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="incidentDateLabel"
+            id="field_incidentDateLabel"
+            data-cy="incidentDateLabel"
+            formControlName="incidentDateLabel"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_programType" jhiTranslate="dhis2AuditApp.program.programType">Program Type</label>
+          <input
+            type="text"
+            class="form-control"
+            name="programType"
+            id="field_programType"
+            data-cy="programType"
+            formControlName="programType"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayIncidentDate" jhiTranslate="dhis2AuditApp.program.displayIncidentDate"
+            >Display Incident Date</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="displayIncidentDate"
+            id="field_displayIncidentDate"
+            data-cy="displayIncidentDate"
+            formControlName="displayIncidentDate"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_ignoreOverdueEvents" jhiTranslate="dhis2AuditApp.program.ignoreOverdueEvents"
+            >Ignore Overdue Events</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="ignoreOverdueEvents"
+            id="field_ignoreOverdueEvents"
+            data-cy="ignoreOverdueEvents"
+            formControlName="ignoreOverdueEvents"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_userRoles" jhiTranslate="dhis2AuditApp.program.userRoles">User Roles</label>
+          <input type="text" class="form-control" name="userRoles" id="field_userRoles" data-cy="userRoles" formControlName="userRoles" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_programIndicators" jhiTranslate="dhis2AuditApp.program.programIndicators"
+            >Program Indicators</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="programIndicators"
+            id="field_programIndicators"
+            data-cy="programIndicators"
+            formControlName="programIndicators"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_programRuleVariables" jhiTranslate="dhis2AuditApp.program.programRuleVariables"
+            >Program Rule Variables</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="programRuleVariables"
+            id="field_programRuleVariables"
+            data-cy="programRuleVariables"
+            formControlName="programRuleVariables"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_onlyEnrollOnce" jhiTranslate="dhis2AuditApp.program.onlyEnrollOnce">Only Enroll Once</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="onlyEnrollOnce"
+            id="field_onlyEnrollOnce"
+            data-cy="onlyEnrollOnce"
+            formControlName="onlyEnrollOnce"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notificationTemplates" jhiTranslate="dhis2AuditApp.program.notificationTemplates"
+            >Notification Templates</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="notificationTemplates"
+            id="field_notificationTemplates"
+            data-cy="notificationTemplates"
+            formControlName="notificationTemplates"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_selectEnrollmentDatesInFuture"
+            jhiTranslate="dhis2AuditApp.program.selectEnrollmentDatesInFuture"
+            >Select Enrollment Dates In Future</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="selectEnrollmentDatesInFuture"
+            id="field_selectEnrollmentDatesInFuture"
+            data-cy="selectEnrollmentDatesInFuture"
+            formControlName="selectEnrollmentDatesInFuture"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_selectIncidentDatesInFuture" jhiTranslate="dhis2AuditApp.program.selectIncidentDatesInFuture"
+            >Select Incident Dates In Future</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="selectIncidentDatesInFuture"
+            id="field_selectIncidentDatesInFuture"
+            data-cy="selectIncidentDatesInFuture"
+            formControlName="selectIncidentDatesInFuture"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_trackedEntityType" jhiTranslate="dhis2AuditApp.program.trackedEntityType"
+            >Tracked Entity Type</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="trackedEntityType"
+            id="field_trackedEntityType"
+            data-cy="trackedEntityType"
+            formControlName="trackedEntityType"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_style" jhiTranslate="dhis2AuditApp.program.style">Style</label>
+          <input type="text" class="form-control" name="style" id="field_style" data-cy="style" formControlName="style" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_categoryCombo" jhiTranslate="dhis2AuditApp.program.categoryCombo">Category Combo</label>
+          <input
+            type="text"
+            class="form-control"
+            name="categoryCombo"
+            id="field_categoryCombo"
+            data-cy="categoryCombo"
+            formControlName="categoryCombo"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_skipOffline" jhiTranslate="dhis2AuditApp.program.skipOffline">Skip Offline</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="skipOffline"
+            id="field_skipOffline"
+            data-cy="skipOffline"
+            formControlName="skipOffline"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayFrontPageList" jhiTranslate="dhis2AuditApp.program.displayFrontPageList"
+            >Display Front Page List</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="displayFrontPageList"
+            id="field_displayFrontPageList"
+            data-cy="displayFrontPageList"
+            formControlName="displayFrontPageList"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_useFirstStageDuringRegistration"
+            jhiTranslate="dhis2AuditApp.program.useFirstStageDuringRegistration"
+            >Use First Stage During Registration</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="useFirstStageDuringRegistration"
+            id="field_useFirstStageDuringRegistration"
+            data-cy="useFirstStageDuringRegistration"
+            formControlName="useFirstStageDuringRegistration"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_expiryDays" jhiTranslate="dhis2AuditApp.program.expiryDays">Expiry Days</label>
+          <input
+            type="number"
+            class="form-control"
+            name="expiryDays"
+            id="field_expiryDays"
+            data-cy="expiryDays"
+            formControlName="expiryDays"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_completeEventsExpiryDays" jhiTranslate="dhis2AuditApp.program.completeEventsExpiryDays"
+            >Complete Events Expiry Days</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="completeEventsExpiryDays"
+            id="field_completeEventsExpiryDays"
+            data-cy="completeEventsExpiryDays"
+            formControlName="completeEventsExpiryDays"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_openDaysAfterCoEndDate" jhiTranslate="dhis2AuditApp.program.openDaysAfterCoEndDate"
+            >Open Days After Co End Date</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="openDaysAfterCoEndDate"
+            id="field_openDaysAfterCoEndDate"
+            data-cy="openDaysAfterCoEndDate"
+            formControlName="openDaysAfterCoEndDate"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_minAttributesRequiredToSearch"
+            jhiTranslate="dhis2AuditApp.program.minAttributesRequiredToSearch"
+            >Min Attributes Required To Search</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="minAttributesRequiredToSearch"
+            id="field_minAttributesRequiredToSearch"
+            data-cy="minAttributesRequiredToSearch"
+            formControlName="minAttributesRequiredToSearch"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_maxTeiCountToReturn" jhiTranslate="dhis2AuditApp.program.maxTeiCountToReturn"
+            >Max Tei Count To Return</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="maxTeiCountToReturn"
+            id="field_maxTeiCountToReturn"
+            data-cy="maxTeiCountToReturn"
+            formControlName="maxTeiCountToReturn"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_accessLevel" jhiTranslate="dhis2AuditApp.program.accessLevel">Access Level</label>
+          <input
+            type="text"
+            class="form-control"
+            name="accessLevel"
+            id="field_accessLevel"
+            data-cy="accessLevel"
+            formControlName="accessLevel"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayEnrollmentDateLabel" jhiTranslate="dhis2AuditApp.program.displayEnrollmentDateLabel"
+            >Display Enrollment Date Label</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayEnrollmentDateLabel"
+            id="field_displayEnrollmentDateLabel"
+            data-cy="displayEnrollmentDateLabel"
+            formControlName="displayEnrollmentDateLabel"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayIncidentDateLabel" jhiTranslate="dhis2AuditApp.program.displayIncidentDateLabel"
+            >Display Incident Date Label</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayIncidentDateLabel"
+            id="field_displayIncidentDateLabel"
+            data-cy="displayIncidentDateLabel"
+            formControlName="displayIncidentDateLabel"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_registration" jhiTranslate="dhis2AuditApp.program.registration">Registration</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="registration"
+            id="field_registration"
+            data-cy="registration"
+            formControlName="registration"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_withoutRegistration" jhiTranslate="dhis2AuditApp.program.withoutRegistration"
+            >Without Registration</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="withoutRegistration"
+            id="field_withoutRegistration"
+            data-cy="withoutRegistration"
+            formControlName="withoutRegistration"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayShortName" jhiTranslate="dhis2AuditApp.program.displayShortName"
+            >Display Short Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayShortName"
+            id="field_displayShortName"
+            data-cy="displayShortName"
+            formControlName="displayShortName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayDescription" jhiTranslate="dhis2AuditApp.program.displayDescription"
+            >Display Description</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayDescription"
+            id="field_displayDescription"
+            data-cy="displayDescription"
+            formControlName="displayDescription"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayFormName" jhiTranslate="dhis2AuditApp.program.displayFormName"
+            >Display Form Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayFormName"
+            id="field_displayFormName"
+            data-cy="displayFormName"
+            formControlName="displayFormName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayName" jhiTranslate="dhis2AuditApp.program.displayName">Display Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="displayName"
+            id="field_displayName"
+            data-cy="displayName"
+            formControlName="displayName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_attributeValuesCount" jhiTranslate="dhis2AuditApp.program.attributeValuesCount"
+            >Attribute Values Count</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="attributeValuesCount"
+            id="field_attributeValuesCount"
+            data-cy="attributeValuesCount"
+            formControlName="attributeValuesCount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_organisationUnitsCount" jhiTranslate="dhis2AuditApp.program.organisationUnitsCount"
+            >Organisation Units Count</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="organisationUnitsCount"
+            id="field_organisationUnitsCount"
+            data-cy="organisationUnitsCount"
+            formControlName="organisationUnitsCount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_programStagesCount" jhiTranslate="dhis2AuditApp.program.programStagesCount"
+            >Program Stages Count</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="programStagesCount"
+            id="field_programStagesCount"
+            data-cy="programStagesCount"
+            formControlName="programStagesCount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_programSectionsCount" jhiTranslate="dhis2AuditApp.program.programSectionsCount"
+            >Program Sections Count</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="programSectionsCount"
+            id="field_programSectionsCount"
+            data-cy="programSectionsCount"
+            formControlName="programSectionsCount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_programTrackedEntityAttributesCount"
+            jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributesCount"
+            >Program Tracked Entity Attributes Count</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="programTrackedEntityAttributesCount"
+            id="field_programTrackedEntityAttributesCount"
+            data-cy="programTrackedEntityAttributesCount"
+            formControlName="programTrackedEntityAttributesCount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_project" jhiTranslate="dhis2AuditApp.program.project">Project</label>
+          <select
+            class="form-control"
+            id="field_project"
+            data-cy="project"
+            name="project"
+            formControlName="project"
+            [compareWith]="compareProject"
+          >
+            <option [ngValue]="null"></option>
+            @for (projectOption of projectsSharedCollection; track $index) {
+              <option [ngValue]="projectOption">{{ projectOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_createdBy" jhiTranslate="dhis2AuditApp.program.createdBy">Created By</label>
+          <select
+            class="form-control"
+            id="field_createdBy"
+            data-cy="createdBy"
+            name="createdBy"
+            formControlName="createdBy"
+            [compareWith]="compareDHISUser"
+          >
+            @if (!editForm.get('createdBy')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
+              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['createdBy'])!.invalid && (editForm.get(['createdBy'])!.dirty || editForm.get(['createdBy'])!.touched)) {
+          <div>
+            @if (editForm.get(['createdBy'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastUpdatedBy" jhiTranslate="dhis2AuditApp.program.lastUpdatedBy">Last Updated By</label>
+          <select
+            class="form-control"
+            id="field_lastUpdatedBy"
+            data-cy="lastUpdatedBy"
+            name="lastUpdatedBy"
+            formControlName="lastUpdatedBy"
+            [compareWith]="compareDHISUser"
+          >
+            @if (!editForm.get('lastUpdatedBy')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
+              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (
+          editForm.get(['lastUpdatedBy'])!.invalid && (editForm.get(['lastUpdatedBy'])!.dirty || editForm.get(['lastUpdatedBy'])!.touched)
+        ) {
+          <div>
+            @if (editForm.get(['lastUpdatedBy'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

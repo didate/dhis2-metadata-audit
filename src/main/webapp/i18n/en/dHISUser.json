@@ -1,0 +1,27 @@
+{
+  "dhis2AuditApp": {
+    "dHISUser": {
+      "home": {
+        "title": "DHIS Users",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new DHIS User",
+        "createOrEditLabel": "Create or edit a DHIS User",
+        "notFound": "No DHIS Users found"
+      },
+      "created": "A new DHIS User is created with identifier {{ param }}",
+      "updated": "A DHIS User is updated with identifier {{ param }}",
+      "deleted": "A DHIS User is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete DHIS User {{ id }}?"
+      },
+      "detail": {
+        "title": "DHIS User"
+      },
+      "id": "Id",
+      "code": "Code",
+      "name": "Name",
+      "displayName": "Display Name",
+      "username": "Username"
+    }
+  }
+}

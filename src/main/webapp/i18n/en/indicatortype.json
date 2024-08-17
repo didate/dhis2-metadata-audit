@@ -1,0 +1,24 @@
+{
+  "dhis2AuditApp": {
+    "indicatortype": {
+      "home": {
+        "title": "Indicatortypes",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Indicatortype",
+        "createOrEditLabel": "Create or edit a Indicatortype",
+        "notFound": "No Indicatortypes found"
+      },
+      "created": "A new Indicatortype is created with identifier {{ param }}",
+      "updated": "A Indicatortype is updated with identifier {{ param }}",
+      "deleted": "A Indicatortype is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Indicatortype {{ id }}?"
+      },
+      "detail": {
+        "title": "Indicatortype"
+      },
+      "id": "Id",
+      "name": "Name"
+    }
+  }
+}

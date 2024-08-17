@@ -1,0 +1,28 @@
+{
+  "dhis2AuditApp": {
+    "personNotifier": {
+      "home": {
+        "title": "PersonNotifiers",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Person Notifier",
+        "createOrEditLabel": "Créer ou éditer un Person Notifier",
+        "notFound": "Aucun Person Notifier trouvé"
+      },
+      "created": "Un nouveau Person Notifier a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Person Notifier avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Person Notifier avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Person Notifier {{ id }} ?"
+      },
+      "detail": {
+        "title": "Person Notifier"
+      },
+      "id": "ID",
+      "personName": "Person Name",
+      "personPhone": "Person Phone",
+      "personEmail": "Person Email",
+      "personOrganization": "Person Organization",
+      "project": "Project"
+    }
+  }
+}
