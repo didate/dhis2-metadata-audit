@@ -73,4 +73,9 @@ public class OptionsetServiceImpl implements OptionsetService {
         log.debug("Request to delete Optionset : {}", id);
         optionsetRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean exist(String id) {
+        return optionsetRepository.existsById(id);
+    }
 }

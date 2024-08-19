@@ -82,4 +82,9 @@ public class DHISUserServiceImpl implements DHISUserService {
         log.debug("Request to delete DHISUser : {}", id);
         dHISUserRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean exist(String id) {
+        return dHISUserRepository.existsById(id);
+    }
 }

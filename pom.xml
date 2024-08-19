@@ -77,6 +77,23 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-envers</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-envers</artifactId>
+            <version>6.6.0.Final</version>
+            <type>pom</type>
+        </dependency>
+
         <dependency>
             <groupId>tech.jhipster</groupId>
             <artifactId>jhipster-framework</artifactId>
@@ -784,7 +801,7 @@
                 <!-- default Spring profiles -->
                 <spring.profiles.active>dev${profile.tls}${profile.no-liquibase}</spring.profiles.active>
                 <profile.test>testdev</profile.test>
-                <liquibase-plugin.url>jdbc:postgresql://localhost:5432/dhis2Audit</liquibase-plugin.url>
+                <liquibase-plugin.url>jdbc:postgresql://localhost:5434/dhis2Audit</liquibase-plugin.url>
                 <liquibase-plugin.username>dhis2Audit</liquibase-plugin.username>
                 <liquibase-plugin.password/>
             </properties>

@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import org.hibernate.envers.Audited;
 
 /**
  * A Indicator.
  */
 @Entity
+@Audited
 @Table(name = "indicator")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Indicator implements Serializable {

@@ -73,4 +73,9 @@ public class CategorycomboServiceImpl implements CategorycomboService {
         log.debug("Request to delete Categorycombo : {}", id);
         categorycomboRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean exist(String id) {
+        return categorycomboRepository.existsById(id);
+    }
 }

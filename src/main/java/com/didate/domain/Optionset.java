@@ -3,11 +3,13 @@ package com.didate.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import org.hibernate.envers.Audited;
 
 /**
  * A Optionset.
  */
 @Entity
+@Audited
 @Table(name = "optionset")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Optionset implements Serializable {
@@ -16,7 +18,6 @@ public class Optionset implements Serializable {
 
     @NotNull
     @Id
-    @GeneratedValue
     @Column(name = "id", nullable = false)
     private String id;
 
