@@ -3,11 +3,13 @@ package com.didate.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import org.hibernate.envers.Audited;
 
 /**
  * A Program.
  */
 @Entity
+@Audited
 @Table(name = "program")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Program implements Serializable {

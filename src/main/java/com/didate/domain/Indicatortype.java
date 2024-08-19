@@ -3,11 +3,13 @@ package com.didate.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import org.hibernate.envers.Audited;
 
 /**
  * A Indicatortype.
  */
 @Entity
+@Audited
 @Table(name = "indicatortype")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Indicatortype implements Serializable {

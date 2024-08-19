@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import org.hibernate.envers.Audited;
 
 /**
  * A Dataset.
  */
 @Entity
+@Audited
 @Table(name = "dataset")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Dataset implements Serializable {

@@ -55,4 +55,6 @@ public interface DHISUserService {
      * @param id the id of the entity.
      */
     void delete(String id);
+
+    Boolean exist(String id);
 }

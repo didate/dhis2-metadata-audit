@@ -121,4 +121,9 @@ public class DataelementServiceImpl implements DataelementService {
         log.debug("Request to delete Dataelement : {}", id);
         dataelementRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean exist(String id) {
+        return dataelementRepository.existsById(id);
+    }
 }
