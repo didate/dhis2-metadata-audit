@@ -3,6 +3,7 @@ package com.didate.service.impl;
 import com.didate.domain.Project;
 import com.didate.repository.ProjectRepository;
 import com.didate.service.ProjectService;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,5 +85,10 @@ public class ProjectServiceImpl implements ProjectService {
     public void delete(Long id) {
         log.debug("Request to delete Project : {}", id);
         projectRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Project> findAll() {
+        return projectRepository.findAll();
     }
 }

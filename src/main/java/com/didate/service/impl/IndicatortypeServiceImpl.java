@@ -73,4 +73,9 @@ public class IndicatortypeServiceImpl implements IndicatortypeService {
         log.debug("Request to delete Indicatortype : {}", id);
         indicatortypeRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean exist(String id) {
+        return indicatortypeRepository.existsById(id);
+    }
 }

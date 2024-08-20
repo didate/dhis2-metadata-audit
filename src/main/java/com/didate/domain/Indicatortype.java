@@ -1,5 +1,6 @@
 package com.didate.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -18,7 +19,6 @@ public class Indicatortype implements Serializable {
 
     @NotNull
     @Id
-    @GeneratedValue
     @Column(name = "id", nullable = false)
     private String id;
 

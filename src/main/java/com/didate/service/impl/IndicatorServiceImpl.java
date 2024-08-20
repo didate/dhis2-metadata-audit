@@ -121,4 +121,9 @@ public class IndicatorServiceImpl implements IndicatorService {
         log.debug("Request to delete Indicator : {}", id);
         indicatorRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean exist(String id) {
+        return indicatorRepository.existsById(id);
+    }
 }
