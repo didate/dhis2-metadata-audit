@@ -1,5 +1,6 @@
 package com.didate.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -13,13 +14,13 @@ import org.hibernate.envers.Audited;
 @Audited
 @Table(name = "indicator")
 @SuppressWarnings("common-java:DuplicatedBlocks")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Indicator implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @NotNull
     @Id
-    @GeneratedValue
     @Column(name = "id", nullable = false)
     private String id;
 

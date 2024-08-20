@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.Project;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,8 @@ public interface ProjectService {
      * @return the list of entities.
      */
     Page<Project> findAll(Pageable pageable);
+
+    List<Project> findAll();
 
     /**
      * Get the "id" project.
