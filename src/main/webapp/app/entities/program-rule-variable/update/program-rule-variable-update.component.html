@@ -1,0 +1,319 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-program-rule-variable-heading"
+        data-cy="ProgramRuleVariableCreateUpdateHeading"
+        jhiTranslate="dhis2AuditApp.programRuleVariable.home.createOrEditLabel"
+      >
+        Créer ou éditer un Program Rule Variable
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="dhis2AuditApp.programRuleVariable.id">Id</label>
+            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+            @if (editForm.get('id')!.invalid && (editForm.get('id')!.dirty || editForm.get('id')!.touched)) {
+              <div>
+                @if (editForm.get('id')?.errors?.required) {
+                  <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastUpdated" jhiTranslate="dhis2AuditApp.programRuleVariable.lastUpdated"
+            >Last Updated</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_lastUpdated"
+              data-cy="lastUpdated"
+              type="datetime-local"
+              class="form-control"
+              name="lastUpdated"
+              formControlName="lastUpdated"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('lastUpdated')!.invalid && (editForm.get('lastUpdated')!.dirty || editForm.get('lastUpdated')!.touched)) {
+            <div>
+              @if (editForm.get('lastUpdated')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('lastUpdated')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Ce champ doit être une date et une heure.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_created" jhiTranslate="dhis2AuditApp.programRuleVariable.created">Created</label>
+          <div class="d-flex">
+            <input
+              id="field_created"
+              data-cy="created"
+              type="datetime-local"
+              class="form-control"
+              name="created"
+              formControlName="created"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('created')!.invalid && (editForm.get('created')!.dirty || editForm.get('created')!.touched)) {
+            <div>
+              @if (editForm.get('created')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('created')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Ce champ doit être une date et une heure.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_name" jhiTranslate="dhis2AuditApp.programRuleVariable.name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          @if (editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)) {
+            <div>
+              @if (editForm.get('name')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayName" jhiTranslate="dhis2AuditApp.programRuleVariable.displayName"
+            >Display Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayName"
+            id="field_displayName"
+            data-cy="displayName"
+            formControlName="displayName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_programRuleVariableSourceType"
+            jhiTranslate="dhis2AuditApp.programRuleVariable.programRuleVariableSourceType"
+            >Program Rule Variable Source Type</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="programRuleVariableSourceType"
+            id="field_programRuleVariableSourceType"
+            data-cy="programRuleVariableSourceType"
+            formControlName="programRuleVariableSourceType"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_useCodeForOptionSet" jhiTranslate="dhis2AuditApp.programRuleVariable.useCodeForOptionSet"
+            >Use Code For Option Set</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="useCodeForOptionSet"
+            id="field_useCodeForOptionSet"
+            data-cy="useCodeForOptionSet"
+            formControlName="useCodeForOptionSet"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_track" jhiTranslate="dhis2AuditApp.programRuleVariable.track">Track</label>
+          <select class="form-control" name="track" formControlName="track" id="field_track" data-cy="track">
+            <option [ngValue]="null">{{ 'dhis2AuditApp.TypeTrack.null' | translate }}</option>
+            @for (typeTrack of typeTrackValues; track $index) {
+              <option [value]="typeTrack">{{ 'dhis2AuditApp.TypeTrack.' + typeTrack | translate }}</option>
+            }
+          </select>
+          @if (editForm.get('track')!.invalid && (editForm.get('track')!.dirty || editForm.get('track')!.touched)) {
+            <div>
+              @if (editForm.get('track')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_project" jhiTranslate="dhis2AuditApp.programRuleVariable.project">Project</label>
+          <select
+            class="form-control"
+            id="field_project"
+            data-cy="project"
+            name="project"
+            formControlName="project"
+            [compareWith]="compareProject"
+          >
+            <option [ngValue]="null"></option>
+            @for (projectOption of projectsSharedCollection; track $index) {
+              <option [ngValue]="projectOption">{{ projectOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_createdBy" jhiTranslate="dhis2AuditApp.programRuleVariable.createdBy">Created By</label>
+          <select
+            class="form-control"
+            id="field_createdBy"
+            data-cy="createdBy"
+            name="createdBy"
+            formControlName="createdBy"
+            [compareWith]="compareDHISUser"
+          >
+            @if (!editForm.get('createdBy')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
+              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['createdBy'])!.invalid && (editForm.get(['createdBy'])!.dirty || editForm.get(['createdBy'])!.touched)) {
+          <div>
+            @if (editForm.get(['createdBy'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastUpdatedBy" jhiTranslate="dhis2AuditApp.programRuleVariable.lastUpdatedBy"
+            >Last Updated By</label
+          >
+          <select
+            class="form-control"
+            id="field_lastUpdatedBy"
+            data-cy="lastUpdatedBy"
+            name="lastUpdatedBy"
+            formControlName="lastUpdatedBy"
+            [compareWith]="compareDHISUser"
+          >
+            @if (!editForm.get('lastUpdatedBy')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
+              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (
+          editForm.get(['lastUpdatedBy'])!.invalid && (editForm.get(['lastUpdatedBy'])!.dirty || editForm.get(['lastUpdatedBy'])!.touched)
+        ) {
+          <div>
+            @if (editForm.get(['lastUpdatedBy'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_program" jhiTranslate="dhis2AuditApp.programRuleVariable.program">Program</label>
+          <select
+            class="form-control"
+            id="field_program"
+            data-cy="program"
+            name="program"
+            formControlName="program"
+            [compareWith]="compareProgram"
+          >
+            @if (!editForm.get('program')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (programOption of programsSharedCollection; track $index) {
+              <option [ngValue]="programOption">{{ programOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['program'])!.invalid && (editForm.get(['program'])!.dirty || editForm.get(['program'])!.touched)) {
+          <div>
+            @if (editForm.get(['program'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_trackedEntityAttribute"
+            jhiTranslate="dhis2AuditApp.programRuleVariable.trackedEntityAttribute"
+            >Tracked Entity Attribute</label
+          >
+          <select
+            class="form-control"
+            id="field_trackedEntityAttribute"
+            data-cy="trackedEntityAttribute"
+            name="trackedEntityAttribute"
+            formControlName="trackedEntityAttribute"
+            [compareWith]="compareTrackedEntityAttribute"
+          >
+            <option [ngValue]="null"></option>
+            @for (trackedEntityAttributeOption of trackedEntityAttributesSharedCollection; track $index) {
+              <option [ngValue]="trackedEntityAttributeOption">{{ trackedEntityAttributeOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataElement" jhiTranslate="dhis2AuditApp.programRuleVariable.dataElement"
+            >Data Element</label
+          >
+          <select
+            class="form-control"
+            id="field_dataElement"
+            data-cy="dataElement"
+            name="dataElement"
+            formControlName="dataElement"
+            [compareWith]="compareDataelement"
+          >
+            <option [ngValue]="null"></option>
+            @for (dataelementOption of dataelementsSharedCollection; track $index) {
+              <option [ngValue]="dataelementOption">{{ dataelementOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

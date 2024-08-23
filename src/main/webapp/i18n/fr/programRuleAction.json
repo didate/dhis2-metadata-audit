@@ -1,0 +1,39 @@
+{
+  "dhis2AuditApp": {
+    "programRuleAction": {
+      "home": {
+        "title": "ProgramRuleActions",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Program Rule Action",
+        "createOrEditLabel": "Créer ou éditer un Program Rule Action",
+        "notFound": "Aucun Program Rule Action trouvé"
+      },
+      "created": "Un nouveau Program Rule Action a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Program Rule Action avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Program Rule Action avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Program Rule Action {{ id }} ?"
+      },
+      "detail": {
+        "title": "Program Rule Action"
+      },
+      "id": "Id",
+      "lastUpdated": "Last Updated",
+      "created": "Created",
+      "programRuleActionType": "Program Rule Action Type",
+      "evaluationTime": "Evaluation Time",
+      "data": "Data",
+      "templateUid": "Template Uid",
+      "content": "Content",
+      "displayContent": "Display Content",
+      "track": "Track",
+      "project": "Project",
+      "createdBy": "Created By",
+      "lastUpdatedBy": "Last Updated By",
+      "programRule": "Program Rule",
+      "trackedEntityAttribute": "Tracked Entity Attribute",
+      "dataElement": "Data Element",
+      "optionGroup": "Option Group"
+    }
+  }
+}

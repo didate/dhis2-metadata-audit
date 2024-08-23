@@ -41,6 +41,8 @@ type DatasetFormDefaults = Pick<
   | 'renderAsTabs'
   | 'renderHorizontally'
   | 'compulsoryFieldsCompleteOnly'
+  | 'dataElements'
+  | 'organisationUnits'
 >;
 
 type DatasetFormGroupContent = {
@@ -52,7 +54,6 @@ type DatasetFormGroupContent = {
   description: FormControl<DatasetFormRawValue['description']>;
   dimensionItemType: FormControl<DatasetFormRawValue['dimensionItemType']>;
   periodType: FormControl<DatasetFormRawValue['periodType']>;
-  categoryCombo: FormControl<DatasetFormRawValue['categoryCombo']>;
   mobile: FormControl<DatasetFormRawValue['mobile']>;
   version: FormControl<DatasetFormRawValue['version']>;
   expiryDays: FormControl<DatasetFormRawValue['expiryDays']>;
@@ -74,9 +75,13 @@ type DatasetFormGroupContent = {
   displayShortName: FormControl<DatasetFormRawValue['displayShortName']>;
   displayDescription: FormControl<DatasetFormRawValue['displayDescription']>;
   displayFormName: FormControl<DatasetFormRawValue['displayFormName']>;
+  track: FormControl<DatasetFormRawValue['track']>;
   project: FormControl<DatasetFormRawValue['project']>;
   createdBy: FormControl<DatasetFormRawValue['createdBy']>;
   lastUpdatedBy: FormControl<DatasetFormRawValue['lastUpdatedBy']>;
+  categoryCombo: FormControl<DatasetFormRawValue['categoryCombo']>;
+  dataElements: FormControl<DatasetFormRawValue['dataElements']>;
+  organisationUnits: FormControl<DatasetFormRawValue['organisationUnits']>;
 };
 
 export type DatasetFormGroup = FormGroup<DatasetFormGroupContent>;
@@ -107,7 +112,6 @@ export class DatasetFormService {
       description: new FormControl(datasetRawValue.description),
       dimensionItemType: new FormControl(datasetRawValue.dimensionItemType),
       periodType: new FormControl(datasetRawValue.periodType),
-      categoryCombo: new FormControl(datasetRawValue.categoryCombo),
       mobile: new FormControl(datasetRawValue.mobile),
       version: new FormControl(datasetRawValue.version),
       expiryDays: new FormControl(datasetRawValue.expiryDays),
@@ -129,6 +133,9 @@ export class DatasetFormService {
       displayShortName: new FormControl(datasetRawValue.displayShortName),
       displayDescription: new FormControl(datasetRawValue.displayDescription),
       displayFormName: new FormControl(datasetRawValue.displayFormName),
+      track: new FormControl(datasetRawValue.track, {
+        validators: [Validators.required],
+      }),
       project: new FormControl(datasetRawValue.project),
       createdBy: new FormControl(datasetRawValue.createdBy, {
         validators: [Validators.required],
@@ -136,6 +143,9 @@ export class DatasetFormService {
       lastUpdatedBy: new FormControl(datasetRawValue.lastUpdatedBy, {
         validators: [Validators.required],
       }),
+      categoryCombo: new FormControl(datasetRawValue.categoryCombo),
+      dataElements: new FormControl(datasetRawValue.dataElements ?? []),
+      organisationUnits: new FormControl(datasetRawValue.organisationUnits ?? []),
     });
   }
 
@@ -168,6 +178,8 @@ export class DatasetFormService {
       renderAsTabs: false,
       renderHorizontally: false,
       compulsoryFieldsCompleteOnly: false,
+      dataElements: [],
+      organisationUnits: [],
     };
   }
 
@@ -186,6 +198,8 @@ export class DatasetFormService {
       ...dataset,
       created: dataset.created ? dataset.created.format(DATE_TIME_FORMAT) : undefined,
       lastUpdated: dataset.lastUpdated ? dataset.lastUpdated.format(DATE_TIME_FORMAT) : undefined,
+      dataElements: dataset.dataElements ?? [],
+      organisationUnits: dataset.organisationUnits ?? [],
     };
   }
 }

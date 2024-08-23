@@ -17,7 +17,13 @@
         "dataelement": "Dataelement",
         "indicator": "Indicator",
         "program": "Program",
-        "dataset": "Dataset"
+        "dataset": "Dataset",
+        "programRule": "Program Rule",
+        "programRuleAction": "Program Rule Action",
+        "programRuleVariable": "Program Rule Variable",
+        "trackedEntityAttribute": "Tracked Entity Attribute",
+        "optionGroup": "Option Group",
+        "organisationUnit": "Organisation Unit"
       },
       "account": {
         "main": "Account",

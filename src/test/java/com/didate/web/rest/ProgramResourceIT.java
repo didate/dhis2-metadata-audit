@@ -4,21 +4,30 @@ import static com.didate.domain.ProgramAsserts.*;
 import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.didate.IntegrationTest;
 import com.didate.domain.DHISUser;
 import com.didate.domain.Program;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.ProgramRepository;
+import com.didate.service.ProgramService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link ProgramResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class ProgramResourceIT {
@@ -91,9 +101,6 @@ class ProgramResourceIT {
 
     private static final String DEFAULT_STYLE = "AAAAAAAAAA";
     private static final String UPDATED_STYLE = "BBBBBBBBBB";
-
-    private static final String DEFAULT_CATEGORY_COMBO = "AAAAAAAAAA";
-    private static final String UPDATED_CATEGORY_COMBO = "BBBBBBBBBB";
 
     private static final Boolean DEFAULT_SKIP_OFFLINE = false;
     private static final Boolean UPDATED_SKIP_OFFLINE = true;
@@ -161,6 +168,9 @@ class ProgramResourceIT {
     private static final Integer DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT = 1;
     private static final Integer UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT = 2;
 
+    private static final TypeTrack DEFAULT_TRACK = TypeTrack.NEW;
+    private static final TypeTrack UPDATED_TRACK = TypeTrack.UPDATE;
+
     private static final String ENTITY_API_URL = "/api/programs";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -169,6 +179,12 @@ class ProgramResourceIT {
 
     @Autowired
     private ProgramRepository programRepository;
+
+    @Mock
+    private ProgramRepository programRepositoryMock;
+
+    @Mock
+    private ProgramService programServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -208,7 +224,6 @@ class ProgramResourceIT {
             .selectIncidentDatesInFuture(DEFAULT_SELECT_INCIDENT_DATES_IN_FUTURE)
             .trackedEntityType(DEFAULT_TRACKED_ENTITY_TYPE)
             .style(DEFAULT_STYLE)
-            .categoryCombo(DEFAULT_CATEGORY_COMBO)
             .skipOffline(DEFAULT_SKIP_OFFLINE)
             .displayFrontPageList(DEFAULT_DISPLAY_FRONT_PAGE_LIST)
             .useFirstStageDuringRegistration(DEFAULT_USE_FIRST_STAGE_DURING_REGISTRATION)
@@ -230,7 +245,8 @@ class ProgramResourceIT {
             .organisationUnitsCount(DEFAULT_ORGANISATION_UNITS_COUNT)
             .programStagesCount(DEFAULT_PROGRAM_STAGES_COUNT)
             .programSectionsCount(DEFAULT_PROGRAM_SECTIONS_COUNT)
-            .programTrackedEntityAttributesCount(DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT);
+            .programTrackedEntityAttributesCount(DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT)
+            .track(DEFAULT_TRACK);
         // Add required entity
         DHISUser dHISUser;
         if (TestUtil.findAll(em, DHISUser.class).isEmpty()) {
@@ -274,7 +290,6 @@ class ProgramResourceIT {
             .selectIncidentDatesInFuture(UPDATED_SELECT_INCIDENT_DATES_IN_FUTURE)
             .trackedEntityType(UPDATED_TRACKED_ENTITY_TYPE)
             .style(UPDATED_STYLE)
-            .categoryCombo(UPDATED_CATEGORY_COMBO)
             .skipOffline(UPDATED_SKIP_OFFLINE)
             .displayFrontPageList(UPDATED_DISPLAY_FRONT_PAGE_LIST)
             .useFirstStageDuringRegistration(UPDATED_USE_FIRST_STAGE_DURING_REGISTRATION)
@@ -296,7 +311,8 @@ class ProgramResourceIT {
             .organisationUnitsCount(UPDATED_ORGANISATION_UNITS_COUNT)
             .programStagesCount(UPDATED_PROGRAM_STAGES_COUNT)
             .programSectionsCount(UPDATED_PROGRAM_SECTIONS_COUNT)
-            .programTrackedEntityAttributesCount(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT);
+            .programTrackedEntityAttributesCount(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT)
+            .track(UPDATED_TRACK);
         // Add required entity
         DHISUser dHISUser;
         if (TestUtil.findAll(em, DHISUser.class).isEmpty()) {
@@ -366,6 +382,22 @@ class ProgramResourceIT {
 
     @Test
     @Transactional
+    void checkTrackIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        program.setTrack(null);
+
+        // Create the Program, which fails.
+
+        restProgramMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(program)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllPrograms() throws Exception {
         // Initialize the database
         insertedProgram = programRepository.saveAndFlush(program);
@@ -398,7 +430,6 @@ class ProgramResourceIT {
             .andExpect(jsonPath("$.[*].selectIncidentDatesInFuture").value(hasItem(DEFAULT_SELECT_INCIDENT_DATES_IN_FUTURE.booleanValue())))
             .andExpect(jsonPath("$.[*].trackedEntityType").value(hasItem(DEFAULT_TRACKED_ENTITY_TYPE)))
             .andExpect(jsonPath("$.[*].style").value(hasItem(DEFAULT_STYLE)))
-            .andExpect(jsonPath("$.[*].categoryCombo").value(hasItem(DEFAULT_CATEGORY_COMBO)))
             .andExpect(jsonPath("$.[*].skipOffline").value(hasItem(DEFAULT_SKIP_OFFLINE.booleanValue())))
             .andExpect(jsonPath("$.[*].displayFrontPageList").value(hasItem(DEFAULT_DISPLAY_FRONT_PAGE_LIST.booleanValue())))
             .andExpect(
@@ -426,7 +457,25 @@ class ProgramResourceIT {
             .andExpect(jsonPath("$.[*].programSectionsCount").value(hasItem(DEFAULT_PROGRAM_SECTIONS_COUNT)))
             .andExpect(
                 jsonPath("$.[*].programTrackedEntityAttributesCount").value(hasItem(DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT))
-            );
+            )
+            .andExpect(jsonPath("$.[*].track").value(hasItem(DEFAULT_TRACK.toString())));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllProgramsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(programServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restProgramMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(programServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllProgramsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(programServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restProgramMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(programRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test
@@ -461,7 +510,6 @@ class ProgramResourceIT {
             .andExpect(jsonPath("$.selectIncidentDatesInFuture").value(DEFAULT_SELECT_INCIDENT_DATES_IN_FUTURE.booleanValue()))
             .andExpect(jsonPath("$.trackedEntityType").value(DEFAULT_TRACKED_ENTITY_TYPE))
             .andExpect(jsonPath("$.style").value(DEFAULT_STYLE))
-            .andExpect(jsonPath("$.categoryCombo").value(DEFAULT_CATEGORY_COMBO))
             .andExpect(jsonPath("$.skipOffline").value(DEFAULT_SKIP_OFFLINE.booleanValue()))
             .andExpect(jsonPath("$.displayFrontPageList").value(DEFAULT_DISPLAY_FRONT_PAGE_LIST.booleanValue()))
             .andExpect(jsonPath("$.useFirstStageDuringRegistration").value(DEFAULT_USE_FIRST_STAGE_DURING_REGISTRATION.booleanValue()))
@@ -483,7 +531,8 @@ class ProgramResourceIT {
             .andExpect(jsonPath("$.organisationUnitsCount").value(DEFAULT_ORGANISATION_UNITS_COUNT))
             .andExpect(jsonPath("$.programStagesCount").value(DEFAULT_PROGRAM_STAGES_COUNT))
             .andExpect(jsonPath("$.programSectionsCount").value(DEFAULT_PROGRAM_SECTIONS_COUNT))
-            .andExpect(jsonPath("$.programTrackedEntityAttributesCount").value(DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT));
+            .andExpect(jsonPath("$.programTrackedEntityAttributesCount").value(DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT))
+            .andExpect(jsonPath("$.track").value(DEFAULT_TRACK.toString()));
     }
 
     @Test
@@ -526,7 +575,6 @@ class ProgramResourceIT {
             .selectIncidentDatesInFuture(UPDATED_SELECT_INCIDENT_DATES_IN_FUTURE)
             .trackedEntityType(UPDATED_TRACKED_ENTITY_TYPE)
             .style(UPDATED_STYLE)
-            .categoryCombo(UPDATED_CATEGORY_COMBO)
             .skipOffline(UPDATED_SKIP_OFFLINE)
             .displayFrontPageList(UPDATED_DISPLAY_FRONT_PAGE_LIST)
             .useFirstStageDuringRegistration(UPDATED_USE_FIRST_STAGE_DURING_REGISTRATION)
@@ -548,7 +596,8 @@ class ProgramResourceIT {
             .organisationUnitsCount(UPDATED_ORGANISATION_UNITS_COUNT)
             .programStagesCount(UPDATED_PROGRAM_STAGES_COUNT)
             .programSectionsCount(UPDATED_PROGRAM_SECTIONS_COUNT)
-            .programTrackedEntityAttributesCount(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT);
+            .programTrackedEntityAttributesCount(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT)
+            .track(UPDATED_TRACK);
 
         restProgramMockMvc
             .perform(
@@ -625,34 +674,31 @@ class ProgramResourceIT {
         partialUpdatedProgram.setId(program.getId());
 
         partialUpdatedProgram
+            .name(UPDATED_NAME)
             .created(UPDATED_CREATED)
+            .description(UPDATED_DESCRIPTION)
             .enrollmentDateLabel(UPDATED_ENROLLMENT_DATE_LABEL)
             .incidentDateLabel(UPDATED_INCIDENT_DATE_LABEL)
-            .ignoreOverdueEvents(UPDATED_IGNORE_OVERDUE_EVENTS)
-            .userRoles(UPDATED_USER_ROLES)
-            .programIndicators(UPDATED_PROGRAM_INDICATORS)
+            .programType(UPDATED_PROGRAM_TYPE)
             .programRuleVariables(UPDATED_PROGRAM_RULE_VARIABLES)
-            .onlyEnrollOnce(UPDATED_ONLY_ENROLL_ONCE)
-            .notificationTemplates(UPDATED_NOTIFICATION_TEMPLATES)
+            .selectEnrollmentDatesInFuture(UPDATED_SELECT_ENROLLMENT_DATES_IN_FUTURE)
             .selectIncidentDatesInFuture(UPDATED_SELECT_INCIDENT_DATES_IN_FUTURE)
             .trackedEntityType(UPDATED_TRACKED_ENTITY_TYPE)
-            .style(UPDATED_STYLE)
-            .categoryCombo(UPDATED_CATEGORY_COMBO)
-            .skipOffline(UPDATED_SKIP_OFFLINE)
-            .displayFrontPageList(UPDATED_DISPLAY_FRONT_PAGE_LIST)
             .useFirstStageDuringRegistration(UPDATED_USE_FIRST_STAGE_DURING_REGISTRATION)
             .expiryDays(UPDATED_EXPIRY_DAYS)
-            .completeEventsExpiryDays(UPDATED_COMPLETE_EVENTS_EXPIRY_DAYS)
+            .openDaysAfterCoEndDate(UPDATED_OPEN_DAYS_AFTER_CO_END_DATE)
+            .minAttributesRequiredToSearch(UPDATED_MIN_ATTRIBUTES_REQUIRED_TO_SEARCH)
             .maxTeiCountToReturn(UPDATED_MAX_TEI_COUNT_TO_RETURN)
-            .accessLevel(UPDATED_ACCESS_LEVEL)
-            .displayEnrollmentDateLabel(UPDATED_DISPLAY_ENROLLMENT_DATE_LABEL)
-            .registration(UPDATED_REGISTRATION)
+            .withoutRegistration(UPDATED_WITHOUT_REGISTRATION)
             .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
             .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
             .displayFormName(UPDATED_DISPLAY_FORM_NAME)
             .attributeValuesCount(UPDATED_ATTRIBUTE_VALUES_COUNT)
             .organisationUnitsCount(UPDATED_ORGANISATION_UNITS_COUNT)
-            .programStagesCount(UPDATED_PROGRAM_STAGES_COUNT);
+            .programStagesCount(UPDATED_PROGRAM_STAGES_COUNT)
+            .programSectionsCount(UPDATED_PROGRAM_SECTIONS_COUNT)
+            .programTrackedEntityAttributesCount(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT)
+            .track(UPDATED_TRACK);
 
         restProgramMockMvc
             .perform(
@@ -701,7 +747,6 @@ class ProgramResourceIT {
             .selectIncidentDatesInFuture(UPDATED_SELECT_INCIDENT_DATES_IN_FUTURE)
             .trackedEntityType(UPDATED_TRACKED_ENTITY_TYPE)
             .style(UPDATED_STYLE)
-            .categoryCombo(UPDATED_CATEGORY_COMBO)
             .skipOffline(UPDATED_SKIP_OFFLINE)
             .displayFrontPageList(UPDATED_DISPLAY_FRONT_PAGE_LIST)
             .useFirstStageDuringRegistration(UPDATED_USE_FIRST_STAGE_DURING_REGISTRATION)
@@ -723,7 +768,8 @@ class ProgramResourceIT {
             .organisationUnitsCount(UPDATED_ORGANISATION_UNITS_COUNT)
             .programStagesCount(UPDATED_PROGRAM_STAGES_COUNT)
             .programSectionsCount(UPDATED_PROGRAM_SECTIONS_COUNT)
-            .programTrackedEntityAttributesCount(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT);
+            .programTrackedEntityAttributesCount(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT)
+            .track(UPDATED_TRACK);
 
         restProgramMockMvc
             .perform(

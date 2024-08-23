@@ -95,10 +95,6 @@
           <dd>
             <span>{{ program()!.style }}</span>
           </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.categoryCombo">Category Combo</span></dt>
-          <dd>
-            <span>{{ program()!.categoryCombo }}</span>
-          </dd>
           <dt><span jhiTranslate="dhis2AuditApp.program.skipOffline">Skip Offline</span></dt>
           <dd>
             <span>{{ program()!.skipOffline }}</span>
@@ -189,6 +185,12 @@
           <dd>
             <span>{{ program()!.programTrackedEntityAttributesCount }}</span>
           </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.program.track">Track</span></dt>
+          <dd>
+            <span [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (program()!.track ?? 'null')">{{
+              { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[program()!.track ?? 'null']
+            }}</span>
+          </dd>
           <dt><span jhiTranslate="dhis2AuditApp.program.project">Project</span></dt>
           <dd>
             @if (program()!.project) {
@@ -211,6 +213,32 @@
               <div>
                 <a [routerLink]="['/dhis-user', program()!.lastUpdatedBy?.id, 'view']">{{ program()!.lastUpdatedBy?.id }}</a>
               </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.program.categoryCombo">Category Combo</span></dt>
+          <dd>
+            @if (program()!.categoryCombo) {
+              <div>
+                <a [routerLink]="['/categorycombo', program()!.categoryCombo?.id, 'view']">{{ program()!.categoryCombo?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.program.dataElements">Data Elements</span></dt>
+          <dd>
+            @for (dataElements of program()!.dataElements; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/dataelement', dataElements.id, 'view']">{{ dataElements?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.program.organisationUnits">Organisation Units</span></dt>
+          <dd>
+            @for (organisationUnits of program()!.organisationUnits; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/organisation-unit', organisationUnits.id, 'view']">{{ organisationUnits?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
             }
           </dd>
         </dl>

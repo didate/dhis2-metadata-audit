@@ -161,6 +161,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="track">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.indicator.track">Track</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="project.id">
               <div class="d-flex">
                 <span jhiTranslate="dhis2AuditApp.indicator.project">Project</span>
@@ -211,6 +218,9 @@
               <td>{{ indicator.displayNumeratorDescription }}</td>
               <td>{{ indicator.displayDenominatorDescription }}</td>
               <td>{{ indicator.dimensionItem }}</td>
+              <td [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (indicator.track ?? 'null')">
+                {{ { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[indicator.track ?? 'null'] }}
+              </td>
               <td>
                 @if (indicator.project) {
                   <div>

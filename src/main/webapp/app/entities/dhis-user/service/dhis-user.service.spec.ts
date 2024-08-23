@@ -5,10 +5,14 @@ import { provideHttpClient } from '@angular/common/http';
 import { IDHISUser } from '../dhis-user.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../dhis-user.test-samples';
 
-import { DHISUserService } from './dhis-user.service';
+import { DHISUserService, RestDHISUser } from './dhis-user.service';
 
-const requireRestSample: IDHISUser = {
+const requireRestSample: RestDHISUser = {
   ...sampleWithRequiredData,
+  lastLogin: sampleWithRequiredData.lastLogin?.toJSON(),
+  passwordLastUpdated: sampleWithRequiredData.passwordLastUpdated?.toJSON(),
+  created: sampleWithRequiredData.created?.toJSON(),
+  lastUpdated: sampleWithRequiredData.lastUpdated?.toJSON(),
 };
 
 describe('DHISUser Service', () => {

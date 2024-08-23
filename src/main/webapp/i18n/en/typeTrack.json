@@ -1,0 +1,10 @@
+{
+  "dhis2AuditApp": {
+    "TypeTrack": {
+      "null": "",
+      "NEW": "NEW",
+      "UPDATE": "UPDATE",
+      "NONE": "NONE"
+    }
+  }
+}

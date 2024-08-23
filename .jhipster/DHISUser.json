@@ -27,6 +27,40 @@
       "fieldName": "username",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastLogin",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "phoneNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "disabled",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "passwordLastUpdated",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "created",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "lastUpdated",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "track",
+      "fieldType": "TypeTrack",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "NEW,UPDATE,NONE"
     }
   ],
   "name": "DHISUser",

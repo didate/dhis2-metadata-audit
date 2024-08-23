@@ -91,13 +91,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="categoryCombo">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.categoryCombo">Category Combo</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="mobile">
               <div class="d-flex">
                 <span jhiTranslate="dhis2AuditApp.dataset.mobile">Mobile</span>
@@ -245,6 +238,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="track">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.dataset.track">Track</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="project.id">
               <div class="d-flex">
                 <span jhiTranslate="dhis2AuditApp.dataset.project">Project</span>
@@ -260,6 +260,12 @@
             <th scope="col" jhiSortBy="lastUpdatedBy.id">
               <div class="d-flex">
                 <span jhiTranslate="dhis2AuditApp.dataset.lastUpdatedBy">Last Updated By</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="categoryCombo.id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.dataset.categoryCombo">Category Combo</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -279,7 +285,6 @@
               <td>{{ dataset.description }}</td>
               <td>{{ dataset.dimensionItemType }}</td>
               <td>{{ dataset.periodType }}</td>
-              <td>{{ dataset.categoryCombo }}</td>
               <td>{{ dataset.mobile }}</td>
               <td>{{ dataset.version }}</td>
               <td>{{ dataset.expiryDays }}</td>
@@ -301,6 +306,9 @@
               <td>{{ dataset.displayShortName }}</td>
               <td>{{ dataset.displayDescription }}</td>
               <td>{{ dataset.displayFormName }}</td>
+              <td [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (dataset.track ?? 'null')">
+                {{ { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[dataset.track ?? 'null'] }}
+              </td>
               <td>
                 @if (dataset.project) {
                   <div>
@@ -319,6 +327,13 @@
                 @if (dataset.lastUpdatedBy) {
                   <div>
                     <a [routerLink]="['/dhis-user', dataset.lastUpdatedBy.id, 'view']">{{ dataset.lastUpdatedBy.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (dataset.categoryCombo) {
+                  <div>
+                    <a [routerLink]="['/categorycombo', dataset.categoryCombo.id, 'view']">{{ dataset.categoryCombo.id }}</a>
                   </div>
                 }
               </td>

@@ -1,9 +1,17 @@
+
+
+enum TypeTrack{
+	NEW
+    UPDATE
+    NONE
+} 
 entity Project{
 	projectName String required
     dhis2URL String required
     dhis2Version Double required
     token String required
     emailNotification Boolean required
+    notificationTime String
 }
 
 entity PersonNotifier{
@@ -30,6 +38,14 @@ entity DHISUser{
     name String required
     displayName	String
     username String required
+    lastLogin Instant
+    email String
+    phoneNumber	String
+    disabled Boolean
+    passwordLastUpdated	Instant
+    created	Instant
+    lastUpdated	Instant
+    track TypeTrack required
 }
 entity Dataelement{
 	id	String required 
@@ -50,6 +66,7 @@ entity Dataelement{
     zeroIsSignificant Boolean 
     optionSetValue String  
     dimensionItem	String  
+    track TypeTrack required
 }
 
 entity Indicator{
@@ -71,6 +88,7 @@ entity Indicator{
     displayNumeratorDescription	String 
     displayDenominatorDescription	String 
     dimensionItem	String 
+    track TypeTrack required
 }
 
 entity Program {
@@ -95,7 +113,6 @@ entity Program {
     selectIncidentDatesInFuture	Boolean
     trackedEntityType	 String 
     style	 String 
-    categoryCombo	 String 
     skipOffline	Boolean
     displayFrontPageList	Boolean
     useFirstStageDuringRegistration	Boolean
@@ -113,11 +130,40 @@ entity Program {
     displayDescription	 String 
     displayFormName	 String 
     displayName	 String 
-    attributeValuesCount	 Integer 
     organisationUnitsCount	 Integer 
     programStagesCount	 Integer 
-    programSectionsCount	 Integer 
+    programIndicators	 Integer 
     programTrackedEntityAttributesCount	 Integer 
+    track TypeTrack required
+}
+
+entity ProgramStage {
+  id String
+  name	String
+  created	Instant
+  lastUpdated	Instant
+  minDaysFromStart	Integer
+  executionDateLabel	String
+  autoGenerateEvent	Boolean
+  validationStrategy	String
+  displayGenerateEventBox	Boolean
+  featureType	String
+  blockEntryForm	Boolean
+  preGenerateUID	Boolean
+  remindCompleted	Boolean
+  generatedByEnrollmentDate	Boolean
+  allowGenerateNextVisit	Boolean
+  openAfterEnrollment	Boolean
+  sortOrder	Integer
+  hideDueDate	Boolean
+  enableUserAssignment	Boolean
+  referral	Boolean
+  displayExecutionDateLabel	String
+  formType	String
+  displayFormName	String
+  displayName String
+  repeatable	Boolean
+  programStageDataElements Integer
 }
 
 entity Dataset {
@@ -129,7 +175,6 @@ entity Dataset {
     description	 String 
     dimensionItemType	 String 
     periodType	 String 
-    categoryCombo	 String 
     mobile String 
     version	 Double 
     expiryDays	Double 
@@ -151,6 +196,104 @@ entity Dataset {
     displayShortName	 String 
     displayDescription	 String 
     displayFormName	 String
+    dataSetElementsCount Integer
+    indicatorsCount Integer
+    track TypeTrack required
+}
+
+entity ProgramRule {
+	id	String
+	lastUpdated	Instant
+    created	Instant
+    name	String
+    displayName	String
+    priority	Integer
+    condition	String
+    track TypeTrack required
+}
+
+entity ProgramRuleAction {
+    id	String
+    lastUpdated	Instant
+    created	String
+    programRuleActionType	String
+    evaluationTime	String
+    data String
+    templateUid	String
+    content String
+    displayContent String
+    track TypeTrack required
+}
+
+entity ProgramRuleVariable {
+	id	String required
+	lastUpdated	Instant required
+    created	Instant required
+	name	String required
+	displayName	String
+	programRuleVariableSourceType	String
+	useCodeForOptionSet	Boolean
+    track TypeTrack required
+}
+
+entity TrackedEntityAttribute{
+	id	String
+    lastUpdated	Instant
+    created	Instant
+    name	String
+    shortName	String
+    generated	Boolean
+    valueType	String
+    confidential	Boolean
+    displayFormName	String
+    uniquee	Boolean
+    dimensionItemType	String
+    aggregationType	String
+    displayInListNoProgram	Boolean
+    displayName	String
+    patterne	String
+    skipSynchronization	Boolean
+    displayShortName	String
+    periodOffset	Integer
+    displayOnVisitSchedule	Boolean
+    formName	String
+    orgunitScope	Boolean
+    dimensionItem	String
+    inherit	Boolean
+    optionSetValue	Boolean
+    track TypeTrack required
+}
+
+entity OptionGroup{
+	id String required
+}
+
+entity OrganisationUnit{
+	id String required
+	name String required
+    created Instant required
+    lastUpdated Instant required
+    path String
+    openingDate	Instant required
+    level Integer
+    track TypeTrack required
+}
+
+entity ProgramIndicator{
+	id String required
+	name String required
+    created Instant required
+    lastUpdated Instant required
+    shortName	String
+    dimensionItemType	String
+    expression	String
+    filter	String
+    analyticsType	String
+    dimensionItem	String
+	displayShortName	String
+	displayName	String
+    displayFormName	String
+    track TypeTrack required
 }
 
 // defining multiple OneToMany relationships with comments
@@ -160,6 +303,10 @@ relationship ManyToOne {
 	Indicator{project} to Project 
 	Dataset{project} to Project 
 	Program{project} to Project 
+	ProgramRule{project} to Project 
+	ProgramRuleAction{project} to Project 
+	ProgramRuleVariable{project} to Project 
+	TrackedEntityAttribute{project} to Project 
     
     Dataelement{createdBy required} to DHISUser 
     Dataelement{lastUpdatedBy required} to DHISUser 
@@ -172,9 +319,59 @@ relationship ManyToOne {
     
     Dataset{createdBy required} to DHISUser 
     Dataset{lastUpdatedBy required} to DHISUser 
+	Dataset{categoryCombo } to Categorycombo 
+    
     
     Program{createdBy required} to DHISUser 
     Program{lastUpdatedBy required} to DHISUser
+	Program{categoryCombo } to Categorycombo 
+    
+    ProgramStage{createdBy required} to DHISUser 
+    ProgramStage{lastUpdatedBy required} to DHISUser
+    ProgramStage{program required} to Program
+    
+    ProgramRuleVariable{createdBy required} to DHISUser 
+    ProgramRuleVariable{lastUpdatedBy required} to DHISUser
+    ProgramRuleVariable{program required} to Program
+    ProgramRuleVariable{trackedEntityAttribute} to TrackedEntityAttribute
+    ProgramRuleVariable{dataElement} to Dataelement
+    
+    ProgramRule{createdBy required} to DHISUser 
+    ProgramRule{lastUpdatedBy required} to DHISUser
+    ProgramRule{program required} to Program
+    
+    
+    ProgramRuleAction{createdBy required} to DHISUser 
+    ProgramRuleAction{lastUpdatedBy required} to DHISUser
+    ProgramRuleAction{programRule required} to ProgramRule
+    ProgramRuleAction{trackedEntityAttribute} to TrackedEntityAttribute
+    ProgramRuleAction{dataElement} to TrackedEntityAttribute
+    ProgramRuleAction{optionGroup} to OptionGroup
+    
+    TrackedEntityAttribute{createdBy required} to DHISUser 
+    TrackedEntityAttribute{lastUpdatedBy required} to DHISUser
+    TrackedEntityAttribute{optionSet } to Optionset 
+    
+    OrganisationUnit{createdBy required} to DHISUser 
+    OrganisationUnit{lastUpdatedBy required} to DHISUser
+    
+    ProgramIndicator{createdBy required} to DHISUser 
+    ProgramIndicator{lastUpdatedBy required} to DHISUser 
+    ProgramIndicator{program required} to Program
+    
+}
+
+relationship ManyToMany {
+	Program{programTrackedEntityAttributes} to TrackedEntityAttribute
+	Program{organisationUnits} to OrganisationUnit
+    Program{programIndicators} to ProgramIndicator
+    Program{programStage} to ProgramStage
+	
+    Dataset{dataSetElements} to Dataelement
+    Dataset{indicators} to Indicator
+	Dataset{organisationUnits} to OrganisationUnit
+    
+    ProgramStage{programStageDataElements} to Dataelement
 }
 
 paginate * with pagination

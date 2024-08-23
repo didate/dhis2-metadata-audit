@@ -21,7 +21,15 @@
       "code": "Code",
       "name": "Name",
       "displayName": "Display Name",
-      "username": "Username"
+      "username": "Username",
+      "lastLogin": "Last Login",
+      "email": "Email",
+      "phoneNumber": "Phone Number",
+      "disabled": "Disabled",
+      "passwordLastUpdated": "Password Last Updated",
+      "created": "Created",
+      "lastUpdated": "Last Updated",
+      "track": "Track"
     }
   }
 }

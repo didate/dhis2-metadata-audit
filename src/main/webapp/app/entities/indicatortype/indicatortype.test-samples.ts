@@ -1,17 +1,17 @@
 import { IIndicatortype, NewIndicatortype } from './indicatortype.model';
 
 export const sampleWithRequiredData: IIndicatortype = {
-  id: '5560f44b-8b44-455b-bf7e-75ec1e8d3afb',
+  id: '6562b4a0-3742-42ba-9675-d4051faf62fc',
 };
 
 export const sampleWithPartialData: IIndicatortype = {
-  id: 'a53acbb2-0e16-485e-8913-9c51c84a469e',
-  name: 'guide de crainte que groin groin',
+  id: '7eef8852-7afd-406c-9c54-eb865784a1cb',
+  name: "miaou à l'égard de",
 };
 
 export const sampleWithFullData: IIndicatortype = {
-  id: '664036d8-dd51-4022-b1f4-29679ee99a4a',
-  name: 'membre à vie',
+  id: 'c7211f50-023b-4a70-acfc-4ea8ffa6d1c9',
+  name: 'ouille de crainte que',
 };
 
 export const sampleWithNewData: NewIndicatortype = {

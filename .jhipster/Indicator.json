@@ -83,6 +83,12 @@
     {
       "fieldName": "dimensionItem",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "track",
+      "fieldType": "TypeTrack",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "NEW,UPDATE,NONE"
     }
   ],
   "name": "Indicator",

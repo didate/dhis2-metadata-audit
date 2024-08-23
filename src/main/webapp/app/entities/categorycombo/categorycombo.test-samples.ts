@@ -1,16 +1,17 @@
 import { ICategorycombo, NewCategorycombo } from './categorycombo.model';
 
 export const sampleWithRequiredData: ICategorycombo = {
-  id: 'c38848e4-6fbe-4d86-b842-0e157b380b3e',
+  id: '9246f1a8-bc1b-4b7f-8a0f-bc1e8673b0a1',
 };
 
 export const sampleWithPartialData: ICategorycombo = {
-  id: '556cad37-84fd-4e44-b7b6-9060f67fca6f',
+  id: '98741fe2-ad1e-4fd4-aba0-b6eaf209f44b',
+  name: 'novice',
 };
 
 export const sampleWithFullData: ICategorycombo = {
-  id: '7bdf0eb2-7ea3-40a3-82b9-5ed9f182b2d8',
-  name: 'approximativement essayer',
+  id: '6096c3e4-a387-4d29-a5c5-65d3411234e2',
+  name: "d'après",
 };
 
 export const sampleWithNewData: NewCategorycombo = {

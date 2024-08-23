@@ -57,6 +57,30 @@ public class DHISUserServiceImpl implements DHISUserService {
                 if (dHISUser.getUsername() != null) {
                     existingDHISUser.setUsername(dHISUser.getUsername());
                 }
+                if (dHISUser.getLastLogin() != null) {
+                    existingDHISUser.setLastLogin(dHISUser.getLastLogin());
+                }
+                if (dHISUser.getEmail() != null) {
+                    existingDHISUser.setEmail(dHISUser.getEmail());
+                }
+                if (dHISUser.getPhoneNumber() != null) {
+                    existingDHISUser.setPhoneNumber(dHISUser.getPhoneNumber());
+                }
+                if (dHISUser.getDisabled() != null) {
+                    existingDHISUser.setDisabled(dHISUser.getDisabled());
+                }
+                if (dHISUser.getPasswordLastUpdated() != null) {
+                    existingDHISUser.setPasswordLastUpdated(dHISUser.getPasswordLastUpdated());
+                }
+                if (dHISUser.getCreated() != null) {
+                    existingDHISUser.setCreated(dHISUser.getCreated());
+                }
+                if (dHISUser.getLastUpdated() != null) {
+                    existingDHISUser.setLastUpdated(dHISUser.getLastUpdated());
+                }
+                if (dHISUser.getTrack() != null) {
+                    existingDHISUser.setTrack(dHISUser.getTrack());
+                }
 
                 return existingDHISUser;
             })

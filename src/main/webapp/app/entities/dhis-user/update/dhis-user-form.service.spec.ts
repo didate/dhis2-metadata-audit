@@ -24,6 +24,14 @@ describe('DHISUser Form Service', () => {
             name: expect.any(Object),
             displayName: expect.any(Object),
             username: expect.any(Object),
+            lastLogin: expect.any(Object),
+            email: expect.any(Object),
+            phoneNumber: expect.any(Object),
+            disabled: expect.any(Object),
+            passwordLastUpdated: expect.any(Object),
+            created: expect.any(Object),
+            lastUpdated: expect.any(Object),
+            track: expect.any(Object),
           }),
         );
       });
@@ -38,6 +46,14 @@ describe('DHISUser Form Service', () => {
             name: expect.any(Object),
             displayName: expect.any(Object),
             username: expect.any(Object),
+            lastLogin: expect.any(Object),
+            email: expect.any(Object),
+            phoneNumber: expect.any(Object),
+            disabled: expect.any(Object),
+            passwordLastUpdated: expect.any(Object),
+            created: expect.any(Object),
+            lastUpdated: expect.any(Object),
+            track: expect.any(Object),
           }),
         );
       });

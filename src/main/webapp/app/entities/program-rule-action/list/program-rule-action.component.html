@@ -1,0 +1,276 @@
+<div>
+  <h2 id="page-heading" data-cy="ProgramRuleActionHeading">
+    <span jhiTranslate="dhis2AuditApp.programRuleAction.home.title">ProgramRuleActions</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="dhis2AuditApp.programRuleAction.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-program-rule-action"
+        [routerLink]="['/program-rule-action/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="dhis2AuditApp.programRuleAction.home.createLabel">Créer un nouveau Program Rule Action</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (programRuleActions?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="dhis2AuditApp.programRuleAction.home.notFound">Aucun Program Rule Action trouvé</span>
+    </div>
+  }
+
+  @if (programRuleActions && programRuleActions.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.id">Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastUpdated">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.lastUpdated">Last Updated</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="created">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.created">Created</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="programRuleActionType">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.programRuleActionType">Program Rule Action Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="evaluationTime">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.evaluationTime">Evaluation Time</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="data">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.data">Data</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="templateUid">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.templateUid">Template Uid</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="content">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.content">Content</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="displayContent">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.displayContent">Display Content</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="track">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.track">Track</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="project.id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.project">Project</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdBy.id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.createdBy">Created By</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastUpdatedBy.id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.lastUpdatedBy">Last Updated By</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="programRule.id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.programRule">Program Rule</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="trackedEntityAttribute.id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.trackedEntityAttribute">Tracked Entity Attribute</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataElement.id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.dataElement">Data Element</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="optionGroup.id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programRuleAction.optionGroup">Option Group</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (programRuleAction of programRuleActions; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/program-rule-action', programRuleAction.id, 'view']">{{ programRuleAction.id }}</a>
+              </td>
+              <td>{{ programRuleAction.lastUpdated | formatMediumDatetime }}</td>
+              <td>{{ programRuleAction.created }}</td>
+              <td>{{ programRuleAction.programRuleActionType }}</td>
+              <td>{{ programRuleAction.evaluationTime }}</td>
+              <td>{{ programRuleAction.data }}</td>
+              <td>{{ programRuleAction.templateUid }}</td>
+              <td>{{ programRuleAction.content }}</td>
+              <td>{{ programRuleAction.displayContent }}</td>
+              <td [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (programRuleAction.track ?? 'null')">
+                {{ { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[programRuleAction.track ?? 'null'] }}
+              </td>
+              <td>
+                @if (programRuleAction.project) {
+                  <div>
+                    <a [routerLink]="['/project', programRuleAction.project.id, 'view']">{{ programRuleAction.project.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (programRuleAction.createdBy) {
+                  <div>
+                    <a [routerLink]="['/dhis-user', programRuleAction.createdBy.id, 'view']">{{ programRuleAction.createdBy.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (programRuleAction.lastUpdatedBy) {
+                  <div>
+                    <a [routerLink]="['/dhis-user', programRuleAction.lastUpdatedBy.id, 'view']">{{
+                      programRuleAction.lastUpdatedBy.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (programRuleAction.programRule) {
+                  <div>
+                    <a [routerLink]="['/program-rule', programRuleAction.programRule.id, 'view']">{{ programRuleAction.programRule.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (programRuleAction.trackedEntityAttribute) {
+                  <div>
+                    <a [routerLink]="['/tracked-entity-attribute', programRuleAction.trackedEntityAttribute.id, 'view']">{{
+                      programRuleAction.trackedEntityAttribute.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (programRuleAction.dataElement) {
+                  <div>
+                    <a [routerLink]="['/tracked-entity-attribute', programRuleAction.dataElement.id, 'view']">{{
+                      programRuleAction.dataElement.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (programRuleAction.optionGroup) {
+                  <div>
+                    <a [routerLink]="['/option-group', programRuleAction.optionGroup.id, 'view']">{{ programRuleAction.optionGroup.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/program-rule-action', programRuleAction.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/program-rule-action', programRuleAction.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(programRuleAction)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (programRuleActions && programRuleActions.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

@@ -89,10 +89,6 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "categoryCombo",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "skipOffline",
       "fieldType": "Boolean"
     },
@@ -179,6 +175,12 @@
     {
       "fieldName": "programTrackedEntityAttributesCount",
       "fieldType": "Integer"
+    },
+    {
+      "fieldName": "track",
+      "fieldType": "TypeTrack",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "NEW,UPDATE,NONE"
     }
   ],
   "name": "Program",
@@ -203,6 +205,24 @@
       "relationshipSide": "left",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "categorycombo",
+      "relationshipName": "categoryCombo",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "dataelement",
+      "relationshipName": "dataElements",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "organisationUnit",
+      "relationshipName": "organisationUnits",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
     }
   ],
   "searchEngine": "no",

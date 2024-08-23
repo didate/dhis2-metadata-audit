@@ -21,6 +21,12 @@
     <include file="config/liquibase/changelog/20240817154930_added_entity_Indicator.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240817154931_added_entity_Program.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240817154932_added_entity_Dataset.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823020550_added_entity_ProgramRule.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823020551_added_entity_ProgramRuleAction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823020552_added_entity_ProgramRuleVariable.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823020553_added_entity_TrackedEntityAttribute.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823020554_added_entity_OptionGroup.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823020555_added_entity_OrganisationUnit.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20240817154924_added_entity_constraints_PersonNotifier.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240817154929_added_entity_constraints_Dataelement.xml" relativeToChangelogFile="false"/>
@@ -30,6 +36,11 @@
    
    
     <include file="config/liquibase/changelog/20240819175620_envers.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823020550_added_entity_constraints_ProgramRule.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823020551_added_entity_constraints_ProgramRuleAction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823020552_added_entity_constraints_ProgramRuleVariable.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823020553_added_entity_constraints_TrackedEntityAttribute.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823020555_added_entity_constraints_OrganisationUnit.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 

@@ -74,9 +74,6 @@
             <column name="style" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="category_combo" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="skip_offline" type="boolean">
                 <constraints nullable="true" />
             </column>
@@ -143,6 +140,9 @@
             <column name="program_tracked_entity_attributes_count" type="integer">
                 <constraints nullable="true" />
             </column>
+            <column name="track" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="project_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -152,8 +152,36 @@
             <column name="last_updated_by_id" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="category_combo_id" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+    </changeSet>
+
+    <changeSet id="20240817154931-1-relations" author="jhipster">
+
+        <createTable tableName="rel_program__data_elements">
+            <column name="data_elements_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="program_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="program_id, data_elements_id" tableName="rel_program__data_elements"/>
+
+        <createTable tableName="rel_program__organisation_units">
+            <column name="organisation_units_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="program_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="program_id, organisation_units_id" tableName="rel_program__organisation_units"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -193,7 +221,6 @@
             <column name="select_incident_dates_in_future" type="boolean"/>
             <column name="tracked_entity_type" type="string"/>
             <column name="style" type="string"/>
-            <column name="category_combo" type="string"/>
             <column name="skip_offline" type="boolean"/>
             <column name="display_front_page_list" type="boolean"/>
             <column name="use_first_stage_during_registration" type="boolean"/>
@@ -216,6 +243,7 @@
             <column name="program_stages_count" type="numeric"/>
             <column name="program_sections_count" type="numeric"/>
             <column name="program_tracked_entity_attributes_count" type="numeric"/>
+            <column name="track" type="string"/>
             <column name="created_by_id" type="string"/>
             <column name="last_updated_by_id" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->

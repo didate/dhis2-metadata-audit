@@ -38,8 +38,8 @@ class PersonNotifierResourceIT {
     private static final String DEFAULT_PERSON_PHONE = "AAAAAAAAAA";
     private static final String UPDATED_PERSON_PHONE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_PERSON_EMAIL = "-hG)o@clDaje.Y5u";
-    private static final String UPDATED_PERSON_EMAIL = "Sup-pA@+`.(%i";
+    private static final String DEFAULT_PERSON_EMAIL = "ny@a2&.B6%c0";
+    private static final String UPDATED_PERSON_EMAIL = ";0cJM@U}Pmg~.(`SxQT";
 
     private static final String DEFAULT_PERSON_ORGANIZATION = "AAAAAAAAAA";
     private static final String UPDATED_PERSON_ORGANIZATION = "BBBBBBBBBB";
@@ -354,6 +354,7 @@ class PersonNotifierResourceIT {
         partialUpdatedPersonNotifier
             .personName(UPDATED_PERSON_NAME)
             .personPhone(UPDATED_PERSON_PHONE)
+            .personEmail(UPDATED_PERSON_EMAIL)
             .personOrganization(UPDATED_PERSON_ORGANIZATION);
 
         restPersonNotifierMockMvc

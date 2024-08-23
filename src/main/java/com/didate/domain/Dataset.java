@@ -1,25 +1,29 @@
 package com.didate.domain;
 
+import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.envers.Audited;
 
 /**
  * A Dataset.
  */
 @Entity
-@Audited
 @Table(name = "dataset")
-@SuppressWarnings("common-java:DuplicatedBlocks")
+@Audited
 @JsonIgnoreProperties(ignoreUnknown = true)
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class Dataset implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue
     @Column(name = "id")
     private String id;
 
@@ -45,9 +49,6 @@ public class Dataset implements Serializable {
 
     @Column(name = "period_type")
     private String periodType;
-
-    @Column(name = "category_combo")
-    private String categoryCombo;
 
     @Column(name = "mobile")
     private String mobile;
@@ -112,6 +113,11 @@ public class Dataset implements Serializable {
     @Column(name = "display_form_name")
     private String displayFormName;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "track", nullable = false)
+    private TypeTrack track;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
@@ -122,6 +128,30 @@ public class Dataset implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     private DHISUser lastUpdatedBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Categorycombo categoryCombo;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_dataset__data_elements",
+        joinColumns = @JoinColumn(name = "dataset_id"),
+        inverseJoinColumns = @JoinColumn(name = "data_elements_id")
+    )
+    @JsonIgnoreProperties(
+        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "programs", "datasets" },
+        allowSetters = true
+    )
+    private Set<Dataelement> dataElements = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_dataset__organisation_units",
+        joinColumns = @JoinColumn(name = "dataset_id"),
+        inverseJoinColumns = @JoinColumn(name = "organisation_units_id")
+    )
+    @JsonIgnoreProperties(value = { "createdBy", "lastUpdatedBy", "programs", "datasets" }, allowSetters = true)
+    private Set<OrganisationUnit> organisationUnits = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -227,19 +257,6 @@ public class Dataset implements Serializable {
 
     public void setPeriodType(String periodType) {
         this.periodType = periodType;
-    }
-
-    public String getCategoryCombo() {
-        return this.categoryCombo;
-    }
-
-    public Dataset categoryCombo(String categoryCombo) {
-        this.setCategoryCombo(categoryCombo);
-        return this;
-    }
-
-    public void setCategoryCombo(String categoryCombo) {
-        this.categoryCombo = categoryCombo;
     }
 
     public String getMobile() {
@@ -515,6 +532,19 @@ public class Dataset implements Serializable {
         this.displayFormName = displayFormName;
     }
 
+    public TypeTrack getTrack() {
+        return this.track;
+    }
+
+    public Dataset track(TypeTrack track) {
+        this.setTrack(track);
+        return this;
+    }
+
+    public void setTrack(TypeTrack track) {
+        this.track = track;
+    }
+
     public Project getProject() {
         return this.project;
     }
@@ -554,6 +584,65 @@ public class Dataset implements Serializable {
         return this;
     }
 
+    public Categorycombo getCategoryCombo() {
+        return this.categoryCombo;
+    }
+
+    public void setCategoryCombo(Categorycombo categorycombo) {
+        this.categoryCombo = categorycombo;
+    }
+
+    public Dataset categoryCombo(Categorycombo categorycombo) {
+        this.setCategoryCombo(categorycombo);
+        return this;
+    }
+
+    public Set<Dataelement> getDataElements() {
+        return this.dataElements;
+    }
+
+    public void setDataElements(Set<Dataelement> dataelements) {
+        this.dataElements = dataelements;
+    }
+
+    public Dataset dataElements(Set<Dataelement> dataelements) {
+        this.setDataElements(dataelements);
+        return this;
+    }
+
+    public Dataset addDataElements(Dataelement dataelement) {
+        this.dataElements.add(dataelement);
+        return this;
+    }
+
+    public Dataset removeDataElements(Dataelement dataelement) {
+        this.dataElements.remove(dataelement);
+        return this;
+    }
+
+    public Set<OrganisationUnit> getOrganisationUnits() {
+        return this.organisationUnits;
+    }
+
+    public void setOrganisationUnits(Set<OrganisationUnit> organisationUnits) {
+        this.organisationUnits = organisationUnits;
+    }
+
+    public Dataset organisationUnits(Set<OrganisationUnit> organisationUnits) {
+        this.setOrganisationUnits(organisationUnits);
+        return this;
+    }
+
+    public Dataset addOrganisationUnits(OrganisationUnit organisationUnit) {
+        this.organisationUnits.add(organisationUnit);
+        return this;
+    }
+
+    public Dataset removeOrganisationUnits(OrganisationUnit organisationUnit) {
+        this.organisationUnits.remove(organisationUnit);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -585,7 +674,6 @@ public class Dataset implements Serializable {
             ", description='" + getDescription() + "'" +
             ", dimensionItemType='" + getDimensionItemType() + "'" +
             ", periodType='" + getPeriodType() + "'" +
-            ", categoryCombo='" + getCategoryCombo() + "'" +
             ", mobile='" + getMobile() + "'" +
             ", version=" + getVersion() +
             ", expiryDays=" + getExpiryDays() +
@@ -607,6 +695,7 @@ public class Dataset implements Serializable {
             ", displayShortName='" + getDisplayShortName() + "'" +
             ", displayDescription='" + getDisplayDescription() + "'" +
             ", displayFormName='" + getDisplayFormName() + "'" +
+            ", track='" + getTrack() + "'" +
             "}";
     }
 }

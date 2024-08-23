@@ -1,0 +1,34 @@
+{
+  "dhis2AuditApp": {
+    "organisationUnit": {
+      "home": {
+        "title": "OrganisationUnits",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Organisation Unit",
+        "createOrEditLabel": "Créer ou éditer un Organisation Unit",
+        "notFound": "Aucun Organisation Unit trouvé"
+      },
+      "created": "Un nouveau Organisation Unit a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Organisation Unit avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Organisation Unit avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Organisation Unit {{ id }} ?"
+      },
+      "detail": {
+        "title": "Organisation Unit"
+      },
+      "id": "Id",
+      "name": "Name",
+      "created": "Created",
+      "lastUpdated": "Last Updated",
+      "path": "Path",
+      "openingDate": "Opening Date",
+      "level": "Level",
+      "track": "Track",
+      "createdBy": "Created By",
+      "lastUpdatedBy": "Last Updated By",
+      "program": "Program",
+      "dataset": "Dataset"
+    }
+  }
+}

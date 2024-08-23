@@ -13,6 +13,7 @@ import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { DHISUserService } from 'app/entities/dhis-user/service/dhis-user.service';
 import { IIndicatortype } from 'app/entities/indicatortype/indicatortype.model';
 import { IndicatortypeService } from 'app/entities/indicatortype/service/indicatortype.service';
+import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 import { IndicatorService } from '../service/indicator.service';
 import { IIndicator } from '../indicator.model';
 import { IndicatorFormService, IndicatorFormGroup } from './indicator-form.service';
@@ -26,6 +27,7 @@ import { IndicatorFormService, IndicatorFormGroup } from './indicator-form.servi
 export class IndicatorUpdateComponent implements OnInit {
   isSaving = false;
   indicator: IIndicator | null = null;
+  typeTrackValues = Object.keys(TypeTrack);
 
   projectsSharedCollection: IProject[] = [];
   dHISUsersSharedCollection: IDHISUser[] = [];

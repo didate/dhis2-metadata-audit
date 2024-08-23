@@ -182,13 +182,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="categoryCombo">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.categoryCombo">Category Combo</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="skipOffline">
               <div class="d-flex">
                 <span jhiTranslate="dhis2AuditApp.program.skipOffline">Skip Offline</span>
@@ -345,6 +338,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="track">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.program.track">Track</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="project.id">
               <div class="d-flex">
                 <span jhiTranslate="dhis2AuditApp.program.project">Project</span>
@@ -360,6 +360,12 @@
             <th scope="col" jhiSortBy="lastUpdatedBy.id">
               <div class="d-flex">
                 <span jhiTranslate="dhis2AuditApp.program.lastUpdatedBy">Last Updated By</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="categoryCombo.id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.program.categoryCombo">Category Combo</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -392,7 +398,6 @@
               <td>{{ program.selectIncidentDatesInFuture }}</td>
               <td>{{ program.trackedEntityType }}</td>
               <td>{{ program.style }}</td>
-              <td>{{ program.categoryCombo }}</td>
               <td>{{ program.skipOffline }}</td>
               <td>{{ program.displayFrontPageList }}</td>
               <td>{{ program.useFirstStageDuringRegistration }}</td>
@@ -415,6 +420,9 @@
               <td>{{ program.programStagesCount }}</td>
               <td>{{ program.programSectionsCount }}</td>
               <td>{{ program.programTrackedEntityAttributesCount }}</td>
+              <td [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (program.track ?? 'null')">
+                {{ { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[program.track ?? 'null'] }}
+              </td>
               <td>
                 @if (program.project) {
                   <div>
@@ -433,6 +441,13 @@
                 @if (program.lastUpdatedBy) {
                   <div>
                     <a [routerLink]="['/dhis-user', program.lastUpdatedBy.id, 'view']">{{ program.lastUpdatedBy.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (program.categoryCombo) {
+                  <div>
+                    <a [routerLink]="['/categorycombo', program.categoryCombo.id, 'view']">{{ program.categoryCombo.id }}</a>
                   </div>
                 }
               </td>

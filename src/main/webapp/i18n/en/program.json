@@ -38,7 +38,6 @@
       "selectIncidentDatesInFuture": "Select Incident Dates In Future",
       "trackedEntityType": "Tracked Entity Type",
       "style": "Style",
-      "categoryCombo": "Category Combo",
       "skipOffline": "Skip Offline",
       "displayFrontPageList": "Display Front Page List",
       "useFirstStageDuringRegistration": "Use First Stage During Registration",
@@ -61,9 +60,13 @@
       "programStagesCount": "Program Stages Count",
       "programSectionsCount": "Program Sections Count",
       "programTrackedEntityAttributesCount": "Program Tracked Entity Attributes Count",
+      "track": "Track",
       "project": "Project",
       "createdBy": "Created By",
-      "lastUpdatedBy": "Last Updated By"
+      "lastUpdatedBy": "Last Updated By",
+      "categoryCombo": "Category Combo",
+      "dataElements": "Data Elements",
+      "organisationUnits": "Organisation Units"
     }
   }
 }

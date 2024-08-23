@@ -4,23 +4,32 @@ import static com.didate.domain.DatasetAsserts.*;
 import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.didate.IntegrationTest;
 import com.didate.domain.DHISUser;
 import com.didate.domain.Dataset;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.DatasetRepository;
+import com.didate.service.DatasetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link DatasetResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class DatasetResourceIT {
@@ -54,9 +64,6 @@ class DatasetResourceIT {
 
     private static final String DEFAULT_PERIOD_TYPE = "AAAAAAAAAA";
     private static final String UPDATED_PERIOD_TYPE = "BBBBBBBBBB";
-
-    private static final String DEFAULT_CATEGORY_COMBO = "AAAAAAAAAA";
-    private static final String UPDATED_CATEGORY_COMBO = "BBBBBBBBBB";
 
     private static final String DEFAULT_MOBILE = "AAAAAAAAAA";
     private static final String UPDATED_MOBILE = "BBBBBBBBBB";
@@ -121,6 +128,9 @@ class DatasetResourceIT {
     private static final String DEFAULT_DISPLAY_FORM_NAME = "AAAAAAAAAA";
     private static final String UPDATED_DISPLAY_FORM_NAME = "BBBBBBBBBB";
 
+    private static final TypeTrack DEFAULT_TRACK = TypeTrack.NEW;
+    private static final TypeTrack UPDATED_TRACK = TypeTrack.UPDATE;
+
     private static final String ENTITY_API_URL = "/api/datasets";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -129,6 +139,12 @@ class DatasetResourceIT {
 
     @Autowired
     private DatasetRepository datasetRepository;
+
+    @Mock
+    private DatasetRepository datasetRepositoryMock;
+
+    @Mock
+    private DatasetService datasetServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -155,7 +171,6 @@ class DatasetResourceIT {
             .description(DEFAULT_DESCRIPTION)
             .dimensionItemType(DEFAULT_DIMENSION_ITEM_TYPE)
             .periodType(DEFAULT_PERIOD_TYPE)
-            .categoryCombo(DEFAULT_CATEGORY_COMBO)
             .mobile(DEFAULT_MOBILE)
             .version(DEFAULT_VERSION)
             .expiryDays(DEFAULT_EXPIRY_DAYS)
@@ -176,7 +191,8 @@ class DatasetResourceIT {
             .dimensionItem(DEFAULT_DIMENSION_ITEM)
             .displayShortName(DEFAULT_DISPLAY_SHORT_NAME)
             .displayDescription(DEFAULT_DISPLAY_DESCRIPTION)
-            .displayFormName(DEFAULT_DISPLAY_FORM_NAME);
+            .displayFormName(DEFAULT_DISPLAY_FORM_NAME)
+            .track(DEFAULT_TRACK);
         // Add required entity
         DHISUser dHISUser;
         if (TestUtil.findAll(em, DHISUser.class).isEmpty()) {
@@ -207,7 +223,6 @@ class DatasetResourceIT {
             .description(UPDATED_DESCRIPTION)
             .dimensionItemType(UPDATED_DIMENSION_ITEM_TYPE)
             .periodType(UPDATED_PERIOD_TYPE)
-            .categoryCombo(UPDATED_CATEGORY_COMBO)
             .mobile(UPDATED_MOBILE)
             .version(UPDATED_VERSION)
             .expiryDays(UPDATED_EXPIRY_DAYS)
@@ -228,7 +243,8 @@ class DatasetResourceIT {
             .dimensionItem(UPDATED_DIMENSION_ITEM)
             .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
             .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
-            .displayFormName(UPDATED_DISPLAY_FORM_NAME);
+            .displayFormName(UPDATED_DISPLAY_FORM_NAME)
+            .track(UPDATED_TRACK);
         // Add required entity
         DHISUser dHISUser;
         if (TestUtil.findAll(em, DHISUser.class).isEmpty()) {
@@ -330,6 +346,22 @@ class DatasetResourceIT {
 
     @Test
     @Transactional
+    void checkTrackIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        dataset.setTrack(null);
+
+        // Create the Dataset, which fails.
+
+        restDatasetMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataset)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllDatasets() throws Exception {
         // Initialize the database
         insertedDataset = datasetRepository.saveAndFlush(dataset);
@@ -347,7 +379,6 @@ class DatasetResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].dimensionItemType").value(hasItem(DEFAULT_DIMENSION_ITEM_TYPE)))
             .andExpect(jsonPath("$.[*].periodType").value(hasItem(DEFAULT_PERIOD_TYPE)))
-            .andExpect(jsonPath("$.[*].categoryCombo").value(hasItem(DEFAULT_CATEGORY_COMBO)))
             .andExpect(jsonPath("$.[*].mobile").value(hasItem(DEFAULT_MOBILE)))
             .andExpect(jsonPath("$.[*].version").value(hasItem(DEFAULT_VERSION.doubleValue())))
             .andExpect(jsonPath("$.[*].expiryDays").value(hasItem(DEFAULT_EXPIRY_DAYS.doubleValue())))
@@ -370,7 +401,25 @@ class DatasetResourceIT {
             .andExpect(jsonPath("$.[*].dimensionItem").value(hasItem(DEFAULT_DIMENSION_ITEM)))
             .andExpect(jsonPath("$.[*].displayShortName").value(hasItem(DEFAULT_DISPLAY_SHORT_NAME)))
             .andExpect(jsonPath("$.[*].displayDescription").value(hasItem(DEFAULT_DISPLAY_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].displayFormName").value(hasItem(DEFAULT_DISPLAY_FORM_NAME)));
+            .andExpect(jsonPath("$.[*].displayFormName").value(hasItem(DEFAULT_DISPLAY_FORM_NAME)))
+            .andExpect(jsonPath("$.[*].track").value(hasItem(DEFAULT_TRACK.toString())));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllDatasetsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(datasetServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restDatasetMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(datasetServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllDatasetsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(datasetServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restDatasetMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(datasetRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test
@@ -392,7 +441,6 @@ class DatasetResourceIT {
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.dimensionItemType").value(DEFAULT_DIMENSION_ITEM_TYPE))
             .andExpect(jsonPath("$.periodType").value(DEFAULT_PERIOD_TYPE))
-            .andExpect(jsonPath("$.categoryCombo").value(DEFAULT_CATEGORY_COMBO))
             .andExpect(jsonPath("$.mobile").value(DEFAULT_MOBILE))
             .andExpect(jsonPath("$.version").value(DEFAULT_VERSION.doubleValue()))
             .andExpect(jsonPath("$.expiryDays").value(DEFAULT_EXPIRY_DAYS.doubleValue()))
@@ -413,7 +461,8 @@ class DatasetResourceIT {
             .andExpect(jsonPath("$.dimensionItem").value(DEFAULT_DIMENSION_ITEM))
             .andExpect(jsonPath("$.displayShortName").value(DEFAULT_DISPLAY_SHORT_NAME))
             .andExpect(jsonPath("$.displayDescription").value(DEFAULT_DISPLAY_DESCRIPTION))
-            .andExpect(jsonPath("$.displayFormName").value(DEFAULT_DISPLAY_FORM_NAME));
+            .andExpect(jsonPath("$.displayFormName").value(DEFAULT_DISPLAY_FORM_NAME))
+            .andExpect(jsonPath("$.track").value(DEFAULT_TRACK.toString()));
     }
 
     @Test
@@ -443,7 +492,6 @@ class DatasetResourceIT {
             .description(UPDATED_DESCRIPTION)
             .dimensionItemType(UPDATED_DIMENSION_ITEM_TYPE)
             .periodType(UPDATED_PERIOD_TYPE)
-            .categoryCombo(UPDATED_CATEGORY_COMBO)
             .mobile(UPDATED_MOBILE)
             .version(UPDATED_VERSION)
             .expiryDays(UPDATED_EXPIRY_DAYS)
@@ -464,7 +512,8 @@ class DatasetResourceIT {
             .dimensionItem(UPDATED_DIMENSION_ITEM)
             .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
             .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
-            .displayFormName(UPDATED_DISPLAY_FORM_NAME);
+            .displayFormName(UPDATED_DISPLAY_FORM_NAME)
+            .track(UPDATED_TRACK);
 
         restDatasetMockMvc
             .perform(
@@ -541,18 +590,19 @@ class DatasetResourceIT {
         partialUpdatedDataset.setId(dataset.getId());
 
         partialUpdatedDataset
+            .created(UPDATED_CREATED)
             .lastUpdated(UPDATED_LAST_UPDATED)
             .description(UPDATED_DESCRIPTION)
             .periodType(UPDATED_PERIOD_TYPE)
-            .categoryCombo(UPDATED_CATEGORY_COMBO)
-            .mobile(UPDATED_MOBILE)
-            .timelyDays(UPDATED_TIMELY_DAYS)
-            .notifyCompletingUser(UPDATED_NOTIFY_COMPLETING_USER)
-            .openFuturePeriods(UPDATED_OPEN_FUTURE_PERIODS)
-            .openPeriodsAfterCoEndDate(UPDATED_OPEN_PERIODS_AFTER_CO_END_DATE)
-            .validCompleteOnly(UPDATED_VALID_COMPLETE_ONLY)
+            .fieldCombinationRequired(UPDATED_FIELD_COMBINATION_REQUIRED)
+            .noValueRequiresComment(UPDATED_NO_VALUE_REQUIRES_COMMENT)
             .renderAsTabs(UPDATED_RENDER_AS_TABS)
-            .displayDescription(UPDATED_DISPLAY_DESCRIPTION);
+            .renderHorizontally(UPDATED_RENDER_HORIZONTALLY)
+            .compulsoryFieldsCompleteOnly(UPDATED_COMPULSORY_FIELDS_COMPLETE_ONLY)
+            .formType(UPDATED_FORM_TYPE)
+            .dimensionItem(UPDATED_DIMENSION_ITEM)
+            .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
+            .displayFormName(UPDATED_DISPLAY_FORM_NAME);
 
         restDatasetMockMvc
             .perform(
@@ -588,7 +638,6 @@ class DatasetResourceIT {
             .description(UPDATED_DESCRIPTION)
             .dimensionItemType(UPDATED_DIMENSION_ITEM_TYPE)
             .periodType(UPDATED_PERIOD_TYPE)
-            .categoryCombo(UPDATED_CATEGORY_COMBO)
             .mobile(UPDATED_MOBILE)
             .version(UPDATED_VERSION)
             .expiryDays(UPDATED_EXPIRY_DAYS)
@@ -609,7 +658,8 @@ class DatasetResourceIT {
             .dimensionItem(UPDATED_DIMENSION_ITEM)
             .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
             .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
-            .displayFormName(UPDATED_DISPLAY_FORM_NAME);
+            .displayFormName(UPDATED_DISPLAY_FORM_NAME)
+            .track(UPDATED_TRACK);
 
         restDatasetMockMvc
             .perform(

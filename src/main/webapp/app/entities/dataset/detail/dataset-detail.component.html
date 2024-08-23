@@ -43,10 +43,6 @@
           <dd>
             <span>{{ dataset()!.periodType }}</span>
           </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataset.categoryCombo">Category Combo</span></dt>
-          <dd>
-            <span>{{ dataset()!.categoryCombo }}</span>
-          </dd>
           <dt><span jhiTranslate="dhis2AuditApp.dataset.mobile">Mobile</span></dt>
           <dd>
             <span>{{ dataset()!.mobile }}</span>
@@ -131,6 +127,12 @@
           <dd>
             <span>{{ dataset()!.displayFormName }}</span>
           </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.track">Track</span></dt>
+          <dd>
+            <span [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (dataset()!.track ?? 'null')">{{
+              { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[dataset()!.track ?? 'null']
+            }}</span>
+          </dd>
           <dt><span jhiTranslate="dhis2AuditApp.dataset.project">Project</span></dt>
           <dd>
             @if (dataset()!.project) {
@@ -153,6 +155,32 @@
               <div>
                 <a [routerLink]="['/dhis-user', dataset()!.lastUpdatedBy?.id, 'view']">{{ dataset()!.lastUpdatedBy?.id }}</a>
               </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.categoryCombo">Category Combo</span></dt>
+          <dd>
+            @if (dataset()!.categoryCombo) {
+              <div>
+                <a [routerLink]="['/categorycombo', dataset()!.categoryCombo?.id, 'view']">{{ dataset()!.categoryCombo?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.dataElements">Data Elements</span></dt>
+          <dd>
+            @for (dataElements of dataset()!.dataElements; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/dataelement', dataElements.id, 'view']">{{ dataElements?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.organisationUnits">Organisation Units</span></dt>
+          <dd>
+            @for (organisationUnits of dataset()!.organisationUnits; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/organisation-unit', organisationUnits.id, 'view']">{{ organisationUnits?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
             }
           </dd>
         </dl>

@@ -3,11 +3,15 @@ package com.didate.domain;
 import static com.didate.domain.CategorycomboTestSamples.*;
 import static com.didate.domain.DHISUserTestSamples.*;
 import static com.didate.domain.DataelementTestSamples.*;
+import static com.didate.domain.DatasetTestSamples.*;
 import static com.didate.domain.OptionsetTestSamples.*;
+import static com.didate.domain.ProgramTestSamples.*;
 import static com.didate.domain.ProjectTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.didate.web.rest.TestUtil;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class DataelementTest {
@@ -84,5 +88,49 @@ class DataelementTest {
 
         dataelement.optionSet(null);
         assertThat(dataelement.getOptionSet()).isNull();
+    }
+
+    @Test
+    void programTest() {
+        Dataelement dataelement = getDataelementRandomSampleGenerator();
+        Program programBack = getProgramRandomSampleGenerator();
+
+        dataelement.addProgram(programBack);
+        assertThat(dataelement.getPrograms()).containsOnly(programBack);
+        assertThat(programBack.getDataElements()).containsOnly(dataelement);
+
+        dataelement.removeProgram(programBack);
+        assertThat(dataelement.getPrograms()).doesNotContain(programBack);
+        assertThat(programBack.getDataElements()).doesNotContain(dataelement);
+
+        dataelement.programs(new HashSet<>(Set.of(programBack)));
+        assertThat(dataelement.getPrograms()).containsOnly(programBack);
+        assertThat(programBack.getDataElements()).containsOnly(dataelement);
+
+        dataelement.setPrograms(new HashSet<>());
+        assertThat(dataelement.getPrograms()).doesNotContain(programBack);
+        assertThat(programBack.getDataElements()).doesNotContain(dataelement);
+    }
+
+    @Test
+    void datasetTest() {
+        Dataelement dataelement = getDataelementRandomSampleGenerator();
+        Dataset datasetBack = getDatasetRandomSampleGenerator();
+
+        dataelement.addDataset(datasetBack);
+        assertThat(dataelement.getDatasets()).containsOnly(datasetBack);
+        assertThat(datasetBack.getDataElements()).containsOnly(dataelement);
+
+        dataelement.removeDataset(datasetBack);
+        assertThat(dataelement.getDatasets()).doesNotContain(datasetBack);
+        assertThat(datasetBack.getDataElements()).doesNotContain(dataelement);
+
+        dataelement.datasets(new HashSet<>(Set.of(datasetBack)));
+        assertThat(dataelement.getDatasets()).containsOnly(datasetBack);
+        assertThat(datasetBack.getDataElements()).containsOnly(dataelement);
+
+        dataelement.setDatasets(new HashSet<>());
+        assertThat(dataelement.getDatasets()).doesNotContain(datasetBack);
+        assertThat(datasetBack.getDataElements()).doesNotContain(dataelement);
     }
 }

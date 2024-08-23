@@ -42,6 +42,14 @@ public interface ProgramService {
     Page<Program> findAll(Pageable pageable);
 
     /**
+     * Get all the programs with eager load of many-to-many relationships.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<Program> findAllWithEagerRelationships(Pageable pageable);
+
+    /**
      * Get the "id" program.
      *
      * @param id the id of the entity.

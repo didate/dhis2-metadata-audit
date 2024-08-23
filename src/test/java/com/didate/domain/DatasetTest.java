@@ -1,11 +1,16 @@
 package com.didate.domain;
 
+import static com.didate.domain.CategorycomboTestSamples.*;
 import static com.didate.domain.DHISUserTestSamples.*;
+import static com.didate.domain.DataelementTestSamples.*;
 import static com.didate.domain.DatasetTestSamples.*;
+import static com.didate.domain.OrganisationUnitTestSamples.*;
 import static com.didate.domain.ProjectTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.didate.web.rest.TestUtil;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class DatasetTest {
@@ -58,5 +63,53 @@ class DatasetTest {
 
         dataset.lastUpdatedBy(null);
         assertThat(dataset.getLastUpdatedBy()).isNull();
+    }
+
+    @Test
+    void categoryComboTest() {
+        Dataset dataset = getDatasetRandomSampleGenerator();
+        Categorycombo categorycomboBack = getCategorycomboRandomSampleGenerator();
+
+        dataset.setCategoryCombo(categorycomboBack);
+        assertThat(dataset.getCategoryCombo()).isEqualTo(categorycomboBack);
+
+        dataset.categoryCombo(null);
+        assertThat(dataset.getCategoryCombo()).isNull();
+    }
+
+    @Test
+    void dataElementsTest() {
+        Dataset dataset = getDatasetRandomSampleGenerator();
+        Dataelement dataelementBack = getDataelementRandomSampleGenerator();
+
+        dataset.addDataElements(dataelementBack);
+        assertThat(dataset.getDataElements()).containsOnly(dataelementBack);
+
+        dataset.removeDataElements(dataelementBack);
+        assertThat(dataset.getDataElements()).doesNotContain(dataelementBack);
+
+        dataset.dataElements(new HashSet<>(Set.of(dataelementBack)));
+        assertThat(dataset.getDataElements()).containsOnly(dataelementBack);
+
+        dataset.setDataElements(new HashSet<>());
+        assertThat(dataset.getDataElements()).doesNotContain(dataelementBack);
+    }
+
+    @Test
+    void organisationUnitsTest() {
+        Dataset dataset = getDatasetRandomSampleGenerator();
+        OrganisationUnit organisationUnitBack = getOrganisationUnitRandomSampleGenerator();
+
+        dataset.addOrganisationUnits(organisationUnitBack);
+        assertThat(dataset.getOrganisationUnits()).containsOnly(organisationUnitBack);
+
+        dataset.removeOrganisationUnits(organisationUnitBack);
+        assertThat(dataset.getOrganisationUnits()).doesNotContain(organisationUnitBack);
+
+        dataset.organisationUnits(new HashSet<>(Set.of(organisationUnitBack)));
+        assertThat(dataset.getOrganisationUnits()).containsOnly(organisationUnitBack);
+
+        dataset.setOrganisationUnits(new HashSet<>());
+        assertThat(dataset.getOrganisationUnits()).doesNotContain(organisationUnitBack);
     }
 }

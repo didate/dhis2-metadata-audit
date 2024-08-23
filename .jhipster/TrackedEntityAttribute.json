@@ -1,0 +1,142 @@
+{
+  "annotations": {
+    "changelogDate": "20240823020553"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastUpdated",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "created",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "shortName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "generated",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "valueType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "confidential",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "displayFormName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "uniquee",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "dimensionItemType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "aggregationType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayInListNoProgram",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "displayName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "patterne",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "skipSynchronization",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "displayShortName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "periodOffset",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "displayOnVisitSchedule",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "formName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "orgunitScope",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "dimensionItem",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "inherit",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "optionSetValue",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "track",
+      "fieldType": "TypeTrack",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "NEW,UPDATE,NONE"
+    }
+  ],
+  "name": "TrackedEntityAttribute",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "project",
+      "relationshipName": "project",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "dHISUser",
+      "relationshipName": "createdBy",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "dHISUser",
+      "relationshipName": "lastUpdatedBy",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "optionset",
+      "relationshipName": "optionSet",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

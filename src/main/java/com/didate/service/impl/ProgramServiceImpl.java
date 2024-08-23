@@ -105,9 +105,6 @@ public class ProgramServiceImpl implements ProgramService {
                 if (program.getStyle() != null) {
                     existingProgram.setStyle(program.getStyle());
                 }
-                if (program.getCategoryCombo() != null) {
-                    existingProgram.setCategoryCombo(program.getCategoryCombo());
-                }
                 if (program.getSkipOffline() != null) {
                     existingProgram.setSkipOffline(program.getSkipOffline());
                 }
@@ -174,6 +171,9 @@ public class ProgramServiceImpl implements ProgramService {
                 if (program.getProgramTrackedEntityAttributesCount() != null) {
                     existingProgram.setProgramTrackedEntityAttributesCount(program.getProgramTrackedEntityAttributesCount());
                 }
+                if (program.getTrack() != null) {
+                    existingProgram.setTrack(program.getTrack());
+                }
 
                 return existingProgram;
             })
@@ -187,11 +187,15 @@ public class ProgramServiceImpl implements ProgramService {
         return programRepository.findAll(pageable);
     }
 
+    public Page<Program> findAllWithEagerRelationships(Pageable pageable) {
+        return programRepository.findAllWithEagerRelationships(pageable);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Optional<Program> findOne(String id) {
         log.debug("Request to get Program : {}", id);
-        return programRepository.findById(id);
+        return programRepository.findOneWithEagerRelationships(id);
     }
 
     @Override

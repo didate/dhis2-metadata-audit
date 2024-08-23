@@ -1,28 +1,46 @@
+import dayjs from 'dayjs/esm';
+
 import { IDHISUser, NewDHISUser } from './dhis-user.model';
 
 export const sampleWithRequiredData: IDHISUser = {
-  id: 'bdb4df66-053c-4f4a-b226-4bd67dd0480b',
-  name: "garantir quand ? aujourd'hui",
-  username: 'perplexe',
+  id: '957b627e-db5a-40c0-912d-0046bd36e0e9',
+  name: 'neutre',
+  username: 'ha protéger',
+  track: 'NONE',
 };
 
 export const sampleWithPartialData: IDHISUser = {
-  id: '3a595bf1-5a6d-44ee-a82d-ef02a9f2ecdd',
-  name: 'organiser',
-  username: 'pin-pon envers chef',
+  id: '3a7c3cf1-be1e-4bdb-9504-1056a3ad2832',
+  name: 'précisément décourager',
+  displayName: 'renouveler dominer',
+  username: 'marron',
+  email: 'Merlin.Lefevre41@hotmail.fr',
+  phoneNumber: 'équipe sympathique',
+  created: dayjs('2024-08-17T06:03'),
+  lastUpdated: dayjs('2024-08-17T13:56'),
+  track: 'NONE',
 };
 
 export const sampleWithFullData: IDHISUser = {
-  id: 'd658e90e-8bf6-4f3d-9e45-5fb0ad7ed606',
-  code: 'jeune enfant bang au point que',
-  name: 'en vérité selon',
-  displayName: 'loin de lorsque autour de',
-  username: 'pauvre jusqu’à ce que juriste',
+  id: '6dea7c1a-d61d-4e37-a21c-f139cdd55671',
+  code: 'moyennant habile au-dedans de',
+  name: 'bzzz lors',
+  displayName: 'en guise de que sans que',
+  username: 'ouin',
+  lastLogin: dayjs('2024-08-17T00:12'),
+  email: 'Adhemar_Roux2@yahoo.fr',
+  phoneNumber: 'boum tant lunatique',
+  disabled: true,
+  passwordLastUpdated: dayjs('2024-08-17T10:02'),
+  created: dayjs('2024-08-17T01:13'),
+  lastUpdated: dayjs('2024-08-17T14:14'),
+  track: 'NONE',
 };
 
 export const sampleWithNewData: NewDHISUser = {
-  name: 'au point que concernant',
-  username: 'candide patientèle',
+  name: 'apparemment trop',
+  username: 'tsoin-tsoin vouh',
+  track: 'NONE',
   id: null,
 };
 

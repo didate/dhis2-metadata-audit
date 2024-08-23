@@ -26,8 +26,36 @@
             <column name="username" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="last_login" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="phone_number" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="disabled" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="password_last_updated" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="created" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_updated" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="track" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+        <dropDefaultValue tableName="dhis_user" columnName="last_login" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="dhis_user" columnName="password_last_updated" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="dhis_user" columnName="created" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="dhis_user" columnName="last_updated" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -51,6 +79,14 @@
             <column name="name" type="string"/>
             <column name="display_name" type="string"/>
             <column name="username" type="string"/>
+            <column name="last_login" type="date"/>
+            <column name="email" type="string"/>
+            <column name="phone_number" type="string"/>
+            <column name="disabled" type="boolean"/>
+            <column name="password_last_updated" type="date"/>
+            <column name="created" type="date"/>
+            <column name="last_updated" type="date"/>
+            <column name="track" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

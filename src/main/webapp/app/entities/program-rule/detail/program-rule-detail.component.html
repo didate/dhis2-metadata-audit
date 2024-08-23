@@ -1,0 +1,92 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (programRule()) {
+      <div>
+        <h2 data-cy="programRuleDetailsHeading"><span jhiTranslate="dhis2AuditApp.programRule.detail.title">Program Rule</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="dhis2AuditApp.programRule.id">Id</span></dt>
+          <dd>
+            <span>{{ programRule()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programRule.lastUpdated">Last Updated</span></dt>
+          <dd>
+            <span>{{ programRule()!.lastUpdated | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programRule.created">Created</span></dt>
+          <dd>
+            <span>{{ programRule()!.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programRule.name">Name</span></dt>
+          <dd>
+            <span>{{ programRule()!.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programRule.displayName">Display Name</span></dt>
+          <dd>
+            <span>{{ programRule()!.displayName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programRule.priority">Priority</span></dt>
+          <dd>
+            <span>{{ programRule()!.priority }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programRule.condition">Condition</span></dt>
+          <dd>
+            <span>{{ programRule()!.condition }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programRule.track">Track</span></dt>
+          <dd>
+            <span [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (programRule()!.track ?? 'null')">{{
+              { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[programRule()!.track ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programRule.project">Project</span></dt>
+          <dd>
+            @if (programRule()!.project) {
+              <div>
+                <a [routerLink]="['/project', programRule()!.project?.id, 'view']">{{ programRule()!.project?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programRule.createdBy">Created By</span></dt>
+          <dd>
+            @if (programRule()!.createdBy) {
+              <div>
+                <a [routerLink]="['/dhis-user', programRule()!.createdBy?.id, 'view']">{{ programRule()!.createdBy?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programRule.lastUpdatedBy">Last Updated By</span></dt>
+          <dd>
+            @if (programRule()!.lastUpdatedBy) {
+              <div>
+                <a [routerLink]="['/dhis-user', programRule()!.lastUpdatedBy?.id, 'view']">{{ programRule()!.lastUpdatedBy?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programRule.program">Program</span></dt>
+          <dd>
+            @if (programRule()!.program) {
+              <div>
+                <a [routerLink]="['/program', programRule()!.program?.id, 'view']">{{ programRule()!.program?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/program-rule', programRule()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

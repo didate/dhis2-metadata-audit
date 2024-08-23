@@ -66,9 +66,6 @@ public class DatasetServiceImpl implements DatasetService {
                 if (dataset.getPeriodType() != null) {
                     existingDataset.setPeriodType(dataset.getPeriodType());
                 }
-                if (dataset.getCategoryCombo() != null) {
-                    existingDataset.setCategoryCombo(dataset.getCategoryCombo());
-                }
                 if (dataset.getMobile() != null) {
                     existingDataset.setMobile(dataset.getMobile());
                 }
@@ -132,6 +129,9 @@ public class DatasetServiceImpl implements DatasetService {
                 if (dataset.getDisplayFormName() != null) {
                     existingDataset.setDisplayFormName(dataset.getDisplayFormName());
                 }
+                if (dataset.getTrack() != null) {
+                    existingDataset.setTrack(dataset.getTrack());
+                }
 
                 return existingDataset;
             })
@@ -145,11 +145,15 @@ public class DatasetServiceImpl implements DatasetService {
         return datasetRepository.findAll(pageable);
     }
 
+    public Page<Dataset> findAllWithEagerRelationships(Pageable pageable) {
+        return datasetRepository.findAllWithEagerRelationships(pageable);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Optional<Dataset> findOne(String id) {
         log.debug("Request to get Dataset : {}", id);
-        return datasetRepository.findById(id);
+        return datasetRepository.findOneWithEagerRelationships(id);
     }
 
     @Override

@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+
+import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -8,6 +10,19 @@ import { createRequestOption } from 'app/core/request/request-util';
 import { IDHISUser, NewDHISUser } from '../dhis-user.model';
 
 export type PartialUpdateDHISUser = Partial<IDHISUser> & Pick<IDHISUser, 'id'>;
+
+type RestOf<T extends IDHISUser | NewDHISUser> = Omit<T, 'lastLogin' | 'passwordLastUpdated' | 'created' | 'lastUpdated'> & {
+  lastLogin?: string | null;
+  passwordLastUpdated?: string | null;
+  created?: string | null;
+  lastUpdated?: string | null;
+};
+
+export type RestDHISUser = RestOf<IDHISUser>;
+
+export type NewRestDHISUser = RestOf<NewDHISUser>;
+
+export type PartialUpdateRestDHISUser = RestOf<PartialUpdateDHISUser>;
 
 export type EntityResponseType = HttpResponse<IDHISUser>;
 export type EntityArrayResponseType = HttpResponse<IDHISUser[]>;
@@ -20,24 +35,37 @@ export class DHISUserService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/dhis-users');
 
   create(dHISUser: NewDHISUser): Observable<EntityResponseType> {
-    return this.http.post<IDHISUser>(this.resourceUrl, dHISUser, { observe: 'response' });
+    const copy = this.convertDateFromClient(dHISUser);
+    return this.http
+      .post<RestDHISUser>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   update(dHISUser: IDHISUser): Observable<EntityResponseType> {
-    return this.http.put<IDHISUser>(`${this.resourceUrl}/${this.getDHISUserIdentifier(dHISUser)}`, dHISUser, { observe: 'response' });
+    const copy = this.convertDateFromClient(dHISUser);
+    return this.http
+      .put<RestDHISUser>(`${this.resourceUrl}/${this.getDHISUserIdentifier(dHISUser)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   partialUpdate(dHISUser: PartialUpdateDHISUser): Observable<EntityResponseType> {
-    return this.http.patch<IDHISUser>(`${this.resourceUrl}/${this.getDHISUserIdentifier(dHISUser)}`, dHISUser, { observe: 'response' });
+    const copy = this.convertDateFromClient(dHISUser);
+    return this.http
+      .patch<RestDHISUser>(`${this.resourceUrl}/${this.getDHISUserIdentifier(dHISUser)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   find(id: string): Observable<EntityResponseType> {
-    return this.http.get<IDHISUser>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http
+      .get<RestDHISUser>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IDHISUser[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestDHISUser[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: string): Observable<HttpResponse<{}>> {
@@ -70,5 +98,37 @@ export class DHISUserService {
       return [...dHISUsersToAdd, ...dHISUserCollection];
     }
     return dHISUserCollection;
+  }
+
+  protected convertDateFromClient<T extends IDHISUser | NewDHISUser | PartialUpdateDHISUser>(dHISUser: T): RestOf<T> {
+    return {
+      ...dHISUser,
+      lastLogin: dHISUser.lastLogin?.toJSON() ?? null,
+      passwordLastUpdated: dHISUser.passwordLastUpdated?.toJSON() ?? null,
+      created: dHISUser.created?.toJSON() ?? null,
+      lastUpdated: dHISUser.lastUpdated?.toJSON() ?? null,
+    };
+  }
+
+  protected convertDateFromServer(restDHISUser: RestDHISUser): IDHISUser {
+    return {
+      ...restDHISUser,
+      lastLogin: restDHISUser.lastLogin ? dayjs(restDHISUser.lastLogin) : undefined,
+      passwordLastUpdated: restDHISUser.passwordLastUpdated ? dayjs(restDHISUser.passwordLastUpdated) : undefined,
+      created: restDHISUser.created ? dayjs(restDHISUser.created) : undefined,
+      lastUpdated: restDHISUser.lastUpdated ? dayjs(restDHISUser.lastUpdated) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestDHISUser>): HttpResponse<IDHISUser> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestDHISUser[]>): HttpResponse<IDHISUser[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

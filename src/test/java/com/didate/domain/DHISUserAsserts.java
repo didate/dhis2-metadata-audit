@@ -50,7 +50,17 @@ public class DHISUserAsserts {
             .satisfies(e -> assertThat(e.getCode()).as("check code").isEqualTo(actual.getCode()))
             .satisfies(e -> assertThat(e.getName()).as("check name").isEqualTo(actual.getName()))
             .satisfies(e -> assertThat(e.getDisplayName()).as("check displayName").isEqualTo(actual.getDisplayName()))
-            .satisfies(e -> assertThat(e.getUsername()).as("check username").isEqualTo(actual.getUsername()));
+            .satisfies(e -> assertThat(e.getUsername()).as("check username").isEqualTo(actual.getUsername()))
+            .satisfies(e -> assertThat(e.getLastLogin()).as("check lastLogin").isEqualTo(actual.getLastLogin()))
+            .satisfies(e -> assertThat(e.getEmail()).as("check email").isEqualTo(actual.getEmail()))
+            .satisfies(e -> assertThat(e.getPhoneNumber()).as("check phoneNumber").isEqualTo(actual.getPhoneNumber()))
+            .satisfies(e -> assertThat(e.getDisabled()).as("check disabled").isEqualTo(actual.getDisabled()))
+            .satisfies(
+                e -> assertThat(e.getPasswordLastUpdated()).as("check passwordLastUpdated").isEqualTo(actual.getPasswordLastUpdated())
+            )
+            .satisfies(e -> assertThat(e.getCreated()).as("check created").isEqualTo(actual.getCreated()))
+            .satisfies(e -> assertThat(e.getLastUpdated()).as("check lastUpdated").isEqualTo(actual.getLastUpdated()))
+            .satisfies(e -> assertThat(e.getTrack()).as("check track").isEqualTo(actual.getTrack()));
     }
 
     /**

@@ -29,6 +29,9 @@
             <column name="email_notification" type="boolean">
                 <constraints nullable="false" />
             </column>
+            <column name="notification_time" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
@@ -55,6 +58,7 @@
             <column name="dhis_2_version" type="numeric"/>
             <column name="token" type="string"/>
             <column name="email_notification" type="boolean"/>
+            <column name="notification_time" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

@@ -11,6 +11,13 @@ import { IProject } from 'app/entities/project/project.model';
 import { ProjectService } from 'app/entities/project/service/project.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { DHISUserService } from 'app/entities/dhis-user/service/dhis-user.service';
+import { ICategorycombo } from 'app/entities/categorycombo/categorycombo.model';
+import { CategorycomboService } from 'app/entities/categorycombo/service/categorycombo.service';
+import { IDataelement } from 'app/entities/dataelement/dataelement.model';
+import { DataelementService } from 'app/entities/dataelement/service/dataelement.service';
+import { IOrganisationUnit } from 'app/entities/organisation-unit/organisation-unit.model';
+import { OrganisationUnitService } from 'app/entities/organisation-unit/service/organisation-unit.service';
+import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 import { ProgramService } from '../service/program.service';
 import { IProgram } from '../program.model';
 import { ProgramFormService, ProgramFormGroup } from './program-form.service';
@@ -24,14 +31,21 @@ import { ProgramFormService, ProgramFormGroup } from './program-form.service';
 export class ProgramUpdateComponent implements OnInit {
   isSaving = false;
   program: IProgram | null = null;
+  typeTrackValues = Object.keys(TypeTrack);
 
   projectsSharedCollection: IProject[] = [];
   dHISUsersSharedCollection: IDHISUser[] = [];
+  categorycombosSharedCollection: ICategorycombo[] = [];
+  dataelementsSharedCollection: IDataelement[] = [];
+  organisationUnitsSharedCollection: IOrganisationUnit[] = [];
 
   protected programService = inject(ProgramService);
   protected programFormService = inject(ProgramFormService);
   protected projectService = inject(ProjectService);
   protected dHISUserService = inject(DHISUserService);
+  protected categorycomboService = inject(CategorycomboService);
+  protected dataelementService = inject(DataelementService);
+  protected organisationUnitService = inject(OrganisationUnitService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -40,6 +54,14 @@ export class ProgramUpdateComponent implements OnInit {
   compareProject = (o1: IProject | null, o2: IProject | null): boolean => this.projectService.compareProject(o1, o2);
 
   compareDHISUser = (o1: IDHISUser | null, o2: IDHISUser | null): boolean => this.dHISUserService.compareDHISUser(o1, o2);
+
+  compareCategorycombo = (o1: ICategorycombo | null, o2: ICategorycombo | null): boolean =>
+    this.categorycomboService.compareCategorycombo(o1, o2);
+
+  compareDataelement = (o1: IDataelement | null, o2: IDataelement | null): boolean => this.dataelementService.compareDataelement(o1, o2);
+
+  compareOrganisationUnit = (o1: IOrganisationUnit | null, o2: IOrganisationUnit | null): boolean =>
+    this.organisationUnitService.compareOrganisationUnit(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ program }) => {
@@ -98,6 +120,18 @@ export class ProgramUpdateComponent implements OnInit {
       program.createdBy,
       program.lastUpdatedBy,
     );
+    this.categorycombosSharedCollection = this.categorycomboService.addCategorycomboToCollectionIfMissing<ICategorycombo>(
+      this.categorycombosSharedCollection,
+      program.categoryCombo,
+    );
+    this.dataelementsSharedCollection = this.dataelementService.addDataelementToCollectionIfMissing<IDataelement>(
+      this.dataelementsSharedCollection,
+      ...(program.dataElements ?? []),
+    );
+    this.organisationUnitsSharedCollection = this.organisationUnitService.addOrganisationUnitToCollectionIfMissing<IOrganisationUnit>(
+      this.organisationUnitsSharedCollection,
+      ...(program.organisationUnits ?? []),
+    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -116,5 +150,38 @@ export class ProgramUpdateComponent implements OnInit {
         ),
       )
       .subscribe((dHISUsers: IDHISUser[]) => (this.dHISUsersSharedCollection = dHISUsers));
+
+    this.categorycomboService
+      .query()
+      .pipe(map((res: HttpResponse<ICategorycombo[]>) => res.body ?? []))
+      .pipe(
+        map((categorycombos: ICategorycombo[]) =>
+          this.categorycomboService.addCategorycomboToCollectionIfMissing<ICategorycombo>(categorycombos, this.program?.categoryCombo),
+        ),
+      )
+      .subscribe((categorycombos: ICategorycombo[]) => (this.categorycombosSharedCollection = categorycombos));
+
+    this.dataelementService
+      .query()
+      .pipe(map((res: HttpResponse<IDataelement[]>) => res.body ?? []))
+      .pipe(
+        map((dataelements: IDataelement[]) =>
+          this.dataelementService.addDataelementToCollectionIfMissing<IDataelement>(dataelements, ...(this.program?.dataElements ?? [])),
+        ),
+      )
+      .subscribe((dataelements: IDataelement[]) => (this.dataelementsSharedCollection = dataelements));
+
+    this.organisationUnitService
+      .query()
+      .pipe(map((res: HttpResponse<IOrganisationUnit[]>) => res.body ?? []))
+      .pipe(
+        map((organisationUnits: IOrganisationUnit[]) =>
+          this.organisationUnitService.addOrganisationUnitToCollectionIfMissing<IOrganisationUnit>(
+            organisationUnits,
+            ...(this.program?.organisationUnits ?? []),
+          ),
+        ),
+      )
+      .subscribe((organisationUnits: IOrganisationUnit[]) => (this.organisationUnitsSharedCollection = organisationUnits));
   }
 }

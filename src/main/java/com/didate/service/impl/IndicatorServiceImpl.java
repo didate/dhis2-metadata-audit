@@ -96,6 +96,9 @@ public class IndicatorServiceImpl implements IndicatorService {
                 if (indicator.getDimensionItem() != null) {
                     existingIndicator.setDimensionItem(indicator.getDimensionItem());
                 }
+                if (indicator.getTrack() != null) {
+                    existingIndicator.setTrack(indicator.getTrack());
+                }
 
                 return existingIndicator;
             })

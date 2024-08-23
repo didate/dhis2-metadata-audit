@@ -1,5 +1,6 @@
 package com.didate.domain;
 
+import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -11,10 +12,10 @@ import org.hibernate.envers.Audited;
  * A Indicator.
  */
 @Entity
-@Audited
 @Table(name = "indicator")
-@SuppressWarnings("common-java:DuplicatedBlocks")
+@Audited
 @JsonIgnoreProperties(ignoreUnknown = true)
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class Indicator implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -81,6 +82,11 @@ public class Indicator implements Serializable {
 
     @Column(name = "dimension_item")
     private String dimensionItem;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "track", nullable = false)
+    private TypeTrack track;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
@@ -333,6 +339,19 @@ public class Indicator implements Serializable {
         this.dimensionItem = dimensionItem;
     }
 
+    public TypeTrack getTrack() {
+        return this.track;
+    }
+
+    public Indicator track(TypeTrack track) {
+        this.setTrack(track);
+        return this;
+    }
+
+    public void setTrack(TypeTrack track) {
+        this.track = track;
+    }
+
     public Project getProject() {
         return this.project;
     }
@@ -426,6 +445,7 @@ public class Indicator implements Serializable {
             ", displayNumeratorDescription='" + getDisplayNumeratorDescription() + "'" +
             ", displayDenominatorDescription='" + getDisplayDenominatorDescription() + "'" +
             ", dimensionItem='" + getDimensionItem() + "'" +
+            ", track='" + getTrack() + "'" +
             "}";
     }
 }

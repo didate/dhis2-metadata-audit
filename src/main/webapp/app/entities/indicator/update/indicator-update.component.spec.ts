@@ -57,10 +57,10 @@ describe('Indicator Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Project query and add missing value', () => {
       const indicator: IIndicator = { id: 'CBA' };
-      const project: IProject = { id: 7881 };
+      const project: IProject = { id: 13686 };
       indicator.project = project;
 
-      const projectCollection: IProject[] = [{ id: 19322 }];
+      const projectCollection: IProject[] = [{ id: 27851 }];
       jest.spyOn(projectService, 'query').mockReturnValue(of(new HttpResponse({ body: projectCollection })));
       const additionalProjects = [project];
       const expectedCollection: IProject[] = [...additionalProjects, ...projectCollection];
@@ -79,12 +79,12 @@ describe('Indicator Management Update Component', () => {
 
     it('Should call DHISUser query and add missing value', () => {
       const indicator: IIndicator = { id: 'CBA' };
-      const createdBy: IDHISUser = { id: 'b61d6394-d92f-4e00-abb4-761ff0ac7b28' };
+      const createdBy: IDHISUser = { id: '7b53ae9e-6127-4714-96c3-c8cf1737b3c2' };
       indicator.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: 'f1e7271a-f2b8-4c2a-800b-b52ac16cdf64' };
+      const lastUpdatedBy: IDHISUser = { id: '3208964f-83a9-4771-8b7b-c353a5788734' };
       indicator.lastUpdatedBy = lastUpdatedBy;
 
-      const dHISUserCollection: IDHISUser[] = [{ id: '07586614-8221-434f-aa7f-e2e573827005' }];
+      const dHISUserCollection: IDHISUser[] = [{ id: 'a3773225-1648-4ead-99a1-fd6039dfeba4' }];
       jest.spyOn(dHISUserService, 'query').mockReturnValue(of(new HttpResponse({ body: dHISUserCollection })));
       const additionalDHISUsers = [createdBy, lastUpdatedBy];
       const expectedCollection: IDHISUser[] = [...additionalDHISUsers, ...dHISUserCollection];
@@ -103,10 +103,10 @@ describe('Indicator Management Update Component', () => {
 
     it('Should call Indicatortype query and add missing value', () => {
       const indicator: IIndicator = { id: 'CBA' };
-      const indicatorType: IIndicatortype = { id: 'a5987cb6-f907-4148-812c-adba778c1459' };
+      const indicatorType: IIndicatortype = { id: '6061065e-0397-4a05-a87c-95ca1875d511' };
       indicator.indicatorType = indicatorType;
 
-      const indicatortypeCollection: IIndicatortype[] = [{ id: '6c1868db-c905-44df-a214-010372e98be5' }];
+      const indicatortypeCollection: IIndicatortype[] = [{ id: 'a9698c4f-9bd8-44ef-8d61-2f0fe4d31630' }];
       jest.spyOn(indicatortypeService, 'query').mockReturnValue(of(new HttpResponse({ body: indicatortypeCollection })));
       const additionalIndicatortypes = [indicatorType];
       const expectedCollection: IIndicatortype[] = [...additionalIndicatortypes, ...indicatortypeCollection];
@@ -125,13 +125,13 @@ describe('Indicator Management Update Component', () => {
 
     it('Should update editForm', () => {
       const indicator: IIndicator = { id: 'CBA' };
-      const project: IProject = { id: 20667 };
+      const project: IProject = { id: 21563 };
       indicator.project = project;
-      const createdBy: IDHISUser = { id: '7dc9f13e-72bb-44d5-ac7c-9ac6219ad747' };
+      const createdBy: IDHISUser = { id: 'ee27e849-d409-48a1-9709-ee2413a6a569' };
       indicator.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '6b84e3a7-81bf-4560-bfe2-cc753250fafe' };
+      const lastUpdatedBy: IDHISUser = { id: 'c807b2d6-8c83-4294-af13-b66e95b0faef' };
       indicator.lastUpdatedBy = lastUpdatedBy;
-      const indicatorType: IIndicatortype = { id: '0a0dae2c-e86f-459f-963f-fa2eb8cf8c83' };
+      const indicatorType: IIndicatortype = { id: '127169f2-9335-4a50-a670-af4d0d99881a' };
       indicator.indicatorType = indicatorType;
 
       activatedRoute.data = of({ indicator });

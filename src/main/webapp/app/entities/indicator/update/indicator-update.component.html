@@ -296,6 +296,23 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="field_track" jhiTranslate="dhis2AuditApp.indicator.track">Track</label>
+          <select class="form-control" name="track" formControlName="track" id="field_track" data-cy="track">
+            <option [ngValue]="null">{{ 'dhis2AuditApp.TypeTrack.null' | translate }}</option>
+            @for (typeTrack of typeTrackValues; track $index) {
+              <option [value]="typeTrack">{{ 'dhis2AuditApp.TypeTrack.' + typeTrack | translate }}</option>
+            }
+          </select>
+          @if (editForm.get('track')!.invalid && (editForm.get('track')!.dirty || editForm.get('track')!.touched)) {
+            <div>
+              @if (editForm.get('track')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_project" jhiTranslate="dhis2AuditApp.indicator.project">Project</label>
           <select
             class="form-control"

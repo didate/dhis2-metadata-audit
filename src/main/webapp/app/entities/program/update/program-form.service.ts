@@ -27,6 +27,8 @@ type ProgramFormDefaults = Pick<
   | 'useFirstStageDuringRegistration'
   | 'registration'
   | 'withoutRegistration'
+  | 'dataElements'
+  | 'organisationUnits'
 >;
 
 type ProgramFormGroupContent = {
@@ -51,7 +53,6 @@ type ProgramFormGroupContent = {
   selectIncidentDatesInFuture: FormControl<IProgram['selectIncidentDatesInFuture']>;
   trackedEntityType: FormControl<IProgram['trackedEntityType']>;
   style: FormControl<IProgram['style']>;
-  categoryCombo: FormControl<IProgram['categoryCombo']>;
   skipOffline: FormControl<IProgram['skipOffline']>;
   displayFrontPageList: FormControl<IProgram['displayFrontPageList']>;
   useFirstStageDuringRegistration: FormControl<IProgram['useFirstStageDuringRegistration']>;
@@ -74,9 +75,13 @@ type ProgramFormGroupContent = {
   programStagesCount: FormControl<IProgram['programStagesCount']>;
   programSectionsCount: FormControl<IProgram['programSectionsCount']>;
   programTrackedEntityAttributesCount: FormControl<IProgram['programTrackedEntityAttributesCount']>;
+  track: FormControl<IProgram['track']>;
   project: FormControl<IProgram['project']>;
   createdBy: FormControl<IProgram['createdBy']>;
   lastUpdatedBy: FormControl<IProgram['lastUpdatedBy']>;
+  categoryCombo: FormControl<IProgram['categoryCombo']>;
+  dataElements: FormControl<IProgram['dataElements']>;
+  organisationUnits: FormControl<IProgram['organisationUnits']>;
 };
 
 export type ProgramFormGroup = FormGroup<ProgramFormGroupContent>;
@@ -116,7 +121,6 @@ export class ProgramFormService {
       selectIncidentDatesInFuture: new FormControl(programRawValue.selectIncidentDatesInFuture),
       trackedEntityType: new FormControl(programRawValue.trackedEntityType),
       style: new FormControl(programRawValue.style),
-      categoryCombo: new FormControl(programRawValue.categoryCombo),
       skipOffline: new FormControl(programRawValue.skipOffline),
       displayFrontPageList: new FormControl(programRawValue.displayFrontPageList),
       useFirstStageDuringRegistration: new FormControl(programRawValue.useFirstStageDuringRegistration),
@@ -139,6 +143,9 @@ export class ProgramFormService {
       programStagesCount: new FormControl(programRawValue.programStagesCount),
       programSectionsCount: new FormControl(programRawValue.programSectionsCount),
       programTrackedEntityAttributesCount: new FormControl(programRawValue.programTrackedEntityAttributesCount),
+      track: new FormControl(programRawValue.track, {
+        validators: [Validators.required],
+      }),
       project: new FormControl(programRawValue.project),
       createdBy: new FormControl(programRawValue.createdBy, {
         validators: [Validators.required],
@@ -146,6 +153,9 @@ export class ProgramFormService {
       lastUpdatedBy: new FormControl(programRawValue.lastUpdatedBy, {
         validators: [Validators.required],
       }),
+      categoryCombo: new FormControl(programRawValue.categoryCombo),
+      dataElements: new FormControl(programRawValue.dataElements ?? []),
+      organisationUnits: new FormControl(programRawValue.organisationUnits ?? []),
     });
   }
 
@@ -176,6 +186,8 @@ export class ProgramFormService {
       useFirstStageDuringRegistration: false,
       registration: false,
       withoutRegistration: false,
+      dataElements: [],
+      organisationUnits: [],
     };
   }
 }

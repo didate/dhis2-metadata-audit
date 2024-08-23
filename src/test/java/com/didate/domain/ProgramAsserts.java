@@ -87,7 +87,6 @@ public class ProgramAsserts {
             )
             .satisfies(e -> assertThat(e.getTrackedEntityType()).as("check trackedEntityType").isEqualTo(actual.getTrackedEntityType()))
             .satisfies(e -> assertThat(e.getStyle()).as("check style").isEqualTo(actual.getStyle()))
-            .satisfies(e -> assertThat(e.getCategoryCombo()).as("check categoryCombo").isEqualTo(actual.getCategoryCombo()))
             .satisfies(e -> assertThat(e.getSkipOffline()).as("check skipOffline").isEqualTo(actual.getSkipOffline()))
             .satisfies(
                 e -> assertThat(e.getDisplayFrontPageList()).as("check displayFrontPageList").isEqualTo(actual.getDisplayFrontPageList())
@@ -159,7 +158,8 @@ public class ProgramAsserts {
                     assertThat(e.getProgramTrackedEntityAttributesCount())
                         .as("check programTrackedEntityAttributesCount")
                         .isEqualTo(actual.getProgramTrackedEntityAttributesCount())
-            );
+            )
+            .satisfies(e -> assertThat(e.getTrack()).as("check track").isEqualTo(actual.getTrack()));
     }
 
     /**
@@ -173,6 +173,9 @@ public class ProgramAsserts {
             .as("Verify Program relationships")
             .satisfies(e -> assertThat(e.getProject()).as("check project").isEqualTo(actual.getProject()))
             .satisfies(e -> assertThat(e.getCreatedBy()).as("check createdBy").isEqualTo(actual.getCreatedBy()))
-            .satisfies(e -> assertThat(e.getLastUpdatedBy()).as("check lastUpdatedBy").isEqualTo(actual.getLastUpdatedBy()));
+            .satisfies(e -> assertThat(e.getLastUpdatedBy()).as("check lastUpdatedBy").isEqualTo(actual.getLastUpdatedBy()))
+            .satisfies(e -> assertThat(e.getCategoryCombo()).as("check categoryCombo").isEqualTo(actual.getCategoryCombo()))
+            .satisfies(e -> assertThat(e.getDataElements()).as("check dataElements").isEqualTo(actual.getDataElements()))
+            .satisfies(e -> assertThat(e.getOrganisationUnits()).as("check organisationUnits").isEqualTo(actual.getOrganisationUnits()));
     }
 }

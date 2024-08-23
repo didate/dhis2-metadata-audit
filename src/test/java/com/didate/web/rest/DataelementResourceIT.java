@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.didate.IntegrationTest;
 import com.didate.domain.DHISUser;
 import com.didate.domain.Dataelement;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.DataelementRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
@@ -85,6 +86,9 @@ class DataelementResourceIT {
     private static final String DEFAULT_DIMENSION_ITEM = "AAAAAAAAAA";
     private static final String UPDATED_DIMENSION_ITEM = "BBBBBBBBBB";
 
+    private static final TypeTrack DEFAULT_TRACK = TypeTrack.NEW;
+    private static final TypeTrack UPDATED_TRACK = TypeTrack.UPDATE;
+
     private static final String ENTITY_API_URL = "/api/dataelements";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -128,7 +132,8 @@ class DataelementResourceIT {
             .domainType(DEFAULT_DOMAIN_TYPE)
             .zeroIsSignificant(DEFAULT_ZERO_IS_SIGNIFICANT)
             .optionSetValue(DEFAULT_OPTION_SET_VALUE)
-            .dimensionItem(DEFAULT_DIMENSION_ITEM);
+            .dimensionItem(DEFAULT_DIMENSION_ITEM)
+            .track(DEFAULT_TRACK);
         // Add required entity
         DHISUser dHISUser;
         if (TestUtil.findAll(em, DHISUser.class).isEmpty()) {
@@ -168,7 +173,8 @@ class DataelementResourceIT {
             .domainType(UPDATED_DOMAIN_TYPE)
             .zeroIsSignificant(UPDATED_ZERO_IS_SIGNIFICANT)
             .optionSetValue(UPDATED_OPTION_SET_VALUE)
-            .dimensionItem(UPDATED_DIMENSION_ITEM);
+            .dimensionItem(UPDATED_DIMENSION_ITEM)
+            .track(UPDATED_TRACK);
         // Add required entity
         DHISUser dHISUser;
         if (TestUtil.findAll(em, DHISUser.class).isEmpty()) {
@@ -382,6 +388,22 @@ class DataelementResourceIT {
 
     @Test
     @Transactional
+    void checkTrackIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        dataelement.setTrack(null);
+
+        // Create the Dataelement, which fails.
+
+        restDataelementMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllDataelements() throws Exception {
         // Initialize the database
         insertedDataelement = dataelementRepository.saveAndFlush(dataelement);
@@ -408,7 +430,8 @@ class DataelementResourceIT {
             .andExpect(jsonPath("$.[*].domainType").value(hasItem(DEFAULT_DOMAIN_TYPE)))
             .andExpect(jsonPath("$.[*].zeroIsSignificant").value(hasItem(DEFAULT_ZERO_IS_SIGNIFICANT.booleanValue())))
             .andExpect(jsonPath("$.[*].optionSetValue").value(hasItem(DEFAULT_OPTION_SET_VALUE)))
-            .andExpect(jsonPath("$.[*].dimensionItem").value(hasItem(DEFAULT_DIMENSION_ITEM)));
+            .andExpect(jsonPath("$.[*].dimensionItem").value(hasItem(DEFAULT_DIMENSION_ITEM)))
+            .andExpect(jsonPath("$.[*].track").value(hasItem(DEFAULT_TRACK.toString())));
     }
 
     @Test
@@ -439,7 +462,8 @@ class DataelementResourceIT {
             .andExpect(jsonPath("$.domainType").value(DEFAULT_DOMAIN_TYPE))
             .andExpect(jsonPath("$.zeroIsSignificant").value(DEFAULT_ZERO_IS_SIGNIFICANT.booleanValue()))
             .andExpect(jsonPath("$.optionSetValue").value(DEFAULT_OPTION_SET_VALUE))
-            .andExpect(jsonPath("$.dimensionItem").value(DEFAULT_DIMENSION_ITEM));
+            .andExpect(jsonPath("$.dimensionItem").value(DEFAULT_DIMENSION_ITEM))
+            .andExpect(jsonPath("$.track").value(DEFAULT_TRACK.toString()));
     }
 
     @Test
@@ -478,7 +502,8 @@ class DataelementResourceIT {
             .domainType(UPDATED_DOMAIN_TYPE)
             .zeroIsSignificant(UPDATED_ZERO_IS_SIGNIFICANT)
             .optionSetValue(UPDATED_OPTION_SET_VALUE)
-            .dimensionItem(UPDATED_DIMENSION_ITEM);
+            .dimensionItem(UPDATED_DIMENSION_ITEM)
+            .track(UPDATED_TRACK);
 
         restDataelementMockMvc
             .perform(
@@ -560,13 +585,16 @@ class DataelementResourceIT {
 
         partialUpdatedDataelement
             .name(UPDATED_NAME)
+            .shortName(UPDATED_SHORT_NAME)
+            .formName(UPDATED_FORM_NAME)
             .description(UPDATED_DESCRIPTION)
+            .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
             .displayName(UPDATED_DISPLAY_NAME)
-            .displayFormName(UPDATED_DISPLAY_FORM_NAME)
             .created(UPDATED_CREATED)
             .publicAccess(UPDATED_PUBLIC_ACCESS)
-            .optionSetValue(UPDATED_OPTION_SET_VALUE)
-            .dimensionItem(UPDATED_DIMENSION_ITEM);
+            .valueType(UPDATED_VALUE_TYPE)
+            .domainType(UPDATED_DOMAIN_TYPE)
+            .optionSetValue(UPDATED_OPTION_SET_VALUE);
 
         restDataelementMockMvc
             .perform(
@@ -614,7 +642,8 @@ class DataelementResourceIT {
             .domainType(UPDATED_DOMAIN_TYPE)
             .zeroIsSignificant(UPDATED_ZERO_IS_SIGNIFICANT)
             .optionSetValue(UPDATED_OPTION_SET_VALUE)
-            .dimensionItem(UPDATED_DIMENSION_ITEM);
+            .dimensionItem(UPDATED_DIMENSION_ITEM)
+            .track(UPDATED_TRACK);
 
         restDataelementMockMvc
             .perform(
