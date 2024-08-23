@@ -65,10 +65,6 @@ public class ProgramAsserts {
                 e -> assertThat(e.getIgnoreOverdueEvents()).as("check ignoreOverdueEvents").isEqualTo(actual.getIgnoreOverdueEvents())
             )
             .satisfies(e -> assertThat(e.getUserRoles()).as("check userRoles").isEqualTo(actual.getUserRoles()))
-            .satisfies(e -> assertThat(e.getProgramIndicators()).as("check programIndicators").isEqualTo(actual.getProgramIndicators()))
-            .satisfies(
-                e -> assertThat(e.getProgramRuleVariables()).as("check programRuleVariables").isEqualTo(actual.getProgramRuleVariables())
-            )
             .satisfies(e -> assertThat(e.getOnlyEnrollOnce()).as("check onlyEnrollOnce").isEqualTo(actual.getOnlyEnrollOnce()))
             .satisfies(
                 e -> assertThat(e.getNotificationTemplates()).as("check notificationTemplates").isEqualTo(actual.getNotificationTemplates())
@@ -141,9 +137,6 @@ public class ProgramAsserts {
             .satisfies(e -> assertThat(e.getDisplayFormName()).as("check displayFormName").isEqualTo(actual.getDisplayFormName()))
             .satisfies(e -> assertThat(e.getDisplayName()).as("check displayName").isEqualTo(actual.getDisplayName()))
             .satisfies(
-                e -> assertThat(e.getAttributeValuesCount()).as("check attributeValuesCount").isEqualTo(actual.getAttributeValuesCount())
-            )
-            .satisfies(
                 e ->
                     assertThat(e.getOrganisationUnitsCount())
                         .as("check organisationUnitsCount")
@@ -151,13 +144,37 @@ public class ProgramAsserts {
             )
             .satisfies(e -> assertThat(e.getProgramStagesCount()).as("check programStagesCount").isEqualTo(actual.getProgramStagesCount()))
             .satisfies(
-                e -> assertThat(e.getProgramSectionsCount()).as("check programSectionsCount").isEqualTo(actual.getProgramSectionsCount())
+                e ->
+                    assertThat(e.getProgramIndicatorsCount())
+                        .as("check programIndicatorsCount")
+                        .isEqualTo(actual.getProgramIndicatorsCount())
             )
             .satisfies(
                 e ->
                     assertThat(e.getProgramTrackedEntityAttributesCount())
                         .as("check programTrackedEntityAttributesCount")
                         .isEqualTo(actual.getProgramTrackedEntityAttributesCount())
+            )
+            .satisfies(
+                e ->
+                    assertThat(e.getOrganisationUnitsContent())
+                        .as("check organisationUnitsContent")
+                        .isEqualTo(actual.getOrganisationUnitsContent())
+            )
+            .satisfies(
+                e -> assertThat(e.getProgramStagesContent()).as("check programStagesContent").isEqualTo(actual.getProgramStagesContent())
+            )
+            .satisfies(
+                e ->
+                    assertThat(e.getProgramIndicatorsContent())
+                        .as("check programIndicatorsContent")
+                        .isEqualTo(actual.getProgramIndicatorsContent())
+            )
+            .satisfies(
+                e ->
+                    assertThat(e.getProgramTrackedEntityAttributesContent())
+                        .as("check programTrackedEntityAttributesContent")
+                        .isEqualTo(actual.getProgramTrackedEntityAttributesContent())
             )
             .satisfies(e -> assertThat(e.getTrack()).as("check track").isEqualTo(actual.getTrack()));
     }
@@ -175,7 +192,14 @@ public class ProgramAsserts {
             .satisfies(e -> assertThat(e.getCreatedBy()).as("check createdBy").isEqualTo(actual.getCreatedBy()))
             .satisfies(e -> assertThat(e.getLastUpdatedBy()).as("check lastUpdatedBy").isEqualTo(actual.getLastUpdatedBy()))
             .satisfies(e -> assertThat(e.getCategoryCombo()).as("check categoryCombo").isEqualTo(actual.getCategoryCombo()))
-            .satisfies(e -> assertThat(e.getDataElements()).as("check dataElements").isEqualTo(actual.getDataElements()))
-            .satisfies(e -> assertThat(e.getOrganisationUnits()).as("check organisationUnits").isEqualTo(actual.getOrganisationUnits()));
+            .satisfies(
+                e ->
+                    assertThat(e.getProgramTrackedEntityAttributes())
+                        .as("check programTrackedEntityAttributes")
+                        .isEqualTo(actual.getProgramTrackedEntityAttributes())
+            )
+            .satisfies(e -> assertThat(e.getOrganisationUnits()).as("check organisationUnits").isEqualTo(actual.getOrganisationUnits()))
+            .satisfies(e -> assertThat(e.getProgramIndicators()).as("check programIndicators").isEqualTo(actual.getProgramIndicators()))
+            .satisfies(e -> assertThat(e.getProgramStages()).as("check programStages").isEqualTo(actual.getProgramStages()));
     }
 }

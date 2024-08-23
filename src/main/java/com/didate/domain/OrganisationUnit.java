@@ -64,14 +64,23 @@ public class OrganisationUnit implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "organisationUnits")
     @JsonIgnoreProperties(
-        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataElements", "organisationUnits" },
+        value = {
+            "project",
+            "createdBy",
+            "lastUpdatedBy",
+            "categoryCombo",
+            "programTrackedEntityAttributes",
+            "organisationUnits",
+            "programIndicators",
+            "programStages",
+        },
         allowSetters = true
     )
     private Set<Program> programs = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "organisationUnits")
     @JsonIgnoreProperties(
-        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataElements", "organisationUnits" },
+        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataSetElements", "indicators", "organisationUnits" },
         allowSetters = true
     )
     private Set<Dataset> datasets = new HashSet<>();

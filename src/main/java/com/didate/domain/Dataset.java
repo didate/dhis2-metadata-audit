@@ -23,7 +23,6 @@ public class Dataset implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
     @Column(name = "id")
     private String id;
 
@@ -113,6 +112,24 @@ public class Dataset implements Serializable {
     @Column(name = "display_form_name")
     private String displayFormName;
 
+    @Column(name = "data_set_elements_count")
+    private Integer dataSetElementsCount;
+
+    @Column(name = "indicators_count")
+    private Integer indicatorsCount;
+
+    @Column(name = "organisation_units_count")
+    private Integer organisationUnitsCount;
+
+    @Column(name = "data_set_elements_content")
+    private String dataSetElementsContent;
+
+    @Column(name = "indicators_content")
+    private String indicatorsContent;
+
+    @Column(name = "organisation_units_content")
+    private String organisationUnitsContent;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "track", nullable = false)
@@ -134,15 +151,24 @@ public class Dataset implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "rel_dataset__data_elements",
+        name = "rel_dataset__data_set_elements",
         joinColumns = @JoinColumn(name = "dataset_id"),
-        inverseJoinColumns = @JoinColumn(name = "data_elements_id")
+        inverseJoinColumns = @JoinColumn(name = "data_set_elements_id")
     )
     @JsonIgnoreProperties(
-        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "programs", "datasets" },
+        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "datasets", "programStages" },
         allowSetters = true
     )
-    private Set<Dataelement> dataElements = new HashSet<>();
+    private Set<Dataelement> dataSetElements = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_dataset__indicators",
+        joinColumns = @JoinColumn(name = "dataset_id"),
+        inverseJoinColumns = @JoinColumn(name = "indicators_id")
+    )
+    @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "indicatorType", "datasets" }, allowSetters = true)
+    private Set<Indicator> indicators = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -532,6 +558,84 @@ public class Dataset implements Serializable {
         this.displayFormName = displayFormName;
     }
 
+    public Integer getDataSetElementsCount() {
+        return this.dataSetElementsCount;
+    }
+
+    public Dataset dataSetElementsCount(Integer dataSetElementsCount) {
+        this.setDataSetElementsCount(dataSetElementsCount);
+        return this;
+    }
+
+    public void setDataSetElementsCount(Integer dataSetElementsCount) {
+        this.dataSetElementsCount = dataSetElementsCount;
+    }
+
+    public Integer getIndicatorsCount() {
+        return this.indicatorsCount;
+    }
+
+    public Dataset indicatorsCount(Integer indicatorsCount) {
+        this.setIndicatorsCount(indicatorsCount);
+        return this;
+    }
+
+    public void setIndicatorsCount(Integer indicatorsCount) {
+        this.indicatorsCount = indicatorsCount;
+    }
+
+    public Integer getOrganisationUnitsCount() {
+        return this.organisationUnitsCount;
+    }
+
+    public Dataset organisationUnitsCount(Integer organisationUnitsCount) {
+        this.setOrganisationUnitsCount(organisationUnitsCount);
+        return this;
+    }
+
+    public void setOrganisationUnitsCount(Integer organisationUnitsCount) {
+        this.organisationUnitsCount = organisationUnitsCount;
+    }
+
+    public String getDataSetElementsContent() {
+        return this.dataSetElementsContent;
+    }
+
+    public Dataset dataSetElementsContent(String dataSetElementsContent) {
+        this.setDataSetElementsContent(dataSetElementsContent);
+        return this;
+    }
+
+    public void setDataSetElementsContent(String dataSetElementsContent) {
+        this.dataSetElementsContent = dataSetElementsContent;
+    }
+
+    public String getIndicatorsContent() {
+        return this.indicatorsContent;
+    }
+
+    public Dataset indicatorsContent(String indicatorsContent) {
+        this.setIndicatorsContent(indicatorsContent);
+        return this;
+    }
+
+    public void setIndicatorsContent(String indicatorsContent) {
+        this.indicatorsContent = indicatorsContent;
+    }
+
+    public String getOrganisationUnitsContent() {
+        return this.organisationUnitsContent;
+    }
+
+    public Dataset organisationUnitsContent(String organisationUnitsContent) {
+        this.setOrganisationUnitsContent(organisationUnitsContent);
+        return this;
+    }
+
+    public void setOrganisationUnitsContent(String organisationUnitsContent) {
+        this.organisationUnitsContent = organisationUnitsContent;
+    }
+
     public TypeTrack getTrack() {
         return this.track;
     }
@@ -597,26 +701,49 @@ public class Dataset implements Serializable {
         return this;
     }
 
-    public Set<Dataelement> getDataElements() {
-        return this.dataElements;
+    public Set<Dataelement> getDataSetElements() {
+        return this.dataSetElements;
     }
 
-    public void setDataElements(Set<Dataelement> dataelements) {
-        this.dataElements = dataelements;
+    public void setDataSetElements(Set<Dataelement> dataelements) {
+        this.dataSetElements = dataelements;
     }
 
-    public Dataset dataElements(Set<Dataelement> dataelements) {
-        this.setDataElements(dataelements);
+    public Dataset dataSetElements(Set<Dataelement> dataelements) {
+        this.setDataSetElements(dataelements);
         return this;
     }
 
-    public Dataset addDataElements(Dataelement dataelement) {
-        this.dataElements.add(dataelement);
+    public Dataset addDataSetElements(Dataelement dataelement) {
+        this.dataSetElements.add(dataelement);
         return this;
     }
 
-    public Dataset removeDataElements(Dataelement dataelement) {
-        this.dataElements.remove(dataelement);
+    public Dataset removeDataSetElements(Dataelement dataelement) {
+        this.dataSetElements.remove(dataelement);
+        return this;
+    }
+
+    public Set<Indicator> getIndicators() {
+        return this.indicators;
+    }
+
+    public void setIndicators(Set<Indicator> indicators) {
+        this.indicators = indicators;
+    }
+
+    public Dataset indicators(Set<Indicator> indicators) {
+        this.setIndicators(indicators);
+        return this;
+    }
+
+    public Dataset addIndicators(Indicator indicator) {
+        this.indicators.add(indicator);
+        return this;
+    }
+
+    public Dataset removeIndicators(Indicator indicator) {
+        this.indicators.remove(indicator);
         return this;
     }
 
@@ -695,6 +822,12 @@ public class Dataset implements Serializable {
             ", displayShortName='" + getDisplayShortName() + "'" +
             ", displayDescription='" + getDisplayDescription() + "'" +
             ", displayFormName='" + getDisplayFormName() + "'" +
+            ", dataSetElementsCount=" + getDataSetElementsCount() +
+            ", indicatorsCount=" + getIndicatorsCount() +
+            ", organisationUnitsCount=" + getOrganisationUnitsCount() +
+            ", dataSetElementsContent='" + getDataSetElementsContent() + "'" +
+            ", indicatorsContent='" + getIndicatorsContent() + "'" +
+            ", organisationUnitsContent='" + getOrganisationUnitsContent() + "'" +
             ", track='" + getTrack() + "'" +
             "}";
     }

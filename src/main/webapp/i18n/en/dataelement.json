@@ -41,8 +41,8 @@
       "lastUpdatedBy": "Last Updated By",
       "categoryCombo": "Category Combo",
       "optionSet": "Option Set",
-      "program": "Program",
-      "dataset": "Dataset"
+      "dataset": "Dataset",
+      "programStage": "Program Stage"
     }
   }
 }

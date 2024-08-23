@@ -5,7 +5,7 @@ import static com.didate.domain.DHISUserTestSamples.*;
 import static com.didate.domain.DataelementTestSamples.*;
 import static com.didate.domain.DatasetTestSamples.*;
 import static com.didate.domain.OptionsetTestSamples.*;
-import static com.didate.domain.ProgramTestSamples.*;
+import static com.didate.domain.ProgramStageTestSamples.*;
 import static com.didate.domain.ProjectTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -91,46 +91,46 @@ class DataelementTest {
     }
 
     @Test
-    void programTest() {
-        Dataelement dataelement = getDataelementRandomSampleGenerator();
-        Program programBack = getProgramRandomSampleGenerator();
-
-        dataelement.addProgram(programBack);
-        assertThat(dataelement.getPrograms()).containsOnly(programBack);
-        assertThat(programBack.getDataElements()).containsOnly(dataelement);
-
-        dataelement.removeProgram(programBack);
-        assertThat(dataelement.getPrograms()).doesNotContain(programBack);
-        assertThat(programBack.getDataElements()).doesNotContain(dataelement);
-
-        dataelement.programs(new HashSet<>(Set.of(programBack)));
-        assertThat(dataelement.getPrograms()).containsOnly(programBack);
-        assertThat(programBack.getDataElements()).containsOnly(dataelement);
-
-        dataelement.setPrograms(new HashSet<>());
-        assertThat(dataelement.getPrograms()).doesNotContain(programBack);
-        assertThat(programBack.getDataElements()).doesNotContain(dataelement);
-    }
-
-    @Test
     void datasetTest() {
         Dataelement dataelement = getDataelementRandomSampleGenerator();
         Dataset datasetBack = getDatasetRandomSampleGenerator();
 
         dataelement.addDataset(datasetBack);
         assertThat(dataelement.getDatasets()).containsOnly(datasetBack);
-        assertThat(datasetBack.getDataElements()).containsOnly(dataelement);
+        assertThat(datasetBack.getDataSetElements()).containsOnly(dataelement);
 
         dataelement.removeDataset(datasetBack);
         assertThat(dataelement.getDatasets()).doesNotContain(datasetBack);
-        assertThat(datasetBack.getDataElements()).doesNotContain(dataelement);
+        assertThat(datasetBack.getDataSetElements()).doesNotContain(dataelement);
 
         dataelement.datasets(new HashSet<>(Set.of(datasetBack)));
         assertThat(dataelement.getDatasets()).containsOnly(datasetBack);
-        assertThat(datasetBack.getDataElements()).containsOnly(dataelement);
+        assertThat(datasetBack.getDataSetElements()).containsOnly(dataelement);
 
         dataelement.setDatasets(new HashSet<>());
         assertThat(dataelement.getDatasets()).doesNotContain(datasetBack);
-        assertThat(datasetBack.getDataElements()).doesNotContain(dataelement);
+        assertThat(datasetBack.getDataSetElements()).doesNotContain(dataelement);
+    }
+
+    @Test
+    void programStageTest() {
+        Dataelement dataelement = getDataelementRandomSampleGenerator();
+        ProgramStage programStageBack = getProgramStageRandomSampleGenerator();
+
+        dataelement.addProgramStage(programStageBack);
+        assertThat(dataelement.getProgramStages()).containsOnly(programStageBack);
+        assertThat(programStageBack.getProgramStageDataElements()).containsOnly(dataelement);
+
+        dataelement.removeProgramStage(programStageBack);
+        assertThat(dataelement.getProgramStages()).doesNotContain(programStageBack);
+        assertThat(programStageBack.getProgramStageDataElements()).doesNotContain(dataelement);
+
+        dataelement.programStages(new HashSet<>(Set.of(programStageBack)));
+        assertThat(dataelement.getProgramStages()).containsOnly(programStageBack);
+        assertThat(programStageBack.getProgramStageDataElements()).containsOnly(dataelement);
+
+        dataelement.setProgramStages(new HashSet<>());
+        assertThat(dataelement.getProgramStages()).doesNotContain(programStageBack);
+        assertThat(programStageBack.getProgramStageDataElements()).doesNotContain(dataelement);
     }
 }

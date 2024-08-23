@@ -13,6 +13,8 @@ import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { DHISUserService } from 'app/entities/dhis-user/service/dhis-user.service';
 import { IIndicatortype } from 'app/entities/indicatortype/indicatortype.model';
 import { IndicatortypeService } from 'app/entities/indicatortype/service/indicatortype.service';
+import { IDataset } from 'app/entities/dataset/dataset.model';
+import { DatasetService } from 'app/entities/dataset/service/dataset.service';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 import { IndicatorService } from '../service/indicator.service';
 import { IIndicator } from '../indicator.model';
@@ -32,12 +34,14 @@ export class IndicatorUpdateComponent implements OnInit {
   projectsSharedCollection: IProject[] = [];
   dHISUsersSharedCollection: IDHISUser[] = [];
   indicatortypesSharedCollection: IIndicatortype[] = [];
+  datasetsSharedCollection: IDataset[] = [];
 
   protected indicatorService = inject(IndicatorService);
   protected indicatorFormService = inject(IndicatorFormService);
   protected projectService = inject(ProjectService);
   protected dHISUserService = inject(DHISUserService);
   protected indicatortypeService = inject(IndicatortypeService);
+  protected datasetService = inject(DatasetService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -49,6 +53,8 @@ export class IndicatorUpdateComponent implements OnInit {
 
   compareIndicatortype = (o1: IIndicatortype | null, o2: IIndicatortype | null): boolean =>
     this.indicatortypeService.compareIndicatortype(o1, o2);
+
+  compareDataset = (o1: IDataset | null, o2: IDataset | null): boolean => this.datasetService.compareDataset(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ indicator }) => {
@@ -111,6 +117,10 @@ export class IndicatorUpdateComponent implements OnInit {
       this.indicatortypesSharedCollection,
       indicator.indicatorType,
     );
+    this.datasetsSharedCollection = this.datasetService.addDatasetToCollectionIfMissing<IDataset>(
+      this.datasetsSharedCollection,
+      ...(indicator.datasets ?? []),
+    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -143,5 +153,15 @@ export class IndicatorUpdateComponent implements OnInit {
         ),
       )
       .subscribe((indicatortypes: IIndicatortype[]) => (this.indicatortypesSharedCollection = indicatortypes));
+
+    this.datasetService
+      .query()
+      .pipe(map((res: HttpResponse<IDataset[]>) => res.body ?? []))
+      .pipe(
+        map((datasets: IDataset[]) =>
+          this.datasetService.addDatasetToCollectionIfMissing<IDataset>(datasets, ...(this.indicator?.datasets ?? [])),
+        ),
+      )
+      .subscribe((datasets: IDataset[]) => (this.datasetsSharedCollection = datasets));
   }
 }

@@ -1,0 +1,121 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (programIndicator()) {
+      <div>
+        <h2 data-cy="programIndicatorDetailsHeading">
+          <span jhiTranslate="dhis2AuditApp.programIndicator.detail.title">Program Indicator</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.id">Id</span></dt>
+          <dd>
+            <span>{{ programIndicator()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.name">Name</span></dt>
+          <dd>
+            <span>{{ programIndicator()!.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.created">Created</span></dt>
+          <dd>
+            <span>{{ programIndicator()!.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.lastUpdated">Last Updated</span></dt>
+          <dd>
+            <span>{{ programIndicator()!.lastUpdated | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.shortName">Short Name</span></dt>
+          <dd>
+            <span>{{ programIndicator()!.shortName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.dimensionItemType">Dimension Item Type</span></dt>
+          <dd>
+            <span>{{ programIndicator()!.dimensionItemType }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.expression">Expression</span></dt>
+          <dd>
+            <span>{{ programIndicator()!.expression }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.filter">Filter</span></dt>
+          <dd>
+            <span>{{ programIndicator()!.filter }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.analyticsType">Analytics Type</span></dt>
+          <dd>
+            <span>{{ programIndicator()!.analyticsType }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.dimensionItem">Dimension Item</span></dt>
+          <dd>
+            <span>{{ programIndicator()!.dimensionItem }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.displayShortName">Display Short Name</span></dt>
+          <dd>
+            <span>{{ programIndicator()!.displayShortName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.displayName">Display Name</span></dt>
+          <dd>
+            <span>{{ programIndicator()!.displayName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.displayFormName">Display Form Name</span></dt>
+          <dd>
+            <span>{{ programIndicator()!.displayFormName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.track">Track</span></dt>
+          <dd>
+            <span [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (programIndicator()!.track ?? 'null')">{{
+              { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[programIndicator()!.track ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.createdBy">Created By</span></dt>
+          <dd>
+            @if (programIndicator()!.createdBy) {
+              <div>
+                <a [routerLink]="['/dhis-user', programIndicator()!.createdBy?.id, 'view']">{{ programIndicator()!.createdBy?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.lastUpdatedBy">Last Updated By</span></dt>
+          <dd>
+            @if (programIndicator()!.lastUpdatedBy) {
+              <div>
+                <a [routerLink]="['/dhis-user', programIndicator()!.lastUpdatedBy?.id, 'view']">{{
+                  programIndicator()!.lastUpdatedBy?.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.program">Program</span></dt>
+          <dd>
+            @if (programIndicator()!.program) {
+              <div>
+                <a [routerLink]="['/program', programIndicator()!.program?.id, 'view']">{{ programIndicator()!.program?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.programIndicator.program">Program</span></dt>
+          <dd>
+            @for (program of programIndicator()!.programs; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/program', program.id, 'view']">{{ program?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/program-indicator', programIndicator()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

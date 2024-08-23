@@ -133,34 +133,6 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_programIndicators" jhiTranslate="dhis2AuditApp.program.programIndicators"
-            >Program Indicators</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="programIndicators"
-            id="field_programIndicators"
-            data-cy="programIndicators"
-            formControlName="programIndicators"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_programRuleVariables" jhiTranslate="dhis2AuditApp.program.programRuleVariables"
-            >Program Rule Variables</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="programRuleVariables"
-            id="field_programRuleVariables"
-            data-cy="programRuleVariables"
-            formControlName="programRuleVariables"
-          />
-        </div>
-
-        <div class="mb-3">
           <label class="form-label" for="field_onlyEnrollOnce" jhiTranslate="dhis2AuditApp.program.onlyEnrollOnce">Only Enroll Once</label>
           <input
             type="checkbox"
@@ -471,20 +443,6 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_attributeValuesCount" jhiTranslate="dhis2AuditApp.program.attributeValuesCount"
-            >Attribute Values Count</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            name="attributeValuesCount"
-            id="field_attributeValuesCount"
-            data-cy="attributeValuesCount"
-            formControlName="attributeValuesCount"
-          />
-        </div>
-
-        <div class="mb-3">
           <label class="form-label" for="field_organisationUnitsCount" jhiTranslate="dhis2AuditApp.program.organisationUnitsCount"
             >Organisation Units Count</label
           >
@@ -513,16 +471,16 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_programSectionsCount" jhiTranslate="dhis2AuditApp.program.programSectionsCount"
-            >Program Sections Count</label
+          <label class="form-label" for="field_programIndicatorsCount" jhiTranslate="dhis2AuditApp.program.programIndicatorsCount"
+            >Program Indicators Count</label
           >
           <input
             type="number"
             class="form-control"
-            name="programSectionsCount"
-            id="field_programSectionsCount"
-            data-cy="programSectionsCount"
-            formControlName="programSectionsCount"
+            name="programIndicatorsCount"
+            id="field_programIndicatorsCount"
+            data-cy="programIndicatorsCount"
+            formControlName="programIndicatorsCount"
           />
         </div>
 
@@ -540,6 +498,65 @@
             id="field_programTrackedEntityAttributesCount"
             data-cy="programTrackedEntityAttributesCount"
             formControlName="programTrackedEntityAttributesCount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_organisationUnitsContent" jhiTranslate="dhis2AuditApp.program.organisationUnitsContent"
+            >Organisation Units Content</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="organisationUnitsContent"
+            id="field_organisationUnitsContent"
+            data-cy="organisationUnitsContent"
+            formControlName="organisationUnitsContent"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_programStagesContent" jhiTranslate="dhis2AuditApp.program.programStagesContent"
+            >Program Stages Content</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="programStagesContent"
+            id="field_programStagesContent"
+            data-cy="programStagesContent"
+            formControlName="programStagesContent"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_programIndicatorsContent" jhiTranslate="dhis2AuditApp.program.programIndicatorsContent"
+            >Program Indicators Content</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="programIndicatorsContent"
+            id="field_programIndicatorsContent"
+            data-cy="programIndicatorsContent"
+            formControlName="programIndicatorsContent"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_programTrackedEntityAttributesContent"
+            jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributesContent"
+            >Program Tracked Entity Attributes Content</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="programTrackedEntityAttributesContent"
+            id="field_programTrackedEntityAttributesContent"
+            data-cy="programTrackedEntityAttributesContent"
+            formControlName="programTrackedEntityAttributesContent"
           />
         </div>
 
@@ -649,18 +666,20 @@
         </div>
 
         <div class="mb-3">
-          <label for="field_dataElements" jhiTranslate="dhis2AuditApp.program.dataElements">Data Elements</label>
+          <label for="field_programTrackedEntityAttributes" jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributes"
+            >Program Tracked Entity Attributes</label
+          >
           <select
             class="form-control"
-            id="field_dataElements"
-            data-cy="dataElements"
+            id="field_programTrackedEntityAttributes"
+            data-cy="programTrackedEntityAttributes"
             multiple
-            name="dataElements"
-            formControlName="dataElements"
-            [compareWith]="compareDataelement"
+            name="programTrackedEntityAttributes"
+            formControlName="programTrackedEntityAttributes"
+            [compareWith]="compareTrackedEntityAttribute"
           >
-            @for (dataelementOption of dataelementsSharedCollection; track $index) {
-              <option [ngValue]="dataelementOption">{{ dataelementOption.id }}</option>
+            @for (trackedEntityAttributeOption of trackedEntityAttributesSharedCollection; track $index) {
+              <option [ngValue]="trackedEntityAttributeOption">{{ trackedEntityAttributeOption.id }}</option>
             }
           </select>
         </div>
@@ -678,6 +697,40 @@
           >
             @for (organisationUnitOption of organisationUnitsSharedCollection; track $index) {
               <option [ngValue]="organisationUnitOption">{{ organisationUnitOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_programIndicators" jhiTranslate="dhis2AuditApp.program.programIndicators">Program Indicators</label>
+          <select
+            class="form-control"
+            id="field_programIndicators"
+            data-cy="programIndicators"
+            multiple
+            name="programIndicators"
+            formControlName="programIndicators"
+            [compareWith]="compareProgramIndicator"
+          >
+            @for (programIndicatorOption of programIndicatorsSharedCollection; track $index) {
+              <option [ngValue]="programIndicatorOption">{{ programIndicatorOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_programStages" jhiTranslate="dhis2AuditApp.program.programStage">Program Stage</label>
+          <select
+            class="form-control"
+            id="field_programStages"
+            data-cy="programStage"
+            multiple
+            name="programStages"
+            formControlName="programStages"
+            [compareWith]="compareProgramStage"
+          >
+            @for (programStageOption of programStagesSharedCollection; track $index) {
+              <option [ngValue]="programStageOption">{{ programStageOption.id }}</option>
             }
           </select>
         </div>

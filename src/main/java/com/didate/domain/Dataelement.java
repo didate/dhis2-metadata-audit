@@ -109,19 +109,16 @@ public class Dataelement implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Optionset optionSet;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dataElements")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dataSetElements")
     @JsonIgnoreProperties(
-        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataElements", "organisationUnits" },
-        allowSetters = true
-    )
-    private Set<Program> programs = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dataElements")
-    @JsonIgnoreProperties(
-        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataElements", "organisationUnits" },
+        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataSetElements", "indicators", "organisationUnits" },
         allowSetters = true
     )
     private Set<Dataset> datasets = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "programStageDataElements")
+    @JsonIgnoreProperties(value = { "createdBy", "lastUpdatedBy", "program", "programStageDataElements", "programs" }, allowSetters = true)
+    private Set<ProgramStage> programStages = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -437,47 +434,16 @@ public class Dataelement implements Serializable {
         return this;
     }
 
-    public Set<Program> getPrograms() {
-        return this.programs;
-    }
-
-    public void setPrograms(Set<Program> programs) {
-        if (this.programs != null) {
-            this.programs.forEach(i -> i.removeDataElements(this));
-        }
-        if (programs != null) {
-            programs.forEach(i -> i.addDataElements(this));
-        }
-        this.programs = programs;
-    }
-
-    public Dataelement programs(Set<Program> programs) {
-        this.setPrograms(programs);
-        return this;
-    }
-
-    public Dataelement addProgram(Program program) {
-        this.programs.add(program);
-        program.getDataElements().add(this);
-        return this;
-    }
-
-    public Dataelement removeProgram(Program program) {
-        this.programs.remove(program);
-        program.getDataElements().remove(this);
-        return this;
-    }
-
     public Set<Dataset> getDatasets() {
         return this.datasets;
     }
 
     public void setDatasets(Set<Dataset> datasets) {
         if (this.datasets != null) {
-            this.datasets.forEach(i -> i.removeDataElements(this));
+            this.datasets.forEach(i -> i.removeDataSetElements(this));
         }
         if (datasets != null) {
-            datasets.forEach(i -> i.addDataElements(this));
+            datasets.forEach(i -> i.addDataSetElements(this));
         }
         this.datasets = datasets;
     }
@@ -489,13 +455,44 @@ public class Dataelement implements Serializable {
 
     public Dataelement addDataset(Dataset dataset) {
         this.datasets.add(dataset);
-        dataset.getDataElements().add(this);
+        dataset.getDataSetElements().add(this);
         return this;
     }
 
     public Dataelement removeDataset(Dataset dataset) {
         this.datasets.remove(dataset);
-        dataset.getDataElements().remove(this);
+        dataset.getDataSetElements().remove(this);
+        return this;
+    }
+
+    public Set<ProgramStage> getProgramStages() {
+        return this.programStages;
+    }
+
+    public void setProgramStages(Set<ProgramStage> programStages) {
+        if (this.programStages != null) {
+            this.programStages.forEach(i -> i.removeProgramStageDataElements(this));
+        }
+        if (programStages != null) {
+            programStages.forEach(i -> i.addProgramStageDataElements(this));
+        }
+        this.programStages = programStages;
+    }
+
+    public Dataelement programStages(Set<ProgramStage> programStages) {
+        this.setProgramStages(programStages);
+        return this;
+    }
+
+    public Dataelement addProgramStage(ProgramStage programStage) {
+        this.programStages.add(programStage);
+        programStage.getProgramStageDataElements().add(this);
+        return this;
+    }
+
+    public Dataelement removeProgramStage(ProgramStage programStage) {
+        this.programStages.remove(programStage);
+        programStage.getProgramStageDataElements().remove(this);
         return this;
     }
 

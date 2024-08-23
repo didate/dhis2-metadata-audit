@@ -41,7 +41,8 @@ type DatasetFormDefaults = Pick<
   | 'renderAsTabs'
   | 'renderHorizontally'
   | 'compulsoryFieldsCompleteOnly'
-  | 'dataElements'
+  | 'dataSetElements'
+  | 'indicators'
   | 'organisationUnits'
 >;
 
@@ -75,12 +76,19 @@ type DatasetFormGroupContent = {
   displayShortName: FormControl<DatasetFormRawValue['displayShortName']>;
   displayDescription: FormControl<DatasetFormRawValue['displayDescription']>;
   displayFormName: FormControl<DatasetFormRawValue['displayFormName']>;
+  dataSetElementsCount: FormControl<DatasetFormRawValue['dataSetElementsCount']>;
+  indicatorsCount: FormControl<DatasetFormRawValue['indicatorsCount']>;
+  organisationUnitsCount: FormControl<DatasetFormRawValue['organisationUnitsCount']>;
+  dataSetElementsContent: FormControl<DatasetFormRawValue['dataSetElementsContent']>;
+  indicatorsContent: FormControl<DatasetFormRawValue['indicatorsContent']>;
+  organisationUnitsContent: FormControl<DatasetFormRawValue['organisationUnitsContent']>;
   track: FormControl<DatasetFormRawValue['track']>;
   project: FormControl<DatasetFormRawValue['project']>;
   createdBy: FormControl<DatasetFormRawValue['createdBy']>;
   lastUpdatedBy: FormControl<DatasetFormRawValue['lastUpdatedBy']>;
   categoryCombo: FormControl<DatasetFormRawValue['categoryCombo']>;
-  dataElements: FormControl<DatasetFormRawValue['dataElements']>;
+  dataSetElements: FormControl<DatasetFormRawValue['dataSetElements']>;
+  indicators: FormControl<DatasetFormRawValue['indicators']>;
   organisationUnits: FormControl<DatasetFormRawValue['organisationUnits']>;
 };
 
@@ -133,6 +141,12 @@ export class DatasetFormService {
       displayShortName: new FormControl(datasetRawValue.displayShortName),
       displayDescription: new FormControl(datasetRawValue.displayDescription),
       displayFormName: new FormControl(datasetRawValue.displayFormName),
+      dataSetElementsCount: new FormControl(datasetRawValue.dataSetElementsCount),
+      indicatorsCount: new FormControl(datasetRawValue.indicatorsCount),
+      organisationUnitsCount: new FormControl(datasetRawValue.organisationUnitsCount),
+      dataSetElementsContent: new FormControl(datasetRawValue.dataSetElementsContent),
+      indicatorsContent: new FormControl(datasetRawValue.indicatorsContent),
+      organisationUnitsContent: new FormControl(datasetRawValue.organisationUnitsContent),
       track: new FormControl(datasetRawValue.track, {
         validators: [Validators.required],
       }),
@@ -144,7 +158,8 @@ export class DatasetFormService {
         validators: [Validators.required],
       }),
       categoryCombo: new FormControl(datasetRawValue.categoryCombo),
-      dataElements: new FormControl(datasetRawValue.dataElements ?? []),
+      dataSetElements: new FormControl(datasetRawValue.dataSetElements ?? []),
+      indicators: new FormControl(datasetRawValue.indicators ?? []),
       organisationUnits: new FormControl(datasetRawValue.organisationUnits ?? []),
     });
   }
@@ -178,7 +193,8 @@ export class DatasetFormService {
       renderAsTabs: false,
       renderHorizontally: false,
       compulsoryFieldsCompleteOnly: false,
-      dataElements: [],
+      dataSetElements: [],
+      indicators: [],
       organisationUnits: [],
     };
   }
@@ -198,7 +214,8 @@ export class DatasetFormService {
       ...dataset,
       created: dataset.created ? dataset.created.format(DATE_TIME_FORMAT) : undefined,
       lastUpdated: dataset.lastUpdated ? dataset.lastUpdated.format(DATE_TIME_FORMAT) : undefined,
-      dataElements: dataset.dataElements ?? [],
+      dataSetElements: dataset.dataSetElements ?? [],
+      indicators: dataset.indicators ?? [],
       organisationUnits: dataset.organisationUnits ?? [],
     };
   }

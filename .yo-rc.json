@@ -31,13 +31,15 @@
       "ProgramRuleVariable",
       "TrackedEntityAttribute",
       "OptionGroup",
-      "OrganisationUnit"
+      "OrganisationUnit",
+      "ProgramStage",
+      "ProgramIndicator"
     ],
     "feignClient": null,
     "jhipsterVersion": "8.6.0",
     "jwtSecretKey": "NmRmZTFkYzM3MTFjYWU0MzUxNWM5ZDQ4MWU1YWYxNjU0OTNkNzVjNjIxN2VjYjdjMDA1OGIzOGUxM2IzZTYzNzUxYzBiMjRhYTY5ZWRiMWE0MTJmZWRjMTIzZmE3NDhlYjhmZDU4ZjU4YTI2ZDA4NDAxMWNkZGVkY2E5NWJiMGY=",
     "languages": ["fr", "en"],
-    "lastLiquibaseTimestamp": 1724378755000,
+    "lastLiquibaseTimestamp": 1724443121000,
     "messageBroker": false,
     "microfrontend": null,
     "microfrontends": [],

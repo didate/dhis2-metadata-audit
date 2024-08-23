@@ -385,6 +385,23 @@
             }
           </select>
         </div>
+
+        <div class="mb-3">
+          <label for="field_programs" jhiTranslate="dhis2AuditApp.trackedEntityAttribute.program">Program</label>
+          <select
+            class="form-control"
+            id="field_programs"
+            data-cy="program"
+            multiple
+            name="programs"
+            formControlName="programs"
+            [compareWith]="compareProgram"
+          >
+            @for (programOption of programsSharedCollection; track $index) {
+              <option [ngValue]="programOption">{{ programOption.id }}</option>
+            }
+          </select>
+        </div>
       </div>
 
       <div>

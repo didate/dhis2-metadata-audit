@@ -65,10 +65,10 @@ describe('ProgramRuleVariable Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Project query and add missing value', () => {
       const programRuleVariable: IProgramRuleVariable = { id: 'CBA' };
-      const project: IProject = { id: 17170 };
+      const project: IProject = { id: 2875 };
       programRuleVariable.project = project;
 
-      const projectCollection: IProject[] = [{ id: 25831 }];
+      const projectCollection: IProject[] = [{ id: 21551 }];
       jest.spyOn(projectService, 'query').mockReturnValue(of(new HttpResponse({ body: projectCollection })));
       const additionalProjects = [project];
       const expectedCollection: IProject[] = [...additionalProjects, ...projectCollection];
@@ -87,12 +87,12 @@ describe('ProgramRuleVariable Management Update Component', () => {
 
     it('Should call DHISUser query and add missing value', () => {
       const programRuleVariable: IProgramRuleVariable = { id: 'CBA' };
-      const createdBy: IDHISUser = { id: '7c1d78d8-a5fc-4722-a915-7c85c45c7a63' };
+      const createdBy: IDHISUser = { id: 'b940de5e-29c0-409d-aace-cc9b9017e756' };
       programRuleVariable.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: 'c265f5e8-8976-4a73-b2cd-a47e6b684301' };
+      const lastUpdatedBy: IDHISUser = { id: '2cf65868-226a-4e27-83c4-d5c263962b22' };
       programRuleVariable.lastUpdatedBy = lastUpdatedBy;
 
-      const dHISUserCollection: IDHISUser[] = [{ id: '3a486e5d-92ef-4b6d-a551-f71f17d2119b' }];
+      const dHISUserCollection: IDHISUser[] = [{ id: 'fa514a9f-2adc-4574-a2e2-5dc08d71e139' }];
       jest.spyOn(dHISUserService, 'query').mockReturnValue(of(new HttpResponse({ body: dHISUserCollection })));
       const additionalDHISUsers = [createdBy, lastUpdatedBy];
       const expectedCollection: IDHISUser[] = [...additionalDHISUsers, ...dHISUserCollection];
@@ -111,10 +111,10 @@ describe('ProgramRuleVariable Management Update Component', () => {
 
     it('Should call Program query and add missing value', () => {
       const programRuleVariable: IProgramRuleVariable = { id: 'CBA' };
-      const program: IProgram = { id: 'd9b881ce-9d36-4959-bad9-fe5d71a24a47' };
+      const program: IProgram = { id: '6d7e11a1-bc1d-4d73-8a99-7fbd2fb31180' };
       programRuleVariable.program = program;
 
-      const programCollection: IProgram[] = [{ id: '91ca0439-5b70-4624-a86c-75e4dfc84858' }];
+      const programCollection: IProgram[] = [{ id: '000860d6-e681-450f-9f6c-b4b9531ab784' }];
       jest.spyOn(programService, 'query').mockReturnValue(of(new HttpResponse({ body: programCollection })));
       const additionalPrograms = [program];
       const expectedCollection: IProgram[] = [...additionalPrograms, ...programCollection];
@@ -133,10 +133,10 @@ describe('ProgramRuleVariable Management Update Component', () => {
 
     it('Should call TrackedEntityAttribute query and add missing value', () => {
       const programRuleVariable: IProgramRuleVariable = { id: 'CBA' };
-      const trackedEntityAttribute: ITrackedEntityAttribute = { id: '722e7e17-e356-4626-9a55-cd4fcb147186' };
+      const trackedEntityAttribute: ITrackedEntityAttribute = { id: '8bbba7c6-7403-488f-98ef-3f68f2b81cc4' };
       programRuleVariable.trackedEntityAttribute = trackedEntityAttribute;
 
-      const trackedEntityAttributeCollection: ITrackedEntityAttribute[] = [{ id: 'e08cfa8b-9334-4626-9741-beacd434583c' }];
+      const trackedEntityAttributeCollection: ITrackedEntityAttribute[] = [{ id: '7a666589-627b-4fe3-8c55-5253e49838a8' }];
       jest.spyOn(trackedEntityAttributeService, 'query').mockReturnValue(of(new HttpResponse({ body: trackedEntityAttributeCollection })));
       const additionalTrackedEntityAttributes = [trackedEntityAttribute];
       const expectedCollection: ITrackedEntityAttribute[] = [...additionalTrackedEntityAttributes, ...trackedEntityAttributeCollection];
@@ -155,10 +155,10 @@ describe('ProgramRuleVariable Management Update Component', () => {
 
     it('Should call Dataelement query and add missing value', () => {
       const programRuleVariable: IProgramRuleVariable = { id: 'CBA' };
-      const dataElement: IDataelement = { id: '4c279eb3-8ca1-45ef-ae01-abbb081db524' };
+      const dataElement: IDataelement = { id: 'c9b1aab0-fe4c-480b-8e7d-8958fe342234' };
       programRuleVariable.dataElement = dataElement;
 
-      const dataelementCollection: IDataelement[] = [{ id: '8596feb3-2ab2-4750-831a-15184e4ad738' }];
+      const dataelementCollection: IDataelement[] = [{ id: 'bd0c5c67-5ac2-46c5-9d0f-3315d52e555e' }];
       jest.spyOn(dataelementService, 'query').mockReturnValue(of(new HttpResponse({ body: dataelementCollection })));
       const additionalDataelements = [dataElement];
       const expectedCollection: IDataelement[] = [...additionalDataelements, ...dataelementCollection];
@@ -177,17 +177,17 @@ describe('ProgramRuleVariable Management Update Component', () => {
 
     it('Should update editForm', () => {
       const programRuleVariable: IProgramRuleVariable = { id: 'CBA' };
-      const project: IProject = { id: 1285 };
+      const project: IProject = { id: 27247 };
       programRuleVariable.project = project;
-      const createdBy: IDHISUser = { id: '437effae-c8bb-4500-88fd-c2cf4c0ef60d' };
+      const createdBy: IDHISUser = { id: 'dab88731-da1d-43f1-8244-d01157d51377' };
       programRuleVariable.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '49da631e-3197-4bfd-9133-ddc69352cd0e' };
+      const lastUpdatedBy: IDHISUser = { id: '751a3ac9-1aba-4507-a697-b2aea98530d8' };
       programRuleVariable.lastUpdatedBy = lastUpdatedBy;
-      const program: IProgram = { id: '0a0b3c4f-afc5-4494-984f-4bdac481b149' };
+      const program: IProgram = { id: '9be5008c-cc77-4905-be86-2c98fbc9de33' };
       programRuleVariable.program = program;
-      const trackedEntityAttribute: ITrackedEntityAttribute = { id: '95f9d68d-354f-46fa-9b9e-de1d917449d7' };
+      const trackedEntityAttribute: ITrackedEntityAttribute = { id: '877afaca-cf6e-47c2-8c5e-7430bec98263' };
       programRuleVariable.trackedEntityAttribute = trackedEntityAttribute;
-      const dataElement: IDataelement = { id: '037dc16d-d33e-4f40-9d38-0f19a4f422e5' };
+      const dataElement: IDataelement = { id: '2dff6519-531c-4512-931f-345f46849675' };
       programRuleVariable.dataElement = dataElement;
 
       activatedRoute.data = of({ programRuleVariable });

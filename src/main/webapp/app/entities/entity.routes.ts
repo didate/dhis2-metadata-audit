@@ -86,6 +86,16 @@ const routes: Routes = [
     data: { pageTitle: 'dhis2AuditApp.organisationUnit.home.title' },
     loadChildren: () => import('./organisation-unit/organisation-unit.routes'),
   },
+  {
+    path: 'program-stage',
+    data: { pageTitle: 'dhis2AuditApp.programStage.home.title' },
+    loadChildren: () => import('./program-stage/program-stage.routes'),
+  },
+  {
+    path: 'program-indicator',
+    data: { pageTitle: 'dhis2AuditApp.programIndicator.home.title' },
+    loadChildren: () => import('./program-indicator/program-indicator.routes'),
+  },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];
 

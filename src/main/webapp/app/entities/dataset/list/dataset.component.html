@@ -238,6 +238,48 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="dataSetElementsCount">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.dataset.dataSetElementsCount">Data Set Elements Count</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="indicatorsCount">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.dataset.indicatorsCount">Indicators Count</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="organisationUnitsCount">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.dataset.organisationUnitsCount">Organisation Units Count</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dataSetElementsContent">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.dataset.dataSetElementsContent">Data Set Elements Content</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="indicatorsContent">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.dataset.indicatorsContent">Indicators Content</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="organisationUnitsContent">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.dataset.organisationUnitsContent">Organisation Units Content</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="track">
               <div class="d-flex">
                 <span jhiTranslate="dhis2AuditApp.dataset.track">Track</span>
@@ -306,6 +348,12 @@
               <td>{{ dataset.displayShortName }}</td>
               <td>{{ dataset.displayDescription }}</td>
               <td>{{ dataset.displayFormName }}</td>
+              <td>{{ dataset.dataSetElementsCount }}</td>
+              <td>{{ dataset.indicatorsCount }}</td>
+              <td>{{ dataset.organisationUnitsCount }}</td>
+              <td>{{ dataset.dataSetElementsContent }}</td>
+              <td>{{ dataset.indicatorsContent }}</td>
+              <td>{{ dataset.organisationUnitsContent }}</td>
               <td [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (dataset.track ?? 'null')">
                 {{ { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[dataset.track ?? 'null'] }}
               </td>

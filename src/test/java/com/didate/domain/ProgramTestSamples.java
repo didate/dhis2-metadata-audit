@@ -21,8 +21,6 @@ public class ProgramTestSamples {
             .incidentDateLabel("incidentDateLabel1")
             .programType("programType1")
             .userRoles("userRoles1")
-            .programIndicators("programIndicators1")
-            .programRuleVariables("programRuleVariables1")
             .notificationTemplates("notificationTemplates1")
             .trackedEntityType("trackedEntityType1")
             .style("style1")
@@ -33,11 +31,14 @@ public class ProgramTestSamples {
             .displayDescription("displayDescription1")
             .displayFormName("displayFormName1")
             .displayName("displayName1")
-            .attributeValuesCount(1)
             .organisationUnitsCount(1)
             .programStagesCount(1)
-            .programSectionsCount(1)
-            .programTrackedEntityAttributesCount(1);
+            .programIndicatorsCount(1)
+            .programTrackedEntityAttributesCount(1)
+            .organisationUnitsContent("organisationUnitsContent1")
+            .programStagesContent("programStagesContent1")
+            .programIndicatorsContent("programIndicatorsContent1")
+            .programTrackedEntityAttributesContent("programTrackedEntityAttributesContent1");
     }
 
     public static Program getProgramSample2() {
@@ -52,8 +53,6 @@ public class ProgramTestSamples {
             .incidentDateLabel("incidentDateLabel2")
             .programType("programType2")
             .userRoles("userRoles2")
-            .programIndicators("programIndicators2")
-            .programRuleVariables("programRuleVariables2")
             .notificationTemplates("notificationTemplates2")
             .trackedEntityType("trackedEntityType2")
             .style("style2")
@@ -64,11 +63,14 @@ public class ProgramTestSamples {
             .displayDescription("displayDescription2")
             .displayFormName("displayFormName2")
             .displayName("displayName2")
-            .attributeValuesCount(2)
             .organisationUnitsCount(2)
             .programStagesCount(2)
-            .programSectionsCount(2)
-            .programTrackedEntityAttributesCount(2);
+            .programIndicatorsCount(2)
+            .programTrackedEntityAttributesCount(2)
+            .organisationUnitsContent("organisationUnitsContent2")
+            .programStagesContent("programStagesContent2")
+            .programIndicatorsContent("programIndicatorsContent2")
+            .programTrackedEntityAttributesContent("programTrackedEntityAttributesContent2");
     }
 
     public static Program getProgramRandomSampleGenerator() {
@@ -83,8 +85,6 @@ public class ProgramTestSamples {
             .incidentDateLabel(UUID.randomUUID().toString())
             .programType(UUID.randomUUID().toString())
             .userRoles(UUID.randomUUID().toString())
-            .programIndicators(UUID.randomUUID().toString())
-            .programRuleVariables(UUID.randomUUID().toString())
             .notificationTemplates(UUID.randomUUID().toString())
             .trackedEntityType(UUID.randomUUID().toString())
             .style(UUID.randomUUID().toString())
@@ -95,10 +95,13 @@ public class ProgramTestSamples {
             .displayDescription(UUID.randomUUID().toString())
             .displayFormName(UUID.randomUUID().toString())
             .displayName(UUID.randomUUID().toString())
-            .attributeValuesCount(intCount.incrementAndGet())
             .organisationUnitsCount(intCount.incrementAndGet())
             .programStagesCount(intCount.incrementAndGet())
-            .programSectionsCount(intCount.incrementAndGet())
-            .programTrackedEntityAttributesCount(intCount.incrementAndGet());
+            .programIndicatorsCount(intCount.incrementAndGet())
+            .programTrackedEntityAttributesCount(intCount.incrementAndGet())
+            .organisationUnitsContent(UUID.randomUUID().toString())
+            .programStagesContent(UUID.randomUUID().toString())
+            .programIndicatorsContent(UUID.randomUUID().toString())
+            .programTrackedEntityAttributesContent(UUID.randomUUID().toString());
     }
 }

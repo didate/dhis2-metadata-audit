@@ -48,6 +48,7 @@ describe('TrackedEntityAttribute Form Service', () => {
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
             optionSet: expect.any(Object),
+            programs: expect.any(Object),
           }),
         );
       });
@@ -86,6 +87,7 @@ describe('TrackedEntityAttribute Form Service', () => {
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
             optionSet: expect.any(Object),
+            programs: expect.any(Object),
           }),
         );
       });

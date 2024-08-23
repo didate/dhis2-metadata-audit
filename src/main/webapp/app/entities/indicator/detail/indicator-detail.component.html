@@ -121,6 +121,15 @@
               </div>
             }
           </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.indicator.dataset">Dataset</span></dt>
+          <dd>
+            @for (dataset of indicator()!.datasets; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/dataset', dataset.id, 'view']">{{ dataset?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

@@ -81,12 +81,6 @@ public class ProgramServiceImpl implements ProgramService {
                 if (program.getUserRoles() != null) {
                     existingProgram.setUserRoles(program.getUserRoles());
                 }
-                if (program.getProgramIndicators() != null) {
-                    existingProgram.setProgramIndicators(program.getProgramIndicators());
-                }
-                if (program.getProgramRuleVariables() != null) {
-                    existingProgram.setProgramRuleVariables(program.getProgramRuleVariables());
-                }
                 if (program.getOnlyEnrollOnce() != null) {
                     existingProgram.setOnlyEnrollOnce(program.getOnlyEnrollOnce());
                 }
@@ -156,20 +150,29 @@ public class ProgramServiceImpl implements ProgramService {
                 if (program.getDisplayName() != null) {
                     existingProgram.setDisplayName(program.getDisplayName());
                 }
-                if (program.getAttributeValuesCount() != null) {
-                    existingProgram.setAttributeValuesCount(program.getAttributeValuesCount());
-                }
                 if (program.getOrganisationUnitsCount() != null) {
                     existingProgram.setOrganisationUnitsCount(program.getOrganisationUnitsCount());
                 }
                 if (program.getProgramStagesCount() != null) {
                     existingProgram.setProgramStagesCount(program.getProgramStagesCount());
                 }
-                if (program.getProgramSectionsCount() != null) {
-                    existingProgram.setProgramSectionsCount(program.getProgramSectionsCount());
+                if (program.getProgramIndicatorsCount() != null) {
+                    existingProgram.setProgramIndicatorsCount(program.getProgramIndicatorsCount());
                 }
                 if (program.getProgramTrackedEntityAttributesCount() != null) {
                     existingProgram.setProgramTrackedEntityAttributesCount(program.getProgramTrackedEntityAttributesCount());
+                }
+                if (program.getOrganisationUnitsContent() != null) {
+                    existingProgram.setOrganisationUnitsContent(program.getOrganisationUnitsContent());
+                }
+                if (program.getProgramStagesContent() != null) {
+                    existingProgram.setProgramStagesContent(program.getProgramStagesContent());
+                }
+                if (program.getProgramIndicatorsContent() != null) {
+                    existingProgram.setProgramIndicatorsContent(program.getProgramIndicatorsContent());
+                }
+                if (program.getProgramTrackedEntityAttributesContent() != null) {
+                    existingProgram.setProgramTrackedEntityAttributesContent(program.getProgramTrackedEntityAttributesContent());
                 }
                 if (program.getTrack() != null) {
                     existingProgram.setTrack(program.getTrack());

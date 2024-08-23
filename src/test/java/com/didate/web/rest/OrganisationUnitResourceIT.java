@@ -415,7 +415,7 @@ class OrganisationUnitResourceIT {
         OrganisationUnit partialUpdatedOrganisationUnit = new OrganisationUnit();
         partialUpdatedOrganisationUnit.setId(organisationUnit.getId());
 
-        partialUpdatedOrganisationUnit.name(UPDATED_NAME).track(UPDATED_TRACK);
+        partialUpdatedOrganisationUnit.name(UPDATED_NAME).path(UPDATED_PATH).level(UPDATED_LEVEL);
 
         restOrganisationUnitMockMvc
             .perform(

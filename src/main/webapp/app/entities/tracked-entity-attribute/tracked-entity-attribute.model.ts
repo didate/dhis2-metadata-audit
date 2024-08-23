@@ -2,6 +2,7 @@ import dayjs from 'dayjs/esm';
 import { IProject } from 'app/entities/project/project.model';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { IOptionset } from 'app/entities/optionset/optionset.model';
+import { IProgram } from 'app/entities/program/program.model';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface ITrackedEntityAttribute {
@@ -34,6 +35,7 @@ export interface ITrackedEntityAttribute {
   createdBy?: IDHISUser | null;
   lastUpdatedBy?: IDHISUser | null;
   optionSet?: IOptionset | null;
+  programs?: IProgram[] | null;
 }
 
 export type NewTrackedEntityAttribute = Omit<ITrackedEntityAttribute, 'id'> & { id: null };

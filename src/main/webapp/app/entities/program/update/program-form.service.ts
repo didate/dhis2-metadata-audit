@@ -27,8 +27,10 @@ type ProgramFormDefaults = Pick<
   | 'useFirstStageDuringRegistration'
   | 'registration'
   | 'withoutRegistration'
-  | 'dataElements'
+  | 'programTrackedEntityAttributes'
   | 'organisationUnits'
+  | 'programIndicators'
+  | 'programStages'
 >;
 
 type ProgramFormGroupContent = {
@@ -45,8 +47,6 @@ type ProgramFormGroupContent = {
   displayIncidentDate: FormControl<IProgram['displayIncidentDate']>;
   ignoreOverdueEvents: FormControl<IProgram['ignoreOverdueEvents']>;
   userRoles: FormControl<IProgram['userRoles']>;
-  programIndicators: FormControl<IProgram['programIndicators']>;
-  programRuleVariables: FormControl<IProgram['programRuleVariables']>;
   onlyEnrollOnce: FormControl<IProgram['onlyEnrollOnce']>;
   notificationTemplates: FormControl<IProgram['notificationTemplates']>;
   selectEnrollmentDatesInFuture: FormControl<IProgram['selectEnrollmentDatesInFuture']>;
@@ -70,18 +70,23 @@ type ProgramFormGroupContent = {
   displayDescription: FormControl<IProgram['displayDescription']>;
   displayFormName: FormControl<IProgram['displayFormName']>;
   displayName: FormControl<IProgram['displayName']>;
-  attributeValuesCount: FormControl<IProgram['attributeValuesCount']>;
   organisationUnitsCount: FormControl<IProgram['organisationUnitsCount']>;
   programStagesCount: FormControl<IProgram['programStagesCount']>;
-  programSectionsCount: FormControl<IProgram['programSectionsCount']>;
+  programIndicatorsCount: FormControl<IProgram['programIndicatorsCount']>;
   programTrackedEntityAttributesCount: FormControl<IProgram['programTrackedEntityAttributesCount']>;
+  organisationUnitsContent: FormControl<IProgram['organisationUnitsContent']>;
+  programStagesContent: FormControl<IProgram['programStagesContent']>;
+  programIndicatorsContent: FormControl<IProgram['programIndicatorsContent']>;
+  programTrackedEntityAttributesContent: FormControl<IProgram['programTrackedEntityAttributesContent']>;
   track: FormControl<IProgram['track']>;
   project: FormControl<IProgram['project']>;
   createdBy: FormControl<IProgram['createdBy']>;
   lastUpdatedBy: FormControl<IProgram['lastUpdatedBy']>;
   categoryCombo: FormControl<IProgram['categoryCombo']>;
-  dataElements: FormControl<IProgram['dataElements']>;
+  programTrackedEntityAttributes: FormControl<IProgram['programTrackedEntityAttributes']>;
   organisationUnits: FormControl<IProgram['organisationUnits']>;
+  programIndicators: FormControl<IProgram['programIndicators']>;
+  programStages: FormControl<IProgram['programStages']>;
 };
 
 export type ProgramFormGroup = FormGroup<ProgramFormGroupContent>;
@@ -113,8 +118,6 @@ export class ProgramFormService {
       displayIncidentDate: new FormControl(programRawValue.displayIncidentDate),
       ignoreOverdueEvents: new FormControl(programRawValue.ignoreOverdueEvents),
       userRoles: new FormControl(programRawValue.userRoles),
-      programIndicators: new FormControl(programRawValue.programIndicators),
-      programRuleVariables: new FormControl(programRawValue.programRuleVariables),
       onlyEnrollOnce: new FormControl(programRawValue.onlyEnrollOnce),
       notificationTemplates: new FormControl(programRawValue.notificationTemplates),
       selectEnrollmentDatesInFuture: new FormControl(programRawValue.selectEnrollmentDatesInFuture),
@@ -138,11 +141,14 @@ export class ProgramFormService {
       displayDescription: new FormControl(programRawValue.displayDescription),
       displayFormName: new FormControl(programRawValue.displayFormName),
       displayName: new FormControl(programRawValue.displayName),
-      attributeValuesCount: new FormControl(programRawValue.attributeValuesCount),
       organisationUnitsCount: new FormControl(programRawValue.organisationUnitsCount),
       programStagesCount: new FormControl(programRawValue.programStagesCount),
-      programSectionsCount: new FormControl(programRawValue.programSectionsCount),
+      programIndicatorsCount: new FormControl(programRawValue.programIndicatorsCount),
       programTrackedEntityAttributesCount: new FormControl(programRawValue.programTrackedEntityAttributesCount),
+      organisationUnitsContent: new FormControl(programRawValue.organisationUnitsContent),
+      programStagesContent: new FormControl(programRawValue.programStagesContent),
+      programIndicatorsContent: new FormControl(programRawValue.programIndicatorsContent),
+      programTrackedEntityAttributesContent: new FormControl(programRawValue.programTrackedEntityAttributesContent),
       track: new FormControl(programRawValue.track, {
         validators: [Validators.required],
       }),
@@ -154,8 +160,10 @@ export class ProgramFormService {
         validators: [Validators.required],
       }),
       categoryCombo: new FormControl(programRawValue.categoryCombo),
-      dataElements: new FormControl(programRawValue.dataElements ?? []),
+      programTrackedEntityAttributes: new FormControl(programRawValue.programTrackedEntityAttributes ?? []),
       organisationUnits: new FormControl(programRawValue.organisationUnits ?? []),
+      programIndicators: new FormControl(programRawValue.programIndicators ?? []),
+      programStages: new FormControl(programRawValue.programStages ?? []),
     });
   }
 
@@ -186,8 +194,10 @@ export class ProgramFormService {
       useFirstStageDuringRegistration: false,
       registration: false,
       withoutRegistration: false,
-      dataElements: [],
+      programTrackedEntityAttributes: [],
       organisationUnits: [],
+      programIndicators: [],
+      programStages: [],
     };
   }
 }

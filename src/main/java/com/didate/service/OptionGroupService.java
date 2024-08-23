@@ -18,6 +18,22 @@ public interface OptionGroupService {
     OptionGroup save(OptionGroup optionGroup);
 
     /**
+     * Updates a optionGroup.
+     *
+     * @param optionGroup the entity to update.
+     * @return the persisted entity.
+     */
+    OptionGroup update(OptionGroup optionGroup);
+
+    /**
+     * Partially updates a optionGroup.
+     *
+     * @param optionGroup the entity to update partially.
+     * @return the persisted entity.
+     */
+    Optional<OptionGroup> partialUpdate(OptionGroup optionGroup);
+
+    /**
      * Get all the optionGroups.
      *
      * @param pageable the pagination information.
@@ -32,4 +48,13 @@ public interface OptionGroupService {
      * @return the entity.
      */
     Optional<OptionGroup> findOne(String id);
+
+    /**
+     * Delete the "id" optionGroup.
+     *
+     * @param id the id of the entity.
+     */
+    void delete(String id);
+
+    Boolean exist(String id);
 }

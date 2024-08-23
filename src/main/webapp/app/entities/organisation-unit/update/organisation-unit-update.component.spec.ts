@@ -57,12 +57,12 @@ describe('OrganisationUnit Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call DHISUser query and add missing value', () => {
       const organisationUnit: IOrganisationUnit = { id: 'CBA' };
-      const createdBy: IDHISUser = { id: '8869f5f4-b11e-4411-8fe4-f6c37df5ae16' };
+      const createdBy: IDHISUser = { id: '60caddfb-e284-4888-9813-c010d7798d5b' };
       organisationUnit.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: 'c2e40186-8f85-4fd0-ab74-085f4ff58f8a' };
+      const lastUpdatedBy: IDHISUser = { id: '166cd1b5-1075-4880-8422-8c60d1dbb3cd' };
       organisationUnit.lastUpdatedBy = lastUpdatedBy;
 
-      const dHISUserCollection: IDHISUser[] = [{ id: 'e403f5a6-f54e-4430-883c-cbc68edbe404' }];
+      const dHISUserCollection: IDHISUser[] = [{ id: '683de805-c3a5-4a76-9b09-5ef733097c1c' }];
       jest.spyOn(dHISUserService, 'query').mockReturnValue(of(new HttpResponse({ body: dHISUserCollection })));
       const additionalDHISUsers = [createdBy, lastUpdatedBy];
       const expectedCollection: IDHISUser[] = [...additionalDHISUsers, ...dHISUserCollection];
@@ -81,10 +81,10 @@ describe('OrganisationUnit Management Update Component', () => {
 
     it('Should call Program query and add missing value', () => {
       const organisationUnit: IOrganisationUnit = { id: 'CBA' };
-      const programs: IProgram[] = [{ id: '88c4a3cc-203b-414e-bc29-6a978b158e34' }];
+      const programs: IProgram[] = [{ id: 'e48769fe-a44e-40d8-a702-f4bf5b07c4d8' }];
       organisationUnit.programs = programs;
 
-      const programCollection: IProgram[] = [{ id: '2232b8e0-d927-48f2-973b-954202165fce' }];
+      const programCollection: IProgram[] = [{ id: '2f4b8b48-131d-49fd-b37e-f425d161b3c1' }];
       jest.spyOn(programService, 'query').mockReturnValue(of(new HttpResponse({ body: programCollection })));
       const additionalPrograms = [...programs];
       const expectedCollection: IProgram[] = [...additionalPrograms, ...programCollection];
@@ -103,10 +103,10 @@ describe('OrganisationUnit Management Update Component', () => {
 
     it('Should call Dataset query and add missing value', () => {
       const organisationUnit: IOrganisationUnit = { id: 'CBA' };
-      const datasets: IDataset[] = [{ id: '330626f5-361c-42bb-9170-c34a52e76329' }];
+      const datasets: IDataset[] = [{ id: 'c98059f5-2e18-4875-bae5-d115203008b7' }];
       organisationUnit.datasets = datasets;
 
-      const datasetCollection: IDataset[] = [{ id: '5fca022c-19e5-4622-b01b-4d810faa5a6c' }];
+      const datasetCollection: IDataset[] = [{ id: 'e59291c9-9454-4674-a4d5-0a9c2c2a91b6' }];
       jest.spyOn(datasetService, 'query').mockReturnValue(of(new HttpResponse({ body: datasetCollection })));
       const additionalDatasets = [...datasets];
       const expectedCollection: IDataset[] = [...additionalDatasets, ...datasetCollection];
@@ -125,13 +125,13 @@ describe('OrganisationUnit Management Update Component', () => {
 
     it('Should update editForm', () => {
       const organisationUnit: IOrganisationUnit = { id: 'CBA' };
-      const createdBy: IDHISUser = { id: '16b6a8af-36b8-44b9-a34a-89aa67e95121' };
+      const createdBy: IDHISUser = { id: '7cf6b5c8-50f0-45a0-ac7b-fb22216348d3' };
       organisationUnit.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: 'a50e91e8-8243-431e-ba42-b6ba2482bf83' };
+      const lastUpdatedBy: IDHISUser = { id: '1f639dcb-bcdd-4dc7-af38-cac2ce7a327f' };
       organisationUnit.lastUpdatedBy = lastUpdatedBy;
-      const program: IProgram = { id: '2524678d-2133-41b6-a9a7-fb06474efa5a' };
+      const program: IProgram = { id: '47968a92-0c34-4b6d-bfac-e7ca5155da35' };
       organisationUnit.programs = [program];
-      const dataset: IDataset = { id: '4a920419-ec08-4366-a6ed-be80eeebffb8' };
+      const dataset: IDataset = { id: 'be20d7dd-bf5c-4f57-8115-03be7b9675c8' };
       organisationUnit.datasets = [dataset];
 
       activatedRoute.data = of({ organisationUnit });

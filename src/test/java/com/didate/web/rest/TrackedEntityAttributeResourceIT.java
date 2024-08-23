@@ -494,15 +494,17 @@ class TrackedEntityAttributeResourceIT {
 
         partialUpdatedTrackedEntityAttribute
             .created(UPDATED_CREATED)
-            .name(UPDATED_NAME)
+            .shortName(UPDATED_SHORT_NAME)
             .valueType(UPDATED_VALUE_TYPE)
+            .confidential(UPDATED_CONFIDENTIAL)
+            .displayFormName(UPDATED_DISPLAY_FORM_NAME)
+            .uniquee(UPDATED_UNIQUEE)
+            .dimensionItemType(UPDATED_DIMENSION_ITEM_TYPE)
             .displayInListNoProgram(UPDATED_DISPLAY_IN_LIST_NO_PROGRAM)
-            .displayName(UPDATED_DISPLAY_NAME)
+            .skipSynchronization(UPDATED_SKIP_SYNCHRONIZATION)
             .periodOffset(UPDATED_PERIOD_OFFSET)
-            .orgunitScope(UPDATED_ORGUNIT_SCOPE)
             .dimensionItem(UPDATED_DIMENSION_ITEM)
-            .inherit(UPDATED_INHERIT)
-            .track(UPDATED_TRACK);
+            .optionSetValue(UPDATED_OPTION_SET_VALUE);
 
         restTrackedEntityAttributeMockMvc
             .perform(

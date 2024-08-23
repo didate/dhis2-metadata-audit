@@ -410,6 +410,23 @@
             }
           </div>
         }
+
+        <div class="mb-3">
+          <label for="field_datasets" jhiTranslate="dhis2AuditApp.indicator.dataset">Dataset</label>
+          <select
+            class="form-control"
+            id="field_datasets"
+            data-cy="dataset"
+            multiple
+            name="datasets"
+            formControlName="datasets"
+            [compareWith]="compareDataset"
+          >
+            @for (datasetOption of datasetsSharedCollection; track $index) {
+              <option [ngValue]="datasetOption">{{ datasetOption.id }}</option>
+            }
+          </select>
+        </div>
       </div>
 
       <div>

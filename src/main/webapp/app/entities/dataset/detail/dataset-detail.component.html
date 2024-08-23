@@ -127,6 +127,30 @@
           <dd>
             <span>{{ dataset()!.displayFormName }}</span>
           </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.dataSetElementsCount">Data Set Elements Count</span></dt>
+          <dd>
+            <span>{{ dataset()!.dataSetElementsCount }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.indicatorsCount">Indicators Count</span></dt>
+          <dd>
+            <span>{{ dataset()!.indicatorsCount }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.organisationUnitsCount">Organisation Units Count</span></dt>
+          <dd>
+            <span>{{ dataset()!.organisationUnitsCount }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.dataSetElementsContent">Data Set Elements Content</span></dt>
+          <dd>
+            <span>{{ dataset()!.dataSetElementsContent }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.indicatorsContent">Indicators Content</span></dt>
+          <dd>
+            <span>{{ dataset()!.indicatorsContent }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.organisationUnitsContent">Organisation Units Content</span></dt>
+          <dd>
+            <span>{{ dataset()!.organisationUnitsContent }}</span>
+          </dd>
           <dt><span jhiTranslate="dhis2AuditApp.dataset.track">Track</span></dt>
           <dd>
             <span [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (dataset()!.track ?? 'null')">{{
@@ -165,11 +189,20 @@
               </div>
             }
           </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataset.dataElements">Data Elements</span></dt>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.dataSetElements">Data Set Elements</span></dt>
           <dd>
-            @for (dataElements of dataset()!.dataElements; track $index; let last = $last) {
+            @for (dataSetElements of dataset()!.dataSetElements; track $index; let last = $last) {
               <span>
-                <a [routerLink]="['/dataelement', dataElements.id, 'view']">{{ dataElements?.id }}</a
+                <a [routerLink]="['/dataelement', dataSetElements.id, 'view']">{{ dataSetElements?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataset.indicators">Indicators</span></dt>
+          <dd>
+            @for (indicators of dataset()!.indicators; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/indicator', indicators.id, 'view']">{{ indicators?.id }}</a
                 >{{ last ? '' : ', ' }}
               </span>
             }

@@ -57,14 +57,6 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "programIndicators",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "programRuleVariables",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "onlyEnrollOnce",
       "fieldType": "Boolean"
     },
@@ -157,10 +149,6 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "attributeValuesCount",
-      "fieldType": "Integer"
-    },
-    {
       "fieldName": "organisationUnitsCount",
       "fieldType": "Integer"
     },
@@ -169,12 +157,28 @@
       "fieldType": "Integer"
     },
     {
-      "fieldName": "programSectionsCount",
+      "fieldName": "programIndicatorsCount",
       "fieldType": "Integer"
     },
     {
       "fieldName": "programTrackedEntityAttributesCount",
       "fieldType": "Integer"
+    },
+    {
+      "fieldName": "organisationUnitsContent",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "programStagesContent",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "programIndicatorsContent",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "programTrackedEntityAttributesContent",
+      "fieldType": "String"
     },
     {
       "fieldName": "track",
@@ -213,14 +217,26 @@
       "relationshipType": "many-to-one"
     },
     {
-      "otherEntityName": "dataelement",
-      "relationshipName": "dataElements",
+      "otherEntityName": "trackedEntityAttribute",
+      "relationshipName": "programTrackedEntityAttributes",
       "relationshipSide": "left",
       "relationshipType": "many-to-many"
     },
     {
       "otherEntityName": "organisationUnit",
       "relationshipName": "organisationUnits",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "programIndicator",
+      "relationshipName": "programIndicators",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "programStage",
+      "relationshipName": "programStage",
       "relationshipSide": "left",
       "relationshipType": "many-to-many"
     }

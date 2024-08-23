@@ -372,12 +372,7 @@ class ProgramRuleResourceIT {
         ProgramRule partialUpdatedProgramRule = new ProgramRule();
         partialUpdatedProgramRule.setId(programRule.getId());
 
-        partialUpdatedProgramRule
-            .name(UPDATED_NAME)
-            .displayName(UPDATED_DISPLAY_NAME)
-            .priority(UPDATED_PRIORITY)
-            .condition(UPDATED_CONDITION)
-            .track(UPDATED_TRACK);
+        partialUpdatedProgramRule.displayName(UPDATED_DISPLAY_NAME).priority(UPDATED_PRIORITY).condition(UPDATED_CONDITION);
 
         restProgramRuleMockMvc
             .perform(

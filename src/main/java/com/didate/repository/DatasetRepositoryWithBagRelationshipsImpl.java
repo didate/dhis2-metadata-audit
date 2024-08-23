@@ -24,7 +24,7 @@ public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetReposit
 
     @Override
     public Optional<Dataset> fetchBagRelationships(Optional<Dataset> dataset) {
-        return dataset.map(this::fetchDataElements).map(this::fetchOrganisationUnits);
+        return dataset.map(this::fetchDataSetElements).map(this::fetchIndicators).map(this::fetchOrganisationUnits);
     }
 
     @Override
@@ -34,24 +34,49 @@ public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetReposit
 
     @Override
     public List<Dataset> fetchBagRelationships(List<Dataset> datasets) {
-        return Optional.of(datasets).map(this::fetchDataElements).map(this::fetchOrganisationUnits).orElse(Collections.emptyList());
+        return Optional.of(datasets)
+            .map(this::fetchDataSetElements)
+            .map(this::fetchIndicators)
+            .map(this::fetchOrganisationUnits)
+            .orElse(Collections.emptyList());
     }
 
-    Dataset fetchDataElements(Dataset result) {
+    Dataset fetchDataSetElements(Dataset result) {
         return entityManager
-            .createQuery("select dataset from Dataset dataset left join fetch dataset.dataElements where dataset.id = :id", Dataset.class)
+            .createQuery(
+                "select dataset from Dataset dataset left join fetch dataset.dataSetElements where dataset.id = :id",
+                Dataset.class
+            )
             .setParameter(ID_PARAMETER, result.getId())
             .getSingleResult();
     }
 
-    List<Dataset> fetchDataElements(List<Dataset> datasets) {
+    List<Dataset> fetchDataSetElements(List<Dataset> datasets) {
         HashMap<Object, Integer> order = new HashMap<>();
         IntStream.range(0, datasets.size()).forEach(index -> order.put(datasets.get(index).getId(), index));
         List<Dataset> result = entityManager
             .createQuery(
-                "select dataset from Dataset dataset left join fetch dataset.dataElements where dataset in :datasets",
+                "select dataset from Dataset dataset left join fetch dataset.dataSetElements where dataset in :datasets",
                 Dataset.class
             )
+            .setParameter(DATASETS_PARAMETER, datasets)
+            .getResultList();
+        Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
+        return result;
+    }
+
+    Dataset fetchIndicators(Dataset result) {
+        return entityManager
+            .createQuery("select dataset from Dataset dataset left join fetch dataset.indicators where dataset.id = :id", Dataset.class)
+            .setParameter(ID_PARAMETER, result.getId())
+            .getSingleResult();
+    }
+
+    List<Dataset> fetchIndicators(List<Dataset> datasets) {
+        HashMap<Object, Integer> order = new HashMap<>();
+        IntStream.range(0, datasets.size()).forEach(index -> order.put(datasets.get(index).getId(), index));
+        List<Dataset> result = entityManager
+            .createQuery("select dataset from Dataset dataset left join fetch dataset.indicators where dataset in :datasets", Dataset.class)
             .setParameter(DATASETS_PARAMETER, datasets)
             .getResultList();
         Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));

@@ -63,14 +63,6 @@
           <dd>
             <span>{{ program()!.userRoles }}</span>
           </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.programIndicators">Program Indicators</span></dt>
-          <dd>
-            <span>{{ program()!.programIndicators }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.programRuleVariables">Program Rule Variables</span></dt>
-          <dd>
-            <span>{{ program()!.programRuleVariables }}</span>
-          </dd>
           <dt><span jhiTranslate="dhis2AuditApp.program.onlyEnrollOnce">Only Enroll Once</span></dt>
           <dd>
             <span>{{ program()!.onlyEnrollOnce }}</span>
@@ -163,10 +155,6 @@
           <dd>
             <span>{{ program()!.displayName }}</span>
           </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.attributeValuesCount">Attribute Values Count</span></dt>
-          <dd>
-            <span>{{ program()!.attributeValuesCount }}</span>
-          </dd>
           <dt><span jhiTranslate="dhis2AuditApp.program.organisationUnitsCount">Organisation Units Count</span></dt>
           <dd>
             <span>{{ program()!.organisationUnitsCount }}</span>
@@ -175,15 +163,35 @@
           <dd>
             <span>{{ program()!.programStagesCount }}</span>
           </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.programSectionsCount">Program Sections Count</span></dt>
+          <dt><span jhiTranslate="dhis2AuditApp.program.programIndicatorsCount">Program Indicators Count</span></dt>
           <dd>
-            <span>{{ program()!.programSectionsCount }}</span>
+            <span>{{ program()!.programIndicatorsCount }}</span>
           </dd>
           <dt>
             <span jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributesCount">Program Tracked Entity Attributes Count</span>
           </dt>
           <dd>
             <span>{{ program()!.programTrackedEntityAttributesCount }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.program.organisationUnitsContent">Organisation Units Content</span></dt>
+          <dd>
+            <span>{{ program()!.organisationUnitsContent }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.program.programStagesContent">Program Stages Content</span></dt>
+          <dd>
+            <span>{{ program()!.programStagesContent }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.program.programIndicatorsContent">Program Indicators Content</span></dt>
+          <dd>
+            <span>{{ program()!.programIndicatorsContent }}</span>
+          </dd>
+          <dt>
+            <span jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributesContent"
+              >Program Tracked Entity Attributes Content</span
+            >
+          </dt>
+          <dd>
+            <span>{{ program()!.programTrackedEntityAttributesContent }}</span>
           </dd>
           <dt><span jhiTranslate="dhis2AuditApp.program.track">Track</span></dt>
           <dd>
@@ -223,11 +231,13 @@
               </div>
             }
           </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.dataElements">Data Elements</span></dt>
+          <dt><span jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributes">Program Tracked Entity Attributes</span></dt>
           <dd>
-            @for (dataElements of program()!.dataElements; track $index; let last = $last) {
+            @for (programTrackedEntityAttributes of program()!.programTrackedEntityAttributes; track $index; let last = $last) {
               <span>
-                <a [routerLink]="['/dataelement', dataElements.id, 'view']">{{ dataElements?.id }}</a
+                <a [routerLink]="['/tracked-entity-attribute', programTrackedEntityAttributes.id, 'view']">{{
+                  programTrackedEntityAttributes?.id
+                }}</a
                 >{{ last ? '' : ', ' }}
               </span>
             }
@@ -237,6 +247,24 @@
             @for (organisationUnits of program()!.organisationUnits; track $index; let last = $last) {
               <span>
                 <a [routerLink]="['/organisation-unit', organisationUnits.id, 'view']">{{ organisationUnits?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.program.programIndicators">Program Indicators</span></dt>
+          <dd>
+            @for (programIndicators of program()!.programIndicators; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/program-indicator', programIndicators.id, 'view']">{{ programIndicators?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.program.programStage">Program Stage</span></dt>
+          <dd>
+            @for (programStage of program()!.programStages; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/program-stage', programStage.id, 'view']">{{ programStage?.id }}</a
                 >{{ last ? '' : ', ' }}
               </span>
             }

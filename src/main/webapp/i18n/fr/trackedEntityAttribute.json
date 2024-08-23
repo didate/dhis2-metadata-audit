@@ -45,7 +45,8 @@
       "project": "Project",
       "createdBy": "Created By",
       "lastUpdatedBy": "Last Updated By",
-      "optionSet": "Option Set"
+      "optionSet": "Option Set",
+      "program": "Program"
     }
   }
 }

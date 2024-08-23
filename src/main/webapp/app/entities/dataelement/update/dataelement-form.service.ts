@@ -28,7 +28,7 @@ type DataelementFormRawValue = FormValueOf<IDataelement>;
 
 type NewDataelementFormRawValue = FormValueOf<NewDataelement>;
 
-type DataelementFormDefaults = Pick<NewDataelement, 'id' | 'created' | 'lastUpdated' | 'zeroIsSignificant' | 'programs' | 'datasets'>;
+type DataelementFormDefaults = Pick<NewDataelement, 'id' | 'created' | 'lastUpdated' | 'zeroIsSignificant' | 'datasets' | 'programStages'>;
 
 type DataelementFormGroupContent = {
   id: FormControl<DataelementFormRawValue['id'] | NewDataelement['id']>;
@@ -55,8 +55,8 @@ type DataelementFormGroupContent = {
   lastUpdatedBy: FormControl<DataelementFormRawValue['lastUpdatedBy']>;
   categoryCombo: FormControl<DataelementFormRawValue['categoryCombo']>;
   optionSet: FormControl<DataelementFormRawValue['optionSet']>;
-  programs: FormControl<DataelementFormRawValue['programs']>;
   datasets: FormControl<DataelementFormRawValue['datasets']>;
+  programStages: FormControl<DataelementFormRawValue['programStages']>;
 };
 
 export type DataelementFormGroup = FormGroup<DataelementFormGroupContent>;
@@ -123,8 +123,8 @@ export class DataelementFormService {
       }),
       categoryCombo: new FormControl(dataelementRawValue.categoryCombo),
       optionSet: new FormControl(dataelementRawValue.optionSet),
-      programs: new FormControl(dataelementRawValue.programs ?? []),
       datasets: new FormControl(dataelementRawValue.datasets ?? []),
+      programStages: new FormControl(dataelementRawValue.programStages ?? []),
     });
   }
 
@@ -150,8 +150,8 @@ export class DataelementFormService {
       created: currentTime,
       lastUpdated: currentTime,
       zeroIsSignificant: false,
-      programs: [],
       datasets: [],
+      programStages: [],
     };
   }
 
@@ -172,8 +172,8 @@ export class DataelementFormService {
       ...dataelement,
       created: dataelement.created ? dataelement.created.format(DATE_TIME_FORMAT) : undefined,
       lastUpdated: dataelement.lastUpdated ? dataelement.lastUpdated.format(DATE_TIME_FORMAT) : undefined,
-      programs: dataelement.programs ?? [],
       datasets: dataelement.datasets ?? [],
+      programStages: dataelement.programStages ?? [],
     };
   }
 }

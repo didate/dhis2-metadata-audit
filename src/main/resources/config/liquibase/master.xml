@@ -27,6 +27,8 @@
     <include file="config/liquibase/changelog/20240823020553_added_entity_TrackedEntityAttribute.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240823020554_added_entity_OptionGroup.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240823020555_added_entity_OrganisationUnit.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823195840_added_entity_ProgramStage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823195841_added_entity_ProgramIndicator.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20240817154924_added_entity_constraints_PersonNotifier.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240817154929_added_entity_constraints_Dataelement.xml" relativeToChangelogFile="false"/>
@@ -41,6 +43,8 @@
     <include file="config/liquibase/changelog/20240823020552_added_entity_constraints_ProgramRuleVariable.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240823020553_added_entity_constraints_TrackedEntityAttribute.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240823020555_added_entity_constraints_OrganisationUnit.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823195840_added_entity_constraints_ProgramStage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240823195841_added_entity_constraints_ProgramIndicator.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 

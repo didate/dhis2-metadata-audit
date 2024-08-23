@@ -45,4 +45,27 @@ public class OptionGroupServiceImpl implements OptionGroupService {
         log.debug("Request to get OptionGroup : {}", id);
         return optionGroupRepository.findById(id);
     }
+
+    @Override
+    public void delete(String id) {
+        log.debug("Request to delete OptionGroup : {}", id);
+        optionGroupRepository.deleteById(id);
+    }
+
+    @Override
+    public OptionGroup update(OptionGroup optionGroup) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
+
+    @Override
+    public Optional<OptionGroup> partialUpdate(OptionGroup optionGroup) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'partialUpdate'");
+    }
+
+    @Override
+    public Boolean exist(String id) {
+        return optionGroupRepository.existsById(id);
+    }
 }

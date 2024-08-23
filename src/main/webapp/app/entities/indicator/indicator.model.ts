@@ -2,6 +2,7 @@ import dayjs from 'dayjs/esm';
 import { IProject } from 'app/entities/project/project.model';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { IIndicatortype } from 'app/entities/indicatortype/indicatortype.model';
+import { IDataset } from 'app/entities/dataset/dataset.model';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface IIndicator {
@@ -28,6 +29,7 @@ export interface IIndicator {
   createdBy?: IDHISUser | null;
   lastUpdatedBy?: IDHISUser | null;
   indicatorType?: IIndicatortype | null;
+  datasets?: IDataset[] | null;
 }
 
 export type NewIndicator = Omit<IIndicator, 'id'> & { id: null };

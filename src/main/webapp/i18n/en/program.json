@@ -30,8 +30,6 @@
       "displayIncidentDate": "Display Incident Date",
       "ignoreOverdueEvents": "Ignore Overdue Events",
       "userRoles": "User Roles",
-      "programIndicators": "Program Indicators",
-      "programRuleVariables": "Program Rule Variables",
       "onlyEnrollOnce": "Only Enroll Once",
       "notificationTemplates": "Notification Templates",
       "selectEnrollmentDatesInFuture": "Select Enrollment Dates In Future",
@@ -55,18 +53,23 @@
       "displayDescription": "Display Description",
       "displayFormName": "Display Form Name",
       "displayName": "Display Name",
-      "attributeValuesCount": "Attribute Values Count",
       "organisationUnitsCount": "Organisation Units Count",
       "programStagesCount": "Program Stages Count",
-      "programSectionsCount": "Program Sections Count",
+      "programIndicatorsCount": "Program Indicators Count",
       "programTrackedEntityAttributesCount": "Program Tracked Entity Attributes Count",
+      "organisationUnitsContent": "Organisation Units Content",
+      "programStagesContent": "Program Stages Content",
+      "programIndicatorsContent": "Program Indicators Content",
+      "programTrackedEntityAttributesContent": "Program Tracked Entity Attributes Content",
       "track": "Track",
       "project": "Project",
       "createdBy": "Created By",
       "lastUpdatedBy": "Last Updated By",
       "categoryCombo": "Category Combo",
-      "dataElements": "Data Elements",
-      "organisationUnits": "Organisation Units"
+      "programTrackedEntityAttributes": "Program Tracked Entity Attributes",
+      "organisationUnits": "Organisation Units",
+      "programIndicators": "Program Indicators",
+      "programStage": "Program Stage"
     }
   }
 }

@@ -4,6 +4,7 @@ import static com.didate.domain.CategorycomboTestSamples.*;
 import static com.didate.domain.DHISUserTestSamples.*;
 import static com.didate.domain.DataelementTestSamples.*;
 import static com.didate.domain.DatasetTestSamples.*;
+import static com.didate.domain.IndicatorTestSamples.*;
 import static com.didate.domain.OrganisationUnitTestSamples.*;
 import static com.didate.domain.ProjectTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -78,21 +79,39 @@ class DatasetTest {
     }
 
     @Test
-    void dataElementsTest() {
+    void dataSetElementsTest() {
         Dataset dataset = getDatasetRandomSampleGenerator();
         Dataelement dataelementBack = getDataelementRandomSampleGenerator();
 
-        dataset.addDataElements(dataelementBack);
-        assertThat(dataset.getDataElements()).containsOnly(dataelementBack);
+        dataset.addDataSetElements(dataelementBack);
+        assertThat(dataset.getDataSetElements()).containsOnly(dataelementBack);
 
-        dataset.removeDataElements(dataelementBack);
-        assertThat(dataset.getDataElements()).doesNotContain(dataelementBack);
+        dataset.removeDataSetElements(dataelementBack);
+        assertThat(dataset.getDataSetElements()).doesNotContain(dataelementBack);
 
-        dataset.dataElements(new HashSet<>(Set.of(dataelementBack)));
-        assertThat(dataset.getDataElements()).containsOnly(dataelementBack);
+        dataset.dataSetElements(new HashSet<>(Set.of(dataelementBack)));
+        assertThat(dataset.getDataSetElements()).containsOnly(dataelementBack);
 
-        dataset.setDataElements(new HashSet<>());
-        assertThat(dataset.getDataElements()).doesNotContain(dataelementBack);
+        dataset.setDataSetElements(new HashSet<>());
+        assertThat(dataset.getDataSetElements()).doesNotContain(dataelementBack);
+    }
+
+    @Test
+    void indicatorsTest() {
+        Dataset dataset = getDatasetRandomSampleGenerator();
+        Indicator indicatorBack = getIndicatorRandomSampleGenerator();
+
+        dataset.addIndicators(indicatorBack);
+        assertThat(dataset.getIndicators()).containsOnly(indicatorBack);
+
+        dataset.removeIndicators(indicatorBack);
+        assertThat(dataset.getIndicators()).doesNotContain(indicatorBack);
+
+        dataset.indicators(new HashSet<>(Set.of(indicatorBack)));
+        assertThat(dataset.getIndicators()).containsOnly(indicatorBack);
+
+        dataset.setIndicators(new HashSet<>());
+        assertThat(dataset.getIndicators()).doesNotContain(indicatorBack);
     }
 
     @Test

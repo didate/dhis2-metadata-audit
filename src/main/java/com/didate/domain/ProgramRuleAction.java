@@ -70,11 +70,11 @@ public class ProgramRuleAction implements Serializable {
     private ProgramRule programRule;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "optionSet" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "optionSet", "programs" }, allowSetters = true)
     private TrackedEntityAttribute trackedEntityAttribute;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "optionSet" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "optionSet", "programs" }, allowSetters = true)
     private TrackedEntityAttribute dataElement;
 
     @ManyToOne(fetch = FetchType.LAZY)

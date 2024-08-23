@@ -3,6 +3,7 @@ import { IProject } from 'app/entities/project/project.model';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { ICategorycombo } from 'app/entities/categorycombo/categorycombo.model';
 import { IDataelement } from 'app/entities/dataelement/dataelement.model';
+import { IIndicator } from 'app/entities/indicator/indicator.model';
 import { IOrganisationUnit } from 'app/entities/organisation-unit/organisation-unit.model';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
@@ -36,12 +37,19 @@ export interface IDataset {
   displayShortName?: string | null;
   displayDescription?: string | null;
   displayFormName?: string | null;
+  dataSetElementsCount?: number | null;
+  indicatorsCount?: number | null;
+  organisationUnitsCount?: number | null;
+  dataSetElementsContent?: string | null;
+  indicatorsContent?: string | null;
+  organisationUnitsContent?: string | null;
   track?: keyof typeof TypeTrack | null;
   project?: IProject | null;
   createdBy?: IDHISUser | null;
   lastUpdatedBy?: IDHISUser | null;
   categoryCombo?: ICategorycombo | null;
-  dataElements?: IDataelement[] | null;
+  dataSetElements?: IDataelement[] | null;
+  indicators?: IIndicator[] | null;
   organisationUnits?: IOrganisationUnit[] | null;
 }
 

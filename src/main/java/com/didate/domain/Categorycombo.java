@@ -1,5 +1,6 @@
 package com.didate.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -9,8 +10,9 @@ import org.hibernate.envers.Audited;
  * A Categorycombo.
  */
 @Entity
-@Audited
 @Table(name = "categorycombo")
+@Audited
+@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Categorycombo implements Serializable {
 

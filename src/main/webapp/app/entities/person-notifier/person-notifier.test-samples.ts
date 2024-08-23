@@ -1,34 +1,34 @@
 import { IPersonNotifier, NewPersonNotifier } from './person-notifier.model';
 
 export const sampleWithRequiredData: IPersonNotifier = {
-  id: 6206,
-  personName: 'groin groin boum',
-  personPhone: 'trop aimable',
-  personEmail: 'V@c[c{0m.%OP',
-  personOrganization: 'quitte à porte-parole',
+  id: 29343,
+  personName: 'parlementaire bzzz',
+  personPhone: 'de lunatique',
+  personEmail: 'K}H9^@"g.YGyy',
+  personOrganization: "accéder d'entre foule",
 };
 
 export const sampleWithPartialData: IPersonNotifier = {
-  id: 24273,
-  personName: 'ouch dynamique guide',
-  personPhone: 'patientèle oh communauté étudiante',
-  personEmail: '~~@xgqly.:D',
-  personOrganization: 'désormais',
+  id: 17301,
+  personName: 'absolument hormis police',
+  personPhone: 'même si',
+  personEmail: '`=zH1@NLMOd.<sWBR',
+  personOrganization: 'emporter paraître à même',
 };
 
 export const sampleWithFullData: IPersonNotifier = {
-  id: 6578,
-  personName: 'sale avant',
-  personPhone: 'puisque chauffer',
-  personEmail: '(tq]@Y-V^aI.5D',
-  personOrganization: 'fabriquer altruiste',
+  id: 9092,
+  personName: 'bien moyennant solitaire',
+  personPhone: 'occuper dès que combler',
+  personEmail: 'i@`BoJ2.z#Zr&',
+  personOrganization: 'sédentaire quoique',
 };
 
 export const sampleWithNewData: NewPersonNotifier = {
-  personName: 'administration aïe areu areu',
-  personPhone: 'prendre mordre',
-  personEmail: 'I#-s@"M\\FLc.SC>a\'',
-  personOrganization: 'afin que préciser',
+  personName: 'affable raide',
+  personPhone: 'vivace',
+  personEmail: 'deD6a@\\3.C0Im',
+  personOrganization: 'si bien que',
   id: null,
 };
 

@@ -1,0 +1,40 @@
+{
+  "dhis2AuditApp": {
+    "programIndicator": {
+      "home": {
+        "title": "ProgramIndicators",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Program Indicator",
+        "createOrEditLabel": "Créer ou éditer un Program Indicator",
+        "notFound": "Aucun Program Indicator trouvé"
+      },
+      "created": "Un nouveau Program Indicator a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Program Indicator avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Program Indicator avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Program Indicator {{ id }} ?"
+      },
+      "detail": {
+        "title": "Program Indicator"
+      },
+      "id": "Id",
+      "name": "Name",
+      "created": "Created",
+      "lastUpdated": "Last Updated",
+      "shortName": "Short Name",
+      "dimensionItemType": "Dimension Item Type",
+      "expression": "Expression",
+      "filter": "Filter",
+      "analyticsType": "Analytics Type",
+      "dimensionItem": "Dimension Item",
+      "displayShortName": "Display Short Name",
+      "displayName": "Display Name",
+      "displayFormName": "Display Form Name",
+      "track": "Track",
+      "createdBy": "Created By",
+      "lastUpdatedBy": "Last Updated By",
+      "program": "Program",
+      "program": "Program"
+    }
+  }
+}

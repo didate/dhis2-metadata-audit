@@ -1,0 +1,149 @@
+{
+  "annotations": {
+    "changelogDate": "20240823195840"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "created",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "lastUpdated",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "minDaysFromStart",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "executionDateLabel",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "autoGenerateEvent",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "validationStrategy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayGenerateEventBox",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "featureType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "blockEntryForm",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "preGenerateUID",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "remindCompleted",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "generatedByEnrollmentDate",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "allowGenerateNextVisit",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "openAfterEnrollment",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "sortOrder",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "hideDueDate",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "enableUserAssignment",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "referral",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "displayExecutionDateLabel",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "formType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayFormName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "repeatable",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "programStageDataElementsCount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "programStageDataElementsContent",
+      "fieldType": "Integer"
+    }
+  ],
+  "name": "ProgramStage",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "dHISUser",
+      "relationshipName": "createdBy",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "dHISUser",
+      "relationshipName": "lastUpdatedBy",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "program",
+      "relationshipName": "program",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "dataelement",
+      "relationshipName": "programStageDataElements",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

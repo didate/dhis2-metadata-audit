@@ -91,4 +91,9 @@ public class ProgramRuleVariableServiceImpl implements ProgramRuleVariableServic
         log.debug("Request to delete ProgramRuleVariable : {}", id);
         programRuleVariableRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean exist(String id) {
+        return programRuleVariableRepository.existsById(id);
+    }
 }

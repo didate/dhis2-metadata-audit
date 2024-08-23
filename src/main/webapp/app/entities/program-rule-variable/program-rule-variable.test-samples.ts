@@ -3,38 +3,37 @@ import dayjs from 'dayjs/esm';
 import { IProgramRuleVariable, NewProgramRuleVariable } from './program-rule-variable.model';
 
 export const sampleWithRequiredData: IProgramRuleVariable = {
-  id: '4dd70957-8230-4ad2-be02-c14a4ce78fe5',
-  lastUpdated: dayjs('2024-08-22T22:57'),
-  created: dayjs('2024-08-22T14:16'),
-  name: 'adepte',
+  id: 'fd667f76-bee9-41ed-94bf-bfc4f628a862',
+  lastUpdated: dayjs('2024-08-22T05:14'),
+  created: dayjs('2024-08-22T18:37'),
+  name: 'rire au-dessous de',
   track: 'NONE',
 };
 
 export const sampleWithPartialData: IProgramRuleVariable = {
-  id: '1f2968b9-1c13-40df-9322-2264742c56b0',
-  lastUpdated: dayjs('2024-08-22T13:49'),
-  created: dayjs('2024-08-22T19:35'),
-  name: 'tchou tchouu',
-  displayName: 'affranchir dynamique',
-  programRuleVariableSourceType: 'aussitôt que organiser',
+  id: 'a261c665-5dfe-47d1-813b-e082d81b335c',
+  lastUpdated: dayjs('2024-08-22T08:13'),
+  created: dayjs('2024-08-22T21:04'),
+  name: 'crac modeler plic',
+  useCodeForOptionSet: true,
   track: 'NEW',
 };
 
 export const sampleWithFullData: IProgramRuleVariable = {
-  id: '915b2a69-023d-4ce8-acc3-25295ce44266',
-  lastUpdated: dayjs('2024-08-22T03:23'),
-  created: dayjs('2024-08-22T23:51'),
-  name: 'favoriser oh terne',
-  displayName: 'dans vaste sans',
-  programRuleVariableSourceType: 'prestataire de services',
+  id: '900af34a-e011-4c8d-abb9-375686c428a8',
+  lastUpdated: dayjs('2024-08-22T14:36'),
+  created: dayjs('2024-08-23T01:07'),
+  name: 'jusqu’à ce que',
+  displayName: 'biathlète à condition que revenir',
+  programRuleVariableSourceType: 'ronron de peur que',
   useCodeForOptionSet: true,
-  track: 'NONE',
+  track: 'UPDATE',
 };
 
 export const sampleWithNewData: NewProgramRuleVariable = {
-  lastUpdated: dayjs('2024-08-23T00:13'),
-  created: dayjs('2024-08-22T09:37'),
-  name: 'espiègle à partir de',
+  lastUpdated: dayjs('2024-08-22T14:46'),
+  created: dayjs('2024-08-22T21:48'),
+  name: 'adopter bouger collègue',
   track: 'NONE',
   id: null,
 };

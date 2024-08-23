@@ -397,9 +397,11 @@ class DHISUserResourceIT {
         partialUpdatedDHISUser.setId(dHISUser.getId());
 
         partialUpdatedDHISUser
+            .name(UPDATED_NAME)
             .displayName(UPDATED_DISPLAY_NAME)
-            .lastLogin(UPDATED_LAST_LOGIN)
+            .username(UPDATED_USERNAME)
             .email(UPDATED_EMAIL)
+            .phoneNumber(UPDATED_PHONE_NUMBER)
             .disabled(UPDATED_DISABLED)
             .passwordLastUpdated(UPDATED_PASSWORD_LAST_UPDATED)
             .track(UPDATED_TRACK);

@@ -3,31 +3,30 @@ import dayjs from 'dayjs/esm';
 import { IProgramRule, NewProgramRule } from './program-rule.model';
 
 export const sampleWithRequiredData: IProgramRule = {
-  id: '866f6612-571c-42c8-bb5b-81cb9c72969d',
+  id: '53ff3d5e-392d-4ed7-9864-474649c678c2',
   track: 'UPDATE',
 };
 
 export const sampleWithPartialData: IProgramRule = {
-  id: '2322faa9-d6cc-45ab-80df-fc9a387b9691',
-  name: 'relever avant que valoir',
-  displayName: 'à seule fin de',
-  condition: 'chut obliger adversaire',
-  track: 'NEW',
+  id: '9fd80979-1ef4-4315-a0ab-fb78edef033f',
+  created: dayjs('2024-08-22T15:47'),
+  priority: 29923,
+  track: 'NONE',
 };
 
 export const sampleWithFullData: IProgramRule = {
-  id: '554e5cdc-3d34-4c59-b546-39c74a4c539a',
-  lastUpdated: dayjs('2024-08-22T21:04'),
-  created: dayjs('2024-08-22T14:40'),
-  name: 'naître afin que',
-  displayName: 'conseil municipal de crainte que',
-  priority: 16411,
-  condition: 'ouf',
+  id: 'd3e01f79-d2b5-43a4-9ef7-6b176b4766b8',
+  lastUpdated: dayjs('2024-08-22T15:05'),
+  created: dayjs('2024-08-22T10:20'),
+  name: 'athlète',
+  displayName: 'afin que perplexe doucement',
+  priority: 6532,
+  condition: 'cultiver à partir de ouch',
   track: 'NEW',
 };
 
 export const sampleWithNewData: NewProgramRule = {
-  track: 'UPDATE',
+  track: 'NONE',
   id: null,
 };
 

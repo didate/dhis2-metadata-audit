@@ -39,7 +39,8 @@
       "project": "Project",
       "createdBy": "Created By",
       "lastUpdatedBy": "Last Updated By",
-      "indicatorType": "Indicator Type"
+      "indicatorType": "Indicator Type",
+      "dataset": "Dataset"
     }
   }
 }

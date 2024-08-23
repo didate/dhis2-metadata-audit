@@ -81,7 +81,7 @@ public class DataelementAsserts {
             .satisfies(e -> assertThat(e.getLastUpdatedBy()).as("check lastUpdatedBy").isEqualTo(actual.getLastUpdatedBy()))
             .satisfies(e -> assertThat(e.getCategoryCombo()).as("check categoryCombo").isEqualTo(actual.getCategoryCombo()))
             .satisfies(e -> assertThat(e.getOptionSet()).as("check optionSet").isEqualTo(actual.getOptionSet()))
-            .satisfies(e -> assertThat(e.getPrograms()).as("check programs").isEqualTo(actual.getPrograms()))
-            .satisfies(e -> assertThat(e.getDatasets()).as("check datasets").isEqualTo(actual.getDatasets()));
+            .satisfies(e -> assertThat(e.getDatasets()).as("check datasets").isEqualTo(actual.getDatasets()))
+            .satisfies(e -> assertThat(e.getProgramStages()).as("check programStages").isEqualTo(actual.getProgramStages()));
     }
 }

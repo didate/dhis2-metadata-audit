@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.envers.Audited;
 
 /**
@@ -111,6 +113,22 @@ public class TrackedEntityAttribute implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Optionset optionSet;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "programTrackedEntityAttributes")
+    @JsonIgnoreProperties(
+        value = {
+            "project",
+            "createdBy",
+            "lastUpdatedBy",
+            "categoryCombo",
+            "programTrackedEntityAttributes",
+            "organisationUnits",
+            "programIndicators",
+            "programStages",
+        },
+        allowSetters = true
+    )
+    private Set<Program> programs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -488,6 +506,37 @@ public class TrackedEntityAttribute implements Serializable {
 
     public TrackedEntityAttribute optionSet(Optionset optionset) {
         this.setOptionSet(optionset);
+        return this;
+    }
+
+    public Set<Program> getPrograms() {
+        return this.programs;
+    }
+
+    public void setPrograms(Set<Program> programs) {
+        if (this.programs != null) {
+            this.programs.forEach(i -> i.removeProgramTrackedEntityAttributes(this));
+        }
+        if (programs != null) {
+            programs.forEach(i -> i.addProgramTrackedEntityAttributes(this));
+        }
+        this.programs = programs;
+    }
+
+    public TrackedEntityAttribute programs(Set<Program> programs) {
+        this.setPrograms(programs);
+        return this;
+    }
+
+    public TrackedEntityAttribute addProgram(Program program) {
+        this.programs.add(program);
+        program.getProgramTrackedEntityAttributes().add(this);
+        return this;
+    }
+
+    public TrackedEntityAttribute removeProgram(Program program) {
+        this.programs.remove(program);
+        program.getProgramTrackedEntityAttributes().remove(this);
         return this;
     }
 

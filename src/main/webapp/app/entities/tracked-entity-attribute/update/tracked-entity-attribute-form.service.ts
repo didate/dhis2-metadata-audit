@@ -42,6 +42,7 @@ type TrackedEntityAttributeFormDefaults = Pick<
   | 'orgunitScope'
   | 'inherit'
   | 'optionSetValue'
+  | 'programs'
 >;
 
 type TrackedEntityAttributeFormGroupContent = {
@@ -74,6 +75,7 @@ type TrackedEntityAttributeFormGroupContent = {
   createdBy: FormControl<TrackedEntityAttributeFormRawValue['createdBy']>;
   lastUpdatedBy: FormControl<TrackedEntityAttributeFormRawValue['lastUpdatedBy']>;
   optionSet: FormControl<TrackedEntityAttributeFormRawValue['optionSet']>;
+  programs: FormControl<TrackedEntityAttributeFormRawValue['programs']>;
 };
 
 export type TrackedEntityAttributeFormGroup = FormGroup<TrackedEntityAttributeFormGroupContent>;
@@ -129,6 +131,7 @@ export class TrackedEntityAttributeFormService {
         validators: [Validators.required],
       }),
       optionSet: new FormControl(trackedEntityAttributeRawValue.optionSet),
+      programs: new FormControl(trackedEntityAttributeRawValue.programs ?? []),
     });
   }
 
@@ -167,6 +170,7 @@ export class TrackedEntityAttributeFormService {
       orgunitScope: false,
       inherit: false,
       optionSetValue: false,
+      programs: [],
     };
   }
 
@@ -187,6 +191,7 @@ export class TrackedEntityAttributeFormService {
       ...trackedEntityAttribute,
       lastUpdated: trackedEntityAttribute.lastUpdated ? trackedEntityAttribute.lastUpdated.format(DATE_TIME_FORMAT) : undefined,
       created: trackedEntityAttribute.created ? trackedEntityAttribute.created.format(DATE_TIME_FORMAT) : undefined,
+      programs: trackedEntityAttribute.programs ?? [],
     };
   }
 }
