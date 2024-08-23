@@ -199,4 +199,9 @@ public class ProgramServiceImpl implements ProgramService {
         log.debug("Request to delete Program : {}", id);
         programRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean exist(String id) {
+        return programRepository.existsById(id);
+    }
 }

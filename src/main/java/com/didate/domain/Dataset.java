@@ -1,5 +1,6 @@
 package com.didate.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import org.hibernate.envers.Audited;
 @Audited
 @Table(name = "dataset")
 @SuppressWarnings("common-java:DuplicatedBlocks")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Dataset implements Serializable {
 
     private static final long serialVersionUID = 1L;
