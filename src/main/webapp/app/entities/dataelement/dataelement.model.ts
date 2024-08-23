@@ -3,8 +3,8 @@ import { IProject } from 'app/entities/project/project.model';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { ICategorycombo } from 'app/entities/categorycombo/categorycombo.model';
 import { IOptionset } from 'app/entities/optionset/optionset.model';
-import { IProgram } from 'app/entities/program/program.model';
 import { IDataset } from 'app/entities/dataset/dataset.model';
+import { IProgramStage } from 'app/entities/program-stage/program-stage.model';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface IDataelement {
@@ -32,8 +32,8 @@ export interface IDataelement {
   lastUpdatedBy?: IDHISUser | null;
   categoryCombo?: ICategorycombo | null;
   optionSet?: IOptionset | null;
-  programs?: IProgram[] | null;
   datasets?: IDataset[] | null;
+  programStages?: IProgramStage[] | null;
 }
 
 export type NewDataelement = Omit<IDataelement, 'id'> & { id: null };

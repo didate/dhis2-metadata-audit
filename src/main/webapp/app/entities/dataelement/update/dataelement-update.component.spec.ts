@@ -12,10 +12,10 @@ import { ICategorycombo } from 'app/entities/categorycombo/categorycombo.model';
 import { CategorycomboService } from 'app/entities/categorycombo/service/categorycombo.service';
 import { IOptionset } from 'app/entities/optionset/optionset.model';
 import { OptionsetService } from 'app/entities/optionset/service/optionset.service';
-import { IProgram } from 'app/entities/program/program.model';
-import { ProgramService } from 'app/entities/program/service/program.service';
 import { IDataset } from 'app/entities/dataset/dataset.model';
 import { DatasetService } from 'app/entities/dataset/service/dataset.service';
+import { IProgramStage } from 'app/entities/program-stage/program-stage.model';
+import { ProgramStageService } from 'app/entities/program-stage/service/program-stage.service';
 import { IDataelement } from '../dataelement.model';
 import { DataelementService } from '../service/dataelement.service';
 import { DataelementFormService } from './dataelement-form.service';
@@ -32,8 +32,8 @@ describe('Dataelement Management Update Component', () => {
   let dHISUserService: DHISUserService;
   let categorycomboService: CategorycomboService;
   let optionsetService: OptionsetService;
-  let programService: ProgramService;
   let datasetService: DatasetService;
+  let programStageService: ProgramStageService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -60,8 +60,8 @@ describe('Dataelement Management Update Component', () => {
     dHISUserService = TestBed.inject(DHISUserService);
     categorycomboService = TestBed.inject(CategorycomboService);
     optionsetService = TestBed.inject(OptionsetService);
-    programService = TestBed.inject(ProgramService);
     datasetService = TestBed.inject(DatasetService);
+    programStageService = TestBed.inject(ProgramStageService);
 
     comp = fixture.componentInstance;
   });
@@ -69,10 +69,10 @@ describe('Dataelement Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Project query and add missing value', () => {
       const dataelement: IDataelement = { id: 'CBA' };
-      const project: IProject = { id: 19615 };
+      const project: IProject = { id: 24602 };
       dataelement.project = project;
 
-      const projectCollection: IProject[] = [{ id: 23001 }];
+      const projectCollection: IProject[] = [{ id: 21128 }];
       jest.spyOn(projectService, 'query').mockReturnValue(of(new HttpResponse({ body: projectCollection })));
       const additionalProjects = [project];
       const expectedCollection: IProject[] = [...additionalProjects, ...projectCollection];
@@ -91,12 +91,12 @@ describe('Dataelement Management Update Component', () => {
 
     it('Should call DHISUser query and add missing value', () => {
       const dataelement: IDataelement = { id: 'CBA' };
-      const createdBy: IDHISUser = { id: '4aac75f0-ad80-4189-b959-39f1eed2aada' };
+      const createdBy: IDHISUser = { id: '34881db4-3448-4db1-a608-b83e7d3bbb3a' };
       dataelement.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '360a1f3d-7327-4081-a56a-50ebdf626d9b' };
+      const lastUpdatedBy: IDHISUser = { id: '3d0ece05-d15f-4a3d-a740-0710c0a7a43c' };
       dataelement.lastUpdatedBy = lastUpdatedBy;
 
-      const dHISUserCollection: IDHISUser[] = [{ id: 'a0b696e7-2ec3-4c3f-ac01-a9ef38696d8e' }];
+      const dHISUserCollection: IDHISUser[] = [{ id: '49e22701-46b2-46cf-a8f6-da5b6277b990' }];
       jest.spyOn(dHISUserService, 'query').mockReturnValue(of(new HttpResponse({ body: dHISUserCollection })));
       const additionalDHISUsers = [createdBy, lastUpdatedBy];
       const expectedCollection: IDHISUser[] = [...additionalDHISUsers, ...dHISUserCollection];
@@ -115,10 +115,10 @@ describe('Dataelement Management Update Component', () => {
 
     it('Should call Categorycombo query and add missing value', () => {
       const dataelement: IDataelement = { id: 'CBA' };
-      const categoryCombo: ICategorycombo = { id: 'f4d53f09-76af-46ad-a892-4f41cc085a75' };
+      const categoryCombo: ICategorycombo = { id: '92a18f14-9f26-4f5f-8179-12dd03528549' };
       dataelement.categoryCombo = categoryCombo;
 
-      const categorycomboCollection: ICategorycombo[] = [{ id: '5653b340-35b0-4b7e-9469-da5da738b989' }];
+      const categorycomboCollection: ICategorycombo[] = [{ id: 'b9d49675-2eec-4069-be16-565403872432' }];
       jest.spyOn(categorycomboService, 'query').mockReturnValue(of(new HttpResponse({ body: categorycomboCollection })));
       const additionalCategorycombos = [categoryCombo];
       const expectedCollection: ICategorycombo[] = [...additionalCategorycombos, ...categorycomboCollection];
@@ -137,10 +137,10 @@ describe('Dataelement Management Update Component', () => {
 
     it('Should call Optionset query and add missing value', () => {
       const dataelement: IDataelement = { id: 'CBA' };
-      const optionSet: IOptionset = { id: 'aab21c9b-c1e9-443a-b727-cf74b2607002' };
+      const optionSet: IOptionset = { id: '70151ef1-f602-4cf4-8afc-548e23bf7b56' };
       dataelement.optionSet = optionSet;
 
-      const optionsetCollection: IOptionset[] = [{ id: '965d1b9a-7acc-47df-b314-909a212f4c5e' }];
+      const optionsetCollection: IOptionset[] = [{ id: 'a2693341-a4ca-4e86-acd9-a69a70c83b59' }];
       jest.spyOn(optionsetService, 'query').mockReturnValue(of(new HttpResponse({ body: optionsetCollection })));
       const additionalOptionsets = [optionSet];
       const expectedCollection: IOptionset[] = [...additionalOptionsets, ...optionsetCollection];
@@ -157,34 +157,12 @@ describe('Dataelement Management Update Component', () => {
       expect(comp.optionsetsSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Program query and add missing value', () => {
-      const dataelement: IDataelement = { id: 'CBA' };
-      const programs: IProgram[] = [{ id: '98cef7e4-515f-4aa1-b34a-380caf65a863' }];
-      dataelement.programs = programs;
-
-      const programCollection: IProgram[] = [{ id: 'd0603a4f-0a30-4c43-8283-7255dba70358' }];
-      jest.spyOn(programService, 'query').mockReturnValue(of(new HttpResponse({ body: programCollection })));
-      const additionalPrograms = [...programs];
-      const expectedCollection: IProgram[] = [...additionalPrograms, ...programCollection];
-      jest.spyOn(programService, 'addProgramToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ dataelement });
-      comp.ngOnInit();
-
-      expect(programService.query).toHaveBeenCalled();
-      expect(programService.addProgramToCollectionIfMissing).toHaveBeenCalledWith(
-        programCollection,
-        ...additionalPrograms.map(expect.objectContaining),
-      );
-      expect(comp.programsSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should call Dataset query and add missing value', () => {
       const dataelement: IDataelement = { id: 'CBA' };
-      const datasets: IDataset[] = [{ id: '683f0cee-9548-4208-8bbc-0bd5df017990' }];
+      const datasets: IDataset[] = [{ id: 'b607c556-0d4a-47e0-9421-949f282b07cc' }];
       dataelement.datasets = datasets;
 
-      const datasetCollection: IDataset[] = [{ id: '6ed5938a-ea1d-439c-b7c7-4dc57300d789' }];
+      const datasetCollection: IDataset[] = [{ id: 'ff17240e-7425-4d8f-892b-b185431165f9' }];
       jest.spyOn(datasetService, 'query').mockReturnValue(of(new HttpResponse({ body: datasetCollection })));
       const additionalDatasets = [...datasets];
       const expectedCollection: IDataset[] = [...additionalDatasets, ...datasetCollection];
@@ -201,22 +179,44 @@ describe('Dataelement Management Update Component', () => {
       expect(comp.datasetsSharedCollection).toEqual(expectedCollection);
     });
 
+    it('Should call ProgramStage query and add missing value', () => {
+      const dataelement: IDataelement = { id: 'CBA' };
+      const programStages: IProgramStage[] = [{ id: 'e1d64e74-b17c-4e81-bc3e-4e514fcdad11' }];
+      dataelement.programStages = programStages;
+
+      const programStageCollection: IProgramStage[] = [{ id: '01b6cded-68c0-4a43-98fc-4ace2be908d6' }];
+      jest.spyOn(programStageService, 'query').mockReturnValue(of(new HttpResponse({ body: programStageCollection })));
+      const additionalProgramStages = [...programStages];
+      const expectedCollection: IProgramStage[] = [...additionalProgramStages, ...programStageCollection];
+      jest.spyOn(programStageService, 'addProgramStageToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ dataelement });
+      comp.ngOnInit();
+
+      expect(programStageService.query).toHaveBeenCalled();
+      expect(programStageService.addProgramStageToCollectionIfMissing).toHaveBeenCalledWith(
+        programStageCollection,
+        ...additionalProgramStages.map(expect.objectContaining),
+      );
+      expect(comp.programStagesSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const dataelement: IDataelement = { id: 'CBA' };
-      const project: IProject = { id: 31616 };
+      const project: IProject = { id: 19412 };
       dataelement.project = project;
-      const createdBy: IDHISUser = { id: '7cafbacf-f4ed-4046-a9fe-3d78f387a2df' };
+      const createdBy: IDHISUser = { id: 'cf8ceb0b-f60a-400d-9157-43a191d5ab07' };
       dataelement.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '3e642742-0929-44f7-9ba5-aecb9c562791' };
+      const lastUpdatedBy: IDHISUser = { id: 'b3fb9280-ac3b-4df2-96ff-4b2eb7e90439' };
       dataelement.lastUpdatedBy = lastUpdatedBy;
-      const categoryCombo: ICategorycombo = { id: 'cc243c60-3bdf-4f73-ae1e-fcc77f9906b0' };
+      const categoryCombo: ICategorycombo = { id: '60c0e846-56bf-461b-a1a1-43e008b60ccc' };
       dataelement.categoryCombo = categoryCombo;
-      const optionSet: IOptionset = { id: '86c9baad-ca74-4101-b41f-e6c3ff95d335' };
+      const optionSet: IOptionset = { id: 'c5d3e47b-3ea0-4b4f-b585-95b80cf0217b' };
       dataelement.optionSet = optionSet;
-      const program: IProgram = { id: 'c0536fdf-3287-4e8e-b494-c372a45e23c4' };
-      dataelement.programs = [program];
-      const dataset: IDataset = { id: 'a44e57bc-3fcb-4671-89a2-bd880f26b22c' };
+      const dataset: IDataset = { id: '60cf7719-b8ec-4b31-ac75-039c96044df4' };
       dataelement.datasets = [dataset];
+      const programStage: IProgramStage = { id: 'ea31a87e-852d-4353-a169-421af0f845c1' };
+      dataelement.programStages = [programStage];
 
       activatedRoute.data = of({ dataelement });
       comp.ngOnInit();
@@ -226,8 +226,8 @@ describe('Dataelement Management Update Component', () => {
       expect(comp.dHISUsersSharedCollection).toContain(lastUpdatedBy);
       expect(comp.categorycombosSharedCollection).toContain(categoryCombo);
       expect(comp.optionsetsSharedCollection).toContain(optionSet);
-      expect(comp.programsSharedCollection).toContain(program);
       expect(comp.datasetsSharedCollection).toContain(dataset);
+      expect(comp.programStagesSharedCollection).toContain(programStage);
       expect(comp.dataelement).toEqual(dataelement);
     });
   });
@@ -341,16 +341,6 @@ describe('Dataelement Management Update Component', () => {
       });
     });
 
-    describe('compareProgram', () => {
-      it('Should forward to programService', () => {
-        const entity = { id: 'ABC' };
-        const entity2 = { id: 'CBA' };
-        jest.spyOn(programService, 'compareProgram');
-        comp.compareProgram(entity, entity2);
-        expect(programService.compareProgram).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
     describe('compareDataset', () => {
       it('Should forward to datasetService', () => {
         const entity = { id: 'ABC' };
@@ -358,6 +348,16 @@ describe('Dataelement Management Update Component', () => {
         jest.spyOn(datasetService, 'compareDataset');
         comp.compareDataset(entity, entity2);
         expect(datasetService.compareDataset).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
+    describe('compareProgramStage', () => {
+      it('Should forward to programStageService', () => {
+        const entity = { id: 'ABC' };
+        const entity2 = { id: 'CBA' };
+        jest.spyOn(programStageService, 'compareProgramStage');
+        comp.compareProgramStage(entity, entity2);
+        expect(programStageService.compareProgramStage).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

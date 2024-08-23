@@ -2,10 +2,12 @@ package com.didate.domain;
 
 import static com.didate.domain.CategorycomboTestSamples.*;
 import static com.didate.domain.DHISUserTestSamples.*;
-import static com.didate.domain.DataelementTestSamples.*;
 import static com.didate.domain.OrganisationUnitTestSamples.*;
+import static com.didate.domain.ProgramIndicatorTestSamples.*;
+import static com.didate.domain.ProgramStageTestSamples.*;
 import static com.didate.domain.ProgramTestSamples.*;
 import static com.didate.domain.ProjectTestSamples.*;
+import static com.didate.domain.TrackedEntityAttributeTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.didate.web.rest.TestUtil;
@@ -78,21 +80,21 @@ class ProgramTest {
     }
 
     @Test
-    void dataElementsTest() {
+    void programTrackedEntityAttributesTest() {
         Program program = getProgramRandomSampleGenerator();
-        Dataelement dataelementBack = getDataelementRandomSampleGenerator();
+        TrackedEntityAttribute trackedEntityAttributeBack = getTrackedEntityAttributeRandomSampleGenerator();
 
-        program.addDataElements(dataelementBack);
-        assertThat(program.getDataElements()).containsOnly(dataelementBack);
+        program.addProgramTrackedEntityAttributes(trackedEntityAttributeBack);
+        assertThat(program.getProgramTrackedEntityAttributes()).containsOnly(trackedEntityAttributeBack);
 
-        program.removeDataElements(dataelementBack);
-        assertThat(program.getDataElements()).doesNotContain(dataelementBack);
+        program.removeProgramTrackedEntityAttributes(trackedEntityAttributeBack);
+        assertThat(program.getProgramTrackedEntityAttributes()).doesNotContain(trackedEntityAttributeBack);
 
-        program.dataElements(new HashSet<>(Set.of(dataelementBack)));
-        assertThat(program.getDataElements()).containsOnly(dataelementBack);
+        program.programTrackedEntityAttributes(new HashSet<>(Set.of(trackedEntityAttributeBack)));
+        assertThat(program.getProgramTrackedEntityAttributes()).containsOnly(trackedEntityAttributeBack);
 
-        program.setDataElements(new HashSet<>());
-        assertThat(program.getDataElements()).doesNotContain(dataelementBack);
+        program.setProgramTrackedEntityAttributes(new HashSet<>());
+        assertThat(program.getProgramTrackedEntityAttributes()).doesNotContain(trackedEntityAttributeBack);
     }
 
     @Test
@@ -111,5 +113,41 @@ class ProgramTest {
 
         program.setOrganisationUnits(new HashSet<>());
         assertThat(program.getOrganisationUnits()).doesNotContain(organisationUnitBack);
+    }
+
+    @Test
+    void programIndicatorsTest() {
+        Program program = getProgramRandomSampleGenerator();
+        ProgramIndicator programIndicatorBack = getProgramIndicatorRandomSampleGenerator();
+
+        program.addProgramIndicators(programIndicatorBack);
+        assertThat(program.getProgramIndicators()).containsOnly(programIndicatorBack);
+
+        program.removeProgramIndicators(programIndicatorBack);
+        assertThat(program.getProgramIndicators()).doesNotContain(programIndicatorBack);
+
+        program.programIndicators(new HashSet<>(Set.of(programIndicatorBack)));
+        assertThat(program.getProgramIndicators()).containsOnly(programIndicatorBack);
+
+        program.setProgramIndicators(new HashSet<>());
+        assertThat(program.getProgramIndicators()).doesNotContain(programIndicatorBack);
+    }
+
+    @Test
+    void programStageTest() {
+        Program program = getProgramRandomSampleGenerator();
+        ProgramStage programStageBack = getProgramStageRandomSampleGenerator();
+
+        program.addProgramStage(programStageBack);
+        assertThat(program.getProgramStages()).containsOnly(programStageBack);
+
+        program.removeProgramStage(programStageBack);
+        assertThat(program.getProgramStages()).doesNotContain(programStageBack);
+
+        program.programStages(new HashSet<>(Set.of(programStageBack)));
+        assertThat(program.getProgramStages()).containsOnly(programStageBack);
+
+        program.setProgramStages(new HashSet<>());
+        assertThat(program.getProgramStages()).doesNotContain(programStageBack);
     }
 }

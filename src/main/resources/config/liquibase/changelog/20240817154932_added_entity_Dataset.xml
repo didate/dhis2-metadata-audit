@@ -98,6 +98,24 @@
             <column name="display_form_name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="data_set_elements_count" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="indicators_count" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="organisation_units_count" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="data_set_elements_content" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="indicators_content" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="organisation_units_content" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="track" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -121,8 +139,8 @@
 
     <changeSet id="20240817154932-1-relations" author="jhipster">
 
-        <createTable tableName="rel_dataset__data_elements">
-            <column name="data_elements_id" type="varchar(255)">
+        <createTable tableName="rel_dataset__data_set_elements">
+            <column name="data_set_elements_id" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="dataset_id" type="varchar(255)">
@@ -130,7 +148,18 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="dataset_id, data_elements_id" tableName="rel_dataset__data_elements"/>
+        <addPrimaryKey columnNames="dataset_id, data_set_elements_id" tableName="rel_dataset__data_set_elements"/>
+
+        <createTable tableName="rel_dataset__indicators">
+            <column name="indicators_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dataset_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="dataset_id, indicators_id" tableName="rel_dataset__indicators"/>
 
         <createTable tableName="rel_dataset__organisation_units">
             <column name="organisation_units_id" type="varchar(255)">
@@ -189,6 +218,12 @@
             <column name="display_short_name" type="string"/>
             <column name="display_description" type="string"/>
             <column name="display_form_name" type="string"/>
+            <column name="data_set_elements_count" type="numeric"/>
+            <column name="indicators_count" type="numeric"/>
+            <column name="organisation_units_count" type="numeric"/>
+            <column name="data_set_elements_content" type="string"/>
+            <column name="indicators_content" type="string"/>
+            <column name="organisation_units_content" type="string"/>
             <column name="track" type="string"/>
             <column name="created_by_id" type="string"/>
             <column name="last_updated_by_id" type="string"/>

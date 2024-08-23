@@ -28,7 +28,7 @@ type IndicatorFormRawValue = FormValueOf<IIndicator>;
 
 type NewIndicatorFormRawValue = FormValueOf<NewIndicator>;
 
-type IndicatorFormDefaults = Pick<NewIndicator, 'id' | 'created' | 'lastUpdated' | 'annualized'>;
+type IndicatorFormDefaults = Pick<NewIndicator, 'id' | 'created' | 'lastUpdated' | 'annualized' | 'datasets'>;
 
 type IndicatorFormGroupContent = {
   id: FormControl<IndicatorFormRawValue['id'] | NewIndicator['id']>;
@@ -54,6 +54,7 @@ type IndicatorFormGroupContent = {
   createdBy: FormControl<IndicatorFormRawValue['createdBy']>;
   lastUpdatedBy: FormControl<IndicatorFormRawValue['lastUpdatedBy']>;
   indicatorType: FormControl<IndicatorFormRawValue['indicatorType']>;
+  datasets: FormControl<IndicatorFormRawValue['datasets']>;
 };
 
 export type IndicatorFormGroup = FormGroup<IndicatorFormGroupContent>;
@@ -117,6 +118,7 @@ export class IndicatorFormService {
       indicatorType: new FormControl(indicatorRawValue.indicatorType, {
         validators: [Validators.required],
       }),
+      datasets: new FormControl(indicatorRawValue.datasets ?? []),
     });
   }
 
@@ -142,6 +144,7 @@ export class IndicatorFormService {
       created: currentTime,
       lastUpdated: currentTime,
       annualized: false,
+      datasets: [],
     };
   }
 
@@ -160,6 +163,7 @@ export class IndicatorFormService {
       ...indicator,
       created: indicator.created ? indicator.created.format(DATE_TIME_FORMAT) : undefined,
       lastUpdated: indicator.lastUpdated ? indicator.lastUpdated.format(DATE_TIME_FORMAT) : undefined,
+      datasets: indicator.datasets ?? [],
     };
   }
 }

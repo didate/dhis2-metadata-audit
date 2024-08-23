@@ -65,18 +65,27 @@ public class ProgramRuleVariable implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(
-        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataElements", "organisationUnits" },
+        value = {
+            "project",
+            "createdBy",
+            "lastUpdatedBy",
+            "categoryCombo",
+            "programTrackedEntityAttributes",
+            "organisationUnits",
+            "programIndicators",
+            "programStages",
+        },
         allowSetters = true
     )
     private Program program;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "optionSet" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "optionSet", "programs" }, allowSetters = true)
     private TrackedEntityAttribute trackedEntityAttribute;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
-        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "programs", "datasets" },
+        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "datasets", "programStages" },
         allowSetters = true
     )
     private Dataelement dataElement;

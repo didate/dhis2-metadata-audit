@@ -587,13 +587,9 @@ class DataelementResourceIT {
             .name(UPDATED_NAME)
             .shortName(UPDATED_SHORT_NAME)
             .formName(UPDATED_FORM_NAME)
-            .description(UPDATED_DESCRIPTION)
-            .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
             .displayName(UPDATED_DISPLAY_NAME)
             .created(UPDATED_CREATED)
             .publicAccess(UPDATED_PUBLIC_ACCESS)
-            .valueType(UPDATED_VALUE_TYPE)
-            .domainType(UPDATED_DOMAIN_TYPE)
             .optionSetValue(UPDATED_OPTION_SET_VALUE);
 
         restDataelementMockMvc

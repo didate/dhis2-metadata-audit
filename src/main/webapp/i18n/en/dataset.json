@@ -46,12 +46,19 @@
       "displayShortName": "Display Short Name",
       "displayDescription": "Display Description",
       "displayFormName": "Display Form Name",
+      "dataSetElementsCount": "Data Set Elements Count",
+      "indicatorsCount": "Indicators Count",
+      "organisationUnitsCount": "Organisation Units Count",
+      "dataSetElementsContent": "Data Set Elements Content",
+      "indicatorsContent": "Indicators Content",
+      "organisationUnitsContent": "Organisation Units Content",
       "track": "Track",
       "project": "Project",
       "createdBy": "Created By",
       "lastUpdatedBy": "Last Updated By",
       "categoryCombo": "Category Combo",
-      "dataElements": "Data Elements",
+      "dataSetElements": "Data Set Elements",
+      "indicators": "Indicators",
       "organisationUnits": "Organisation Units"
     }
   }

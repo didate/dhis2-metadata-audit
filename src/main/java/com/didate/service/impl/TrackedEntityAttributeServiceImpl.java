@@ -142,4 +142,9 @@ public class TrackedEntityAttributeServiceImpl implements TrackedEntityAttribute
         log.debug("Request to delete TrackedEntityAttribute : {}", id);
         trackedEntityAttributeRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean exist(String id) {
+        return trackedEntityAttributeRepository.existsById(id);
+    }
 }

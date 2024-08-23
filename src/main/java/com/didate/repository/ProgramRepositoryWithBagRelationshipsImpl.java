@@ -24,7 +24,11 @@ public class ProgramRepositoryWithBagRelationshipsImpl implements ProgramReposit
 
     @Override
     public Optional<Program> fetchBagRelationships(Optional<Program> program) {
-        return program.map(this::fetchDataElements).map(this::fetchOrganisationUnits);
+        return program
+            .map(this::fetchProgramTrackedEntityAttributes)
+            .map(this::fetchOrganisationUnits)
+            .map(this::fetchProgramIndicators)
+            .map(this::fetchProgramStages);
     }
 
     @Override
@@ -34,22 +38,30 @@ public class ProgramRepositoryWithBagRelationshipsImpl implements ProgramReposit
 
     @Override
     public List<Program> fetchBagRelationships(List<Program> programs) {
-        return Optional.of(programs).map(this::fetchDataElements).map(this::fetchOrganisationUnits).orElse(Collections.emptyList());
+        return Optional.of(programs)
+            .map(this::fetchProgramTrackedEntityAttributes)
+            .map(this::fetchOrganisationUnits)
+            .map(this::fetchProgramIndicators)
+            .map(this::fetchProgramStages)
+            .orElse(Collections.emptyList());
     }
 
-    Program fetchDataElements(Program result) {
+    Program fetchProgramTrackedEntityAttributes(Program result) {
         return entityManager
-            .createQuery("select program from Program program left join fetch program.dataElements where program.id = :id", Program.class)
+            .createQuery(
+                "select program from Program program left join fetch program.programTrackedEntityAttributes where program.id = :id",
+                Program.class
+            )
             .setParameter(ID_PARAMETER, result.getId())
             .getSingleResult();
     }
 
-    List<Program> fetchDataElements(List<Program> programs) {
+    List<Program> fetchProgramTrackedEntityAttributes(List<Program> programs) {
         HashMap<Object, Integer> order = new HashMap<>();
         IntStream.range(0, programs.size()).forEach(index -> order.put(programs.get(index).getId(), index));
         List<Program> result = entityManager
             .createQuery(
-                "select program from Program program left join fetch program.dataElements where program in :programs",
+                "select program from Program program left join fetch program.programTrackedEntityAttributes where program in :programs",
                 Program.class
             )
             .setParameter(PROGRAMS_PARAMETER, programs)
@@ -74,6 +86,51 @@ public class ProgramRepositoryWithBagRelationshipsImpl implements ProgramReposit
         List<Program> result = entityManager
             .createQuery(
                 "select program from Program program left join fetch program.organisationUnits where program in :programs",
+                Program.class
+            )
+            .setParameter(PROGRAMS_PARAMETER, programs)
+            .getResultList();
+        Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
+        return result;
+    }
+
+    Program fetchProgramIndicators(Program result) {
+        return entityManager
+            .createQuery(
+                "select program from Program program left join fetch program.programIndicators where program.id = :id",
+                Program.class
+            )
+            .setParameter(ID_PARAMETER, result.getId())
+            .getSingleResult();
+    }
+
+    List<Program> fetchProgramIndicators(List<Program> programs) {
+        HashMap<Object, Integer> order = new HashMap<>();
+        IntStream.range(0, programs.size()).forEach(index -> order.put(programs.get(index).getId(), index));
+        List<Program> result = entityManager
+            .createQuery(
+                "select program from Program program left join fetch program.programIndicators where program in :programs",
+                Program.class
+            )
+            .setParameter(PROGRAMS_PARAMETER, programs)
+            .getResultList();
+        Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
+        return result;
+    }
+
+    Program fetchProgramStages(Program result) {
+        return entityManager
+            .createQuery("select program from Program program left join fetch program.programStages where program.id = :id", Program.class)
+            .setParameter(ID_PARAMETER, result.getId())
+            .getSingleResult();
+    }
+
+    List<Program> fetchProgramStages(List<Program> programs) {
+        HashMap<Object, Integer> order = new HashMap<>();
+        IntStream.range(0, programs.size()).forEach(index -> order.put(programs.get(index).getId(), index));
+        List<Program> result = entityManager
+            .createQuery(
+                "select program from Program program left join fetch program.programStages where program in :programs",
                 Program.class
             )
             .setParameter(PROGRAMS_PARAMETER, programs)

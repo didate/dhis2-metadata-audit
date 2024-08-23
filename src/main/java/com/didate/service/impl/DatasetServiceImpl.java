@@ -129,6 +129,24 @@ public class DatasetServiceImpl implements DatasetService {
                 if (dataset.getDisplayFormName() != null) {
                     existingDataset.setDisplayFormName(dataset.getDisplayFormName());
                 }
+                if (dataset.getDataSetElementsCount() != null) {
+                    existingDataset.setDataSetElementsCount(dataset.getDataSetElementsCount());
+                }
+                if (dataset.getIndicatorsCount() != null) {
+                    existingDataset.setIndicatorsCount(dataset.getIndicatorsCount());
+                }
+                if (dataset.getOrganisationUnitsCount() != null) {
+                    existingDataset.setOrganisationUnitsCount(dataset.getOrganisationUnitsCount());
+                }
+                if (dataset.getDataSetElementsContent() != null) {
+                    existingDataset.setDataSetElementsContent(dataset.getDataSetElementsContent());
+                }
+                if (dataset.getIndicatorsContent() != null) {
+                    existingDataset.setIndicatorsContent(dataset.getIndicatorsContent());
+                }
+                if (dataset.getOrganisationUnitsContent() != null) {
+                    existingDataset.setOrganisationUnitsContent(dataset.getOrganisationUnitsContent());
+                }
                 if (dataset.getTrack() != null) {
                     existingDataset.setTrack(dataset.getTrack());
                 }

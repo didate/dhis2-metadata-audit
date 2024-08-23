@@ -49,10 +49,10 @@ describe('PersonNotifier Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Project query and add missing value', () => {
       const personNotifier: IPersonNotifier = { id: 456 };
-      const project: IProject = { id: 9889 };
+      const project: IProject = { id: 25022 };
       personNotifier.project = project;
 
-      const projectCollection: IProject[] = [{ id: 17125 }];
+      const projectCollection: IProject[] = [{ id: 21198 }];
       jest.spyOn(projectService, 'query').mockReturnValue(of(new HttpResponse({ body: projectCollection })));
       const additionalProjects = [project];
       const expectedCollection: IProject[] = [...additionalProjects, ...projectCollection];
@@ -71,7 +71,7 @@ describe('PersonNotifier Management Update Component', () => {
 
     it('Should update editForm', () => {
       const personNotifier: IPersonNotifier = { id: 456 };
-      const project: IProject = { id: 3880 };
+      const project: IProject = { id: 12603 };
       personNotifier.project = project;
 
       activatedRoute.data = of({ personNotifier });

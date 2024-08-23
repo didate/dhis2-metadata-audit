@@ -78,12 +78,6 @@ class ProgramResourceIT {
     private static final String DEFAULT_USER_ROLES = "AAAAAAAAAA";
     private static final String UPDATED_USER_ROLES = "BBBBBBBBBB";
 
-    private static final String DEFAULT_PROGRAM_INDICATORS = "AAAAAAAAAA";
-    private static final String UPDATED_PROGRAM_INDICATORS = "BBBBBBBBBB";
-
-    private static final String DEFAULT_PROGRAM_RULE_VARIABLES = "AAAAAAAAAA";
-    private static final String UPDATED_PROGRAM_RULE_VARIABLES = "BBBBBBBBBB";
-
     private static final Boolean DEFAULT_ONLY_ENROLL_ONCE = false;
     private static final Boolean UPDATED_ONLY_ENROLL_ONCE = true;
 
@@ -153,20 +147,29 @@ class ProgramResourceIT {
     private static final String DEFAULT_DISPLAY_NAME = "AAAAAAAAAA";
     private static final String UPDATED_DISPLAY_NAME = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_ATTRIBUTE_VALUES_COUNT = 1;
-    private static final Integer UPDATED_ATTRIBUTE_VALUES_COUNT = 2;
-
     private static final Integer DEFAULT_ORGANISATION_UNITS_COUNT = 1;
     private static final Integer UPDATED_ORGANISATION_UNITS_COUNT = 2;
 
     private static final Integer DEFAULT_PROGRAM_STAGES_COUNT = 1;
     private static final Integer UPDATED_PROGRAM_STAGES_COUNT = 2;
 
-    private static final Integer DEFAULT_PROGRAM_SECTIONS_COUNT = 1;
-    private static final Integer UPDATED_PROGRAM_SECTIONS_COUNT = 2;
+    private static final Integer DEFAULT_PROGRAM_INDICATORS_COUNT = 1;
+    private static final Integer UPDATED_PROGRAM_INDICATORS_COUNT = 2;
 
     private static final Integer DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT = 1;
     private static final Integer UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT = 2;
+
+    private static final String DEFAULT_ORGANISATION_UNITS_CONTENT = "AAAAAAAAAA";
+    private static final String UPDATED_ORGANISATION_UNITS_CONTENT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PROGRAM_STAGES_CONTENT = "AAAAAAAAAA";
+    private static final String UPDATED_PROGRAM_STAGES_CONTENT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PROGRAM_INDICATORS_CONTENT = "AAAAAAAAAA";
+    private static final String UPDATED_PROGRAM_INDICATORS_CONTENT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_CONTENT = "AAAAAAAAAA";
+    private static final String UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_CONTENT = "BBBBBBBBBB";
 
     private static final TypeTrack DEFAULT_TRACK = TypeTrack.NEW;
     private static final TypeTrack UPDATED_TRACK = TypeTrack.UPDATE;
@@ -216,8 +219,6 @@ class ProgramResourceIT {
             .displayIncidentDate(DEFAULT_DISPLAY_INCIDENT_DATE)
             .ignoreOverdueEvents(DEFAULT_IGNORE_OVERDUE_EVENTS)
             .userRoles(DEFAULT_USER_ROLES)
-            .programIndicators(DEFAULT_PROGRAM_INDICATORS)
-            .programRuleVariables(DEFAULT_PROGRAM_RULE_VARIABLES)
             .onlyEnrollOnce(DEFAULT_ONLY_ENROLL_ONCE)
             .notificationTemplates(DEFAULT_NOTIFICATION_TEMPLATES)
             .selectEnrollmentDatesInFuture(DEFAULT_SELECT_ENROLLMENT_DATES_IN_FUTURE)
@@ -241,11 +242,14 @@ class ProgramResourceIT {
             .displayDescription(DEFAULT_DISPLAY_DESCRIPTION)
             .displayFormName(DEFAULT_DISPLAY_FORM_NAME)
             .displayName(DEFAULT_DISPLAY_NAME)
-            .attributeValuesCount(DEFAULT_ATTRIBUTE_VALUES_COUNT)
             .organisationUnitsCount(DEFAULT_ORGANISATION_UNITS_COUNT)
             .programStagesCount(DEFAULT_PROGRAM_STAGES_COUNT)
-            .programSectionsCount(DEFAULT_PROGRAM_SECTIONS_COUNT)
+            .programIndicatorsCount(DEFAULT_PROGRAM_INDICATORS_COUNT)
             .programTrackedEntityAttributesCount(DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT)
+            .organisationUnitsContent(DEFAULT_ORGANISATION_UNITS_CONTENT)
+            .programStagesContent(DEFAULT_PROGRAM_STAGES_CONTENT)
+            .programIndicatorsContent(DEFAULT_PROGRAM_INDICATORS_CONTENT)
+            .programTrackedEntityAttributesContent(DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_CONTENT)
             .track(DEFAULT_TRACK);
         // Add required entity
         DHISUser dHISUser;
@@ -282,8 +286,6 @@ class ProgramResourceIT {
             .displayIncidentDate(UPDATED_DISPLAY_INCIDENT_DATE)
             .ignoreOverdueEvents(UPDATED_IGNORE_OVERDUE_EVENTS)
             .userRoles(UPDATED_USER_ROLES)
-            .programIndicators(UPDATED_PROGRAM_INDICATORS)
-            .programRuleVariables(UPDATED_PROGRAM_RULE_VARIABLES)
             .onlyEnrollOnce(UPDATED_ONLY_ENROLL_ONCE)
             .notificationTemplates(UPDATED_NOTIFICATION_TEMPLATES)
             .selectEnrollmentDatesInFuture(UPDATED_SELECT_ENROLLMENT_DATES_IN_FUTURE)
@@ -307,11 +309,14 @@ class ProgramResourceIT {
             .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
             .displayFormName(UPDATED_DISPLAY_FORM_NAME)
             .displayName(UPDATED_DISPLAY_NAME)
-            .attributeValuesCount(UPDATED_ATTRIBUTE_VALUES_COUNT)
             .organisationUnitsCount(UPDATED_ORGANISATION_UNITS_COUNT)
             .programStagesCount(UPDATED_PROGRAM_STAGES_COUNT)
-            .programSectionsCount(UPDATED_PROGRAM_SECTIONS_COUNT)
+            .programIndicatorsCount(UPDATED_PROGRAM_INDICATORS_COUNT)
             .programTrackedEntityAttributesCount(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT)
+            .organisationUnitsContent(UPDATED_ORGANISATION_UNITS_CONTENT)
+            .programStagesContent(UPDATED_PROGRAM_STAGES_CONTENT)
+            .programIndicatorsContent(UPDATED_PROGRAM_INDICATORS_CONTENT)
+            .programTrackedEntityAttributesContent(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_CONTENT)
             .track(UPDATED_TRACK);
         // Add required entity
         DHISUser dHISUser;
@@ -420,8 +425,6 @@ class ProgramResourceIT {
             .andExpect(jsonPath("$.[*].displayIncidentDate").value(hasItem(DEFAULT_DISPLAY_INCIDENT_DATE.booleanValue())))
             .andExpect(jsonPath("$.[*].ignoreOverdueEvents").value(hasItem(DEFAULT_IGNORE_OVERDUE_EVENTS.booleanValue())))
             .andExpect(jsonPath("$.[*].userRoles").value(hasItem(DEFAULT_USER_ROLES)))
-            .andExpect(jsonPath("$.[*].programIndicators").value(hasItem(DEFAULT_PROGRAM_INDICATORS)))
-            .andExpect(jsonPath("$.[*].programRuleVariables").value(hasItem(DEFAULT_PROGRAM_RULE_VARIABLES)))
             .andExpect(jsonPath("$.[*].onlyEnrollOnce").value(hasItem(DEFAULT_ONLY_ENROLL_ONCE.booleanValue())))
             .andExpect(jsonPath("$.[*].notificationTemplates").value(hasItem(DEFAULT_NOTIFICATION_TEMPLATES)))
             .andExpect(
@@ -451,12 +454,17 @@ class ProgramResourceIT {
             .andExpect(jsonPath("$.[*].displayDescription").value(hasItem(DEFAULT_DISPLAY_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].displayFormName").value(hasItem(DEFAULT_DISPLAY_FORM_NAME)))
             .andExpect(jsonPath("$.[*].displayName").value(hasItem(DEFAULT_DISPLAY_NAME)))
-            .andExpect(jsonPath("$.[*].attributeValuesCount").value(hasItem(DEFAULT_ATTRIBUTE_VALUES_COUNT)))
             .andExpect(jsonPath("$.[*].organisationUnitsCount").value(hasItem(DEFAULT_ORGANISATION_UNITS_COUNT)))
             .andExpect(jsonPath("$.[*].programStagesCount").value(hasItem(DEFAULT_PROGRAM_STAGES_COUNT)))
-            .andExpect(jsonPath("$.[*].programSectionsCount").value(hasItem(DEFAULT_PROGRAM_SECTIONS_COUNT)))
+            .andExpect(jsonPath("$.[*].programIndicatorsCount").value(hasItem(DEFAULT_PROGRAM_INDICATORS_COUNT)))
             .andExpect(
                 jsonPath("$.[*].programTrackedEntityAttributesCount").value(hasItem(DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT))
+            )
+            .andExpect(jsonPath("$.[*].organisationUnitsContent").value(hasItem(DEFAULT_ORGANISATION_UNITS_CONTENT)))
+            .andExpect(jsonPath("$.[*].programStagesContent").value(hasItem(DEFAULT_PROGRAM_STAGES_CONTENT)))
+            .andExpect(jsonPath("$.[*].programIndicatorsContent").value(hasItem(DEFAULT_PROGRAM_INDICATORS_CONTENT)))
+            .andExpect(
+                jsonPath("$.[*].programTrackedEntityAttributesContent").value(hasItem(DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_CONTENT))
             )
             .andExpect(jsonPath("$.[*].track").value(hasItem(DEFAULT_TRACK.toString())));
     }
@@ -502,8 +510,6 @@ class ProgramResourceIT {
             .andExpect(jsonPath("$.displayIncidentDate").value(DEFAULT_DISPLAY_INCIDENT_DATE.booleanValue()))
             .andExpect(jsonPath("$.ignoreOverdueEvents").value(DEFAULT_IGNORE_OVERDUE_EVENTS.booleanValue()))
             .andExpect(jsonPath("$.userRoles").value(DEFAULT_USER_ROLES))
-            .andExpect(jsonPath("$.programIndicators").value(DEFAULT_PROGRAM_INDICATORS))
-            .andExpect(jsonPath("$.programRuleVariables").value(DEFAULT_PROGRAM_RULE_VARIABLES))
             .andExpect(jsonPath("$.onlyEnrollOnce").value(DEFAULT_ONLY_ENROLL_ONCE.booleanValue()))
             .andExpect(jsonPath("$.notificationTemplates").value(DEFAULT_NOTIFICATION_TEMPLATES))
             .andExpect(jsonPath("$.selectEnrollmentDatesInFuture").value(DEFAULT_SELECT_ENROLLMENT_DATES_IN_FUTURE.booleanValue()))
@@ -527,11 +533,14 @@ class ProgramResourceIT {
             .andExpect(jsonPath("$.displayDescription").value(DEFAULT_DISPLAY_DESCRIPTION))
             .andExpect(jsonPath("$.displayFormName").value(DEFAULT_DISPLAY_FORM_NAME))
             .andExpect(jsonPath("$.displayName").value(DEFAULT_DISPLAY_NAME))
-            .andExpect(jsonPath("$.attributeValuesCount").value(DEFAULT_ATTRIBUTE_VALUES_COUNT))
             .andExpect(jsonPath("$.organisationUnitsCount").value(DEFAULT_ORGANISATION_UNITS_COUNT))
             .andExpect(jsonPath("$.programStagesCount").value(DEFAULT_PROGRAM_STAGES_COUNT))
-            .andExpect(jsonPath("$.programSectionsCount").value(DEFAULT_PROGRAM_SECTIONS_COUNT))
+            .andExpect(jsonPath("$.programIndicatorsCount").value(DEFAULT_PROGRAM_INDICATORS_COUNT))
             .andExpect(jsonPath("$.programTrackedEntityAttributesCount").value(DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT))
+            .andExpect(jsonPath("$.organisationUnitsContent").value(DEFAULT_ORGANISATION_UNITS_CONTENT))
+            .andExpect(jsonPath("$.programStagesContent").value(DEFAULT_PROGRAM_STAGES_CONTENT))
+            .andExpect(jsonPath("$.programIndicatorsContent").value(DEFAULT_PROGRAM_INDICATORS_CONTENT))
+            .andExpect(jsonPath("$.programTrackedEntityAttributesContent").value(DEFAULT_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_CONTENT))
             .andExpect(jsonPath("$.track").value(DEFAULT_TRACK.toString()));
     }
 
@@ -567,8 +576,6 @@ class ProgramResourceIT {
             .displayIncidentDate(UPDATED_DISPLAY_INCIDENT_DATE)
             .ignoreOverdueEvents(UPDATED_IGNORE_OVERDUE_EVENTS)
             .userRoles(UPDATED_USER_ROLES)
-            .programIndicators(UPDATED_PROGRAM_INDICATORS)
-            .programRuleVariables(UPDATED_PROGRAM_RULE_VARIABLES)
             .onlyEnrollOnce(UPDATED_ONLY_ENROLL_ONCE)
             .notificationTemplates(UPDATED_NOTIFICATION_TEMPLATES)
             .selectEnrollmentDatesInFuture(UPDATED_SELECT_ENROLLMENT_DATES_IN_FUTURE)
@@ -592,11 +599,14 @@ class ProgramResourceIT {
             .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
             .displayFormName(UPDATED_DISPLAY_FORM_NAME)
             .displayName(UPDATED_DISPLAY_NAME)
-            .attributeValuesCount(UPDATED_ATTRIBUTE_VALUES_COUNT)
             .organisationUnitsCount(UPDATED_ORGANISATION_UNITS_COUNT)
             .programStagesCount(UPDATED_PROGRAM_STAGES_COUNT)
-            .programSectionsCount(UPDATED_PROGRAM_SECTIONS_COUNT)
+            .programIndicatorsCount(UPDATED_PROGRAM_INDICATORS_COUNT)
             .programTrackedEntityAttributesCount(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT)
+            .organisationUnitsContent(UPDATED_ORGANISATION_UNITS_CONTENT)
+            .programStagesContent(UPDATED_PROGRAM_STAGES_CONTENT)
+            .programIndicatorsContent(UPDATED_PROGRAM_INDICATORS_CONTENT)
+            .programTrackedEntityAttributesContent(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_CONTENT)
             .track(UPDATED_TRACK);
 
         restProgramMockMvc
@@ -675,30 +685,29 @@ class ProgramResourceIT {
 
         partialUpdatedProgram
             .name(UPDATED_NAME)
-            .created(UPDATED_CREATED)
-            .description(UPDATED_DESCRIPTION)
+            .lastUpdated(UPDATED_LAST_UPDATED)
             .enrollmentDateLabel(UPDATED_ENROLLMENT_DATE_LABEL)
-            .incidentDateLabel(UPDATED_INCIDENT_DATE_LABEL)
-            .programType(UPDATED_PROGRAM_TYPE)
-            .programRuleVariables(UPDATED_PROGRAM_RULE_VARIABLES)
+            .displayIncidentDate(UPDATED_DISPLAY_INCIDENT_DATE)
+            .ignoreOverdueEvents(UPDATED_IGNORE_OVERDUE_EVENTS)
+            .userRoles(UPDATED_USER_ROLES)
+            .notificationTemplates(UPDATED_NOTIFICATION_TEMPLATES)
             .selectEnrollmentDatesInFuture(UPDATED_SELECT_ENROLLMENT_DATES_IN_FUTURE)
             .selectIncidentDatesInFuture(UPDATED_SELECT_INCIDENT_DATES_IN_FUTURE)
             .trackedEntityType(UPDATED_TRACKED_ENTITY_TYPE)
+            .style(UPDATED_STYLE)
+            .skipOffline(UPDATED_SKIP_OFFLINE)
             .useFirstStageDuringRegistration(UPDATED_USE_FIRST_STAGE_DURING_REGISTRATION)
-            .expiryDays(UPDATED_EXPIRY_DAYS)
             .openDaysAfterCoEndDate(UPDATED_OPEN_DAYS_AFTER_CO_END_DATE)
-            .minAttributesRequiredToSearch(UPDATED_MIN_ATTRIBUTES_REQUIRED_TO_SEARCH)
             .maxTeiCountToReturn(UPDATED_MAX_TEI_COUNT_TO_RETURN)
+            .accessLevel(UPDATED_ACCESS_LEVEL)
+            .displayIncidentDateLabel(UPDATED_DISPLAY_INCIDENT_DATE_LABEL)
             .withoutRegistration(UPDATED_WITHOUT_REGISTRATION)
             .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
-            .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
-            .displayFormName(UPDATED_DISPLAY_FORM_NAME)
-            .attributeValuesCount(UPDATED_ATTRIBUTE_VALUES_COUNT)
+            .displayName(UPDATED_DISPLAY_NAME)
             .organisationUnitsCount(UPDATED_ORGANISATION_UNITS_COUNT)
             .programStagesCount(UPDATED_PROGRAM_STAGES_COUNT)
-            .programSectionsCount(UPDATED_PROGRAM_SECTIONS_COUNT)
-            .programTrackedEntityAttributesCount(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT)
-            .track(UPDATED_TRACK);
+            .programIndicatorsCount(UPDATED_PROGRAM_INDICATORS_COUNT)
+            .programIndicatorsContent(UPDATED_PROGRAM_INDICATORS_CONTENT);
 
         restProgramMockMvc
             .perform(
@@ -739,8 +748,6 @@ class ProgramResourceIT {
             .displayIncidentDate(UPDATED_DISPLAY_INCIDENT_DATE)
             .ignoreOverdueEvents(UPDATED_IGNORE_OVERDUE_EVENTS)
             .userRoles(UPDATED_USER_ROLES)
-            .programIndicators(UPDATED_PROGRAM_INDICATORS)
-            .programRuleVariables(UPDATED_PROGRAM_RULE_VARIABLES)
             .onlyEnrollOnce(UPDATED_ONLY_ENROLL_ONCE)
             .notificationTemplates(UPDATED_NOTIFICATION_TEMPLATES)
             .selectEnrollmentDatesInFuture(UPDATED_SELECT_ENROLLMENT_DATES_IN_FUTURE)
@@ -764,11 +771,14 @@ class ProgramResourceIT {
             .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
             .displayFormName(UPDATED_DISPLAY_FORM_NAME)
             .displayName(UPDATED_DISPLAY_NAME)
-            .attributeValuesCount(UPDATED_ATTRIBUTE_VALUES_COUNT)
             .organisationUnitsCount(UPDATED_ORGANISATION_UNITS_COUNT)
             .programStagesCount(UPDATED_PROGRAM_STAGES_COUNT)
-            .programSectionsCount(UPDATED_PROGRAM_SECTIONS_COUNT)
+            .programIndicatorsCount(UPDATED_PROGRAM_INDICATORS_COUNT)
             .programTrackedEntityAttributesCount(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_COUNT)
+            .organisationUnitsContent(UPDATED_ORGANISATION_UNITS_CONTENT)
+            .programStagesContent(UPDATED_PROGRAM_STAGES_CONTENT)
+            .programIndicatorsContent(UPDATED_PROGRAM_INDICATORS_CONTENT)
+            .programTrackedEntityAttributesContent(UPDATED_PROGRAM_TRACKED_ENTITY_ATTRIBUTES_CONTENT)
             .track(UPDATED_TRACK);
 
         restProgramMockMvc

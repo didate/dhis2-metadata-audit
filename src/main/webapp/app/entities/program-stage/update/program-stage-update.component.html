@@ -1,0 +1,492 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-program-stage-heading"
+        data-cy="ProgramStageCreateUpdateHeading"
+        jhiTranslate="dhis2AuditApp.programStage.home.createOrEditLabel"
+      >
+        Créer ou éditer un Program Stage
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="dhis2AuditApp.programStage.id">Id</label>
+            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_name" jhiTranslate="dhis2AuditApp.programStage.name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_created" jhiTranslate="dhis2AuditApp.programStage.created">Created</label>
+          <div class="d-flex">
+            <input
+              id="field_created"
+              data-cy="created"
+              type="datetime-local"
+              class="form-control"
+              name="created"
+              formControlName="created"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastUpdated" jhiTranslate="dhis2AuditApp.programStage.lastUpdated">Last Updated</label>
+          <div class="d-flex">
+            <input
+              id="field_lastUpdated"
+              data-cy="lastUpdated"
+              type="datetime-local"
+              class="form-control"
+              name="lastUpdated"
+              formControlName="lastUpdated"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_minDaysFromStart" jhiTranslate="dhis2AuditApp.programStage.minDaysFromStart"
+            >Min Days From Start</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="minDaysFromStart"
+            id="field_minDaysFromStart"
+            data-cy="minDaysFromStart"
+            formControlName="minDaysFromStart"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_executionDateLabel" jhiTranslate="dhis2AuditApp.programStage.executionDateLabel"
+            >Execution Date Label</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="executionDateLabel"
+            id="field_executionDateLabel"
+            data-cy="executionDateLabel"
+            formControlName="executionDateLabel"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_autoGenerateEvent" jhiTranslate="dhis2AuditApp.programStage.autoGenerateEvent"
+            >Auto Generate Event</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="autoGenerateEvent"
+            id="field_autoGenerateEvent"
+            data-cy="autoGenerateEvent"
+            formControlName="autoGenerateEvent"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_validationStrategy" jhiTranslate="dhis2AuditApp.programStage.validationStrategy"
+            >Validation Strategy</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="validationStrategy"
+            id="field_validationStrategy"
+            data-cy="validationStrategy"
+            formControlName="validationStrategy"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayGenerateEventBox" jhiTranslate="dhis2AuditApp.programStage.displayGenerateEventBox"
+            >Display Generate Event Box</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="displayGenerateEventBox"
+            id="field_displayGenerateEventBox"
+            data-cy="displayGenerateEventBox"
+            formControlName="displayGenerateEventBox"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_featureType" jhiTranslate="dhis2AuditApp.programStage.featureType">Feature Type</label>
+          <input
+            type="text"
+            class="form-control"
+            name="featureType"
+            id="field_featureType"
+            data-cy="featureType"
+            formControlName="featureType"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_blockEntryForm" jhiTranslate="dhis2AuditApp.programStage.blockEntryForm"
+            >Block Entry Form</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="blockEntryForm"
+            id="field_blockEntryForm"
+            data-cy="blockEntryForm"
+            formControlName="blockEntryForm"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_preGenerateUID" jhiTranslate="dhis2AuditApp.programStage.preGenerateUID"
+            >Pre Generate UID</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="preGenerateUID"
+            id="field_preGenerateUID"
+            data-cy="preGenerateUID"
+            formControlName="preGenerateUID"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_remindCompleted" jhiTranslate="dhis2AuditApp.programStage.remindCompleted"
+            >Remind Completed</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="remindCompleted"
+            id="field_remindCompleted"
+            data-cy="remindCompleted"
+            formControlName="remindCompleted"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_generatedByEnrollmentDate"
+            jhiTranslate="dhis2AuditApp.programStage.generatedByEnrollmentDate"
+            >Generated By Enrollment Date</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="generatedByEnrollmentDate"
+            id="field_generatedByEnrollmentDate"
+            data-cy="generatedByEnrollmentDate"
+            formControlName="generatedByEnrollmentDate"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_allowGenerateNextVisit" jhiTranslate="dhis2AuditApp.programStage.allowGenerateNextVisit"
+            >Allow Generate Next Visit</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="allowGenerateNextVisit"
+            id="field_allowGenerateNextVisit"
+            data-cy="allowGenerateNextVisit"
+            formControlName="allowGenerateNextVisit"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_openAfterEnrollment" jhiTranslate="dhis2AuditApp.programStage.openAfterEnrollment"
+            >Open After Enrollment</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="openAfterEnrollment"
+            id="field_openAfterEnrollment"
+            data-cy="openAfterEnrollment"
+            formControlName="openAfterEnrollment"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_sortOrder" jhiTranslate="dhis2AuditApp.programStage.sortOrder">Sort Order</label>
+          <input type="number" class="form-control" name="sortOrder" id="field_sortOrder" data-cy="sortOrder" formControlName="sortOrder" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_hideDueDate" jhiTranslate="dhis2AuditApp.programStage.hideDueDate">Hide Due Date</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="hideDueDate"
+            id="field_hideDueDate"
+            data-cy="hideDueDate"
+            formControlName="hideDueDate"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_enableUserAssignment" jhiTranslate="dhis2AuditApp.programStage.enableUserAssignment"
+            >Enable User Assignment</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="enableUserAssignment"
+            id="field_enableUserAssignment"
+            data-cy="enableUserAssignment"
+            formControlName="enableUserAssignment"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_referral" jhiTranslate="dhis2AuditApp.programStage.referral">Referral</label>
+          <input type="checkbox" class="form-check" name="referral" id="field_referral" data-cy="referral" formControlName="referral" />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_displayExecutionDateLabel"
+            jhiTranslate="dhis2AuditApp.programStage.displayExecutionDateLabel"
+            >Display Execution Date Label</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayExecutionDateLabel"
+            id="field_displayExecutionDateLabel"
+            data-cy="displayExecutionDateLabel"
+            formControlName="displayExecutionDateLabel"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_formType" jhiTranslate="dhis2AuditApp.programStage.formType">Form Type</label>
+          <input type="text" class="form-control" name="formType" id="field_formType" data-cy="formType" formControlName="formType" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayFormName" jhiTranslate="dhis2AuditApp.programStage.displayFormName"
+            >Display Form Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="displayFormName"
+            id="field_displayFormName"
+            data-cy="displayFormName"
+            formControlName="displayFormName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_displayName" jhiTranslate="dhis2AuditApp.programStage.displayName">Display Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="displayName"
+            id="field_displayName"
+            data-cy="displayName"
+            formControlName="displayName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_repeatable" jhiTranslate="dhis2AuditApp.programStage.repeatable">Repeatable</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="repeatable"
+            id="field_repeatable"
+            data-cy="repeatable"
+            formControlName="repeatable"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_programStageDataElementsCount"
+            jhiTranslate="dhis2AuditApp.programStage.programStageDataElementsCount"
+            >Program Stage Data Elements Count</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="programStageDataElementsCount"
+            id="field_programStageDataElementsCount"
+            data-cy="programStageDataElementsCount"
+            formControlName="programStageDataElementsCount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            for="field_programStageDataElementsContent"
+            jhiTranslate="dhis2AuditApp.programStage.programStageDataElementsContent"
+            >Program Stage Data Elements Content</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="programStageDataElementsContent"
+            id="field_programStageDataElementsContent"
+            data-cy="programStageDataElementsContent"
+            formControlName="programStageDataElementsContent"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_createdBy" jhiTranslate="dhis2AuditApp.programStage.createdBy">Created By</label>
+          <select
+            class="form-control"
+            id="field_createdBy"
+            data-cy="createdBy"
+            name="createdBy"
+            formControlName="createdBy"
+            [compareWith]="compareDHISUser"
+          >
+            @if (!editForm.get('createdBy')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
+              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['createdBy'])!.invalid && (editForm.get(['createdBy'])!.dirty || editForm.get(['createdBy'])!.touched)) {
+          <div>
+            @if (editForm.get(['createdBy'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastUpdatedBy" jhiTranslate="dhis2AuditApp.programStage.lastUpdatedBy"
+            >Last Updated By</label
+          >
+          <select
+            class="form-control"
+            id="field_lastUpdatedBy"
+            data-cy="lastUpdatedBy"
+            name="lastUpdatedBy"
+            formControlName="lastUpdatedBy"
+            [compareWith]="compareDHISUser"
+          >
+            @if (!editForm.get('lastUpdatedBy')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
+              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (
+          editForm.get(['lastUpdatedBy'])!.invalid && (editForm.get(['lastUpdatedBy'])!.dirty || editForm.get(['lastUpdatedBy'])!.touched)
+        ) {
+          <div>
+            @if (editForm.get(['lastUpdatedBy'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_program" jhiTranslate="dhis2AuditApp.programStage.program">Program</label>
+          <select
+            class="form-control"
+            id="field_program"
+            data-cy="program"
+            name="program"
+            formControlName="program"
+            [compareWith]="compareProgram"
+          >
+            @if (!editForm.get('program')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (programOption of programsSharedCollection; track $index) {
+              <option [ngValue]="programOption">{{ programOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['program'])!.invalid && (editForm.get(['program'])!.dirty || editForm.get(['program'])!.touched)) {
+          <div>
+            @if (editForm.get(['program'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label for="field_programStageDataElements" jhiTranslate="dhis2AuditApp.programStage.programStageDataElements"
+            >Program Stage Data Elements</label
+          >
+          <select
+            class="form-control"
+            id="field_programStageDataElements"
+            data-cy="programStageDataElements"
+            multiple
+            name="programStageDataElements"
+            formControlName="programStageDataElements"
+            [compareWith]="compareDataelement"
+          >
+            @for (dataelementOption of dataelementsSharedCollection; track $index) {
+              <option [ngValue]="dataelementOption">{{ dataelementOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_programs" jhiTranslate="dhis2AuditApp.programStage.program">Program</label>
+          <select
+            class="form-control"
+            id="field_programs"
+            data-cy="program"
+            multiple
+            name="programs"
+            formControlName="programs"
+            [compareWith]="compareProgram"
+          >
+            @for (programOption of programsSharedCollection; track $index) {
+              <option [ngValue]="programOption">{{ programOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

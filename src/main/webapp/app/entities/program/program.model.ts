@@ -1,8 +1,10 @@
 import { IProject } from 'app/entities/project/project.model';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { ICategorycombo } from 'app/entities/categorycombo/categorycombo.model';
-import { IDataelement } from 'app/entities/dataelement/dataelement.model';
+import { ITrackedEntityAttribute } from 'app/entities/tracked-entity-attribute/tracked-entity-attribute.model';
 import { IOrganisationUnit } from 'app/entities/organisation-unit/organisation-unit.model';
+import { IProgramIndicator } from 'app/entities/program-indicator/program-indicator.model';
+import { IProgramStage } from 'app/entities/program-stage/program-stage.model';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface IProgram {
@@ -19,8 +21,6 @@ export interface IProgram {
   displayIncidentDate?: boolean | null;
   ignoreOverdueEvents?: boolean | null;
   userRoles?: string | null;
-  programIndicators?: string | null;
-  programRuleVariables?: string | null;
   onlyEnrollOnce?: boolean | null;
   notificationTemplates?: string | null;
   selectEnrollmentDatesInFuture?: boolean | null;
@@ -44,18 +44,23 @@ export interface IProgram {
   displayDescription?: string | null;
   displayFormName?: string | null;
   displayName?: string | null;
-  attributeValuesCount?: number | null;
   organisationUnitsCount?: number | null;
   programStagesCount?: number | null;
-  programSectionsCount?: number | null;
+  programIndicatorsCount?: number | null;
   programTrackedEntityAttributesCount?: number | null;
+  organisationUnitsContent?: string | null;
+  programStagesContent?: string | null;
+  programIndicatorsContent?: string | null;
+  programTrackedEntityAttributesContent?: string | null;
   track?: keyof typeof TypeTrack | null;
   project?: IProject | null;
   createdBy?: IDHISUser | null;
   lastUpdatedBy?: IDHISUser | null;
   categoryCombo?: ICategorycombo | null;
-  dataElements?: IDataelement[] | null;
+  programTrackedEntityAttributes?: ITrackedEntityAttribute[] | null;
   organisationUnits?: IOrganisationUnit[] | null;
+  programIndicators?: IProgramIndicator[] | null;
+  programStages?: IProgramStage[] | null;
 }
 
 export type NewProgram = Omit<IProgram, 'id'> & { id: null };

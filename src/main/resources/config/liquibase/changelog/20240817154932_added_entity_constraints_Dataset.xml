@@ -39,17 +39,31 @@
                                  />
 
         <addForeignKeyConstraint baseColumnNames="dataset_id"
-                                 baseTableName="rel_dataset__data_elements"
-                                 constraintName="fk_rel_dataset__data_elements__dataset_id"
+                                 baseTableName="rel_dataset__data_set_elements"
+                                 constraintName="fk_rel_dataset__data_set_elements__dataset_id"
                                  referencedColumnNames="id"
                                  referencedTableName="dataset"
                                  />
 
-        <addForeignKeyConstraint baseColumnNames="data_elements_id"
-                                 baseTableName="rel_dataset__data_elements"
-                                 constraintName="fk_rel_dataset__data_elements__data_elements_id"
+        <addForeignKeyConstraint baseColumnNames="data_set_elements_id"
+                                 baseTableName="rel_dataset__data_set_elements"
+                                 constraintName="fk_rel_dataset__data_set_elements__data_set_elements_id"
                                  referencedColumnNames="id"
                                  referencedTableName="dataelement"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="dataset_id"
+                                 baseTableName="rel_dataset__indicators"
+                                 constraintName="fk_rel_dataset__indicators__dataset_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dataset"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="indicators_id"
+                                 baseTableName="rel_dataset__indicators"
+                                 constraintName="fk_rel_dataset__indicators__indicators_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="indicator"
                                  />
 
         <addForeignKeyConstraint baseColumnNames="dataset_id"

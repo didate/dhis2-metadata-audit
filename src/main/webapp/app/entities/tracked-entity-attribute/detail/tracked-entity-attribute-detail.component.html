@@ -155,6 +155,15 @@
               </div>
             }
           </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.program">Program</span></dt>
+          <dd>
+            @for (program of trackedEntityAttribute()!.programs; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/program', program.id, 'view']">{{ program?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

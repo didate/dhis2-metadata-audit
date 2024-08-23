@@ -23,7 +23,9 @@
         "programRuleVariable": "Program Rule Variable",
         "trackedEntityAttribute": "Tracked Entity Attribute",
         "optionGroup": "Option Group",
-        "organisationUnit": "Organisation Unit"
+        "organisationUnit": "Organisation Unit",
+        "programStage": "Program Stage",
+        "programIndicator": "Program Indicator"
       },
       "account": {
         "main": "Compte",

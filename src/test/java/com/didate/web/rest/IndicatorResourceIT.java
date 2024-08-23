@@ -571,16 +571,18 @@ class IndicatorResourceIT {
         partialUpdatedIndicator.setId(indicator.getId());
 
         partialUpdatedIndicator
-            .displayName(UPDATED_DISPLAY_NAME)
+            .name(UPDATED_NAME)
+            .shortName(UPDATED_SHORT_NAME)
+            .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
             .created(UPDATED_CREATED)
-            .lastUpdated(UPDATED_LAST_UPDATED)
             .publicAccess(UPDATED_PUBLIC_ACCESS)
             .dimensionItemType(UPDATED_DIMENSION_ITEM_TYPE)
-            .annualized(UPDATED_ANNUALIZED)
+            .numerator(UPDATED_NUMERATOR)
+            .numeratorDescription(UPDATED_NUMERATOR_DESCRIPTION)
             .denominator(UPDATED_DENOMINATOR)
             .denominatorDescription(UPDATED_DENOMINATOR_DESCRIPTION)
             .displayNumeratorDescription(UPDATED_DISPLAY_NUMERATOR_DESCRIPTION)
-            .displayDenominatorDescription(UPDATED_DISPLAY_DENOMINATOR_DESCRIPTION);
+            .track(UPDATED_TRACK);
 
         restIndicatorMockMvc
             .perform(

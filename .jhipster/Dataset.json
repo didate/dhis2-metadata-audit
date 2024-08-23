@@ -123,6 +123,30 @@
       "fieldType": "String"
     },
     {
+      "fieldName": "dataSetElementsCount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "indicatorsCount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "organisationUnitsCount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "dataSetElementsContent",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "indicatorsContent",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "organisationUnitsContent",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "track",
       "fieldType": "TypeTrack",
       "fieldValidateRules": ["required"],
@@ -160,7 +184,13 @@
     },
     {
       "otherEntityName": "dataelement",
-      "relationshipName": "dataElements",
+      "relationshipName": "dataSetElements",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "indicator",
+      "relationshipName": "indicators",
       "relationshipSide": "left",
       "relationshipType": "many-to-many"
     },

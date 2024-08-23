@@ -3,32 +3,34 @@ import dayjs from 'dayjs/esm';
 import { IProgramRuleAction, NewProgramRuleAction } from './program-rule-action.model';
 
 export const sampleWithRequiredData: IProgramRuleAction = {
-  id: '04c3269c-0dde-44de-a8c2-0c6f0f2d5f09',
-  track: 'NEW',
+  id: '62b49497-6af4-40d0-9f80-0d8dc546ecdd',
+  track: 'NONE',
 };
 
 export const sampleWithPartialData: IProgramRuleAction = {
-  id: 'b9ce44ee-3e43-44f0-ba97-c95144a83264',
-  templateUid: 'assez hi exercer',
-  content: 'aimable si',
+  id: 'd2637f3f-6f1f-4a05-8a41-6bee6d415c7b',
+  created: 'rectorat jusqu’à ce que',
+  evaluationTime: 'pressentir super sédentaire',
+  data: 'secouriste vaste là-haut',
+  templateUid: 'durant',
   track: 'UPDATE',
 };
 
 export const sampleWithFullData: IProgramRuleAction = {
-  id: 'd8a1ae5e-43fb-41f3-ab9c-b4af876d740c',
-  lastUpdated: dayjs('2024-08-22T21:02'),
-  created: 'après que',
-  programRuleActionType: 'spécialiste de façon à de',
-  evaluationTime: 'à la merci',
-  data: 'sacrifier',
-  templateUid: 'différer',
-  content: 'débile prout',
-  displayContent: 'raide partenaire tellement',
+  id: '48d4eba4-f99a-4bfc-a0c1-cabe2051c8b1',
+  lastUpdated: dayjs('2024-08-22T10:49'),
+  created: 'pourvu que chef de cuisine fort',
+  programRuleActionType: 'badaboum',
+  evaluationTime: 'quand en outre de',
+  data: 'repérer puisque',
+  templateUid: 'coin-coin après un peu',
+  content: 'en guise de chef autour de',
+  displayContent: 'sans que',
   track: 'UPDATE',
 };
 
 export const sampleWithNewData: NewProgramRuleAction = {
-  track: 'UPDATE',
+  track: 'NONE',
   id: null,
 };
 

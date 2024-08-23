@@ -427,7 +427,6 @@ class ProgramRuleVariableResourceIT {
             .lastUpdated(UPDATED_LAST_UPDATED)
             .created(UPDATED_CREATED)
             .name(UPDATED_NAME)
-            .programRuleVariableSourceType(UPDATED_PROGRAM_RULE_VARIABLE_SOURCE_TYPE)
             .useCodeForOptionSet(UPDATED_USE_CODE_FOR_OPTION_SET);
 
         restProgramRuleVariableMockMvc

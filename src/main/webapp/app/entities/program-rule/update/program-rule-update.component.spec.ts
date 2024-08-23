@@ -57,10 +57,10 @@ describe('ProgramRule Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Project query and add missing value', () => {
       const programRule: IProgramRule = { id: 'CBA' };
-      const project: IProject = { id: 19338 };
+      const project: IProject = { id: 32686 };
       programRule.project = project;
 
-      const projectCollection: IProject[] = [{ id: 18289 }];
+      const projectCollection: IProject[] = [{ id: 13001 }];
       jest.spyOn(projectService, 'query').mockReturnValue(of(new HttpResponse({ body: projectCollection })));
       const additionalProjects = [project];
       const expectedCollection: IProject[] = [...additionalProjects, ...projectCollection];
@@ -79,12 +79,12 @@ describe('ProgramRule Management Update Component', () => {
 
     it('Should call DHISUser query and add missing value', () => {
       const programRule: IProgramRule = { id: 'CBA' };
-      const createdBy: IDHISUser = { id: 'dbf60bed-392c-4175-a7e4-de350439510d' };
+      const createdBy: IDHISUser = { id: '3f30f7e7-925c-4438-98a1-be5565710f7e' };
       programRule.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '137deb08-e4b4-4b07-86c5-62cf97c1d717' };
+      const lastUpdatedBy: IDHISUser = { id: 'a6470416-243e-4e2d-945d-f1be014c640f' };
       programRule.lastUpdatedBy = lastUpdatedBy;
 
-      const dHISUserCollection: IDHISUser[] = [{ id: '2c749d98-bfb7-45c1-a9cb-25096d583ae0' }];
+      const dHISUserCollection: IDHISUser[] = [{ id: 'fce7d674-51b1-4158-a222-de3f631fefa9' }];
       jest.spyOn(dHISUserService, 'query').mockReturnValue(of(new HttpResponse({ body: dHISUserCollection })));
       const additionalDHISUsers = [createdBy, lastUpdatedBy];
       const expectedCollection: IDHISUser[] = [...additionalDHISUsers, ...dHISUserCollection];
@@ -103,10 +103,10 @@ describe('ProgramRule Management Update Component', () => {
 
     it('Should call Program query and add missing value', () => {
       const programRule: IProgramRule = { id: 'CBA' };
-      const program: IProgram = { id: '70d21acb-5aa6-4281-a192-c253fd28f827' };
+      const program: IProgram = { id: '1b22aab0-5e85-4c60-8f3d-e85de2483228' };
       programRule.program = program;
 
-      const programCollection: IProgram[] = [{ id: 'e19492b8-6756-4c30-8b29-35af8f464f50' }];
+      const programCollection: IProgram[] = [{ id: '8f258f2f-7752-4870-b662-77cd81352274' }];
       jest.spyOn(programService, 'query').mockReturnValue(of(new HttpResponse({ body: programCollection })));
       const additionalPrograms = [program];
       const expectedCollection: IProgram[] = [...additionalPrograms, ...programCollection];
@@ -125,13 +125,13 @@ describe('ProgramRule Management Update Component', () => {
 
     it('Should update editForm', () => {
       const programRule: IProgramRule = { id: 'CBA' };
-      const project: IProject = { id: 4728 };
+      const project: IProject = { id: 11553 };
       programRule.project = project;
-      const createdBy: IDHISUser = { id: '93090d89-8475-473c-b932-0c3aff30ee4e' };
+      const createdBy: IDHISUser = { id: 'ac96d693-cd71-4d1a-9e38-337328af1d25' };
       programRule.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '00d0dfaa-2f20-4f1b-b236-ed3fc2d55c73' };
+      const lastUpdatedBy: IDHISUser = { id: '940851e8-3129-454a-9a54-22c259a760a0' };
       programRule.lastUpdatedBy = lastUpdatedBy;
-      const program: IProgram = { id: 'dfe56571-ffbe-450a-b71a-c1426c23dda3' };
+      const program: IProgram = { id: '5a7abf06-35c6-43c1-b979-553c54e33e7f' };
       programRule.program = program;
 
       activatedRoute.data = of({ programRule });

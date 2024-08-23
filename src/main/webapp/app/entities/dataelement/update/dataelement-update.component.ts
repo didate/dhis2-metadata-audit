@@ -15,10 +15,10 @@ import { ICategorycombo } from 'app/entities/categorycombo/categorycombo.model';
 import { CategorycomboService } from 'app/entities/categorycombo/service/categorycombo.service';
 import { IOptionset } from 'app/entities/optionset/optionset.model';
 import { OptionsetService } from 'app/entities/optionset/service/optionset.service';
-import { IProgram } from 'app/entities/program/program.model';
-import { ProgramService } from 'app/entities/program/service/program.service';
 import { IDataset } from 'app/entities/dataset/dataset.model';
 import { DatasetService } from 'app/entities/dataset/service/dataset.service';
+import { IProgramStage } from 'app/entities/program-stage/program-stage.model';
+import { ProgramStageService } from 'app/entities/program-stage/service/program-stage.service';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 import { DataelementService } from '../service/dataelement.service';
 import { IDataelement } from '../dataelement.model';
@@ -39,8 +39,8 @@ export class DataelementUpdateComponent implements OnInit {
   dHISUsersSharedCollection: IDHISUser[] = [];
   categorycombosSharedCollection: ICategorycombo[] = [];
   optionsetsSharedCollection: IOptionset[] = [];
-  programsSharedCollection: IProgram[] = [];
   datasetsSharedCollection: IDataset[] = [];
+  programStagesSharedCollection: IProgramStage[] = [];
 
   protected dataelementService = inject(DataelementService);
   protected dataelementFormService = inject(DataelementFormService);
@@ -48,8 +48,8 @@ export class DataelementUpdateComponent implements OnInit {
   protected dHISUserService = inject(DHISUserService);
   protected categorycomboService = inject(CategorycomboService);
   protected optionsetService = inject(OptionsetService);
-  protected programService = inject(ProgramService);
   protected datasetService = inject(DatasetService);
+  protected programStageService = inject(ProgramStageService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -64,9 +64,10 @@ export class DataelementUpdateComponent implements OnInit {
 
   compareOptionset = (o1: IOptionset | null, o2: IOptionset | null): boolean => this.optionsetService.compareOptionset(o1, o2);
 
-  compareProgram = (o1: IProgram | null, o2: IProgram | null): boolean => this.programService.compareProgram(o1, o2);
-
   compareDataset = (o1: IDataset | null, o2: IDataset | null): boolean => this.datasetService.compareDataset(o1, o2);
+
+  compareProgramStage = (o1: IProgramStage | null, o2: IProgramStage | null): boolean =>
+    this.programStageService.compareProgramStage(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ dataelement }) => {
@@ -133,13 +134,13 @@ export class DataelementUpdateComponent implements OnInit {
       this.optionsetsSharedCollection,
       dataelement.optionSet,
     );
-    this.programsSharedCollection = this.programService.addProgramToCollectionIfMissing<IProgram>(
-      this.programsSharedCollection,
-      ...(dataelement.programs ?? []),
-    );
     this.datasetsSharedCollection = this.datasetService.addDatasetToCollectionIfMissing<IDataset>(
       this.datasetsSharedCollection,
       ...(dataelement.datasets ?? []),
+    );
+    this.programStagesSharedCollection = this.programStageService.addProgramStageToCollectionIfMissing<IProgramStage>(
+      this.programStagesSharedCollection,
+      ...(dataelement.programStages ?? []),
     );
   }
 
@@ -186,16 +187,6 @@ export class DataelementUpdateComponent implements OnInit {
       )
       .subscribe((optionsets: IOptionset[]) => (this.optionsetsSharedCollection = optionsets));
 
-    this.programService
-      .query()
-      .pipe(map((res: HttpResponse<IProgram[]>) => res.body ?? []))
-      .pipe(
-        map((programs: IProgram[]) =>
-          this.programService.addProgramToCollectionIfMissing<IProgram>(programs, ...(this.dataelement?.programs ?? [])),
-        ),
-      )
-      .subscribe((programs: IProgram[]) => (this.programsSharedCollection = programs));
-
     this.datasetService
       .query()
       .pipe(map((res: HttpResponse<IDataset[]>) => res.body ?? []))
@@ -205,5 +196,18 @@ export class DataelementUpdateComponent implements OnInit {
         ),
       )
       .subscribe((datasets: IDataset[]) => (this.datasetsSharedCollection = datasets));
+
+    this.programStageService
+      .query()
+      .pipe(map((res: HttpResponse<IProgramStage[]>) => res.body ?? []))
+      .pipe(
+        map((programStages: IProgramStage[]) =>
+          this.programStageService.addProgramStageToCollectionIfMissing<IProgramStage>(
+            programStages,
+            ...(this.dataelement?.programStages ?? []),
+          ),
+        ),
+      )
+      .subscribe((programStages: IProgramStage[]) => (this.programStagesSharedCollection = programStages));
   }
 }

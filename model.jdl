@@ -105,8 +105,6 @@ entity Program {
     displayIncidentDate	Boolean
     ignoreOverdueEvents	Boolean
     userRoles	 String 
-    programIndicators	 String 
-    programRuleVariables	 String 
     onlyEnrollOnce	Boolean
     notificationTemplates	 String 
     selectEnrollmentDatesInFuture	Boolean
@@ -132,8 +130,13 @@ entity Program {
     displayName	 String 
     organisationUnitsCount	 Integer 
     programStagesCount	 Integer 
-    programIndicators	 Integer 
-    programTrackedEntityAttributesCount	 Integer 
+    programIndicatorsCount	 Integer 
+    programTrackedEntityAttributesCount	 Integer
+    organisationUnitsContent	String
+    programStagesContent	String
+    programIndicatorsContent	String
+    programTrackedEntityAttributesContent	String
+
     track TypeTrack required
 }
 
@@ -163,7 +166,8 @@ entity ProgramStage {
   displayFormName	String
   displayName String
   repeatable	Boolean
-  programStageDataElements Integer
+  programStageDataElementsCount Integer
+  programStageDataElementsContent Integer
 }
 
 entity Dataset {
@@ -198,6 +202,12 @@ entity Dataset {
     displayFormName	 String
     dataSetElementsCount Integer
     indicatorsCount Integer
+    organisationUnitsCount Integer
+
+    dataSetElementsContent String
+    indicatorsContent String
+    organisationUnitsContent String
+
     track TypeTrack required
 }
 

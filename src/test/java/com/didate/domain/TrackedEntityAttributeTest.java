@@ -2,11 +2,14 @@ package com.didate.domain;
 
 import static com.didate.domain.DHISUserTestSamples.*;
 import static com.didate.domain.OptionsetTestSamples.*;
+import static com.didate.domain.ProgramTestSamples.*;
 import static com.didate.domain.ProjectTestSamples.*;
 import static com.didate.domain.TrackedEntityAttributeTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.didate.web.rest.TestUtil;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class TrackedEntityAttributeTest {
@@ -71,5 +74,27 @@ class TrackedEntityAttributeTest {
 
         trackedEntityAttribute.optionSet(null);
         assertThat(trackedEntityAttribute.getOptionSet()).isNull();
+    }
+
+    @Test
+    void programTest() {
+        TrackedEntityAttribute trackedEntityAttribute = getTrackedEntityAttributeRandomSampleGenerator();
+        Program programBack = getProgramRandomSampleGenerator();
+
+        trackedEntityAttribute.addProgram(programBack);
+        assertThat(trackedEntityAttribute.getPrograms()).containsOnly(programBack);
+        assertThat(programBack.getProgramTrackedEntityAttributes()).containsOnly(trackedEntityAttribute);
+
+        trackedEntityAttribute.removeProgram(programBack);
+        assertThat(trackedEntityAttribute.getPrograms()).doesNotContain(programBack);
+        assertThat(programBack.getProgramTrackedEntityAttributes()).doesNotContain(trackedEntityAttribute);
+
+        trackedEntityAttribute.programs(new HashSet<>(Set.of(programBack)));
+        assertThat(trackedEntityAttribute.getPrograms()).containsOnly(programBack);
+        assertThat(programBack.getProgramTrackedEntityAttributes()).containsOnly(trackedEntityAttribute);
+
+        trackedEntityAttribute.setPrograms(new HashSet<>());
+        assertThat(trackedEntityAttribute.getPrograms()).doesNotContain(programBack);
+        assertThat(programBack.getProgramTrackedEntityAttributes()).doesNotContain(trackedEntityAttribute);
     }
 }

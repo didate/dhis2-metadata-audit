@@ -90,4 +90,17 @@ public class OptionGroupResource {
         Optional<OptionGroup> optionGroup = optionGroupService.findOne(id);
         return ResponseUtil.wrapOrNotFound(optionGroup);
     }
+
+    /**
+     * {@code DELETE  /option-groups/:id} : delete the "id" optionGroup.
+     *
+     * @param id the id of the optionGroup to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOptionGroup(@PathVariable("id") String id) {
+        log.debug("REST request to delete OptionGroup : {}", id);
+        optionGroupService.delete(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
+    }
 }

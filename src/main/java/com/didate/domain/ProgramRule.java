@@ -61,7 +61,16 @@ public class ProgramRule implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(
-        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataElements", "organisationUnits" },
+        value = {
+            "project",
+            "createdBy",
+            "lastUpdatedBy",
+            "categoryCombo",
+            "programTrackedEntityAttributes",
+            "organisationUnits",
+            "programIndicators",
+            "programStages",
+        },
         allowSetters = true
     )
     private Program program;

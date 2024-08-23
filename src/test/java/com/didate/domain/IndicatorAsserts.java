@@ -96,6 +96,7 @@ public class IndicatorAsserts {
             .satisfies(e -> assertThat(e.getProject()).as("check project").isEqualTo(actual.getProject()))
             .satisfies(e -> assertThat(e.getCreatedBy()).as("check createdBy").isEqualTo(actual.getCreatedBy()))
             .satisfies(e -> assertThat(e.getLastUpdatedBy()).as("check lastUpdatedBy").isEqualTo(actual.getLastUpdatedBy()))
-            .satisfies(e -> assertThat(e.getIndicatorType()).as("check indicatorType").isEqualTo(actual.getIndicatorType()));
+            .satisfies(e -> assertThat(e.getIndicatorType()).as("check indicatorType").isEqualTo(actual.getIndicatorType()))
+            .satisfies(e -> assertThat(e.getDatasets()).as("check datasets").isEqualTo(actual.getDatasets()));
     }
 }

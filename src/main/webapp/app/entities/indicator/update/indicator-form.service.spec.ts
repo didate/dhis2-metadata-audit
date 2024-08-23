@@ -42,6 +42,7 @@ describe('Indicator Form Service', () => {
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
             indicatorType: expect.any(Object),
+            datasets: expect.any(Object),
           }),
         );
       });
@@ -74,6 +75,7 @@ describe('Indicator Form Service', () => {
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
             indicatorType: expect.any(Object),
+            datasets: expect.any(Object),
           }),
         );
       });

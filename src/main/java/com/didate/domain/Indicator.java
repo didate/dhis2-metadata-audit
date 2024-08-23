@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.envers.Audited;
 
 /**
@@ -102,6 +104,13 @@ public class Indicator implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     private Indicatortype indicatorType;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "indicators")
+    @JsonIgnoreProperties(
+        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataSetElements", "indicators", "organisationUnits" },
+        allowSetters = true
+    )
+    private Set<Dataset> datasets = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -401,6 +410,37 @@ public class Indicator implements Serializable {
 
     public Indicator indicatorType(Indicatortype indicatortype) {
         this.setIndicatorType(indicatortype);
+        return this;
+    }
+
+    public Set<Dataset> getDatasets() {
+        return this.datasets;
+    }
+
+    public void setDatasets(Set<Dataset> datasets) {
+        if (this.datasets != null) {
+            this.datasets.forEach(i -> i.removeIndicators(this));
+        }
+        if (datasets != null) {
+            datasets.forEach(i -> i.addIndicators(this));
+        }
+        this.datasets = datasets;
+    }
+
+    public Indicator datasets(Set<Dataset> datasets) {
+        this.setDatasets(datasets);
+        return this;
+    }
+
+    public Indicator addDataset(Dataset dataset) {
+        this.datasets.add(dataset);
+        dataset.getIndicators().add(this);
+        return this;
+    }
+
+    public Indicator removeDataset(Dataset dataset) {
+        this.datasets.remove(dataset);
+        dataset.getIndicators().remove(this);
         return this;
     }
 

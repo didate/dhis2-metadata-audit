@@ -1,0 +1,97 @@
+{
+  "annotations": {
+    "changelogDate": "20240823195841"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "created",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastUpdated",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "shortName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dimensionItemType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "expression",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "filter",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "analyticsType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dimensionItem",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayShortName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "displayFormName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "track",
+      "fieldType": "TypeTrack",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "NEW,UPDATE,NONE"
+    }
+  ],
+  "name": "ProgramIndicator",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "dHISUser",
+      "relationshipName": "createdBy",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "dHISUser",
+      "relationshipName": "lastUpdatedBy",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "program",
+      "relationshipName": "program",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

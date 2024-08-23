@@ -106,6 +106,7 @@ public class TrackedEntityAttributeAsserts {
             .satisfies(e -> assertThat(e.getProject()).as("check project").isEqualTo(actual.getProject()))
             .satisfies(e -> assertThat(e.getCreatedBy()).as("check createdBy").isEqualTo(actual.getCreatedBy()))
             .satisfies(e -> assertThat(e.getLastUpdatedBy()).as("check lastUpdatedBy").isEqualTo(actual.getLastUpdatedBy()))
-            .satisfies(e -> assertThat(e.getOptionSet()).as("check optionSet").isEqualTo(actual.getOptionSet()));
+            .satisfies(e -> assertThat(e.getOptionSet()).as("check optionSet").isEqualTo(actual.getOptionSet()))
+            .satisfies(e -> assertThat(e.getPrograms()).as("check programs").isEqualTo(actual.getPrograms()));
     }
 }

@@ -13,6 +13,8 @@ import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { DHISUserService } from 'app/entities/dhis-user/service/dhis-user.service';
 import { IOptionset } from 'app/entities/optionset/optionset.model';
 import { OptionsetService } from 'app/entities/optionset/service/optionset.service';
+import { IProgram } from 'app/entities/program/program.model';
+import { ProgramService } from 'app/entities/program/service/program.service';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 import { TrackedEntityAttributeService } from '../service/tracked-entity-attribute.service';
 import { ITrackedEntityAttribute } from '../tracked-entity-attribute.model';
@@ -32,12 +34,14 @@ export class TrackedEntityAttributeUpdateComponent implements OnInit {
   projectsSharedCollection: IProject[] = [];
   dHISUsersSharedCollection: IDHISUser[] = [];
   optionsetsSharedCollection: IOptionset[] = [];
+  programsSharedCollection: IProgram[] = [];
 
   protected trackedEntityAttributeService = inject(TrackedEntityAttributeService);
   protected trackedEntityAttributeFormService = inject(TrackedEntityAttributeFormService);
   protected projectService = inject(ProjectService);
   protected dHISUserService = inject(DHISUserService);
   protected optionsetService = inject(OptionsetService);
+  protected programService = inject(ProgramService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -48,6 +52,8 @@ export class TrackedEntityAttributeUpdateComponent implements OnInit {
   compareDHISUser = (o1: IDHISUser | null, o2: IDHISUser | null): boolean => this.dHISUserService.compareDHISUser(o1, o2);
 
   compareOptionset = (o1: IOptionset | null, o2: IOptionset | null): boolean => this.optionsetService.compareOptionset(o1, o2);
+
+  compareProgram = (o1: IProgram | null, o2: IProgram | null): boolean => this.programService.compareProgram(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ trackedEntityAttribute }) => {
@@ -110,6 +116,10 @@ export class TrackedEntityAttributeUpdateComponent implements OnInit {
       this.optionsetsSharedCollection,
       trackedEntityAttribute.optionSet,
     );
+    this.programsSharedCollection = this.programService.addProgramToCollectionIfMissing<IProgram>(
+      this.programsSharedCollection,
+      ...(trackedEntityAttribute.programs ?? []),
+    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -146,5 +156,15 @@ export class TrackedEntityAttributeUpdateComponent implements OnInit {
         ),
       )
       .subscribe((optionsets: IOptionset[]) => (this.optionsetsSharedCollection = optionsets));
+
+    this.programService
+      .query()
+      .pipe(map((res: HttpResponse<IProgram[]>) => res.body ?? []))
+      .pipe(
+        map((programs: IProgram[]) =>
+          this.programService.addProgramToCollectionIfMissing<IProgram>(programs, ...(this.trackedEntityAttribute?.programs ?? [])),
+        ),
+      )
+      .subscribe((programs: IProgram[]) => (this.programsSharedCollection = programs));
   }
 }

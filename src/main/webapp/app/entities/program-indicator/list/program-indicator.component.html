@@ -1,0 +1,250 @@
+<div>
+  <h2 id="page-heading" data-cy="ProgramIndicatorHeading">
+    <span jhiTranslate="dhis2AuditApp.programIndicator.home.title">ProgramIndicators</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="dhis2AuditApp.programIndicator.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-program-indicator"
+        [routerLink]="['/program-indicator/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="dhis2AuditApp.programIndicator.home.createLabel">Créer un nouveau Program Indicator</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (programIndicators?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="dhis2AuditApp.programIndicator.home.notFound">Aucun Program Indicator trouvé</span>
+    </div>
+  }
+
+  @if (programIndicators && programIndicators.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.id">Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="name">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.name">Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="created">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.created">Created</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastUpdated">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.lastUpdated">Last Updated</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="shortName">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.shortName">Short Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dimensionItemType">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.dimensionItemType">Dimension Item Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="expression">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.expression">Expression</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="filter">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.filter">Filter</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="analyticsType">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.analyticsType">Analytics Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dimensionItem">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.dimensionItem">Dimension Item</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="displayShortName">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.displayShortName">Display Short Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="displayName">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.displayName">Display Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="displayFormName">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.displayFormName">Display Form Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="track">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.track">Track</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdBy.id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.createdBy">Created By</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastUpdatedBy.id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.lastUpdatedBy">Last Updated By</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="program.id">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.programIndicator.program">Program</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (programIndicator of programIndicators; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/program-indicator', programIndicator.id, 'view']">{{ programIndicator.id }}</a>
+              </td>
+              <td>{{ programIndicator.name }}</td>
+              <td>{{ programIndicator.created | formatMediumDatetime }}</td>
+              <td>{{ programIndicator.lastUpdated | formatMediumDatetime }}</td>
+              <td>{{ programIndicator.shortName }}</td>
+              <td>{{ programIndicator.dimensionItemType }}</td>
+              <td>{{ programIndicator.expression }}</td>
+              <td>{{ programIndicator.filter }}</td>
+              <td>{{ programIndicator.analyticsType }}</td>
+              <td>{{ programIndicator.dimensionItem }}</td>
+              <td>{{ programIndicator.displayShortName }}</td>
+              <td>{{ programIndicator.displayName }}</td>
+              <td>{{ programIndicator.displayFormName }}</td>
+              <td [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (programIndicator.track ?? 'null')">
+                {{ { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[programIndicator.track ?? 'null'] }}
+              </td>
+              <td>
+                @if (programIndicator.createdBy) {
+                  <div>
+                    <a [routerLink]="['/dhis-user', programIndicator.createdBy.id, 'view']">{{ programIndicator.createdBy.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (programIndicator.lastUpdatedBy) {
+                  <div>
+                    <a [routerLink]="['/dhis-user', programIndicator.lastUpdatedBy.id, 'view']">{{ programIndicator.lastUpdatedBy.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (programIndicator.program) {
+                  <div>
+                    <a [routerLink]="['/program', programIndicator.program.id, 'view']">{{ programIndicator.program.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/program-indicator', programIndicator.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/program-indicator', programIndicator.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(programIndicator)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (programIndicators && programIndicators.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

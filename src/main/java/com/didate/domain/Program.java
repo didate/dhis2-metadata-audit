@@ -61,12 +61,6 @@ public class Program implements Serializable {
     @Column(name = "user_roles")
     private String userRoles;
 
-    @Column(name = "program_indicators")
-    private String programIndicators;
-
-    @Column(name = "program_rule_variables")
-    private String programRuleVariables;
-
     @Column(name = "only_enroll_once")
     private Boolean onlyEnrollOnce;
 
@@ -136,20 +130,29 @@ public class Program implements Serializable {
     @Column(name = "display_name")
     private String displayName;
 
-    @Column(name = "attribute_values_count")
-    private Integer attributeValuesCount;
-
     @Column(name = "organisation_units_count")
     private Integer organisationUnitsCount;
 
     @Column(name = "program_stages_count")
     private Integer programStagesCount;
 
-    @Column(name = "program_sections_count")
-    private Integer programSectionsCount;
+    @Column(name = "program_indicators_count")
+    private Integer programIndicatorsCount;
 
     @Column(name = "program_tracked_entity_attributes_count")
     private Integer programTrackedEntityAttributesCount;
+
+    @Column(name = "organisation_units_content")
+    private String organisationUnitsContent;
+
+    @Column(name = "program_stages_content")
+    private String programStagesContent;
+
+    @Column(name = "program_indicators_content")
+    private String programIndicatorsContent;
+
+    @Column(name = "program_tracked_entity_attributes_content")
+    private String programTrackedEntityAttributesContent;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -172,15 +175,12 @@ public class Program implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "rel_program__data_elements",
+        name = "rel_program__program_tracked_entity_attributes",
         joinColumns = @JoinColumn(name = "program_id"),
-        inverseJoinColumns = @JoinColumn(name = "data_elements_id")
+        inverseJoinColumns = @JoinColumn(name = "program_tracked_entity_attributes_id")
     )
-    @JsonIgnoreProperties(
-        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "programs", "datasets" },
-        allowSetters = true
-    )
-    private Set<Dataelement> dataElements = new HashSet<>();
+    @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "optionSet", "programs" }, allowSetters = true)
+    private Set<TrackedEntityAttribute> programTrackedEntityAttributes = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -190,6 +190,24 @@ public class Program implements Serializable {
     )
     @JsonIgnoreProperties(value = { "createdBy", "lastUpdatedBy", "programs", "datasets" }, allowSetters = true)
     private Set<OrganisationUnit> organisationUnits = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_program__program_indicators",
+        joinColumns = @JoinColumn(name = "program_id"),
+        inverseJoinColumns = @JoinColumn(name = "program_indicators_id")
+    )
+    @JsonIgnoreProperties(value = { "createdBy", "lastUpdatedBy", "program", "programs" }, allowSetters = true)
+    private Set<ProgramIndicator> programIndicators = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_program__program_stage",
+        joinColumns = @JoinColumn(name = "program_id"),
+        inverseJoinColumns = @JoinColumn(name = "program_stage_id")
+    )
+    @JsonIgnoreProperties(value = { "createdBy", "lastUpdatedBy", "program", "programStageDataElements", "programs" }, allowSetters = true)
+    private Set<ProgramStage> programStages = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -360,32 +378,6 @@ public class Program implements Serializable {
 
     public void setUserRoles(String userRoles) {
         this.userRoles = userRoles;
-    }
-
-    public String getProgramIndicators() {
-        return this.programIndicators;
-    }
-
-    public Program programIndicators(String programIndicators) {
-        this.setProgramIndicators(programIndicators);
-        return this;
-    }
-
-    public void setProgramIndicators(String programIndicators) {
-        this.programIndicators = programIndicators;
-    }
-
-    public String getProgramRuleVariables() {
-        return this.programRuleVariables;
-    }
-
-    public Program programRuleVariables(String programRuleVariables) {
-        this.setProgramRuleVariables(programRuleVariables);
-        return this;
-    }
-
-    public void setProgramRuleVariables(String programRuleVariables) {
-        this.programRuleVariables = programRuleVariables;
     }
 
     public Boolean getOnlyEnrollOnce() {
@@ -687,19 +679,6 @@ public class Program implements Serializable {
         this.displayName = displayName;
     }
 
-    public Integer getAttributeValuesCount() {
-        return this.attributeValuesCount;
-    }
-
-    public Program attributeValuesCount(Integer attributeValuesCount) {
-        this.setAttributeValuesCount(attributeValuesCount);
-        return this;
-    }
-
-    public void setAttributeValuesCount(Integer attributeValuesCount) {
-        this.attributeValuesCount = attributeValuesCount;
-    }
-
     public Integer getOrganisationUnitsCount() {
         return this.organisationUnitsCount;
     }
@@ -726,17 +705,17 @@ public class Program implements Serializable {
         this.programStagesCount = programStagesCount;
     }
 
-    public Integer getProgramSectionsCount() {
-        return this.programSectionsCount;
+    public Integer getProgramIndicatorsCount() {
+        return this.programIndicatorsCount;
     }
 
-    public Program programSectionsCount(Integer programSectionsCount) {
-        this.setProgramSectionsCount(programSectionsCount);
+    public Program programIndicatorsCount(Integer programIndicatorsCount) {
+        this.setProgramIndicatorsCount(programIndicatorsCount);
         return this;
     }
 
-    public void setProgramSectionsCount(Integer programSectionsCount) {
-        this.programSectionsCount = programSectionsCount;
+    public void setProgramIndicatorsCount(Integer programIndicatorsCount) {
+        this.programIndicatorsCount = programIndicatorsCount;
     }
 
     public Integer getProgramTrackedEntityAttributesCount() {
@@ -750,6 +729,58 @@ public class Program implements Serializable {
 
     public void setProgramTrackedEntityAttributesCount(Integer programTrackedEntityAttributesCount) {
         this.programTrackedEntityAttributesCount = programTrackedEntityAttributesCount;
+    }
+
+    public String getOrganisationUnitsContent() {
+        return this.organisationUnitsContent;
+    }
+
+    public Program organisationUnitsContent(String organisationUnitsContent) {
+        this.setOrganisationUnitsContent(organisationUnitsContent);
+        return this;
+    }
+
+    public void setOrganisationUnitsContent(String organisationUnitsContent) {
+        this.organisationUnitsContent = organisationUnitsContent;
+    }
+
+    public String getProgramStagesContent() {
+        return this.programStagesContent;
+    }
+
+    public Program programStagesContent(String programStagesContent) {
+        this.setProgramStagesContent(programStagesContent);
+        return this;
+    }
+
+    public void setProgramStagesContent(String programStagesContent) {
+        this.programStagesContent = programStagesContent;
+    }
+
+    public String getProgramIndicatorsContent() {
+        return this.programIndicatorsContent;
+    }
+
+    public Program programIndicatorsContent(String programIndicatorsContent) {
+        this.setProgramIndicatorsContent(programIndicatorsContent);
+        return this;
+    }
+
+    public void setProgramIndicatorsContent(String programIndicatorsContent) {
+        this.programIndicatorsContent = programIndicatorsContent;
+    }
+
+    public String getProgramTrackedEntityAttributesContent() {
+        return this.programTrackedEntityAttributesContent;
+    }
+
+    public Program programTrackedEntityAttributesContent(String programTrackedEntityAttributesContent) {
+        this.setProgramTrackedEntityAttributesContent(programTrackedEntityAttributesContent);
+        return this;
+    }
+
+    public void setProgramTrackedEntityAttributesContent(String programTrackedEntityAttributesContent) {
+        this.programTrackedEntityAttributesContent = programTrackedEntityAttributesContent;
     }
 
     public TypeTrack getTrack() {
@@ -817,26 +848,26 @@ public class Program implements Serializable {
         return this;
     }
 
-    public Set<Dataelement> getDataElements() {
-        return this.dataElements;
+    public Set<TrackedEntityAttribute> getProgramTrackedEntityAttributes() {
+        return this.programTrackedEntityAttributes;
     }
 
-    public void setDataElements(Set<Dataelement> dataelements) {
-        this.dataElements = dataelements;
+    public void setProgramTrackedEntityAttributes(Set<TrackedEntityAttribute> trackedEntityAttributes) {
+        this.programTrackedEntityAttributes = trackedEntityAttributes;
     }
 
-    public Program dataElements(Set<Dataelement> dataelements) {
-        this.setDataElements(dataelements);
+    public Program programTrackedEntityAttributes(Set<TrackedEntityAttribute> trackedEntityAttributes) {
+        this.setProgramTrackedEntityAttributes(trackedEntityAttributes);
         return this;
     }
 
-    public Program addDataElements(Dataelement dataelement) {
-        this.dataElements.add(dataelement);
+    public Program addProgramTrackedEntityAttributes(TrackedEntityAttribute trackedEntityAttribute) {
+        this.programTrackedEntityAttributes.add(trackedEntityAttribute);
         return this;
     }
 
-    public Program removeDataElements(Dataelement dataelement) {
-        this.dataElements.remove(dataelement);
+    public Program removeProgramTrackedEntityAttributes(TrackedEntityAttribute trackedEntityAttribute) {
+        this.programTrackedEntityAttributes.remove(trackedEntityAttribute);
         return this;
     }
 
@@ -860,6 +891,52 @@ public class Program implements Serializable {
 
     public Program removeOrganisationUnits(OrganisationUnit organisationUnit) {
         this.organisationUnits.remove(organisationUnit);
+        return this;
+    }
+
+    public Set<ProgramIndicator> getProgramIndicators() {
+        return this.programIndicators;
+    }
+
+    public void setProgramIndicators(Set<ProgramIndicator> programIndicators) {
+        this.programIndicators = programIndicators;
+    }
+
+    public Program programIndicators(Set<ProgramIndicator> programIndicators) {
+        this.setProgramIndicators(programIndicators);
+        return this;
+    }
+
+    public Program addProgramIndicators(ProgramIndicator programIndicator) {
+        this.programIndicators.add(programIndicator);
+        return this;
+    }
+
+    public Program removeProgramIndicators(ProgramIndicator programIndicator) {
+        this.programIndicators.remove(programIndicator);
+        return this;
+    }
+
+    public Set<ProgramStage> getProgramStages() {
+        return this.programStages;
+    }
+
+    public void setProgramStages(Set<ProgramStage> programStages) {
+        this.programStages = programStages;
+    }
+
+    public Program programStages(Set<ProgramStage> programStages) {
+        this.setProgramStages(programStages);
+        return this;
+    }
+
+    public Program addProgramStage(ProgramStage programStage) {
+        this.programStages.add(programStage);
+        return this;
+    }
+
+    public Program removeProgramStage(ProgramStage programStage) {
+        this.programStages.remove(programStage);
         return this;
     }
 
@@ -899,8 +976,6 @@ public class Program implements Serializable {
             ", displayIncidentDate='" + getDisplayIncidentDate() + "'" +
             ", ignoreOverdueEvents='" + getIgnoreOverdueEvents() + "'" +
             ", userRoles='" + getUserRoles() + "'" +
-            ", programIndicators='" + getProgramIndicators() + "'" +
-            ", programRuleVariables='" + getProgramRuleVariables() + "'" +
             ", onlyEnrollOnce='" + getOnlyEnrollOnce() + "'" +
             ", notificationTemplates='" + getNotificationTemplates() + "'" +
             ", selectEnrollmentDatesInFuture='" + getSelectEnrollmentDatesInFuture() + "'" +
@@ -924,11 +999,14 @@ public class Program implements Serializable {
             ", displayDescription='" + getDisplayDescription() + "'" +
             ", displayFormName='" + getDisplayFormName() + "'" +
             ", displayName='" + getDisplayName() + "'" +
-            ", attributeValuesCount=" + getAttributeValuesCount() +
             ", organisationUnitsCount=" + getOrganisationUnitsCount() +
             ", programStagesCount=" + getProgramStagesCount() +
-            ", programSectionsCount=" + getProgramSectionsCount() +
+            ", programIndicatorsCount=" + getProgramIndicatorsCount() +
             ", programTrackedEntityAttributesCount=" + getProgramTrackedEntityAttributesCount() +
+            ", organisationUnitsContent='" + getOrganisationUnitsContent() + "'" +
+            ", programStagesContent='" + getProgramStagesContent() + "'" +
+            ", programIndicatorsContent='" + getProgramIndicatorsContent() + "'" +
+            ", programTrackedEntityAttributesContent='" + getProgramTrackedEntityAttributesContent() + "'" +
             ", track='" + getTrack() + "'" +
             "}";
     }

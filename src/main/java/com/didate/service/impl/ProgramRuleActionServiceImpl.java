@@ -97,4 +97,9 @@ public class ProgramRuleActionServiceImpl implements ProgramRuleActionService {
         log.debug("Request to delete ProgramRuleAction : {}", id);
         programRuleActionRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean exist(String id) {
+        return programRuleActionRepository.existsById(id);
+    }
 }

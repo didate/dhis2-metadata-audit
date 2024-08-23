@@ -129,20 +129,20 @@
               </div>
             }
           </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.program">Program</span></dt>
-          <dd>
-            @for (program of dataelement()!.programs; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/program', program.id, 'view']">{{ program?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
-          </dd>
           <dt><span jhiTranslate="dhis2AuditApp.dataelement.dataset">Dataset</span></dt>
           <dd>
             @for (dataset of dataelement()!.datasets; track $index; let last = $last) {
               <span>
                 <a [routerLink]="['/dataset', dataset.id, 'view']">{{ dataset?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataelement.programStage">Program Stage</span></dt>
+          <dd>
+            @for (programStage of dataelement()!.programStages; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/program-stage', programStage.id, 'view']">{{ programStage?.id }}</a
                 >{{ last ? '' : ', ' }}
               </span>
             }

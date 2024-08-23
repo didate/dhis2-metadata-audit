@@ -378,6 +378,90 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="field_dataSetElementsCount" jhiTranslate="dhis2AuditApp.dataset.dataSetElementsCount"
+            >Data Set Elements Count</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="dataSetElementsCount"
+            id="field_dataSetElementsCount"
+            data-cy="dataSetElementsCount"
+            formControlName="dataSetElementsCount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_indicatorsCount" jhiTranslate="dhis2AuditApp.dataset.indicatorsCount"
+            >Indicators Count</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="indicatorsCount"
+            id="field_indicatorsCount"
+            data-cy="indicatorsCount"
+            formControlName="indicatorsCount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_organisationUnitsCount" jhiTranslate="dhis2AuditApp.dataset.organisationUnitsCount"
+            >Organisation Units Count</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="organisationUnitsCount"
+            id="field_organisationUnitsCount"
+            data-cy="organisationUnitsCount"
+            formControlName="organisationUnitsCount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_dataSetElementsContent" jhiTranslate="dhis2AuditApp.dataset.dataSetElementsContent"
+            >Data Set Elements Content</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="dataSetElementsContent"
+            id="field_dataSetElementsContent"
+            data-cy="dataSetElementsContent"
+            formControlName="dataSetElementsContent"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_indicatorsContent" jhiTranslate="dhis2AuditApp.dataset.indicatorsContent"
+            >Indicators Content</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="indicatorsContent"
+            id="field_indicatorsContent"
+            data-cy="indicatorsContent"
+            formControlName="indicatorsContent"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_organisationUnitsContent" jhiTranslate="dhis2AuditApp.dataset.organisationUnitsContent"
+            >Organisation Units Content</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="organisationUnitsContent"
+            id="field_organisationUnitsContent"
+            data-cy="organisationUnitsContent"
+            formControlName="organisationUnitsContent"
+          />
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_track" jhiTranslate="dhis2AuditApp.dataset.track">Track</label>
           <select class="form-control" name="track" formControlName="track" id="field_track" data-cy="track">
             <option [ngValue]="null">{{ 'dhis2AuditApp.TypeTrack.null' | translate }}</option>
@@ -483,18 +567,35 @@
         </div>
 
         <div class="mb-3">
-          <label for="field_dataElements" jhiTranslate="dhis2AuditApp.dataset.dataElements">Data Elements</label>
+          <label for="field_dataSetElements" jhiTranslate="dhis2AuditApp.dataset.dataSetElements">Data Set Elements</label>
           <select
             class="form-control"
-            id="field_dataElements"
-            data-cy="dataElements"
+            id="field_dataSetElements"
+            data-cy="dataSetElements"
             multiple
-            name="dataElements"
-            formControlName="dataElements"
+            name="dataSetElements"
+            formControlName="dataSetElements"
             [compareWith]="compareDataelement"
           >
             @for (dataelementOption of dataelementsSharedCollection; track $index) {
               <option [ngValue]="dataelementOption">{{ dataelementOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_indicators" jhiTranslate="dhis2AuditApp.dataset.indicators">Indicators</label>
+          <select
+            class="form-control"
+            id="field_indicators"
+            data-cy="indicators"
+            multiple
+            name="indicators"
+            formControlName="indicators"
+            [compareWith]="compareIndicator"
+          >
+            @for (indicatorOption of indicatorsSharedCollection; track $index) {
+              <option [ngValue]="indicatorOption">{{ indicatorOption.id }}</option>
             }
           </select>
         </div>

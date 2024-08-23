@@ -1,17 +1,17 @@
 import { IIndicatortype, NewIndicatortype } from './indicatortype.model';
 
 export const sampleWithRequiredData: IIndicatortype = {
-  id: '6562b4a0-3742-42ba-9675-d4051faf62fc',
+  id: '2ba18426-238a-4871-8873-7164e76e7e84',
 };
 
 export const sampleWithPartialData: IIndicatortype = {
-  id: '7eef8852-7afd-406c-9c54-eb865784a1cb',
-  name: "miaou à l'égard de",
+  id: '7d245dc5-46f1-4462-af00-665607e285ce',
+  name: 'lectorat au-dehors',
 };
 
 export const sampleWithFullData: IIndicatortype = {
-  id: 'c7211f50-023b-4a70-acfc-4ea8ffa6d1c9',
-  name: 'ouille de crainte que',
+  id: '8b38d70e-e16c-4917-911f-3f7f4be012b1',
+  name: 'de façon à ce que',
 };
 
 export const sampleWithNewData: NewIndicatortype = {

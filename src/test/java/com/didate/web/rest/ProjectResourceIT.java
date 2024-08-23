@@ -379,7 +379,7 @@ class ProjectResourceIT {
         Project partialUpdatedProject = new Project();
         partialUpdatedProject.setId(project.getId());
 
-        partialUpdatedProject.projectName(UPDATED_PROJECT_NAME).dhis2URL(UPDATED_DHIS_2_URL).emailNotification(UPDATED_EMAIL_NOTIFICATION);
+        partialUpdatedProject.projectName(UPDATED_PROJECT_NAME).emailNotification(UPDATED_EMAIL_NOTIFICATION);
 
         restProjectMockMvc
             .perform(

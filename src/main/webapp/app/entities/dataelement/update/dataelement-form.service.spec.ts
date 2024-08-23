@@ -43,8 +43,8 @@ describe('Dataelement Form Service', () => {
             lastUpdatedBy: expect.any(Object),
             categoryCombo: expect.any(Object),
             optionSet: expect.any(Object),
-            programs: expect.any(Object),
             datasets: expect.any(Object),
+            programStages: expect.any(Object),
           }),
         );
       });
@@ -78,8 +78,8 @@ describe('Dataelement Form Service', () => {
             lastUpdatedBy: expect.any(Object),
             categoryCombo: expect.any(Object),
             optionSet: expect.any(Object),
-            programs: expect.any(Object),
             datasets: expect.any(Object),
+            programStages: expect.any(Object),
           }),
         );
       });

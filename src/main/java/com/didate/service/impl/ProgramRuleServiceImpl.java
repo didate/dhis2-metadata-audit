@@ -91,4 +91,9 @@ public class ProgramRuleServiceImpl implements ProgramRuleService {
         log.debug("Request to delete ProgramRule : {}", id);
         programRuleRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean exist(String id) {
+        return programRuleRepository.existsById(id);
+    }
 }

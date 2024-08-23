@@ -1,15 +1,15 @@
 import { IOptionGroup, NewOptionGroup } from './option-group.model';
 
 export const sampleWithRequiredData: IOptionGroup = {
-  id: '9717365d-7211-48f2-ab33-30e71a00fb00',
+  id: '2e48bdbf-ed18-4894-aae8-a58a9e32a089',
 };
 
 export const sampleWithPartialData: IOptionGroup = {
-  id: '3876ab11-ae4d-4e00-b6de-e302df65bd46',
+  id: '196db80a-c2ea-421f-abc3-0cd2c63bb0ff',
 };
 
 export const sampleWithFullData: IOptionGroup = {
-  id: '1c07dbb5-5b80-4736-a3e6-227068723b1f',
+  id: '1faf7d1d-db11-4145-9bbb-4bc74b7355a8',
 };
 
 export const sampleWithNewData: NewOptionGroup = {

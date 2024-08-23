@@ -128,6 +128,24 @@ class DatasetResourceIT {
     private static final String DEFAULT_DISPLAY_FORM_NAME = "AAAAAAAAAA";
     private static final String UPDATED_DISPLAY_FORM_NAME = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_DATA_SET_ELEMENTS_COUNT = 1;
+    private static final Integer UPDATED_DATA_SET_ELEMENTS_COUNT = 2;
+
+    private static final Integer DEFAULT_INDICATORS_COUNT = 1;
+    private static final Integer UPDATED_INDICATORS_COUNT = 2;
+
+    private static final Integer DEFAULT_ORGANISATION_UNITS_COUNT = 1;
+    private static final Integer UPDATED_ORGANISATION_UNITS_COUNT = 2;
+
+    private static final String DEFAULT_DATA_SET_ELEMENTS_CONTENT = "AAAAAAAAAA";
+    private static final String UPDATED_DATA_SET_ELEMENTS_CONTENT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_INDICATORS_CONTENT = "AAAAAAAAAA";
+    private static final String UPDATED_INDICATORS_CONTENT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_ORGANISATION_UNITS_CONTENT = "AAAAAAAAAA";
+    private static final String UPDATED_ORGANISATION_UNITS_CONTENT = "BBBBBBBBBB";
+
     private static final TypeTrack DEFAULT_TRACK = TypeTrack.NEW;
     private static final TypeTrack UPDATED_TRACK = TypeTrack.UPDATE;
 
@@ -192,6 +210,12 @@ class DatasetResourceIT {
             .displayShortName(DEFAULT_DISPLAY_SHORT_NAME)
             .displayDescription(DEFAULT_DISPLAY_DESCRIPTION)
             .displayFormName(DEFAULT_DISPLAY_FORM_NAME)
+            .dataSetElementsCount(DEFAULT_DATA_SET_ELEMENTS_COUNT)
+            .indicatorsCount(DEFAULT_INDICATORS_COUNT)
+            .organisationUnitsCount(DEFAULT_ORGANISATION_UNITS_COUNT)
+            .dataSetElementsContent(DEFAULT_DATA_SET_ELEMENTS_CONTENT)
+            .indicatorsContent(DEFAULT_INDICATORS_CONTENT)
+            .organisationUnitsContent(DEFAULT_ORGANISATION_UNITS_CONTENT)
             .track(DEFAULT_TRACK);
         // Add required entity
         DHISUser dHISUser;
@@ -244,6 +268,12 @@ class DatasetResourceIT {
             .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
             .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
             .displayFormName(UPDATED_DISPLAY_FORM_NAME)
+            .dataSetElementsCount(UPDATED_DATA_SET_ELEMENTS_COUNT)
+            .indicatorsCount(UPDATED_INDICATORS_COUNT)
+            .organisationUnitsCount(UPDATED_ORGANISATION_UNITS_COUNT)
+            .dataSetElementsContent(UPDATED_DATA_SET_ELEMENTS_CONTENT)
+            .indicatorsContent(UPDATED_INDICATORS_CONTENT)
+            .organisationUnitsContent(UPDATED_ORGANISATION_UNITS_CONTENT)
             .track(UPDATED_TRACK);
         // Add required entity
         DHISUser dHISUser;
@@ -402,6 +432,12 @@ class DatasetResourceIT {
             .andExpect(jsonPath("$.[*].displayShortName").value(hasItem(DEFAULT_DISPLAY_SHORT_NAME)))
             .andExpect(jsonPath("$.[*].displayDescription").value(hasItem(DEFAULT_DISPLAY_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].displayFormName").value(hasItem(DEFAULT_DISPLAY_FORM_NAME)))
+            .andExpect(jsonPath("$.[*].dataSetElementsCount").value(hasItem(DEFAULT_DATA_SET_ELEMENTS_COUNT)))
+            .andExpect(jsonPath("$.[*].indicatorsCount").value(hasItem(DEFAULT_INDICATORS_COUNT)))
+            .andExpect(jsonPath("$.[*].organisationUnitsCount").value(hasItem(DEFAULT_ORGANISATION_UNITS_COUNT)))
+            .andExpect(jsonPath("$.[*].dataSetElementsContent").value(hasItem(DEFAULT_DATA_SET_ELEMENTS_CONTENT)))
+            .andExpect(jsonPath("$.[*].indicatorsContent").value(hasItem(DEFAULT_INDICATORS_CONTENT)))
+            .andExpect(jsonPath("$.[*].organisationUnitsContent").value(hasItem(DEFAULT_ORGANISATION_UNITS_CONTENT)))
             .andExpect(jsonPath("$.[*].track").value(hasItem(DEFAULT_TRACK.toString())));
     }
 
@@ -462,6 +498,12 @@ class DatasetResourceIT {
             .andExpect(jsonPath("$.displayShortName").value(DEFAULT_DISPLAY_SHORT_NAME))
             .andExpect(jsonPath("$.displayDescription").value(DEFAULT_DISPLAY_DESCRIPTION))
             .andExpect(jsonPath("$.displayFormName").value(DEFAULT_DISPLAY_FORM_NAME))
+            .andExpect(jsonPath("$.dataSetElementsCount").value(DEFAULT_DATA_SET_ELEMENTS_COUNT))
+            .andExpect(jsonPath("$.indicatorsCount").value(DEFAULT_INDICATORS_COUNT))
+            .andExpect(jsonPath("$.organisationUnitsCount").value(DEFAULT_ORGANISATION_UNITS_COUNT))
+            .andExpect(jsonPath("$.dataSetElementsContent").value(DEFAULT_DATA_SET_ELEMENTS_CONTENT))
+            .andExpect(jsonPath("$.indicatorsContent").value(DEFAULT_INDICATORS_CONTENT))
+            .andExpect(jsonPath("$.organisationUnitsContent").value(DEFAULT_ORGANISATION_UNITS_CONTENT))
             .andExpect(jsonPath("$.track").value(DEFAULT_TRACK.toString()));
     }
 
@@ -513,6 +555,12 @@ class DatasetResourceIT {
             .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
             .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
             .displayFormName(UPDATED_DISPLAY_FORM_NAME)
+            .dataSetElementsCount(UPDATED_DATA_SET_ELEMENTS_COUNT)
+            .indicatorsCount(UPDATED_INDICATORS_COUNT)
+            .organisationUnitsCount(UPDATED_ORGANISATION_UNITS_COUNT)
+            .dataSetElementsContent(UPDATED_DATA_SET_ELEMENTS_CONTENT)
+            .indicatorsContent(UPDATED_INDICATORS_CONTENT)
+            .organisationUnitsContent(UPDATED_ORGANISATION_UNITS_CONTENT)
             .track(UPDATED_TRACK);
 
         restDatasetMockMvc
@@ -590,19 +638,24 @@ class DatasetResourceIT {
         partialUpdatedDataset.setId(dataset.getId());
 
         partialUpdatedDataset
-            .created(UPDATED_CREATED)
-            .lastUpdated(UPDATED_LAST_UPDATED)
+            .name(UPDATED_NAME)
+            .shortName(UPDATED_SHORT_NAME)
             .description(UPDATED_DESCRIPTION)
-            .periodType(UPDATED_PERIOD_TYPE)
+            .dimensionItemType(UPDATED_DIMENSION_ITEM_TYPE)
+            .timelyDays(UPDATED_TIMELY_DAYS)
+            .openPeriodsAfterCoEndDate(UPDATED_OPEN_PERIODS_AFTER_CO_END_DATE)
             .fieldCombinationRequired(UPDATED_FIELD_COMBINATION_REQUIRED)
+            .validCompleteOnly(UPDATED_VALID_COMPLETE_ONLY)
             .noValueRequiresComment(UPDATED_NO_VALUE_REQUIRES_COMMENT)
             .renderAsTabs(UPDATED_RENDER_AS_TABS)
             .renderHorizontally(UPDATED_RENDER_HORIZONTALLY)
             .compulsoryFieldsCompleteOnly(UPDATED_COMPULSORY_FIELDS_COMPLETE_ONLY)
-            .formType(UPDATED_FORM_TYPE)
-            .dimensionItem(UPDATED_DIMENSION_ITEM)
+            .displayName(UPDATED_DISPLAY_NAME)
+            .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
             .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
-            .displayFormName(UPDATED_DISPLAY_FORM_NAME);
+            .dataSetElementsCount(UPDATED_DATA_SET_ELEMENTS_COUNT)
+            .dataSetElementsContent(UPDATED_DATA_SET_ELEMENTS_CONTENT)
+            .organisationUnitsContent(UPDATED_ORGANISATION_UNITS_CONTENT);
 
         restDatasetMockMvc
             .perform(
@@ -659,6 +712,12 @@ class DatasetResourceIT {
             .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
             .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
             .displayFormName(UPDATED_DISPLAY_FORM_NAME)
+            .dataSetElementsCount(UPDATED_DATA_SET_ELEMENTS_COUNT)
+            .indicatorsCount(UPDATED_INDICATORS_COUNT)
+            .organisationUnitsCount(UPDATED_ORGANISATION_UNITS_COUNT)
+            .dataSetElementsContent(UPDATED_DATA_SET_ELEMENTS_CONTENT)
+            .indicatorsContent(UPDATED_INDICATORS_CONTENT)
+            .organisationUnitsContent(UPDATED_ORGANISATION_UNITS_CONTENT)
             .track(UPDATED_TRACK);
 
         restDatasetMockMvc

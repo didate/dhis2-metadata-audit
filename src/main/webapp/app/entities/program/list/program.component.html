@@ -126,20 +126,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="programIndicators">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.programIndicators">Program Indicators</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="programRuleVariables">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.programRuleVariables">Program Rule Variables</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="onlyEnrollOnce">
               <div class="d-flex">
                 <span jhiTranslate="dhis2AuditApp.program.onlyEnrollOnce">Only Enroll Once</span>
@@ -301,13 +287,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="attributeValuesCount">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.attributeValuesCount">Attribute Values Count</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="organisationUnitsCount">
               <div class="d-flex">
                 <span jhiTranslate="dhis2AuditApp.program.organisationUnitsCount">Organisation Units Count</span>
@@ -322,9 +301,9 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="programSectionsCount">
+            <th scope="col" jhiSortBy="programIndicatorsCount">
               <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.programSectionsCount">Program Sections Count</span>
+                <span jhiTranslate="dhis2AuditApp.program.programIndicatorsCount">Program Indicators Count</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -333,6 +312,36 @@
               <div class="d-flex">
                 <span jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributesCount"
                   >Program Tracked Entity Attributes Count</span
+                >
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="organisationUnitsContent">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.program.organisationUnitsContent">Organisation Units Content</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="programStagesContent">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.program.programStagesContent">Program Stages Content</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="programIndicatorsContent">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.program.programIndicatorsContent">Program Indicators Content</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="programTrackedEntityAttributesContent">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributesContent"
+                  >Program Tracked Entity Attributes Content</span
                 >
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -390,8 +399,6 @@
               <td>{{ program.displayIncidentDate }}</td>
               <td>{{ program.ignoreOverdueEvents }}</td>
               <td>{{ program.userRoles }}</td>
-              <td>{{ program.programIndicators }}</td>
-              <td>{{ program.programRuleVariables }}</td>
               <td>{{ program.onlyEnrollOnce }}</td>
               <td>{{ program.notificationTemplates }}</td>
               <td>{{ program.selectEnrollmentDatesInFuture }}</td>
@@ -415,11 +422,14 @@
               <td>{{ program.displayDescription }}</td>
               <td>{{ program.displayFormName }}</td>
               <td>{{ program.displayName }}</td>
-              <td>{{ program.attributeValuesCount }}</td>
               <td>{{ program.organisationUnitsCount }}</td>
               <td>{{ program.programStagesCount }}</td>
-              <td>{{ program.programSectionsCount }}</td>
+              <td>{{ program.programIndicatorsCount }}</td>
               <td>{{ program.programTrackedEntityAttributesCount }}</td>
+              <td>{{ program.organisationUnitsContent }}</td>
+              <td>{{ program.programStagesContent }}</td>
+              <td>{{ program.programIndicatorsContent }}</td>
+              <td>{{ program.programTrackedEntityAttributesContent }}</td>
               <td [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (program.track ?? 'null')">
                 {{ { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[program.track ?? 'null'] }}
               </td>

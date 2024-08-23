@@ -390,8 +390,8 @@ class ProgramRuleActionResourceIT {
 
         partialUpdatedProgramRuleAction
             .lastUpdated(UPDATED_LAST_UPDATED)
-            .programRuleActionType(UPDATED_PROGRAM_RULE_ACTION_TYPE)
-            .data(UPDATED_DATA)
+            .created(UPDATED_CREATED)
+            .evaluationTime(UPDATED_EVALUATION_TIME)
             .displayContent(UPDATED_DISPLAY_CONTENT)
             .track(UPDATED_TRACK);
 

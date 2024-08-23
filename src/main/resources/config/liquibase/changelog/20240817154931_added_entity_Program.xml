@@ -50,12 +50,6 @@
             <column name="user_roles" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="program_indicators" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="program_rule_variables" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="only_enroll_once" type="boolean">
                 <constraints nullable="true" />
             </column>
@@ -125,19 +119,28 @@
             <column name="display_name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="attribute_values_count" type="integer">
-                <constraints nullable="true" />
-            </column>
             <column name="organisation_units_count" type="integer">
                 <constraints nullable="true" />
             </column>
             <column name="program_stages_count" type="integer">
                 <constraints nullable="true" />
             </column>
-            <column name="program_sections_count" type="integer">
+            <column name="program_indicators_count" type="integer">
                 <constraints nullable="true" />
             </column>
             <column name="program_tracked_entity_attributes_count" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="organisation_units_content" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="program_stages_content" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="program_indicators_content" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="program_tracked_entity_attributes_content" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="track" type="varchar(255)">
@@ -161,8 +164,8 @@
 
     <changeSet id="20240817154931-1-relations" author="jhipster">
 
-        <createTable tableName="rel_program__data_elements">
-            <column name="data_elements_id" type="varchar(255)">
+        <createTable tableName="rel_program__program_tracked_entity_attributes">
+            <column name="program_tracked_entity_attributes_id" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="program_id" type="varchar(255)">
@@ -170,7 +173,7 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="program_id, data_elements_id" tableName="rel_program__data_elements"/>
+        <addPrimaryKey columnNames="program_id, program_tracked_entity_attributes_id" tableName="rel_program__program_tracked_entity_attributes"/>
 
         <createTable tableName="rel_program__organisation_units">
             <column name="organisation_units_id" type="varchar(255)">
@@ -182,6 +185,28 @@
         </createTable>
 
         <addPrimaryKey columnNames="program_id, organisation_units_id" tableName="rel_program__organisation_units"/>
+
+        <createTable tableName="rel_program__program_indicators">
+            <column name="program_indicators_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="program_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="program_id, program_indicators_id" tableName="rel_program__program_indicators"/>
+
+        <createTable tableName="rel_program__program_stage">
+            <column name="program_stage_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="program_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="program_id, program_stage_id" tableName="rel_program__program_stage"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -213,8 +238,6 @@
             <column name="display_incident_date" type="boolean"/>
             <column name="ignore_overdue_events" type="boolean"/>
             <column name="user_roles" type="string"/>
-            <column name="program_indicators" type="string"/>
-            <column name="program_rule_variables" type="string"/>
             <column name="only_enroll_once" type="boolean"/>
             <column name="notification_templates" type="string"/>
             <column name="select_enrollment_dates_in_future" type="boolean"/>
@@ -238,11 +261,14 @@
             <column name="display_description" type="string"/>
             <column name="display_form_name" type="string"/>
             <column name="display_name" type="string"/>
-            <column name="attribute_values_count" type="numeric"/>
             <column name="organisation_units_count" type="numeric"/>
             <column name="program_stages_count" type="numeric"/>
-            <column name="program_sections_count" type="numeric"/>
+            <column name="program_indicators_count" type="numeric"/>
             <column name="program_tracked_entity_attributes_count" type="numeric"/>
+            <column name="organisation_units_content" type="string"/>
+            <column name="program_stages_content" type="string"/>
+            <column name="program_indicators_content" type="string"/>
+            <column name="program_tracked_entity_attributes_content" type="string"/>
             <column name="track" type="string"/>
             <column name="created_by_id" type="string"/>
             <column name="last_updated_by_id" type="string"/>

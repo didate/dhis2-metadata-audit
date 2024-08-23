@@ -15,6 +15,8 @@ import { ICategorycombo } from 'app/entities/categorycombo/categorycombo.model';
 import { CategorycomboService } from 'app/entities/categorycombo/service/categorycombo.service';
 import { IDataelement } from 'app/entities/dataelement/dataelement.model';
 import { DataelementService } from 'app/entities/dataelement/service/dataelement.service';
+import { IIndicator } from 'app/entities/indicator/indicator.model';
+import { IndicatorService } from 'app/entities/indicator/service/indicator.service';
 import { IOrganisationUnit } from 'app/entities/organisation-unit/organisation-unit.model';
 import { OrganisationUnitService } from 'app/entities/organisation-unit/service/organisation-unit.service';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
@@ -37,6 +39,7 @@ export class DatasetUpdateComponent implements OnInit {
   dHISUsersSharedCollection: IDHISUser[] = [];
   categorycombosSharedCollection: ICategorycombo[] = [];
   dataelementsSharedCollection: IDataelement[] = [];
+  indicatorsSharedCollection: IIndicator[] = [];
   organisationUnitsSharedCollection: IOrganisationUnit[] = [];
 
   protected datasetService = inject(DatasetService);
@@ -45,6 +48,7 @@ export class DatasetUpdateComponent implements OnInit {
   protected dHISUserService = inject(DHISUserService);
   protected categorycomboService = inject(CategorycomboService);
   protected dataelementService = inject(DataelementService);
+  protected indicatorService = inject(IndicatorService);
   protected organisationUnitService = inject(OrganisationUnitService);
   protected activatedRoute = inject(ActivatedRoute);
 
@@ -59,6 +63,8 @@ export class DatasetUpdateComponent implements OnInit {
     this.categorycomboService.compareCategorycombo(o1, o2);
 
   compareDataelement = (o1: IDataelement | null, o2: IDataelement | null): boolean => this.dataelementService.compareDataelement(o1, o2);
+
+  compareIndicator = (o1: IIndicator | null, o2: IIndicator | null): boolean => this.indicatorService.compareIndicator(o1, o2);
 
   compareOrganisationUnit = (o1: IOrganisationUnit | null, o2: IOrganisationUnit | null): boolean =>
     this.organisationUnitService.compareOrganisationUnit(o1, o2);
@@ -126,7 +132,11 @@ export class DatasetUpdateComponent implements OnInit {
     );
     this.dataelementsSharedCollection = this.dataelementService.addDataelementToCollectionIfMissing<IDataelement>(
       this.dataelementsSharedCollection,
-      ...(dataset.dataElements ?? []),
+      ...(dataset.dataSetElements ?? []),
+    );
+    this.indicatorsSharedCollection = this.indicatorService.addIndicatorToCollectionIfMissing<IIndicator>(
+      this.indicatorsSharedCollection,
+      ...(dataset.indicators ?? []),
     );
     this.organisationUnitsSharedCollection = this.organisationUnitService.addOrganisationUnitToCollectionIfMissing<IOrganisationUnit>(
       this.organisationUnitsSharedCollection,
@@ -166,10 +176,20 @@ export class DatasetUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IDataelement[]>) => res.body ?? []))
       .pipe(
         map((dataelements: IDataelement[]) =>
-          this.dataelementService.addDataelementToCollectionIfMissing<IDataelement>(dataelements, ...(this.dataset?.dataElements ?? [])),
+          this.dataelementService.addDataelementToCollectionIfMissing<IDataelement>(dataelements, ...(this.dataset?.dataSetElements ?? [])),
         ),
       )
       .subscribe((dataelements: IDataelement[]) => (this.dataelementsSharedCollection = dataelements));
+
+    this.indicatorService
+      .query()
+      .pipe(map((res: HttpResponse<IIndicator[]>) => res.body ?? []))
+      .pipe(
+        map((indicators: IIndicator[]) =>
+          this.indicatorService.addIndicatorToCollectionIfMissing<IIndicator>(indicators, ...(this.dataset?.indicators ?? [])),
+        ),
+      )
+      .subscribe((indicators: IIndicator[]) => (this.indicatorsSharedCollection = indicators));
 
     this.organisationUnitService
       .query()

@@ -256,6 +256,8 @@ class IndicatortypeResourceIT {
         Indicatortype partialUpdatedIndicatortype = new Indicatortype();
         partialUpdatedIndicatortype.setId(indicatortype.getId());
 
+        partialUpdatedIndicatortype.name(UPDATED_NAME);
+
         restIndicatortypeMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedIndicatortype.getId())

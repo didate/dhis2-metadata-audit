@@ -39,17 +39,17 @@
                                  />
 
         <addForeignKeyConstraint baseColumnNames="program_id"
-                                 baseTableName="rel_program__data_elements"
-                                 constraintName="fk_rel_program__data_elements__program_id"
+                                 baseTableName="rel_program__program_tracked_entity_attributes"
+                                 constraintName="fk_rel_program__program_tracked_entity_attributes__program_id"
                                  referencedColumnNames="id"
                                  referencedTableName="program"
                                  />
 
-        <addForeignKeyConstraint baseColumnNames="data_elements_id"
-                                 baseTableName="rel_program__data_elements"
-                                 constraintName="fk_rel_program__data_elements__data_elements_id"
+        <addForeignKeyConstraint baseColumnNames="program_tracked_entity_attributes_id"
+                                 baseTableName="rel_program__program_tracked_entity_attributes"
+                                 constraintName="fk_rel_program__program_tracked__program_tracked_entity_a_2e_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="dataelement"
+                                 referencedTableName="tracked_entity_attribute"
                                  />
 
         <addForeignKeyConstraint baseColumnNames="program_id"
@@ -64,6 +64,34 @@
                                  constraintName="fk_rel_program__organisation_units__organisation_units_id"
                                  referencedColumnNames="id"
                                  referencedTableName="organisation_unit"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="program_id"
+                                 baseTableName="rel_program__program_indicators"
+                                 constraintName="fk_rel_program__program_indicators__program_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="program"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="program_indicators_id"
+                                 baseTableName="rel_program__program_indicators"
+                                 constraintName="fk_rel_program__program_indicators__program_indicators_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="program_indicator"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="program_id"
+                                 baseTableName="rel_program__program_stage"
+                                 constraintName="fk_rel_program__program_stage__program_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="program"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="program_stage_id"
+                                 baseTableName="rel_program__program_stage"
+                                 constraintName="fk_rel_program__program_stage__program_stage_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="program_stage"
                                  />
     </changeSet>
 </databaseChangeLog>
