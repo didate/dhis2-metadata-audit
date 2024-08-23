@@ -1,22 +1,19 @@
-package com.didate.service.dhis2;
+package com.didate.service.dhis2.request;
 
 import com.didate.domain.Dataelement;
 import com.didate.domain.Project;
+import com.didate.service.dhis2.DataElementResponse;
+import com.didate.service.dhis2.DhisServiceUtil;
+import com.didate.service.dhis2.OkHttpClientConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DataElementApiService {
-
-    private static final Logger log = LoggerFactory.getLogger(DataElementApiService.class);
 
     private final ObjectMapper objectMapper;
 

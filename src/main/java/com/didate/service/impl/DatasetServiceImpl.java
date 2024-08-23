@@ -157,4 +157,9 @@ public class DatasetServiceImpl implements DatasetService {
         log.debug("Request to delete Dataset : {}", id);
         datasetRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean exist(String id) {
+        return datasetRepository.existsById(id);
+    }
 }
