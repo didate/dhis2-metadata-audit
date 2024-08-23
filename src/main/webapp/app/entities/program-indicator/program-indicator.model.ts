@@ -17,11 +17,11 @@ export interface IProgramIndicator {
   displayShortName?: string | null;
   displayName?: string | null;
   displayFormName?: string | null;
-  track?: keyof typeof TypeTrack | null;
-  createdBy?: IDHISUser | null;
-  lastUpdatedBy?: IDHISUser | null;
-  program?: IProgram | null;
-  programs?: IProgram[] | null;
+  track?: TypeTrack | null;
+  createdBy?: Pick<IDHISUser, 'id'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  program?: Pick<IProgram, 'id'> | null;
+  programs?: Pick<IProgram, 'id'>[] | null;
 }
 
 export type NewProgramIndicator = Omit<IProgramIndicator, 'id'> & { id: null };

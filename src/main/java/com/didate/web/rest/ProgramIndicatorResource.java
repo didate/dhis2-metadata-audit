@@ -4,19 +4,20 @@ import com.didate.domain.ProgramIndicator;
 import com.didate.repository.ProgramIndicatorRepository;
 import com.didate.service.ProgramIndicatorService;
 import com.didate.web.rest.errors.BadRequestAlertException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,10 +29,10 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.didate.domain.ProgramIndicator}.
  */
 @RestController
-@RequestMapping("/api/program-indicators")
+@RequestMapping("/api")
 public class ProgramIndicatorResource {
 
-    private static final Logger log = LoggerFactory.getLogger(ProgramIndicatorResource.class);
+    private final Logger log = LoggerFactory.getLogger(ProgramIndicatorResource.class);
 
     private static final String ENTITY_NAME = "programIndicator";
 
@@ -57,17 +58,18 @@ public class ProgramIndicatorResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new programIndicator, or with status {@code 400 (Bad Request)} if the programIndicator has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/program-indicators")
     public ResponseEntity<ProgramIndicator> createProgramIndicator(@Valid @RequestBody ProgramIndicator programIndicator)
         throws URISyntaxException {
         log.debug("REST request to save ProgramIndicator : {}", programIndicator);
         if (programIndicator.getId() != null) {
             throw new BadRequestAlertException("A new programIndicator cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        programIndicator = programIndicatorService.save(programIndicator);
-        return ResponseEntity.created(new URI("/api/program-indicators/" + programIndicator.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, programIndicator.getId()))
-            .body(programIndicator);
+        ProgramIndicator result = programIndicatorService.save(programIndicator);
+        return ResponseEntity
+            .created(new URI("/api/program-indicators/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
+            .body(result);
     }
 
     /**
@@ -80,7 +82,7 @@ public class ProgramIndicatorResource {
      * or with status {@code 500 (Internal Server Error)} if the programIndicator couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/program-indicators/{id}")
     public ResponseEntity<ProgramIndicator> updateProgramIndicator(
         @PathVariable(value = "id", required = false) final String id,
         @Valid @RequestBody ProgramIndicator programIndicator
@@ -97,10 +99,11 @@ public class ProgramIndicatorResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        programIndicator = programIndicatorService.update(programIndicator);
-        return ResponseEntity.ok()
+        ProgramIndicator result = programIndicatorService.update(programIndicator);
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, programIndicator.getId()))
-            .body(programIndicator);
+            .body(result);
     }
 
     /**
@@ -114,7 +117,7 @@ public class ProgramIndicatorResource {
      * or with status {@code 500 (Internal Server Error)} if the programIndicator couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/program-indicators/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ProgramIndicator> partialUpdateProgramIndicator(
         @PathVariable(value = "id", required = false) final String id,
         @NotNull @RequestBody ProgramIndicator programIndicator
@@ -145,9 +148,9 @@ public class ProgramIndicatorResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of programIndicators in body.
      */
-    @GetMapping("")
+    @GetMapping("/program-indicators")
     public ResponseEntity<List<ProgramIndicator>> getAllProgramIndicators(
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get a page of ProgramIndicators");
         Page<ProgramIndicator> page = programIndicatorService.findAll(pageable);
@@ -161,8 +164,8 @@ public class ProgramIndicatorResource {
      * @param id the id of the programIndicator to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the programIndicator, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<ProgramIndicator> getProgramIndicator(@PathVariable("id") String id) {
+    @GetMapping("/program-indicators/{id}")
+    public ResponseEntity<ProgramIndicator> getProgramIndicator(@PathVariable String id) {
         log.debug("REST request to get ProgramIndicator : {}", id);
         Optional<ProgramIndicator> programIndicator = programIndicatorService.findOne(id);
         return ResponseUtil.wrapOrNotFound(programIndicator);
@@ -174,8 +177,8 @@ public class ProgramIndicatorResource {
      * @param id the id of the programIndicator to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProgramIndicator(@PathVariable("id") String id) {
+    @DeleteMapping("/program-indicators/{id}")
+    public ResponseEntity<Void> deleteProgramIndicator(@PathVariable String id) {
         log.debug("REST request to delete ProgramIndicator : {}", id);
         programIndicatorService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();

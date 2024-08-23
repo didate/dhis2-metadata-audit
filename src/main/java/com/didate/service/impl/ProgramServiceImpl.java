@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.Program}.
+ * Service Implementation for managing {@link Program}.
  */
 @Service
 @Transactional
 public class ProgramServiceImpl implements ProgramService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProgramServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(ProgramServiceImpl.class);
 
     private final ProgramRepository programRepository;
 
@@ -35,6 +35,7 @@ public class ProgramServiceImpl implements ProgramService {
     @Override
     public Program update(Program program) {
         log.debug("Request to update Program : {}", program);
+        program.setIsPersisted();
         return programRepository.save(program);
     }
 

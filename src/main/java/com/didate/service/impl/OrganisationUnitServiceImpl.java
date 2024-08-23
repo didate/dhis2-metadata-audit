@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.OrganisationUnit}.
+ * Service Implementation for managing {@link OrganisationUnit}.
  */
 @Service
 @Transactional
 public class OrganisationUnitServiceImpl implements OrganisationUnitService {
 
-    private static final Logger log = LoggerFactory.getLogger(OrganisationUnitServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(OrganisationUnitServiceImpl.class);
 
     private final OrganisationUnitRepository organisationUnitRepository;
 
@@ -35,6 +35,7 @@ public class OrganisationUnitServiceImpl implements OrganisationUnitService {
     @Override
     public OrganisationUnit update(OrganisationUnit organisationUnit) {
         log.debug("Request to update OrganisationUnit : {}", organisationUnit);
+        organisationUnit.setIsPersisted();
         return organisationUnitRepository.save(organisationUnit);
     }
 
@@ -90,5 +91,10 @@ public class OrganisationUnitServiceImpl implements OrganisationUnitService {
     public void delete(String id) {
         log.debug("Request to delete OrganisationUnit : {}", id);
         organisationUnitRepository.deleteById(id);
+    }
+
+    @Override
+    public Boolean exist(String id) {
+        return organisationUnitRepository.existsById(id);
     }
 }

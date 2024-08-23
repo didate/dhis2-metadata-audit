@@ -1,11 +1,11 @@
 <div>
   <h2 id="page-heading" data-cy="DatasetHeading">
-    <span jhiTranslate="dhis2AuditApp.dataset.home.title">Datasets</span>
+    <span jhiTranslate="dhis2TrackApp.dataset.home.title">Datasets</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span jhiTranslate="dhis2AuditApp.dataset.home.refreshListLabel">Actualiser la liste</span>
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="dhis2TrackApp.dataset.home.refreshListLabel">Actualiser la liste</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/dataset/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2AuditApp.dataset.home.createLabel">Créer un nouveau Dataset</span>
+        <span jhiTranslate="dhis2TrackApp.dataset.home.createLabel"> Créer un nouveau Dataset </span>
       </button>
     </div>
   </h2>
@@ -24,408 +24,365 @@
 
   <jhi-alert></jhi-alert>
 
-  @if (datasets?.length === 0) {
-    <div class="alert alert-warning" id="no-result">
-      <span jhiTranslate="dhis2AuditApp.dataset.home.notFound">Aucun Dataset trouvé</span>
+  <div class="alert alert-warning" id="no-result" *ngIf="datasets?.length === 0">
+    <span jhiTranslate="dhis2TrackApp.dataset.home.notFound">Aucun Dataset trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="datasets && datasets.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.id">Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="name">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.name">Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="created">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.created">Created</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastUpdated">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.lastUpdated">Last Updated</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="shortName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.shortName">Short Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="description">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.description">Description</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dimensionItemType">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.dimensionItemType">Dimension Item Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="periodType">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.periodType">Period Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="mobile">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.mobile">Mobile</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="version">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.version">Version</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="expiryDays">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.expiryDays">Expiry Days</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="timelyDays">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.timelyDays">Timely Days</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="notifyCompletingUser">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.notifyCompletingUser">Notify Completing User</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="openFuturePeriods">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.openFuturePeriods">Open Future Periods</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="openPeriodsAfterCoEndDate">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.openPeriodsAfterCoEndDate">Open Periods After Co End Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="fieldCombinationRequired">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.fieldCombinationRequired">Field Combination Required</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="validCompleteOnly">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.validCompleteOnly">Valid Complete Only</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="noValueRequiresComment">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.noValueRequiresComment">No Value Requires Comment</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="skipOffline">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.skipOffline">Skip Offline</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dataElementDecoration">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.dataElementDecoration">Data Element Decoration</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="renderAsTabs">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.renderAsTabs">Render As Tabs</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="renderHorizontally">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.renderHorizontally">Render Horizontally</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="compulsoryFieldsCompleteOnly">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.compulsoryFieldsCompleteOnly">Compulsory Fields Complete Only</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="formType">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.formType">Form Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.displayName">Display Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dimensionItem">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.dimensionItem">Dimension Item</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayShortName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.displayShortName">Display Short Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayDescription">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.displayDescription">Display Description</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayFormName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.displayFormName">Display Form Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dataSetElementsCount">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.dataSetElementsCount">Data Set Elements Count</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="indicatorsCount">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.indicatorsCount">Indicators Count</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="organisationUnitsCount">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.organisationUnitsCount">Organisation Units Count</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dataSetElementsContent">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.dataSetElementsContent">Data Set Elements Content</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="indicatorsContent">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.indicatorsContent">Indicators Content</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="organisationUnitsContent">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.organisationUnitsContent">Organisation Units Content</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="track">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.track">Track</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="project.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.project">Project</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="createdBy.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.createdBy">Created By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastUpdatedBy.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.lastUpdatedBy">Last Updated By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="categoryCombo.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataset.categoryCombo">Category Combo</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dataset of datasets; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/dataset', dataset.id, 'view']">{{ dataset.id }}</a>
+          </td>
+          <td>{{ dataset.name }}</td>
+          <td>{{ dataset.created | formatMediumDatetime }}</td>
+          <td>{{ dataset.lastUpdated | formatMediumDatetime }}</td>
+          <td>{{ dataset.shortName }}</td>
+          <td>{{ dataset.description }}</td>
+          <td>{{ dataset.dimensionItemType }}</td>
+          <td>{{ dataset.periodType }}</td>
+          <td>{{ dataset.mobile }}</td>
+          <td>{{ dataset.version }}</td>
+          <td>{{ dataset.expiryDays }}</td>
+          <td>{{ dataset.timelyDays }}</td>
+          <td>{{ dataset.notifyCompletingUser }}</td>
+          <td>{{ dataset.openFuturePeriods }}</td>
+          <td>{{ dataset.openPeriodsAfterCoEndDate }}</td>
+          <td>{{ dataset.fieldCombinationRequired }}</td>
+          <td>{{ dataset.validCompleteOnly }}</td>
+          <td>{{ dataset.noValueRequiresComment }}</td>
+          <td>{{ dataset.skipOffline }}</td>
+          <td>{{ dataset.dataElementDecoration }}</td>
+          <td>{{ dataset.renderAsTabs }}</td>
+          <td>{{ dataset.renderHorizontally }}</td>
+          <td>{{ dataset.compulsoryFieldsCompleteOnly }}</td>
+          <td>{{ dataset.formType }}</td>
+          <td>{{ dataset.displayName }}</td>
+          <td>{{ dataset.dimensionItem }}</td>
+          <td>{{ dataset.displayShortName }}</td>
+          <td>{{ dataset.displayDescription }}</td>
+          <td>{{ dataset.displayFormName }}</td>
+          <td>{{ dataset.dataSetElementsCount }}</td>
+          <td>{{ dataset.indicatorsCount }}</td>
+          <td>{{ dataset.organisationUnitsCount }}</td>
+          <td>{{ dataset.dataSetElementsContent }}</td>
+          <td>{{ dataset.indicatorsContent }}</td>
+          <td>{{ dataset.organisationUnitsContent }}</td>
+          <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + dataset.track }}">{{ dataset.track }}</td>
+          <td>
+            <div *ngIf="dataset.project">
+              <a [routerLink]="['/project', dataset.project.id, 'view']">{{ dataset.project.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="dataset.createdBy">
+              <a [routerLink]="['/dhis-user', dataset.createdBy.id, 'view']">{{ dataset.createdBy.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="dataset.lastUpdatedBy">
+              <a [routerLink]="['/dhis-user', dataset.lastUpdatedBy.id, 'view']">{{ dataset.lastUpdatedBy.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="dataset.categoryCombo">
+              <a [routerLink]="['/categorycombo', dataset.categoryCombo.id, 'view']">{{ dataset.categoryCombo.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/dataset', dataset.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/dataset', dataset.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+              </button>
+
+              <button type="submit" (click)="delete(dataset)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="datasets && datasets.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
     </div>
-  }
 
-  @if (datasets && datasets.length > 0) {
-    <div class="table-responsive table-entities" id="entities">
-      <table class="table table-striped" aria-describedby="page-heading">
-        <thead>
-          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.id">Id</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="name">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.name">Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="created">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.created">Created</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="lastUpdated">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.lastUpdated">Last Updated</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="shortName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.shortName">Short Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="description">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.description">Description</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dimensionItemType">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.dimensionItemType">Dimension Item Type</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="periodType">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.periodType">Period Type</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="mobile">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.mobile">Mobile</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="version">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.version">Version</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="expiryDays">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.expiryDays">Expiry Days</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="timelyDays">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.timelyDays">Timely Days</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="notifyCompletingUser">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.notifyCompletingUser">Notify Completing User</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="openFuturePeriods">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.openFuturePeriods">Open Future Periods</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="openPeriodsAfterCoEndDate">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.openPeriodsAfterCoEndDate">Open Periods After Co End Date</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="fieldCombinationRequired">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.fieldCombinationRequired">Field Combination Required</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="validCompleteOnly">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.validCompleteOnly">Valid Complete Only</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="noValueRequiresComment">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.noValueRequiresComment">No Value Requires Comment</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="skipOffline">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.skipOffline">Skip Offline</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dataElementDecoration">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.dataElementDecoration">Data Element Decoration</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="renderAsTabs">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.renderAsTabs">Render As Tabs</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="renderHorizontally">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.renderHorizontally">Render Horizontally</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="compulsoryFieldsCompleteOnly">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.compulsoryFieldsCompleteOnly">Compulsory Fields Complete Only</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="formType">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.formType">Form Type</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.displayName">Display Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dimensionItem">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.dimensionItem">Dimension Item</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayShortName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.displayShortName">Display Short Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayDescription">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.displayDescription">Display Description</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayFormName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.displayFormName">Display Form Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dataSetElementsCount">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.dataSetElementsCount">Data Set Elements Count</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="indicatorsCount">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.indicatorsCount">Indicators Count</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="organisationUnitsCount">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.organisationUnitsCount">Organisation Units Count</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dataSetElementsContent">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.dataSetElementsContent">Data Set Elements Content</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="indicatorsContent">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.indicatorsContent">Indicators Content</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="organisationUnitsContent">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.organisationUnitsContent">Organisation Units Content</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="track">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.track">Track</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="project.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.project">Project</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="createdBy.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.createdBy">Created By</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="lastUpdatedBy.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.lastUpdatedBy">Last Updated By</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="categoryCombo.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataset.categoryCombo">Category Combo</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (dataset of datasets; track trackId) {
-            <tr data-cy="entityTable">
-              <td>
-                <a [routerLink]="['/dataset', dataset.id, 'view']">{{ dataset.id }}</a>
-              </td>
-              <td>{{ dataset.name }}</td>
-              <td>{{ dataset.created | formatMediumDatetime }}</td>
-              <td>{{ dataset.lastUpdated | formatMediumDatetime }}</td>
-              <td>{{ dataset.shortName }}</td>
-              <td>{{ dataset.description }}</td>
-              <td>{{ dataset.dimensionItemType }}</td>
-              <td>{{ dataset.periodType }}</td>
-              <td>{{ dataset.mobile }}</td>
-              <td>{{ dataset.version }}</td>
-              <td>{{ dataset.expiryDays }}</td>
-              <td>{{ dataset.timelyDays }}</td>
-              <td>{{ dataset.notifyCompletingUser }}</td>
-              <td>{{ dataset.openFuturePeriods }}</td>
-              <td>{{ dataset.openPeriodsAfterCoEndDate }}</td>
-              <td>{{ dataset.fieldCombinationRequired }}</td>
-              <td>{{ dataset.validCompleteOnly }}</td>
-              <td>{{ dataset.noValueRequiresComment }}</td>
-              <td>{{ dataset.skipOffline }}</td>
-              <td>{{ dataset.dataElementDecoration }}</td>
-              <td>{{ dataset.renderAsTabs }}</td>
-              <td>{{ dataset.renderHorizontally }}</td>
-              <td>{{ dataset.compulsoryFieldsCompleteOnly }}</td>
-              <td>{{ dataset.formType }}</td>
-              <td>{{ dataset.displayName }}</td>
-              <td>{{ dataset.dimensionItem }}</td>
-              <td>{{ dataset.displayShortName }}</td>
-              <td>{{ dataset.displayDescription }}</td>
-              <td>{{ dataset.displayFormName }}</td>
-              <td>{{ dataset.dataSetElementsCount }}</td>
-              <td>{{ dataset.indicatorsCount }}</td>
-              <td>{{ dataset.organisationUnitsCount }}</td>
-              <td>{{ dataset.dataSetElementsContent }}</td>
-              <td>{{ dataset.indicatorsContent }}</td>
-              <td>{{ dataset.organisationUnitsContent }}</td>
-              <td [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (dataset.track ?? 'null')">
-                {{ { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[dataset.track ?? 'null'] }}
-              </td>
-              <td>
-                @if (dataset.project) {
-                  <div>
-                    <a [routerLink]="['/project', dataset.project.id, 'view']">{{ dataset.project.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (dataset.createdBy) {
-                  <div>
-                    <a [routerLink]="['/dhis-user', dataset.createdBy.id, 'view']">{{ dataset.createdBy.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (dataset.lastUpdatedBy) {
-                  <div>
-                    <a [routerLink]="['/dhis-user', dataset.lastUpdatedBy.id, 'view']">{{ dataset.lastUpdatedBy.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (dataset.categoryCombo) {
-                  <div>
-                    <a [routerLink]="['/categorycombo', dataset.categoryCombo.id, 'view']">{{ dataset.categoryCombo.id }}</a>
-                  </div>
-                }
-              </td>
-              <td class="text-end">
-                <div class="btn-group">
-                  <a [routerLink]="['/dataset', dataset.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-                  </a>
-
-                  <a [routerLink]="['/dataset', dataset.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(dataset)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
     </div>
-  }
-  @if (datasets && datasets.length > 0) {
-    <div>
-      <div class="d-flex justify-content-center">
-        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-      </div>
-
-      <div class="d-flex justify-content-center">
-        <ngb-pagination
-          [collectionSize]="totalItems"
-          [page]="page"
-          [pageSize]="itemsPerPage"
-          [maxSize]="5"
-          [rotate]="true"
-          [boundaryLinks]="true"
-          (pageChange)="navigateToPage($event)"
-        ></ngb-pagination>
-      </div>
-    </div>
-  }
+  </div>
 </div>

@@ -4,19 +4,20 @@ import com.didate.domain.Program;
 import com.didate.repository.ProgramRepository;
 import com.didate.service.ProgramService;
 import com.didate.web.rest.errors.BadRequestAlertException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,10 +29,10 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.didate.domain.Program}.
  */
 @RestController
-@RequestMapping("/api/programs")
+@RequestMapping("/api")
 public class ProgramResource {
 
-    private static final Logger log = LoggerFactory.getLogger(ProgramResource.class);
+    private final Logger log = LoggerFactory.getLogger(ProgramResource.class);
 
     private static final String ENTITY_NAME = "program";
 
@@ -54,16 +55,17 @@ public class ProgramResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new program, or with status {@code 400 (Bad Request)} if the program has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/programs")
     public ResponseEntity<Program> createProgram(@Valid @RequestBody Program program) throws URISyntaxException {
         log.debug("REST request to save Program : {}", program);
         if (program.getId() != null) {
             throw new BadRequestAlertException("A new program cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        program = programService.save(program);
-        return ResponseEntity.created(new URI("/api/programs/" + program.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, program.getId()))
-            .body(program);
+        Program result = programService.save(program);
+        return ResponseEntity
+            .created(new URI("/api/programs/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
+            .body(result);
     }
 
     /**
@@ -76,7 +78,7 @@ public class ProgramResource {
      * or with status {@code 500 (Internal Server Error)} if the program couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/programs/{id}")
     public ResponseEntity<Program> updateProgram(
         @PathVariable(value = "id", required = false) final String id,
         @Valid @RequestBody Program program
@@ -93,10 +95,11 @@ public class ProgramResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        program = programService.update(program);
-        return ResponseEntity.ok()
+        Program result = programService.update(program);
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, program.getId()))
-            .body(program);
+            .body(result);
     }
 
     /**
@@ -110,7 +113,7 @@ public class ProgramResource {
      * or with status {@code 500 (Internal Server Error)} if the program couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/programs/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Program> partialUpdateProgram(
         @PathVariable(value = "id", required = false) final String id,
         @NotNull @RequestBody Program program
@@ -139,10 +142,10 @@ public class ProgramResource {
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of programs in body.
      */
-    @GetMapping("")
+    @GetMapping("/programs")
     public ResponseEntity<List<Program>> getAllPrograms(
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
-        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
     ) {
         log.debug("REST request to get a page of Programs");
         Page<Program> page;
@@ -161,8 +164,8 @@ public class ProgramResource {
      * @param id the id of the program to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the program, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<Program> getProgram(@PathVariable("id") String id) {
+    @GetMapping("/programs/{id}")
+    public ResponseEntity<Program> getProgram(@PathVariable String id) {
         log.debug("REST request to get Program : {}", id);
         Optional<Program> program = programService.findOne(id);
         return ResponseUtil.wrapOrNotFound(program);
@@ -174,8 +177,8 @@ public class ProgramResource {
      * @param id the id of the program to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProgram(@PathVariable("id") String id) {
+    @DeleteMapping("/programs/{id}")
+    public ResponseEntity<Void> deleteProgram(@PathVariable String id) {
         log.debug("REST request to delete Program : {}", id);
         programService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();

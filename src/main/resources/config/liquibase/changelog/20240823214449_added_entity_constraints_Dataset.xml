@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity Dataset.
+    -->
+    <changeSet id="20240823214449-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="project_id"
+                                 baseTableName="dataset"
+                                 constraintName="fk_dataset__project_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="project"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="dataset"
+                                 constraintName="fk_dataset__created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dhis_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_updated_by_id"
+                                 baseTableName="dataset"
+                                 constraintName="fk_dataset__last_updated_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dhis_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="category_combo_id"
+                                 baseTableName="dataset"
+                                 constraintName="fk_dataset__category_combo_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="categorycombo"/>
+
+        <addForeignKeyConstraint baseColumnNames="dataset_id"
+                                 baseTableName="rel_dataset__data_set_elements"
+                                 constraintName="fk_rel_dataset__data_set_elements__dataset_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dataset"/>
+
+        <addForeignKeyConstraint baseColumnNames="data_set_elements_id"
+                                 baseTableName="rel_dataset__data_set_elements"
+                                 constraintName="fk_rel_dataset__data_set_elements__data_set_elements_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dataelement"/>
+
+        <addForeignKeyConstraint baseColumnNames="dataset_id"
+                                 baseTableName="rel_dataset__indicators"
+                                 constraintName="fk_rel_dataset__indicators__dataset_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dataset"/>
+
+        <addForeignKeyConstraint baseColumnNames="indicators_id"
+                                 baseTableName="rel_dataset__indicators"
+                                 constraintName="fk_rel_dataset__indicators__indicators_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="indicator"/>
+
+        <addForeignKeyConstraint baseColumnNames="dataset_id"
+                                 baseTableName="rel_dataset__organisation_units"
+                                 constraintName="fk_rel_dataset__organisation_units__dataset_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dataset"/>
+
+        <addForeignKeyConstraint baseColumnNames="organisation_units_id"
+                                 baseTableName="rel_dataset__organisation_units"
+                                 constraintName="fk_rel_dataset__organisation_units__organisation_units_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="organisation_unit"/>
+    </changeSet>
+</databaseChangeLog>

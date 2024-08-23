@@ -1,9 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
+import { ProgramFormService } from './program-form.service';
+import { ProgramService } from '../service/program.service';
+import { IProgram } from '../program.model';
 import { IProject } from 'app/entities/project/project.model';
 import { ProjectService } from 'app/entities/project/service/project.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
@@ -18,9 +23,6 @@ import { IProgramIndicator } from 'app/entities/program-indicator/program-indica
 import { ProgramIndicatorService } from 'app/entities/program-indicator/service/program-indicator.service';
 import { IProgramStage } from 'app/entities/program-stage/program-stage.model';
 import { ProgramStageService } from 'app/entities/program-stage/service/program-stage.service';
-import { IProgram } from '../program.model';
-import { ProgramService } from '../service/program.service';
-import { ProgramFormService } from './program-form.service';
 
 import { ProgramUpdateComponent } from './program-update.component';
 
@@ -40,9 +42,9 @@ describe('Program Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ProgramUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [ProgramUpdateComponent],
       providers: [
-        provideHttpClient(),
         FormBuilder,
         {
           provide: ActivatedRoute,
@@ -73,10 +75,10 @@ describe('Program Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Project query and add missing value', () => {
       const program: IProgram = { id: 'CBA' };
-      const project: IProject = { id: 14422 };
+      const project: IProject = { id: 27420 };
       program.project = project;
 
-      const projectCollection: IProject[] = [{ id: 17721 }];
+      const projectCollection: IProject[] = [{ id: 10294 }];
       jest.spyOn(projectService, 'query').mockReturnValue(of(new HttpResponse({ body: projectCollection })));
       const additionalProjects = [project];
       const expectedCollection: IProject[] = [...additionalProjects, ...projectCollection];
@@ -88,19 +90,19 @@ describe('Program Management Update Component', () => {
       expect(projectService.query).toHaveBeenCalled();
       expect(projectService.addProjectToCollectionIfMissing).toHaveBeenCalledWith(
         projectCollection,
-        ...additionalProjects.map(expect.objectContaining),
+        ...additionalProjects.map(expect.objectContaining)
       );
       expect(comp.projectsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call DHISUser query and add missing value', () => {
       const program: IProgram = { id: 'CBA' };
-      const createdBy: IDHISUser = { id: '43e61b27-1e24-4132-bee3-99df6cfa2a76' };
+      const createdBy: IDHISUser = { id: 'ba7a63ef-5d85-4475-8e3f-27ca97a06d8e' };
       program.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '6aabfaf4-d141-4460-8037-4dcbbd1c0a8c' };
+      const lastUpdatedBy: IDHISUser = { id: 'ed2b1248-8f96-4974-a1eb-cb0072d62049' };
       program.lastUpdatedBy = lastUpdatedBy;
 
-      const dHISUserCollection: IDHISUser[] = [{ id: 'b284d207-bcff-415c-a159-70aa22bdd31a' }];
+      const dHISUserCollection: IDHISUser[] = [{ id: '4de8b075-e204-47cf-9de7-0c5beffd5fdf' }];
       jest.spyOn(dHISUserService, 'query').mockReturnValue(of(new HttpResponse({ body: dHISUserCollection })));
       const additionalDHISUsers = [createdBy, lastUpdatedBy];
       const expectedCollection: IDHISUser[] = [...additionalDHISUsers, ...dHISUserCollection];
@@ -112,17 +114,17 @@ describe('Program Management Update Component', () => {
       expect(dHISUserService.query).toHaveBeenCalled();
       expect(dHISUserService.addDHISUserToCollectionIfMissing).toHaveBeenCalledWith(
         dHISUserCollection,
-        ...additionalDHISUsers.map(expect.objectContaining),
+        ...additionalDHISUsers.map(expect.objectContaining)
       );
       expect(comp.dHISUsersSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call Categorycombo query and add missing value', () => {
       const program: IProgram = { id: 'CBA' };
-      const categoryCombo: ICategorycombo = { id: 'd5a58890-9614-4830-9a3f-5b68d97e46ae' };
+      const categoryCombo: ICategorycombo = { id: '70f9cbf0-8a37-4adb-873c-7c1bdb93f211' };
       program.categoryCombo = categoryCombo;
 
-      const categorycomboCollection: ICategorycombo[] = [{ id: 'ca4d1988-9368-41c9-a647-9bc7a012ab64' }];
+      const categorycomboCollection: ICategorycombo[] = [{ id: '6fd7b70b-1689-42ca-b51d-4f68e616d8b3' }];
       jest.spyOn(categorycomboService, 'query').mockReturnValue(of(new HttpResponse({ body: categorycomboCollection })));
       const additionalCategorycombos = [categoryCombo];
       const expectedCollection: ICategorycombo[] = [...additionalCategorycombos, ...categorycomboCollection];
@@ -134,17 +136,17 @@ describe('Program Management Update Component', () => {
       expect(categorycomboService.query).toHaveBeenCalled();
       expect(categorycomboService.addCategorycomboToCollectionIfMissing).toHaveBeenCalledWith(
         categorycomboCollection,
-        ...additionalCategorycombos.map(expect.objectContaining),
+        ...additionalCategorycombos.map(expect.objectContaining)
       );
       expect(comp.categorycombosSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call TrackedEntityAttribute query and add missing value', () => {
       const program: IProgram = { id: 'CBA' };
-      const programTrackedEntityAttributes: ITrackedEntityAttribute[] = [{ id: '12212171-d5d9-4308-a066-2ca3860e1055' }];
+      const programTrackedEntityAttributes: ITrackedEntityAttribute[] = [{ id: 'f000ff53-e816-46fd-aa55-38ea070eab40' }];
       program.programTrackedEntityAttributes = programTrackedEntityAttributes;
 
-      const trackedEntityAttributeCollection: ITrackedEntityAttribute[] = [{ id: 'de71d4e5-b355-48a6-9a24-b1936f97aa7a' }];
+      const trackedEntityAttributeCollection: ITrackedEntityAttribute[] = [{ id: '335d4520-fe63-4051-b993-9a1bcd56e835' }];
       jest.spyOn(trackedEntityAttributeService, 'query').mockReturnValue(of(new HttpResponse({ body: trackedEntityAttributeCollection })));
       const additionalTrackedEntityAttributes = [...programTrackedEntityAttributes];
       const expectedCollection: ITrackedEntityAttribute[] = [...additionalTrackedEntityAttributes, ...trackedEntityAttributeCollection];
@@ -156,17 +158,17 @@ describe('Program Management Update Component', () => {
       expect(trackedEntityAttributeService.query).toHaveBeenCalled();
       expect(trackedEntityAttributeService.addTrackedEntityAttributeToCollectionIfMissing).toHaveBeenCalledWith(
         trackedEntityAttributeCollection,
-        ...additionalTrackedEntityAttributes.map(expect.objectContaining),
+        ...additionalTrackedEntityAttributes.map(expect.objectContaining)
       );
       expect(comp.trackedEntityAttributesSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call OrganisationUnit query and add missing value', () => {
       const program: IProgram = { id: 'CBA' };
-      const organisationUnits: IOrganisationUnit[] = [{ id: '1a206756-0517-45fa-9afd-8620f820853e' }];
+      const organisationUnits: IOrganisationUnit[] = [{ id: '3e03b83f-e805-4b23-a5d7-681ba4ea6eca' }];
       program.organisationUnits = organisationUnits;
 
-      const organisationUnitCollection: IOrganisationUnit[] = [{ id: 'c5bb35ea-e236-489e-a4f0-c5348e158d9a' }];
+      const organisationUnitCollection: IOrganisationUnit[] = [{ id: '60079ffd-bb84-4f69-846a-8aa6cc769f70' }];
       jest.spyOn(organisationUnitService, 'query').mockReturnValue(of(new HttpResponse({ body: organisationUnitCollection })));
       const additionalOrganisationUnits = [...organisationUnits];
       const expectedCollection: IOrganisationUnit[] = [...additionalOrganisationUnits, ...organisationUnitCollection];
@@ -178,17 +180,17 @@ describe('Program Management Update Component', () => {
       expect(organisationUnitService.query).toHaveBeenCalled();
       expect(organisationUnitService.addOrganisationUnitToCollectionIfMissing).toHaveBeenCalledWith(
         organisationUnitCollection,
-        ...additionalOrganisationUnits.map(expect.objectContaining),
+        ...additionalOrganisationUnits.map(expect.objectContaining)
       );
       expect(comp.organisationUnitsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call ProgramIndicator query and add missing value', () => {
       const program: IProgram = { id: 'CBA' };
-      const programIndicators: IProgramIndicator[] = [{ id: 'bdfb4814-142e-49b9-a8a4-21b161df186b' }];
+      const programIndicators: IProgramIndicator[] = [{ id: '1c109e3a-33a4-4eed-9c2e-7441b117cce2' }];
       program.programIndicators = programIndicators;
 
-      const programIndicatorCollection: IProgramIndicator[] = [{ id: 'a512f3f3-e64f-45a1-b76b-2dabb03d6a79' }];
+      const programIndicatorCollection: IProgramIndicator[] = [{ id: 'a8424510-b9b7-4e3c-b325-09ee0df0a7bf' }];
       jest.spyOn(programIndicatorService, 'query').mockReturnValue(of(new HttpResponse({ body: programIndicatorCollection })));
       const additionalProgramIndicators = [...programIndicators];
       const expectedCollection: IProgramIndicator[] = [...additionalProgramIndicators, ...programIndicatorCollection];
@@ -200,17 +202,17 @@ describe('Program Management Update Component', () => {
       expect(programIndicatorService.query).toHaveBeenCalled();
       expect(programIndicatorService.addProgramIndicatorToCollectionIfMissing).toHaveBeenCalledWith(
         programIndicatorCollection,
-        ...additionalProgramIndicators.map(expect.objectContaining),
+        ...additionalProgramIndicators.map(expect.objectContaining)
       );
       expect(comp.programIndicatorsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call ProgramStage query and add missing value', () => {
       const program: IProgram = { id: 'CBA' };
-      const programStages: IProgramStage[] = [{ id: 'c1c52751-c2b5-4a94-bc63-0bbb4728353f' }];
+      const programStages: IProgramStage[] = [{ id: 'b21763e3-b304-47a9-adba-e2e24aca4d2a' }];
       program.programStages = programStages;
 
-      const programStageCollection: IProgramStage[] = [{ id: '72e288e6-f6d9-424c-a63a-202d2cccad54' }];
+      const programStageCollection: IProgramStage[] = [{ id: '0de0c74d-3b89-465d-8a5d-0e8c9f71eeee' }];
       jest.spyOn(programStageService, 'query').mockReturnValue(of(new HttpResponse({ body: programStageCollection })));
       const additionalProgramStages = [...programStages];
       const expectedCollection: IProgramStage[] = [...additionalProgramStages, ...programStageCollection];
@@ -222,28 +224,28 @@ describe('Program Management Update Component', () => {
       expect(programStageService.query).toHaveBeenCalled();
       expect(programStageService.addProgramStageToCollectionIfMissing).toHaveBeenCalledWith(
         programStageCollection,
-        ...additionalProgramStages.map(expect.objectContaining),
+        ...additionalProgramStages.map(expect.objectContaining)
       );
       expect(comp.programStagesSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
       const program: IProgram = { id: 'CBA' };
-      const project: IProject = { id: 4106 };
+      const project: IProject = { id: 94308 };
       program.project = project;
-      const createdBy: IDHISUser = { id: '89a50de2-aa76-41b3-a93f-36ab9404d236' };
+      const createdBy: IDHISUser = { id: '2f978a00-b932-45de-a2cd-17b2b879e568' };
       program.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '079d91e5-9685-4087-904d-0f7f5288e7ae' };
+      const lastUpdatedBy: IDHISUser = { id: 'a24180ea-1bb5-4979-8962-0693149bac87' };
       program.lastUpdatedBy = lastUpdatedBy;
-      const categoryCombo: ICategorycombo = { id: '9c4f11ce-26cb-41ab-821e-c490f19a3025' };
+      const categoryCombo: ICategorycombo = { id: '5ec184a1-97ea-4551-9a60-a36606cd8248' };
       program.categoryCombo = categoryCombo;
-      const programTrackedEntityAttributes: ITrackedEntityAttribute = { id: 'ac675519-0a39-4c2e-9c68-2bc68ad066b1' };
+      const programTrackedEntityAttributes: ITrackedEntityAttribute = { id: 'aada4969-3acd-4db2-90de-b46c9f176326' };
       program.programTrackedEntityAttributes = [programTrackedEntityAttributes];
-      const organisationUnits: IOrganisationUnit = { id: '688e5078-8d29-43f3-aa4a-b8d7115daeee' };
+      const organisationUnits: IOrganisationUnit = { id: '1acf834a-dcfd-44d0-93d6-904b4555633b' };
       program.organisationUnits = [organisationUnits];
-      const programIndicators: IProgramIndicator = { id: '23de4254-f41f-4c87-a61f-1cdae52eb1fe' };
+      const programIndicators: IProgramIndicator = { id: '34b7fc06-f219-4dd6-a037-54e47300d5e1' };
       program.programIndicators = [programIndicators];
-      const programStage: IProgramStage = { id: '335cc3da-4460-46a3-9f8d-35eaf2e763b6' };
+      const programStage: IProgramStage = { id: '80e77129-ffe5-4e81-bf21-8cf6248a1b81' };
       program.programStages = [programStage];
 
       activatedRoute.data = of({ program });

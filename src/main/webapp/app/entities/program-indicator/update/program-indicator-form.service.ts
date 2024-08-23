@@ -62,11 +62,11 @@ export class ProgramIndicatorFormService {
     });
     return new FormGroup<ProgramIndicatorFormGroupContent>({
       id: new FormControl(
-        { value: programIndicatorRawValue.id, disabled: true },
+        { value: programIndicatorRawValue.id, disabled: programIndicatorRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       name: new FormControl(programIndicatorRawValue.name, {
         validators: [Validators.required],
@@ -104,7 +104,7 @@ export class ProgramIndicatorFormService {
 
   getProgramIndicator(form: ProgramIndicatorFormGroup): IProgramIndicator | NewProgramIndicator {
     return this.convertProgramIndicatorRawValueToProgramIndicator(
-      form.getRawValue() as ProgramIndicatorFormRawValue | NewProgramIndicatorFormRawValue,
+      form.getRawValue() as ProgramIndicatorFormRawValue | NewProgramIndicatorFormRawValue
     );
   }
 
@@ -116,8 +116,8 @@ export class ProgramIndicatorFormService {
     form.reset(
       {
         ...programIndicatorRawValue,
-        id: { value: programIndicatorRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: programIndicatorRawValue.id, disabled: programIndicatorRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 
@@ -133,7 +133,7 @@ export class ProgramIndicatorFormService {
   }
 
   private convertProgramIndicatorRawValueToProgramIndicator(
-    rawProgramIndicator: ProgramIndicatorFormRawValue | NewProgramIndicatorFormRawValue,
+    rawProgramIndicator: ProgramIndicatorFormRawValue | NewProgramIndicatorFormRawValue
   ): IProgramIndicator | NewProgramIndicator {
     return {
       ...rawProgramIndicator,
@@ -143,7 +143,7 @@ export class ProgramIndicatorFormService {
   }
 
   private convertProgramIndicatorToProgramIndicatorRawValue(
-    programIndicator: IProgramIndicator | (Partial<NewProgramIndicator> & ProgramIndicatorFormDefaults),
+    programIndicator: IProgramIndicator | (Partial<NewProgramIndicator> & ProgramIndicatorFormDefaults)
   ): ProgramIndicatorFormRawValue | PartialWithRequiredKeyOf<NewProgramIndicatorFormRawValue> {
     return {
       ...programIndicator,

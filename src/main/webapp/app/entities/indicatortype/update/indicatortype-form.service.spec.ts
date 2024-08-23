@@ -21,7 +21,7 @@ describe('Indicatortype Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             name: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -32,13 +32,14 @@ describe('Indicatortype Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             name: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getIndicatortype', () => {
       it('should return NewIndicatortype for default Indicatortype initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createIndicatortypeFormGroup(sampleWithNewData);
 
         const indicatortype = service.getIndicatortype(formGroup) as any;

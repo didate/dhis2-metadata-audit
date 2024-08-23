@@ -37,7 +37,7 @@ describe('ProgramIndicator Form Service', () => {
             lastUpdatedBy: expect.any(Object),
             program: expect.any(Object),
             programs: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -64,13 +64,14 @@ describe('ProgramIndicator Form Service', () => {
             lastUpdatedBy: expect.any(Object),
             program: expect.any(Object),
             programs: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getProgramIndicator', () => {
       it('should return NewProgramIndicator for default ProgramIndicator initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createProgramIndicatorFormGroup(sampleWithNewData);
 
         const programIndicator = service.getProgramIndicator(formGroup) as any;

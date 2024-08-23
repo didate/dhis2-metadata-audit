@@ -1,29 +1,33 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-optionset-heading" data-cy="OptionsetCreateUpdateHeading" jhiTranslate="dhis2AuditApp.optionset.home.createOrEditLabel">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-optionset-heading" data-cy="OptionsetCreateUpdateHeading" jhiTranslate="dhis2TrackApp.optionset.home.createOrEditLabel">
         Créer ou éditer un Optionset
       </h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="dhis2AuditApp.optionset.id">Id</label>
-            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-            @if (editForm.get('id')!.invalid && (editForm.get('id')!.dirty || editForm.get('id')!.touched)) {
-              <div>
-                @if (editForm.get('id')?.errors?.required) {
-                  <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-                }
-              </div>
-            }
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.optionset.id" for="field_id">Id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="id"
+            id="field_id"
+            data-cy="id"
+            formControlName="id"
+            [readonly]="editForm.get('id')!.value != null"
+          />
+          <div *ngIf="editForm.get('id')!.invalid && (editForm.get('id')!.dirty || editForm.get('id')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('id')?.errors?.required" jhiTranslate="entity.validation.required">
+              Ce champ est obligatoire.
+            </small>
           </div>
-        }
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_name" jhiTranslate="dhis2AuditApp.optionset.name">Name</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.optionset.name" for="field_name">Name</label>
           <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
         </div>
       </div>

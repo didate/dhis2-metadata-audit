@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
@@ -27,10 +27,9 @@ export type EntityArrayResponseType = HttpResponse<IProgramStage[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ProgramStageService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/program-stages');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(programStage: NewProgramStage): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(programStage);
@@ -84,8 +83,8 @@ export class ProgramStageService {
   ): Type[] {
     const programStages: Type[] = programStagesToCheck.filter(isPresent);
     if (programStages.length > 0) {
-      const programStageCollectionIdentifiers = programStageCollection.map(programStageItem =>
-        this.getProgramStageIdentifier(programStageItem),
+      const programStageCollectionIdentifiers = programStageCollection.map(
+        programStageItem => this.getProgramStageIdentifier(programStageItem)!
       );
       const programStagesToAdd = programStages.filter(programStageItem => {
         const programStageIdentifier = this.getProgramStageIdentifier(programStageItem);

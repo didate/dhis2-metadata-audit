@@ -1,23 +1,26 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRouteSnapshot, ActivatedRoute, Router, convertToParamMap } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 
 import { IOptionset } from '../optionset.model';
 import { OptionsetService } from '../service/optionset.service';
 
-import optionsetResolve from './optionset-routing-resolve.service';
+import { OptionsetRoutingResolveService } from './optionset-routing-resolve.service';
 
 describe('Optionset routing resolve service', () => {
   let mockRouter: Router;
   let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
+  let routingResolveService: OptionsetRoutingResolveService;
   let service: OptionsetService;
   let resultOptionset: IOptionset | null | undefined;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
       providers: [
-        provideHttpClient(),
         {
           provide: ActivatedRoute,
           useValue: {
@@ -31,6 +34,7 @@ describe('Optionset routing resolve service', () => {
     mockRouter = TestBed.inject(Router);
     jest.spyOn(mockRouter, 'navigate').mockImplementation(() => Promise.resolve(true));
     mockActivatedRouteSnapshot = TestBed.inject(ActivatedRoute).snapshot;
+    routingResolveService = TestBed.inject(OptionsetRoutingResolveService);
     service = TestBed.inject(OptionsetService);
     resultOptionset = undefined;
   });
@@ -42,16 +46,12 @@ describe('Optionset routing resolve service', () => {
       mockActivatedRouteSnapshot.params = { id: 'ABC' };
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        optionsetResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultOptionset = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultOptionset = result;
       });
 
       // THEN
-      expect(service.find).toHaveBeenCalledWith('ABC');
+      expect(service.find).toBeCalledWith('ABC');
       expect(resultOptionset).toEqual({ id: 'ABC' });
     });
 
@@ -61,12 +61,8 @@ describe('Optionset routing resolve service', () => {
       mockActivatedRouteSnapshot.params = {};
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        optionsetResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultOptionset = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultOptionset = result;
       });
 
       // THEN
@@ -80,16 +76,12 @@ describe('Optionset routing resolve service', () => {
       mockActivatedRouteSnapshot.params = { id: 'ABC' };
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        optionsetResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultOptionset = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultOptionset = result;
       });
 
       // THEN
-      expect(service.find).toHaveBeenCalledWith('ABC');
+      expect(service.find).toBeCalledWith('ABC');
       expect(resultOptionset).toEqual(undefined);
       expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
     });

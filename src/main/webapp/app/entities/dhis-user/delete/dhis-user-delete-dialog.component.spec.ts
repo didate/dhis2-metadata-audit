@@ -1,7 +1,8 @@
 jest.mock('@ng-bootstrap/ng-bootstrap');
 
 import { ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -17,8 +18,9 @@ describe('DHISUser Management Delete Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DHISUserDeleteDialogComponent],
-      providers: [provideHttpClient(), NgbActiveModal],
+      imports: [HttpClientTestingModule],
+      declarations: [DHISUserDeleteDialogComponent],
+      providers: [NgbActiveModal],
     })
       .overrideTemplate(DHISUserDeleteDialogComponent, '')
       .compileComponents();
@@ -42,7 +44,7 @@ describe('DHISUser Management Delete Component', () => {
         // THEN
         expect(service.delete).toHaveBeenCalledWith('ABC');
         expect(mockActiveModal.close).toHaveBeenCalledWith('deleted');
-      }),
+      })
     ));
 
     it('Should not call delete service on clear', () => {

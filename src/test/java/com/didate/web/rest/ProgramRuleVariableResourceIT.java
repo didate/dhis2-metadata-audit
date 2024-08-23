@@ -1,7 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.ProgramRuleVariableAsserts.*;
-import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -13,12 +11,11 @@ import com.didate.domain.Program;
 import com.didate.domain.ProgramRuleVariable;
 import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.ProgramRuleVariableRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,9 +58,6 @@ class ProgramRuleVariableResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private ProgramRuleVariableRepository programRuleVariableRepository;
 
     @Autowired
@@ -73,8 +67,6 @@ class ProgramRuleVariableResourceIT {
     private MockMvc restProgramRuleVariableMockMvc;
 
     private ProgramRuleVariable programRuleVariable;
-
-    private ProgramRuleVariable insertedProgramRuleVariable;
 
     /**
      * Create an entity for this test.
@@ -161,37 +153,28 @@ class ProgramRuleVariableResourceIT {
         programRuleVariable = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedProgramRuleVariable != null) {
-            programRuleVariableRepository.delete(insertedProgramRuleVariable);
-            insertedProgramRuleVariable = null;
-        }
-    }
-
     @Test
     @Transactional
     void createProgramRuleVariable() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = programRuleVariableRepository.findAll().size();
         // Create the ProgramRuleVariable
-        var returnedProgramRuleVariable = om.readValue(
-            restProgramRuleVariableMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRuleVariable)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            ProgramRuleVariable.class
-        );
+        restProgramRuleVariableMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRuleVariable))
+            )
+            .andExpect(status().isCreated());
 
         // Validate the ProgramRuleVariable in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertProgramRuleVariableUpdatableFieldsEquals(
-            returnedProgramRuleVariable,
-            getPersistedProgramRuleVariable(returnedProgramRuleVariable)
-        );
-
-        insertedProgramRuleVariable = returnedProgramRuleVariable;
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeCreate + 1);
+        ProgramRuleVariable testProgramRuleVariable = programRuleVariableList.get(programRuleVariableList.size() - 1);
+        assertThat(testProgramRuleVariable.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testProgramRuleVariable.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testProgramRuleVariable.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testProgramRuleVariable.getDisplayName()).isEqualTo(DEFAULT_DISPLAY_NAME);
+        assertThat(testProgramRuleVariable.getProgramRuleVariableSourceType()).isEqualTo(DEFAULT_PROGRAM_RULE_VARIABLE_SOURCE_TYPE);
+        assertThat(testProgramRuleVariable.getUseCodeForOptionSet()).isEqualTo(DEFAULT_USE_CODE_FOR_OPTION_SET);
+        assertThat(testProgramRuleVariable.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
@@ -200,86 +183,102 @@ class ProgramRuleVariableResourceIT {
         // Create the ProgramRuleVariable with an existing ID
         programRuleVariable.setId("existing_id");
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = programRuleVariableRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProgramRuleVariableMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRuleVariable)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRuleVariable))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRuleVariable in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void checkLastUpdatedIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = programRuleVariableRepository.findAll().size();
         // set the field null
         programRuleVariable.setLastUpdated(null);
 
         // Create the ProgramRuleVariable, which fails.
 
         restProgramRuleVariableMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRuleVariable)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRuleVariable))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkCreatedIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = programRuleVariableRepository.findAll().size();
         // set the field null
         programRuleVariable.setCreated(null);
 
         // Create the ProgramRuleVariable, which fails.
 
         restProgramRuleVariableMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRuleVariable)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRuleVariable))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkNameIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = programRuleVariableRepository.findAll().size();
         // set the field null
         programRuleVariable.setName(null);
 
         // Create the ProgramRuleVariable, which fails.
 
         restProgramRuleVariableMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRuleVariable)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRuleVariable))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkTrackIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = programRuleVariableRepository.findAll().size();
         // set the field null
         programRuleVariable.setTrack(null);
 
         // Create the ProgramRuleVariable, which fails.
 
         restProgramRuleVariableMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRuleVariable)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRuleVariable))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void getAllProgramRuleVariables() throws Exception {
         // Initialize the database
-        insertedProgramRuleVariable = programRuleVariableRepository.saveAndFlush(programRuleVariable);
+        programRuleVariable.setId(UUID.randomUUID().toString());
+        programRuleVariableRepository.saveAndFlush(programRuleVariable);
 
         // Get all the programRuleVariableList
         restProgramRuleVariableMockMvc
@@ -300,7 +299,8 @@ class ProgramRuleVariableResourceIT {
     @Transactional
     void getProgramRuleVariable() throws Exception {
         // Initialize the database
-        insertedProgramRuleVariable = programRuleVariableRepository.saveAndFlush(programRuleVariable);
+        programRuleVariable.setId(UUID.randomUUID().toString());
+        programRuleVariableRepository.saveAndFlush(programRuleVariable);
 
         // Get the programRuleVariable
         restProgramRuleVariableMockMvc
@@ -328,12 +328,13 @@ class ProgramRuleVariableResourceIT {
     @Transactional
     void putExistingProgramRuleVariable() throws Exception {
         // Initialize the database
-        insertedProgramRuleVariable = programRuleVariableRepository.saveAndFlush(programRuleVariable);
+        programRuleVariable.setId(UUID.randomUUID().toString());
+        programRuleVariableRepository.saveAndFlush(programRuleVariable);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleVariableRepository.findAll().size();
 
         // Update the programRuleVariable
-        ProgramRuleVariable updatedProgramRuleVariable = programRuleVariableRepository.findById(programRuleVariable.getId()).orElseThrow();
+        ProgramRuleVariable updatedProgramRuleVariable = programRuleVariableRepository.findById(programRuleVariable.getId()).get();
         // Disconnect from session so that the updates on updatedProgramRuleVariable are not directly saved in db
         em.detach(updatedProgramRuleVariable);
         updatedProgramRuleVariable
@@ -349,19 +350,27 @@ class ProgramRuleVariableResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, updatedProgramRuleVariable.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedProgramRuleVariable))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedProgramRuleVariable))
             )
             .andExpect(status().isOk());
 
         // Validate the ProgramRuleVariable in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedProgramRuleVariableToMatchAllProperties(updatedProgramRuleVariable);
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeUpdate);
+        ProgramRuleVariable testProgramRuleVariable = programRuleVariableList.get(programRuleVariableList.size() - 1);
+        assertThat(testProgramRuleVariable.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testProgramRuleVariable.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testProgramRuleVariable.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testProgramRuleVariable.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testProgramRuleVariable.getProgramRuleVariableSourceType()).isEqualTo(UPDATED_PROGRAM_RULE_VARIABLE_SOURCE_TYPE);
+        assertThat(testProgramRuleVariable.getUseCodeForOptionSet()).isEqualTo(UPDATED_USE_CODE_FOR_OPTION_SET);
+        assertThat(testProgramRuleVariable.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void putNonExistingProgramRuleVariable() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleVariableRepository.findAll().size();
         programRuleVariable.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -369,18 +378,19 @@ class ProgramRuleVariableResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, programRuleVariable.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(programRuleVariable))
+                    .content(TestUtil.convertObjectToJsonBytes(programRuleVariable))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRuleVariable in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchProgramRuleVariable() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleVariableRepository.findAll().size();
         programRuleVariable.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -388,71 +398,80 @@ class ProgramRuleVariableResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(programRuleVariable))
+                    .content(TestUtil.convertObjectToJsonBytes(programRuleVariable))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRuleVariable in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamProgramRuleVariable() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleVariableRepository.findAll().size();
         programRuleVariable.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProgramRuleVariableMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRuleVariable)))
+            .perform(
+                put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRuleVariable))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the ProgramRuleVariable in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void partialUpdateProgramRuleVariableWithPatch() throws Exception {
         // Initialize the database
-        insertedProgramRuleVariable = programRuleVariableRepository.saveAndFlush(programRuleVariable);
+        programRuleVariable.setId(UUID.randomUUID().toString());
+        programRuleVariableRepository.saveAndFlush(programRuleVariable);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleVariableRepository.findAll().size();
 
         // Update the programRuleVariable using partial update
         ProgramRuleVariable partialUpdatedProgramRuleVariable = new ProgramRuleVariable();
         partialUpdatedProgramRuleVariable.setId(programRuleVariable.getId());
 
         partialUpdatedProgramRuleVariable
-            .lastUpdated(UPDATED_LAST_UPDATED)
             .created(UPDATED_CREATED)
-            .name(UPDATED_NAME)
+            .displayName(UPDATED_DISPLAY_NAME)
             .useCodeForOptionSet(UPDATED_USE_CODE_FOR_OPTION_SET);
 
         restProgramRuleVariableMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedProgramRuleVariable.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedProgramRuleVariable))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedProgramRuleVariable))
             )
             .andExpect(status().isOk());
 
         // Validate the ProgramRuleVariable in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertProgramRuleVariableUpdatableFieldsEquals(
-            createUpdateProxyForBean(partialUpdatedProgramRuleVariable, programRuleVariable),
-            getPersistedProgramRuleVariable(programRuleVariable)
-        );
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeUpdate);
+        ProgramRuleVariable testProgramRuleVariable = programRuleVariableList.get(programRuleVariableList.size() - 1);
+        assertThat(testProgramRuleVariable.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testProgramRuleVariable.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testProgramRuleVariable.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testProgramRuleVariable.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testProgramRuleVariable.getProgramRuleVariableSourceType()).isEqualTo(DEFAULT_PROGRAM_RULE_VARIABLE_SOURCE_TYPE);
+        assertThat(testProgramRuleVariable.getUseCodeForOptionSet()).isEqualTo(UPDATED_USE_CODE_FOR_OPTION_SET);
+        assertThat(testProgramRuleVariable.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
     @Transactional
     void fullUpdateProgramRuleVariableWithPatch() throws Exception {
         // Initialize the database
-        insertedProgramRuleVariable = programRuleVariableRepository.saveAndFlush(programRuleVariable);
+        programRuleVariable.setId(UUID.randomUUID().toString());
+        programRuleVariableRepository.saveAndFlush(programRuleVariable);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleVariableRepository.findAll().size();
 
         // Update the programRuleVariable using partial update
         ProgramRuleVariable partialUpdatedProgramRuleVariable = new ProgramRuleVariable();
@@ -471,23 +490,27 @@ class ProgramRuleVariableResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedProgramRuleVariable.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedProgramRuleVariable))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedProgramRuleVariable))
             )
             .andExpect(status().isOk());
 
         // Validate the ProgramRuleVariable in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertProgramRuleVariableUpdatableFieldsEquals(
-            partialUpdatedProgramRuleVariable,
-            getPersistedProgramRuleVariable(partialUpdatedProgramRuleVariable)
-        );
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeUpdate);
+        ProgramRuleVariable testProgramRuleVariable = programRuleVariableList.get(programRuleVariableList.size() - 1);
+        assertThat(testProgramRuleVariable.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testProgramRuleVariable.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testProgramRuleVariable.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testProgramRuleVariable.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testProgramRuleVariable.getProgramRuleVariableSourceType()).isEqualTo(UPDATED_PROGRAM_RULE_VARIABLE_SOURCE_TYPE);
+        assertThat(testProgramRuleVariable.getUseCodeForOptionSet()).isEqualTo(UPDATED_USE_CODE_FOR_OPTION_SET);
+        assertThat(testProgramRuleVariable.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void patchNonExistingProgramRuleVariable() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleVariableRepository.findAll().size();
         programRuleVariable.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -495,18 +518,19 @@ class ProgramRuleVariableResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, programRuleVariable.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(programRuleVariable))
+                    .content(TestUtil.convertObjectToJsonBytes(programRuleVariable))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRuleVariable in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchProgramRuleVariable() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleVariableRepository.findAll().size();
         programRuleVariable.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -514,36 +538,43 @@ class ProgramRuleVariableResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(programRuleVariable))
+                    .content(TestUtil.convertObjectToJsonBytes(programRuleVariable))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRuleVariable in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamProgramRuleVariable() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleVariableRepository.findAll().size();
         programRuleVariable.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProgramRuleVariableMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(programRuleVariable)))
+            .perform(
+                patch(ENTITY_API_URL)
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(programRuleVariable))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the ProgramRuleVariable in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void deleteProgramRuleVariable() throws Exception {
         // Initialize the database
-        insertedProgramRuleVariable = programRuleVariableRepository.saveAndFlush(programRuleVariable);
+        programRuleVariable.setId(UUID.randomUUID().toString());
+        programRuleVariableRepository.saveAndFlush(programRuleVariable);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = programRuleVariableRepository.findAll().size();
 
         // Delete the programRuleVariable
         restProgramRuleVariableMockMvc
@@ -551,40 +582,7 @@ class ProgramRuleVariableResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return programRuleVariableRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected ProgramRuleVariable getPersistedProgramRuleVariable(ProgramRuleVariable programRuleVariable) {
-        return programRuleVariableRepository.findById(programRuleVariable.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedProgramRuleVariableToMatchAllProperties(ProgramRuleVariable expectedProgramRuleVariable) {
-        assertProgramRuleVariableAllPropertiesEquals(
-            expectedProgramRuleVariable,
-            getPersistedProgramRuleVariable(expectedProgramRuleVariable)
-        );
-    }
-
-    protected void assertPersistedProgramRuleVariableToMatchUpdatableProperties(ProgramRuleVariable expectedProgramRuleVariable) {
-        assertProgramRuleVariableAllUpdatablePropertiesEquals(
-            expectedProgramRuleVariable,
-            getPersistedProgramRuleVariable(expectedProgramRuleVariable)
-        );
+        List<ProgramRuleVariable> programRuleVariableList = programRuleVariableRepository.findAll();
+        assertThat(programRuleVariableList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

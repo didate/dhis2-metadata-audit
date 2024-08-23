@@ -1,12 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { DatasetFormService, DatasetFormGroup } from './dataset-form.service';
+import { IDataset } from '../dataset.model';
+import { DatasetService } from '../service/dataset.service';
 import { IProject } from 'app/entities/project/project.model';
 import { ProjectService } from 'app/entities/project/service/project.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
@@ -20,15 +20,10 @@ import { IndicatorService } from 'app/entities/indicator/service/indicator.servi
 import { IOrganisationUnit } from 'app/entities/organisation-unit/organisation-unit.model';
 import { OrganisationUnitService } from 'app/entities/organisation-unit/service/organisation-unit.service';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
-import { DatasetService } from '../service/dataset.service';
-import { IDataset } from '../dataset.model';
-import { DatasetFormService, DatasetFormGroup } from './dataset-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-dataset-update',
   templateUrl: './dataset-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class DatasetUpdateComponent implements OnInit {
   isSaving = false;
@@ -42,18 +37,19 @@ export class DatasetUpdateComponent implements OnInit {
   indicatorsSharedCollection: IIndicator[] = [];
   organisationUnitsSharedCollection: IOrganisationUnit[] = [];
 
-  protected datasetService = inject(DatasetService);
-  protected datasetFormService = inject(DatasetFormService);
-  protected projectService = inject(ProjectService);
-  protected dHISUserService = inject(DHISUserService);
-  protected categorycomboService = inject(CategorycomboService);
-  protected dataelementService = inject(DataelementService);
-  protected indicatorService = inject(IndicatorService);
-  protected organisationUnitService = inject(OrganisationUnitService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: DatasetFormGroup = this.datasetFormService.createDatasetFormGroup();
+
+  constructor(
+    protected datasetService: DatasetService,
+    protected datasetFormService: DatasetFormService,
+    protected projectService: ProjectService,
+    protected dHISUserService: DHISUserService,
+    protected categorycomboService: CategorycomboService,
+    protected dataelementService: DataelementService,
+    protected indicatorService: IndicatorService,
+    protected organisationUnitService: OrganisationUnitService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   compareProject = (o1: IProject | null, o2: IProject | null): boolean => this.projectService.compareProject(o1, o2);
 
@@ -119,28 +115,28 @@ export class DatasetUpdateComponent implements OnInit {
 
     this.projectsSharedCollection = this.projectService.addProjectToCollectionIfMissing<IProject>(
       this.projectsSharedCollection,
-      dataset.project,
+      dataset.project
     );
     this.dHISUsersSharedCollection = this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
       this.dHISUsersSharedCollection,
       dataset.createdBy,
-      dataset.lastUpdatedBy,
+      dataset.lastUpdatedBy
     );
     this.categorycombosSharedCollection = this.categorycomboService.addCategorycomboToCollectionIfMissing<ICategorycombo>(
       this.categorycombosSharedCollection,
-      dataset.categoryCombo,
+      dataset.categoryCombo
     );
     this.dataelementsSharedCollection = this.dataelementService.addDataelementToCollectionIfMissing<IDataelement>(
       this.dataelementsSharedCollection,
-      ...(dataset.dataSetElements ?? []),
+      ...(dataset.dataSetElements ?? [])
     );
     this.indicatorsSharedCollection = this.indicatorService.addIndicatorToCollectionIfMissing<IIndicator>(
       this.indicatorsSharedCollection,
-      ...(dataset.indicators ?? []),
+      ...(dataset.indicators ?? [])
     );
     this.organisationUnitsSharedCollection = this.organisationUnitService.addOrganisationUnitToCollectionIfMissing<IOrganisationUnit>(
       this.organisationUnitsSharedCollection,
-      ...(dataset.organisationUnits ?? []),
+      ...(dataset.organisationUnits ?? [])
     );
   }
 
@@ -156,8 +152,8 @@ export class DatasetUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IDHISUser[]>) => res.body ?? []))
       .pipe(
         map((dHISUsers: IDHISUser[]) =>
-          this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(dHISUsers, this.dataset?.createdBy, this.dataset?.lastUpdatedBy),
-        ),
+          this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(dHISUsers, this.dataset?.createdBy, this.dataset?.lastUpdatedBy)
+        )
       )
       .subscribe((dHISUsers: IDHISUser[]) => (this.dHISUsersSharedCollection = dHISUsers));
 
@@ -166,8 +162,8 @@ export class DatasetUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ICategorycombo[]>) => res.body ?? []))
       .pipe(
         map((categorycombos: ICategorycombo[]) =>
-          this.categorycomboService.addCategorycomboToCollectionIfMissing<ICategorycombo>(categorycombos, this.dataset?.categoryCombo),
-        ),
+          this.categorycomboService.addCategorycomboToCollectionIfMissing<ICategorycombo>(categorycombos, this.dataset?.categoryCombo)
+        )
       )
       .subscribe((categorycombos: ICategorycombo[]) => (this.categorycombosSharedCollection = categorycombos));
 
@@ -176,8 +172,8 @@ export class DatasetUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IDataelement[]>) => res.body ?? []))
       .pipe(
         map((dataelements: IDataelement[]) =>
-          this.dataelementService.addDataelementToCollectionIfMissing<IDataelement>(dataelements, ...(this.dataset?.dataSetElements ?? [])),
-        ),
+          this.dataelementService.addDataelementToCollectionIfMissing<IDataelement>(dataelements, ...(this.dataset?.dataSetElements ?? []))
+        )
       )
       .subscribe((dataelements: IDataelement[]) => (this.dataelementsSharedCollection = dataelements));
 
@@ -186,8 +182,8 @@ export class DatasetUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IIndicator[]>) => res.body ?? []))
       .pipe(
         map((indicators: IIndicator[]) =>
-          this.indicatorService.addIndicatorToCollectionIfMissing<IIndicator>(indicators, ...(this.dataset?.indicators ?? [])),
-        ),
+          this.indicatorService.addIndicatorToCollectionIfMissing<IIndicator>(indicators, ...(this.dataset?.indicators ?? []))
+        )
       )
       .subscribe((indicators: IIndicator[]) => (this.indicatorsSharedCollection = indicators));
 
@@ -198,9 +194,9 @@ export class DatasetUpdateComponent implements OnInit {
         map((organisationUnits: IOrganisationUnit[]) =>
           this.organisationUnitService.addOrganisationUnitToCollectionIfMissing<IOrganisationUnit>(
             organisationUnits,
-            ...(this.dataset?.organisationUnits ?? []),
-          ),
-        ),
+            ...(this.dataset?.organisationUnits ?? [])
+          )
+        )
       )
       .subscribe((organisationUnits: IOrganisationUnit[]) => (this.organisationUnitsSharedCollection = organisationUnits));
   }

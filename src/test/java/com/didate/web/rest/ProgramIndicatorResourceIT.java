@@ -1,7 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.ProgramIndicatorAsserts.*;
-import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -13,12 +11,11 @@ import com.didate.domain.Program;
 import com.didate.domain.ProgramIndicator;
 import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.ProgramIndicatorRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,9 +76,6 @@ class ProgramIndicatorResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private ProgramIndicatorRepository programIndicatorRepository;
 
     @Autowired
@@ -91,8 +85,6 @@ class ProgramIndicatorResourceIT {
     private MockMvc restProgramIndicatorMockMvc;
 
     private ProgramIndicator programIndicator;
-
-    private ProgramIndicator insertedProgramIndicator;
 
     /**
      * Create an entity for this test.
@@ -191,34 +183,34 @@ class ProgramIndicatorResourceIT {
         programIndicator = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedProgramIndicator != null) {
-            programIndicatorRepository.delete(insertedProgramIndicator);
-            insertedProgramIndicator = null;
-        }
-    }
-
     @Test
     @Transactional
     void createProgramIndicator() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = programIndicatorRepository.findAll().size();
         // Create the ProgramIndicator
-        var returnedProgramIndicator = om.readValue(
-            restProgramIndicatorMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programIndicator)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            ProgramIndicator.class
-        );
+        restProgramIndicatorMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programIndicator))
+            )
+            .andExpect(status().isCreated());
 
         // Validate the ProgramIndicator in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertProgramIndicatorUpdatableFieldsEquals(returnedProgramIndicator, getPersistedProgramIndicator(returnedProgramIndicator));
-
-        insertedProgramIndicator = returnedProgramIndicator;
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeCreate + 1);
+        ProgramIndicator testProgramIndicator = programIndicatorList.get(programIndicatorList.size() - 1);
+        assertThat(testProgramIndicator.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testProgramIndicator.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testProgramIndicator.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testProgramIndicator.getShortName()).isEqualTo(DEFAULT_SHORT_NAME);
+        assertThat(testProgramIndicator.getDimensionItemType()).isEqualTo(DEFAULT_DIMENSION_ITEM_TYPE);
+        assertThat(testProgramIndicator.getExpression()).isEqualTo(DEFAULT_EXPRESSION);
+        assertThat(testProgramIndicator.getFilter()).isEqualTo(DEFAULT_FILTER);
+        assertThat(testProgramIndicator.getAnalyticsType()).isEqualTo(DEFAULT_ANALYTICS_TYPE);
+        assertThat(testProgramIndicator.getDimensionItem()).isEqualTo(DEFAULT_DIMENSION_ITEM);
+        assertThat(testProgramIndicator.getDisplayShortName()).isEqualTo(DEFAULT_DISPLAY_SHORT_NAME);
+        assertThat(testProgramIndicator.getDisplayName()).isEqualTo(DEFAULT_DISPLAY_NAME);
+        assertThat(testProgramIndicator.getDisplayFormName()).isEqualTo(DEFAULT_DISPLAY_FORM_NAME);
+        assertThat(testProgramIndicator.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
@@ -227,86 +219,102 @@ class ProgramIndicatorResourceIT {
         // Create the ProgramIndicator with an existing ID
         programIndicator.setId("existing_id");
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = programIndicatorRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProgramIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programIndicator)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programIndicator))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramIndicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void checkNameIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = programIndicatorRepository.findAll().size();
         // set the field null
         programIndicator.setName(null);
 
         // Create the ProgramIndicator, which fails.
 
         restProgramIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programIndicator)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programIndicator))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkCreatedIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = programIndicatorRepository.findAll().size();
         // set the field null
         programIndicator.setCreated(null);
 
         // Create the ProgramIndicator, which fails.
 
         restProgramIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programIndicator)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programIndicator))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkLastUpdatedIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = programIndicatorRepository.findAll().size();
         // set the field null
         programIndicator.setLastUpdated(null);
 
         // Create the ProgramIndicator, which fails.
 
         restProgramIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programIndicator)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programIndicator))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkTrackIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = programIndicatorRepository.findAll().size();
         // set the field null
         programIndicator.setTrack(null);
 
         // Create the ProgramIndicator, which fails.
 
         restProgramIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programIndicator)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programIndicator))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void getAllProgramIndicators() throws Exception {
         // Initialize the database
-        insertedProgramIndicator = programIndicatorRepository.saveAndFlush(programIndicator);
+        programIndicator.setId(UUID.randomUUID().toString());
+        programIndicatorRepository.saveAndFlush(programIndicator);
 
         // Get all the programIndicatorList
         restProgramIndicatorMockMvc
@@ -333,7 +341,8 @@ class ProgramIndicatorResourceIT {
     @Transactional
     void getProgramIndicator() throws Exception {
         // Initialize the database
-        insertedProgramIndicator = programIndicatorRepository.saveAndFlush(programIndicator);
+        programIndicator.setId(UUID.randomUUID().toString());
+        programIndicatorRepository.saveAndFlush(programIndicator);
 
         // Get the programIndicator
         restProgramIndicatorMockMvc
@@ -367,12 +376,13 @@ class ProgramIndicatorResourceIT {
     @Transactional
     void putExistingProgramIndicator() throws Exception {
         // Initialize the database
-        insertedProgramIndicator = programIndicatorRepository.saveAndFlush(programIndicator);
+        programIndicator.setId(UUID.randomUUID().toString());
+        programIndicatorRepository.saveAndFlush(programIndicator);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programIndicatorRepository.findAll().size();
 
         // Update the programIndicator
-        ProgramIndicator updatedProgramIndicator = programIndicatorRepository.findById(programIndicator.getId()).orElseThrow();
+        ProgramIndicator updatedProgramIndicator = programIndicatorRepository.findById(programIndicator.getId()).get();
         // Disconnect from session so that the updates on updatedProgramIndicator are not directly saved in db
         em.detach(updatedProgramIndicator);
         updatedProgramIndicator
@@ -394,19 +404,33 @@ class ProgramIndicatorResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, updatedProgramIndicator.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedProgramIndicator))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedProgramIndicator))
             )
             .andExpect(status().isOk());
 
         // Validate the ProgramIndicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedProgramIndicatorToMatchAllProperties(updatedProgramIndicator);
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeUpdate);
+        ProgramIndicator testProgramIndicator = programIndicatorList.get(programIndicatorList.size() - 1);
+        assertThat(testProgramIndicator.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testProgramIndicator.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testProgramIndicator.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testProgramIndicator.getShortName()).isEqualTo(UPDATED_SHORT_NAME);
+        assertThat(testProgramIndicator.getDimensionItemType()).isEqualTo(UPDATED_DIMENSION_ITEM_TYPE);
+        assertThat(testProgramIndicator.getExpression()).isEqualTo(UPDATED_EXPRESSION);
+        assertThat(testProgramIndicator.getFilter()).isEqualTo(UPDATED_FILTER);
+        assertThat(testProgramIndicator.getAnalyticsType()).isEqualTo(UPDATED_ANALYTICS_TYPE);
+        assertThat(testProgramIndicator.getDimensionItem()).isEqualTo(UPDATED_DIMENSION_ITEM);
+        assertThat(testProgramIndicator.getDisplayShortName()).isEqualTo(UPDATED_DISPLAY_SHORT_NAME);
+        assertThat(testProgramIndicator.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testProgramIndicator.getDisplayFormName()).isEqualTo(UPDATED_DISPLAY_FORM_NAME);
+        assertThat(testProgramIndicator.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void putNonExistingProgramIndicator() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programIndicatorRepository.findAll().size();
         programIndicator.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -414,18 +438,19 @@ class ProgramIndicatorResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, programIndicator.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(programIndicator))
+                    .content(TestUtil.convertObjectToJsonBytes(programIndicator))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramIndicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchProgramIndicator() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programIndicatorRepository.findAll().size();
         programIndicator.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -433,75 +458,90 @@ class ProgramIndicatorResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(programIndicator))
+                    .content(TestUtil.convertObjectToJsonBytes(programIndicator))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramIndicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamProgramIndicator() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programIndicatorRepository.findAll().size();
         programIndicator.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProgramIndicatorMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programIndicator)))
+            .perform(
+                put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programIndicator))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the ProgramIndicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void partialUpdateProgramIndicatorWithPatch() throws Exception {
         // Initialize the database
-        insertedProgramIndicator = programIndicatorRepository.saveAndFlush(programIndicator);
+        programIndicator.setId(UUID.randomUUID().toString());
+        programIndicatorRepository.saveAndFlush(programIndicator);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programIndicatorRepository.findAll().size();
 
         // Update the programIndicator using partial update
         ProgramIndicator partialUpdatedProgramIndicator = new ProgramIndicator();
         partialUpdatedProgramIndicator.setId(programIndicator.getId());
 
         partialUpdatedProgramIndicator
-            .created(UPDATED_CREATED)
             .lastUpdated(UPDATED_LAST_UPDATED)
             .shortName(UPDATED_SHORT_NAME)
-            .dimensionItemType(UPDATED_DIMENSION_ITEM_TYPE)
-            .filter(UPDATED_FILTER)
+            .expression(UPDATED_EXPRESSION)
+            .analyticsType(UPDATED_ANALYTICS_TYPE)
+            .dimensionItem(UPDATED_DIMENSION_ITEM)
             .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
-            .displayName(UPDATED_DISPLAY_NAME)
             .displayFormName(UPDATED_DISPLAY_FORM_NAME);
 
         restProgramIndicatorMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedProgramIndicator.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedProgramIndicator))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedProgramIndicator))
             )
             .andExpect(status().isOk());
 
         // Validate the ProgramIndicator in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertProgramIndicatorUpdatableFieldsEquals(
-            createUpdateProxyForBean(partialUpdatedProgramIndicator, programIndicator),
-            getPersistedProgramIndicator(programIndicator)
-        );
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeUpdate);
+        ProgramIndicator testProgramIndicator = programIndicatorList.get(programIndicatorList.size() - 1);
+        assertThat(testProgramIndicator.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testProgramIndicator.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testProgramIndicator.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testProgramIndicator.getShortName()).isEqualTo(UPDATED_SHORT_NAME);
+        assertThat(testProgramIndicator.getDimensionItemType()).isEqualTo(DEFAULT_DIMENSION_ITEM_TYPE);
+        assertThat(testProgramIndicator.getExpression()).isEqualTo(UPDATED_EXPRESSION);
+        assertThat(testProgramIndicator.getFilter()).isEqualTo(DEFAULT_FILTER);
+        assertThat(testProgramIndicator.getAnalyticsType()).isEqualTo(UPDATED_ANALYTICS_TYPE);
+        assertThat(testProgramIndicator.getDimensionItem()).isEqualTo(UPDATED_DIMENSION_ITEM);
+        assertThat(testProgramIndicator.getDisplayShortName()).isEqualTo(UPDATED_DISPLAY_SHORT_NAME);
+        assertThat(testProgramIndicator.getDisplayName()).isEqualTo(DEFAULT_DISPLAY_NAME);
+        assertThat(testProgramIndicator.getDisplayFormName()).isEqualTo(UPDATED_DISPLAY_FORM_NAME);
+        assertThat(testProgramIndicator.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
     @Transactional
     void fullUpdateProgramIndicatorWithPatch() throws Exception {
         // Initialize the database
-        insertedProgramIndicator = programIndicatorRepository.saveAndFlush(programIndicator);
+        programIndicator.setId(UUID.randomUUID().toString());
+        programIndicatorRepository.saveAndFlush(programIndicator);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programIndicatorRepository.findAll().size();
 
         // Update the programIndicator using partial update
         ProgramIndicator partialUpdatedProgramIndicator = new ProgramIndicator();
@@ -526,23 +566,33 @@ class ProgramIndicatorResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedProgramIndicator.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedProgramIndicator))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedProgramIndicator))
             )
             .andExpect(status().isOk());
 
         // Validate the ProgramIndicator in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertProgramIndicatorUpdatableFieldsEquals(
-            partialUpdatedProgramIndicator,
-            getPersistedProgramIndicator(partialUpdatedProgramIndicator)
-        );
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeUpdate);
+        ProgramIndicator testProgramIndicator = programIndicatorList.get(programIndicatorList.size() - 1);
+        assertThat(testProgramIndicator.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testProgramIndicator.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testProgramIndicator.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testProgramIndicator.getShortName()).isEqualTo(UPDATED_SHORT_NAME);
+        assertThat(testProgramIndicator.getDimensionItemType()).isEqualTo(UPDATED_DIMENSION_ITEM_TYPE);
+        assertThat(testProgramIndicator.getExpression()).isEqualTo(UPDATED_EXPRESSION);
+        assertThat(testProgramIndicator.getFilter()).isEqualTo(UPDATED_FILTER);
+        assertThat(testProgramIndicator.getAnalyticsType()).isEqualTo(UPDATED_ANALYTICS_TYPE);
+        assertThat(testProgramIndicator.getDimensionItem()).isEqualTo(UPDATED_DIMENSION_ITEM);
+        assertThat(testProgramIndicator.getDisplayShortName()).isEqualTo(UPDATED_DISPLAY_SHORT_NAME);
+        assertThat(testProgramIndicator.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testProgramIndicator.getDisplayFormName()).isEqualTo(UPDATED_DISPLAY_FORM_NAME);
+        assertThat(testProgramIndicator.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void patchNonExistingProgramIndicator() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programIndicatorRepository.findAll().size();
         programIndicator.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -550,18 +600,19 @@ class ProgramIndicatorResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, programIndicator.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(programIndicator))
+                    .content(TestUtil.convertObjectToJsonBytes(programIndicator))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramIndicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchProgramIndicator() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programIndicatorRepository.findAll().size();
         programIndicator.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -569,36 +620,43 @@ class ProgramIndicatorResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(programIndicator))
+                    .content(TestUtil.convertObjectToJsonBytes(programIndicator))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramIndicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamProgramIndicator() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programIndicatorRepository.findAll().size();
         programIndicator.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProgramIndicatorMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(programIndicator)))
+            .perform(
+                patch(ENTITY_API_URL)
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(programIndicator))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the ProgramIndicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void deleteProgramIndicator() throws Exception {
         // Initialize the database
-        insertedProgramIndicator = programIndicatorRepository.saveAndFlush(programIndicator);
+        programIndicator.setId(UUID.randomUUID().toString());
+        programIndicatorRepository.saveAndFlush(programIndicator);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = programIndicatorRepository.findAll().size();
 
         // Delete the programIndicator
         restProgramIndicatorMockMvc
@@ -606,37 +664,7 @@ class ProgramIndicatorResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return programIndicatorRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected ProgramIndicator getPersistedProgramIndicator(ProgramIndicator programIndicator) {
-        return programIndicatorRepository.findById(programIndicator.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedProgramIndicatorToMatchAllProperties(ProgramIndicator expectedProgramIndicator) {
-        assertProgramIndicatorAllPropertiesEquals(expectedProgramIndicator, getPersistedProgramIndicator(expectedProgramIndicator));
-    }
-
-    protected void assertPersistedProgramIndicatorToMatchUpdatableProperties(ProgramIndicator expectedProgramIndicator) {
-        assertProgramIndicatorAllUpdatablePropertiesEquals(
-            expectedProgramIndicator,
-            getPersistedProgramIndicator(expectedProgramIndicator)
-        );
+        List<ProgramIndicator> programIndicatorList = programIndicatorRepository.findAll();
+        assertThat(programIndicatorList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

@@ -1,5 +1,5 @@
 {
-  "dhis2AuditApp": {
+  "dhis2TrackApp": {
     "organisationUnit": {
       "home": {
         "title": "Organisation Units",
@@ -27,8 +27,8 @@
       "track": "Track",
       "createdBy": "Created By",
       "lastUpdatedBy": "Last Updated By",
-      "program": "Program",
-      "dataset": "Dataset"
+      "programs": "Programs",
+      "dataSets": "Data Sets"
     }
   }
 }

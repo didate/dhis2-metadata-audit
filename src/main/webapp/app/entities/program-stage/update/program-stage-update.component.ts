@@ -1,27 +1,22 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { ProgramStageFormService, ProgramStageFormGroup } from './program-stage-form.service';
+import { IProgramStage } from '../program-stage.model';
+import { ProgramStageService } from '../service/program-stage.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { DHISUserService } from 'app/entities/dhis-user/service/dhis-user.service';
 import { IProgram } from 'app/entities/program/program.model';
 import { ProgramService } from 'app/entities/program/service/program.service';
 import { IDataelement } from 'app/entities/dataelement/dataelement.model';
 import { DataelementService } from 'app/entities/dataelement/service/dataelement.service';
-import { ProgramStageService } from '../service/program-stage.service';
-import { IProgramStage } from '../program-stage.model';
-import { ProgramStageFormService, ProgramStageFormGroup } from './program-stage-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-program-stage-update',
   templateUrl: './program-stage-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ProgramStageUpdateComponent implements OnInit {
   isSaving = false;
@@ -31,15 +26,16 @@ export class ProgramStageUpdateComponent implements OnInit {
   programsSharedCollection: IProgram[] = [];
   dataelementsSharedCollection: IDataelement[] = [];
 
-  protected programStageService = inject(ProgramStageService);
-  protected programStageFormService = inject(ProgramStageFormService);
-  protected dHISUserService = inject(DHISUserService);
-  protected programService = inject(ProgramService);
-  protected dataelementService = inject(DataelementService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ProgramStageFormGroup = this.programStageFormService.createProgramStageFormGroup();
+
+  constructor(
+    protected programStageService: ProgramStageService,
+    protected programStageFormService: ProgramStageFormService,
+    protected dHISUserService: DHISUserService,
+    protected programService: ProgramService,
+    protected dataelementService: DataelementService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   compareDHISUser = (o1: IDHISUser | null, o2: IDHISUser | null): boolean => this.dHISUserService.compareDHISUser(o1, o2);
 
@@ -98,16 +94,15 @@ export class ProgramStageUpdateComponent implements OnInit {
     this.dHISUsersSharedCollection = this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
       this.dHISUsersSharedCollection,
       programStage.createdBy,
-      programStage.lastUpdatedBy,
+      programStage.lastUpdatedBy
     );
     this.programsSharedCollection = this.programService.addProgramToCollectionIfMissing<IProgram>(
       this.programsSharedCollection,
-      programStage.program,
-      ...(programStage.programs ?? []),
+      programStage.program
     );
     this.dataelementsSharedCollection = this.dataelementService.addDataelementToCollectionIfMissing<IDataelement>(
       this.dataelementsSharedCollection,
-      ...(programStage.programStageDataElements ?? []),
+      ...(programStage.programStageDataElements ?? [])
     );
   }
 
@@ -120,9 +115,9 @@ export class ProgramStageUpdateComponent implements OnInit {
           this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
             dHISUsers,
             this.programStage?.createdBy,
-            this.programStage?.lastUpdatedBy,
-          ),
-        ),
+            this.programStage?.lastUpdatedBy
+          )
+        )
       )
       .subscribe((dHISUsers: IDHISUser[]) => (this.dHISUsersSharedCollection = dHISUsers));
 
@@ -130,13 +125,7 @@ export class ProgramStageUpdateComponent implements OnInit {
       .query()
       .pipe(map((res: HttpResponse<IProgram[]>) => res.body ?? []))
       .pipe(
-        map((programs: IProgram[]) =>
-          this.programService.addProgramToCollectionIfMissing<IProgram>(
-            programs,
-            this.programStage?.program,
-            ...(this.programStage?.programs ?? []),
-          ),
-        ),
+        map((programs: IProgram[]) => this.programService.addProgramToCollectionIfMissing<IProgram>(programs, this.programStage?.program))
       )
       .subscribe((programs: IProgram[]) => (this.programsSharedCollection = programs));
 
@@ -147,9 +136,9 @@ export class ProgramStageUpdateComponent implements OnInit {
         map((dataelements: IDataelement[]) =>
           this.dataelementService.addDataelementToCollectionIfMissing<IDataelement>(
             dataelements,
-            ...(this.programStage?.programStageDataElements ?? []),
-          ),
-        ),
+            ...(this.programStage?.programStageDataElements ?? [])
+          )
+        )
       )
       .subscribe((dataelements: IDataelement[]) => (this.dataelementsSharedCollection = dataelements));
   }

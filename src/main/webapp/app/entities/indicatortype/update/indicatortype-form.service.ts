@@ -32,11 +32,11 @@ export class IndicatortypeFormService {
     };
     return new FormGroup<IndicatortypeFormGroupContent>({
       id: new FormControl(
-        { value: indicatortypeRawValue.id, disabled: true },
+        { value: indicatortypeRawValue.id, disabled: indicatortypeRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       name: new FormControl(indicatortypeRawValue.name),
     });
@@ -51,8 +51,8 @@ export class IndicatortypeFormService {
     form.reset(
       {
         ...indicatortypeRawValue,
-        id: { value: indicatortypeRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: indicatortypeRawValue.id, disabled: indicatortypeRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 

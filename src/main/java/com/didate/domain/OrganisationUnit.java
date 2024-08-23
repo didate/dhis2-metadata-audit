@@ -2,23 +2,25 @@ package com.didate.domain;
 
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.springframework.data.domain.Persistable;
 
 /**
  * A OrganisationUnit.
  */
+@JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "organisation_unit")
 @Audited
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class OrganisationUnit implements Serializable {
+public class OrganisationUnit implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,10 +51,14 @@ public class OrganisationUnit implements Serializable {
     @Column(name = "level")
     private Integer level;
 
+    @NotAudited
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "track", nullable = false)
     private TypeTrack track;
+
+    @Transient
+    private boolean isPersisted;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -62,7 +68,7 @@ public class OrganisationUnit implements Serializable {
     @NotNull
     private DHISUser lastUpdatedBy;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "organisationUnits")
+    @ManyToMany(mappedBy = "organisationUnits")
     @JsonIgnoreProperties(
         value = {
             "project",
@@ -78,12 +84,12 @@ public class OrganisationUnit implements Serializable {
     )
     private Set<Program> programs = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "organisationUnits")
+    @ManyToMany(mappedBy = "organisationUnits")
     @JsonIgnoreProperties(
         value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataSetElements", "indicators", "organisationUnits" },
         allowSetters = true
     )
-    private Set<Dataset> datasets = new HashSet<>();
+    private Set<Dataset> dataSets = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -191,6 +197,23 @@ public class OrganisationUnit implements Serializable {
         this.track = track;
     }
 
+    @Transient
+    @Override
+    public boolean isNew() {
+        return !this.isPersisted;
+    }
+
+    public OrganisationUnit setIsPersisted() {
+        this.isPersisted = true;
+        return this;
+    }
+
+    @PostLoad
+    @PostPersist
+    public void updateEntityState() {
+        this.setIsPersisted();
+    }
+
     public DHISUser getCreatedBy() {
         return this.createdBy;
     }
@@ -236,45 +259,45 @@ public class OrganisationUnit implements Serializable {
         return this;
     }
 
-    public OrganisationUnit addProgram(Program program) {
+    public OrganisationUnit addPrograms(Program program) {
         this.programs.add(program);
         program.getOrganisationUnits().add(this);
         return this;
     }
 
-    public OrganisationUnit removeProgram(Program program) {
+    public OrganisationUnit removePrograms(Program program) {
         this.programs.remove(program);
         program.getOrganisationUnits().remove(this);
         return this;
     }
 
-    public Set<Dataset> getDatasets() {
-        return this.datasets;
+    public Set<Dataset> getDataSets() {
+        return this.dataSets;
     }
 
-    public void setDatasets(Set<Dataset> datasets) {
-        if (this.datasets != null) {
-            this.datasets.forEach(i -> i.removeOrganisationUnits(this));
+    public void setDataSets(Set<Dataset> datasets) {
+        if (this.dataSets != null) {
+            this.dataSets.forEach(i -> i.removeOrganisationUnits(this));
         }
         if (datasets != null) {
             datasets.forEach(i -> i.addOrganisationUnits(this));
         }
-        this.datasets = datasets;
+        this.dataSets = datasets;
     }
 
-    public OrganisationUnit datasets(Set<Dataset> datasets) {
-        this.setDatasets(datasets);
+    public OrganisationUnit dataSets(Set<Dataset> datasets) {
+        this.setDataSets(datasets);
         return this;
     }
 
-    public OrganisationUnit addDataset(Dataset dataset) {
-        this.datasets.add(dataset);
+    public OrganisationUnit addDataSets(Dataset dataset) {
+        this.dataSets.add(dataset);
         dataset.getOrganisationUnits().add(this);
         return this;
     }
 
-    public OrganisationUnit removeDataset(Dataset dataset) {
-        this.datasets.remove(dataset);
+    public OrganisationUnit removeDataSets(Dataset dataset) {
+        this.dataSets.remove(dataset);
         dataset.getOrganisationUnits().remove(this);
         return this;
     }
@@ -289,7 +312,7 @@ public class OrganisationUnit implements Serializable {
         if (!(o instanceof OrganisationUnit)) {
             return false;
         }
-        return getId() != null && getId().equals(((OrganisationUnit) o).getId());
+        return id != null && id.equals(((OrganisationUnit) o).id);
     }
 
     @Override

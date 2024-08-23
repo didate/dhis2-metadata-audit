@@ -1,10 +1,10 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2
         id="jhi-program-rule-action-heading"
         data-cy="ProgramRuleActionCreateUpdateHeading"
-        jhiTranslate="dhis2AuditApp.programRuleAction.home.createOrEditLabel"
+        jhiTranslate="dhis2TrackApp.programRuleAction.home.createOrEditLabel"
       >
         Créer ou éditer un Program Rule Action
       </h2>
@@ -12,15 +12,21 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="dhis2AuditApp.programRuleAction.id">Id</label>
-            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-          </div>
-        }
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.id" for="field_id">Id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="id"
+            id="field_id"
+            data-cy="id"
+            formControlName="id"
+            [readonly]="editForm.get('id')!.value != null"
+          />
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_lastUpdated" jhiTranslate="dhis2AuditApp.programRuleAction.lastUpdated">Last Updated</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.lastUpdated" for="field_lastUpdated">Last Updated</label>
           <div class="d-flex">
             <input
               id="field_lastUpdated"
@@ -34,13 +40,13 @@
           </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_created" jhiTranslate="dhis2AuditApp.programRuleAction.created">Created</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.created" for="field_created">Created</label>
           <input type="text" class="form-control" name="created" id="field_created" data-cy="created" formControlName="created" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_programRuleActionType" jhiTranslate="dhis2AuditApp.programRuleAction.programRuleActionType"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.programRuleActionType" for="field_programRuleActionType"
             >Program Rule Action Type</label
           >
           <input
@@ -53,8 +59,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_evaluationTime" jhiTranslate="dhis2AuditApp.programRuleAction.evaluationTime"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.evaluationTime" for="field_evaluationTime"
             >Evaluation Time</label
           >
           <input
@@ -67,13 +73,13 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_data" jhiTranslate="dhis2AuditApp.programRuleAction.data">Data</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.data" for="field_data">Data</label>
           <input type="text" class="form-control" name="data" id="field_data" data-cy="data" formControlName="data" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_templateUid" jhiTranslate="dhis2AuditApp.programRuleAction.templateUid">Template Uid</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.templateUid" for="field_templateUid">Template Uid</label>
           <input
             type="text"
             class="form-control"
@@ -84,13 +90,13 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_content" jhiTranslate="dhis2AuditApp.programRuleAction.content">Content</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.content" for="field_content">Content</label>
           <input type="text" class="form-control" name="content" id="field_content" data-cy="content" formControlName="content" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayContent" jhiTranslate="dhis2AuditApp.programRuleAction.displayContent"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.displayContent" for="field_displayContent"
             >Display Content</label
           >
           <input
@@ -103,25 +109,23 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_track" jhiTranslate="dhis2AuditApp.programRuleAction.track">Track</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.track" for="field_track">Track</label>
           <select class="form-control" name="track" formControlName="track" id="field_track" data-cy="track">
-            <option [ngValue]="null">{{ 'dhis2AuditApp.TypeTrack.null' | translate }}</option>
-            @for (typeTrack of typeTrackValues; track $index) {
-              <option [value]="typeTrack">{{ 'dhis2AuditApp.TypeTrack.' + typeTrack | translate }}</option>
-            }
+            <option [ngValue]="null">{{ 'dhis2TrackApp.TypeTrack.null' | translate }}</option>
+            <option *ngFor="let typeTrack of typeTrackValues" [value]="typeTrack">
+              {{ 'dhis2TrackApp.TypeTrack.' + typeTrack | translate }}
+            </option>
           </select>
-          @if (editForm.get('track')!.invalid && (editForm.get('track')!.dirty || editForm.get('track')!.touched)) {
-            <div>
-              @if (editForm.get('track')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+          <div *ngIf="editForm.get('track')!.invalid && (editForm.get('track')!.dirty || editForm.get('track')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('track')?.errors?.required" jhiTranslate="entity.validation.required">
+              Ce champ est obligatoire.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_project" jhiTranslate="dhis2AuditApp.programRuleAction.project">Project</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.project" for="field_project">Project</label>
           <select
             class="form-control"
             id="field_project"
@@ -131,14 +135,12 @@
             [compareWith]="compareProject"
           >
             <option [ngValue]="null"></option>
-            @for (projectOption of projectsSharedCollection; track $index) {
-              <option [ngValue]="projectOption">{{ projectOption.id }}</option>
-            }
+            <option [ngValue]="projectOption" *ngFor="let projectOption of projectsSharedCollection">{{ projectOption.id }}</option>
           </select>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_createdBy" jhiTranslate="dhis2AuditApp.programRuleAction.createdBy">Created By</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.createdBy" for="field_createdBy">Created By</label>
           <select
             class="form-control"
             id="field_createdBy"
@@ -147,24 +149,22 @@
             formControlName="createdBy"
             [compareWith]="compareDHISUser"
           >
-            @if (!editForm.get('createdBy')!.value) {
-              <option [ngValue]="null" selected></option>
-            }
-            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
-              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
-            }
+            <option *ngIf="!editForm.get('createdBy')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="dHISUserOption" *ngFor="let dHISUserOption of dHISUsersSharedCollection">{{ dHISUserOption.id }}</option>
           </select>
         </div>
-        @if (editForm.get(['createdBy'])!.invalid && (editForm.get(['createdBy'])!.dirty || editForm.get(['createdBy'])!.touched)) {
-          <div>
-            @if (editForm.get(['createdBy'])?.errors?.required) {
-              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-            }
-          </div>
-        }
+        <div *ngIf="editForm.get(['createdBy'])!.invalid && (editForm.get(['createdBy'])!.dirty || editForm.get(['createdBy'])!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['createdBy'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Ce champ est obligatoire.
+          </small>
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_lastUpdatedBy" jhiTranslate="dhis2AuditApp.programRuleAction.lastUpdatedBy"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.lastUpdatedBy" for="field_lastUpdatedBy"
             >Last Updated By</label
           >
           <select
@@ -175,26 +175,26 @@
             formControlName="lastUpdatedBy"
             [compareWith]="compareDHISUser"
           >
-            @if (!editForm.get('lastUpdatedBy')!.value) {
-              <option [ngValue]="null" selected></option>
-            }
-            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
-              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
-            }
+            <option *ngIf="!editForm.get('lastUpdatedBy')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="dHISUserOption" *ngFor="let dHISUserOption of dHISUsersSharedCollection">{{ dHISUserOption.id }}</option>
           </select>
         </div>
-        @if (
-          editForm.get(['lastUpdatedBy'])!.invalid && (editForm.get(['lastUpdatedBy'])!.dirty || editForm.get(['lastUpdatedBy'])!.touched)
-        ) {
-          <div>
-            @if (editForm.get(['lastUpdatedBy'])?.errors?.required) {
-              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-            }
-          </div>
-        }
+        <div
+          *ngIf="
+            editForm.get(['lastUpdatedBy'])!.invalid && (editForm.get(['lastUpdatedBy'])!.dirty || editForm.get(['lastUpdatedBy'])!.touched)
+          "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['lastUpdatedBy'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Ce champ est obligatoire.
+          </small>
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_programRule" jhiTranslate="dhis2AuditApp.programRuleAction.programRule">Program Rule</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.programRule" for="field_programRule">Program Rule</label>
           <select
             class="form-control"
             id="field_programRule"
@@ -203,24 +203,26 @@
             formControlName="programRule"
             [compareWith]="compareProgramRule"
           >
-            @if (!editForm.get('programRule')!.value) {
-              <option [ngValue]="null" selected></option>
-            }
-            @for (programRuleOption of programRulesSharedCollection; track $index) {
-              <option [ngValue]="programRuleOption">{{ programRuleOption.id }}</option>
-            }
+            <option *ngIf="!editForm.get('programRule')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="programRuleOption" *ngFor="let programRuleOption of programRulesSharedCollection">
+              {{ programRuleOption.id }}
+            </option>
           </select>
         </div>
-        @if (editForm.get(['programRule'])!.invalid && (editForm.get(['programRule'])!.dirty || editForm.get(['programRule'])!.touched)) {
-          <div>
-            @if (editForm.get(['programRule'])?.errors?.required) {
-              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-            }
-          </div>
-        }
+        <div
+          *ngIf="editForm.get(['programRule'])!.invalid && (editForm.get(['programRule'])!.dirty || editForm.get(['programRule'])!.touched)"
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['programRule'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Ce champ est obligatoire.
+          </small>
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_trackedEntityAttribute" jhiTranslate="dhis2AuditApp.programRuleAction.trackedEntityAttribute"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.trackedEntityAttribute" for="field_trackedEntityAttribute"
             >Tracked Entity Attribute</label
           >
           <select
@@ -232,14 +234,17 @@
             [compareWith]="compareTrackedEntityAttribute"
           >
             <option [ngValue]="null"></option>
-            @for (trackedEntityAttributeOption of trackedEntityAttributesSharedCollection; track $index) {
-              <option [ngValue]="trackedEntityAttributeOption">{{ trackedEntityAttributeOption.id }}</option>
-            }
+            <option
+              [ngValue]="trackedEntityAttributeOption"
+              *ngFor="let trackedEntityAttributeOption of trackedEntityAttributesSharedCollection"
+            >
+              {{ trackedEntityAttributeOption.id }}
+            </option>
           </select>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_dataElement" jhiTranslate="dhis2AuditApp.programRuleAction.dataElement">Data Element</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.dataElement" for="field_dataElement">Data Element</label>
           <select
             class="form-control"
             id="field_dataElement"
@@ -249,14 +254,17 @@
             [compareWith]="compareTrackedEntityAttribute"
           >
             <option [ngValue]="null"></option>
-            @for (trackedEntityAttributeOption of trackedEntityAttributesSharedCollection; track $index) {
-              <option [ngValue]="trackedEntityAttributeOption">{{ trackedEntityAttributeOption.id }}</option>
-            }
+            <option
+              [ngValue]="trackedEntityAttributeOption"
+              *ngFor="let trackedEntityAttributeOption of trackedEntityAttributesSharedCollection"
+            >
+              {{ trackedEntityAttributeOption.id }}
+            </option>
           </select>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_optionGroup" jhiTranslate="dhis2AuditApp.programRuleAction.optionGroup">Option Group</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.programRuleAction.optionGroup" for="field_optionGroup">Option Group</label>
           <select
             class="form-control"
             id="field_optionGroup"
@@ -266,9 +274,9 @@
             [compareWith]="compareOptionGroup"
           >
             <option [ngValue]="null"></option>
-            @for (optionGroupOption of optionGroupsSharedCollection; track $index) {
-              <option [ngValue]="optionGroupOption">{{ optionGroupOption.id }}</option>
-            }
+            <option [ngValue]="optionGroupOption" *ngFor="let optionGroupOption of optionGroupsSharedCollection">
+              {{ optionGroupOption.id }}
+            </option>
           </select>
         </div>
       </div>

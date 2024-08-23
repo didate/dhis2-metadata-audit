@@ -1,34 +1,32 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    @if (optionset()) {
-      <div>
-        <h2 data-cy="optionsetDetailsHeading"><span jhiTranslate="dhis2AuditApp.optionset.detail.title">Optionset</span></h2>
+    <div *ngIf="optionset">
+      <h2 data-cy="optionsetDetailsHeading"><span jhiTranslate="dhis2TrackApp.optionset.detail.title">Optionset</span></h2>
 
-        <hr />
+      <hr />
 
-        <jhi-alert-error></jhi-alert-error>
+      <jhi-alert-error></jhi-alert-error>
 
-        <jhi-alert></jhi-alert>
+      <jhi-alert></jhi-alert>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="dhis2AuditApp.optionset.id">Id</span></dt>
-          <dd>
-            <span>{{ optionset()!.id }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.optionset.name">Name</span></dt>
-          <dd>
-            <span>{{ optionset()!.name }}</span>
-          </dd>
-        </dl>
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="dhis2TrackApp.optionset.id">Id</span></dt>
+        <dd>
+          <span>{{ optionset.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.optionset.name">Name</span></dt>
+        <dd>
+          <span>{{ optionset.name }}</span>
+        </dd>
+      </dl>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-        </button>
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
 
-        <button type="button" [routerLink]="['/optionset', optionset()!.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-        </button>
-      </div>
-    }
+      <button type="button" [routerLink]="['/optionset', optionset.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
   </div>
 </div>

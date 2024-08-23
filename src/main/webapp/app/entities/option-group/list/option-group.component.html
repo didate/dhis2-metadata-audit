@@ -1,11 +1,11 @@
 <div>
   <h2 id="page-heading" data-cy="OptionGroupHeading">
-    <span jhiTranslate="dhis2AuditApp.optionGroup.home.title">OptionGroups</span>
+    <span jhiTranslate="dhis2TrackApp.optionGroup.home.title">OptionGroups</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span jhiTranslate="dhis2AuditApp.optionGroup.home.refreshListLabel">Actualiser la liste</span>
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="dhis2TrackApp.optionGroup.home.refreshListLabel">Actualiser la liste</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/option-group/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2AuditApp.optionGroup.home.createLabel">Créer un nouveau Option Group</span>
+        <span jhiTranslate="dhis2TrackApp.optionGroup.home.createLabel"> Créer un nouveau Option Group </span>
       </button>
     </div>
   </h2>
@@ -24,69 +24,76 @@
 
   <jhi-alert></jhi-alert>
 
-  @if (optionGroups?.length === 0) {
-    <div class="alert alert-warning" id="no-result">
-      <span jhiTranslate="dhis2AuditApp.optionGroup.home.notFound">Aucun Option Group trouvé</span>
+  <div class="alert alert-warning" id="no-result" *ngIf="optionGroups?.length === 0">
+    <span jhiTranslate="dhis2TrackApp.optionGroup.home.notFound">Aucun Option Group trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="optionGroups && optionGroups.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.optionGroup.id">Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let optionGroup of optionGroups; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/option-group', optionGroup.id, 'view']">{{ optionGroup.id }}</a>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/option-group', optionGroup.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/option-group', optionGroup.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+              </button>
+
+              <button type="submit" (click)="delete(optionGroup)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="optionGroups && optionGroups.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
     </div>
-  }
 
-  @if (optionGroups && optionGroups.length > 0) {
-    <div class="table-responsive table-entities" id="entities">
-      <table class="table table-striped" aria-describedby="page-heading">
-        <thead>
-          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.optionGroup.id">Id</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (optionGroup of optionGroups; track trackId) {
-            <tr data-cy="entityTable">
-              <td>
-                <a [routerLink]="['/option-group', optionGroup.id, 'view']">{{ optionGroup.id }}</a>
-              </td>
-              <td class="text-end">
-                <div class="btn-group">
-                  <a [routerLink]="['/option-group', optionGroup.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(optionGroup)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
     </div>
-  }
-  @if (optionGroups && optionGroups.length > 0) {
-    <div>
-      <div class="d-flex justify-content-center">
-        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-      </div>
-
-      <div class="d-flex justify-content-center">
-        <ngb-pagination
-          [collectionSize]="totalItems"
-          [page]="page"
-          [pageSize]="itemsPerPage"
-          [maxSize]="5"
-          [rotate]="true"
-          [boundaryLinks]="true"
-          (pageChange)="navigateToPage($event)"
-        ></ngb-pagination>
-      </div>
-    </div>
-  }
+  </div>
 </div>

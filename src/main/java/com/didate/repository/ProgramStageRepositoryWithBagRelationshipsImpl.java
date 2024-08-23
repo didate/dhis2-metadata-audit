@@ -1,13 +1,14 @@
 package com.didate.repository;
 
 import com.didate.domain.ProgramStage;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import org.hibernate.annotations.QueryHints;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -15,9 +16,6 @@ import org.springframework.data.domain.PageImpl;
  * Utility repository to load bag relationships based on https://vladmihalcea.com/hibernate-multiplebagfetchexception/
  */
 public class ProgramStageRepositoryWithBagRelationshipsImpl implements ProgramStageRepositoryWithBagRelationships {
-
-    private static final String ID_PARAMETER = "id";
-    private static final String PROGRAMSTAGES_PARAMETER = "programStages";
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -44,10 +42,10 @@ public class ProgramStageRepositoryWithBagRelationshipsImpl implements ProgramSt
     ProgramStage fetchProgramStageDataElements(ProgramStage result) {
         return entityManager
             .createQuery(
-                "select programStage from ProgramStage programStage left join fetch programStage.programStageDataElements where programStage.id = :id",
+                "select programStage from ProgramStage programStage left join fetch programStage.programStageDataElements where programStage is :programStage",
                 ProgramStage.class
             )
-            .setParameter(ID_PARAMETER, result.getId())
+            .setParameter("programStage", result)
             .getSingleResult();
     }
 
@@ -56,12 +54,14 @@ public class ProgramStageRepositoryWithBagRelationshipsImpl implements ProgramSt
         IntStream.range(0, programStages.size()).forEach(index -> order.put(programStages.get(index).getId(), index));
         List<ProgramStage> result = entityManager
             .createQuery(
-                "select programStage from ProgramStage programStage left join fetch programStage.programStageDataElements where programStage in :programStages",
+                "select distinct programStage from ProgramStage programStage left join fetch programStage.programStageDataElements where programStage in :programStages",
                 ProgramStage.class
             )
-            .setParameter(PROGRAMSTAGES_PARAMETER, programStages)
+            .setParameter("programStages", programStages)
             .getResultList();
         Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
         return result;
     }
 }
+/* .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+.setHint(QueryHints.PASS_DISTINCT_THROUGH, false) */

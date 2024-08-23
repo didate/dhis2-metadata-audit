@@ -1,9 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
+import { DataelementFormService } from './dataelement-form.service';
+import { DataelementService } from '../service/dataelement.service';
+import { IDataelement } from '../dataelement.model';
 import { IProject } from 'app/entities/project/project.model';
 import { ProjectService } from 'app/entities/project/service/project.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
@@ -12,13 +17,6 @@ import { ICategorycombo } from 'app/entities/categorycombo/categorycombo.model';
 import { CategorycomboService } from 'app/entities/categorycombo/service/categorycombo.service';
 import { IOptionset } from 'app/entities/optionset/optionset.model';
 import { OptionsetService } from 'app/entities/optionset/service/optionset.service';
-import { IDataset } from 'app/entities/dataset/dataset.model';
-import { DatasetService } from 'app/entities/dataset/service/dataset.service';
-import { IProgramStage } from 'app/entities/program-stage/program-stage.model';
-import { ProgramStageService } from 'app/entities/program-stage/service/program-stage.service';
-import { IDataelement } from '../dataelement.model';
-import { DataelementService } from '../service/dataelement.service';
-import { DataelementFormService } from './dataelement-form.service';
 
 import { DataelementUpdateComponent } from './dataelement-update.component';
 
@@ -32,14 +30,12 @@ describe('Dataelement Management Update Component', () => {
   let dHISUserService: DHISUserService;
   let categorycomboService: CategorycomboService;
   let optionsetService: OptionsetService;
-  let datasetService: DatasetService;
-  let programStageService: ProgramStageService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DataelementUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [DataelementUpdateComponent],
       providers: [
-        provideHttpClient(),
         FormBuilder,
         {
           provide: ActivatedRoute,
@@ -60,8 +56,6 @@ describe('Dataelement Management Update Component', () => {
     dHISUserService = TestBed.inject(DHISUserService);
     categorycomboService = TestBed.inject(CategorycomboService);
     optionsetService = TestBed.inject(OptionsetService);
-    datasetService = TestBed.inject(DatasetService);
-    programStageService = TestBed.inject(ProgramStageService);
 
     comp = fixture.componentInstance;
   });
@@ -69,10 +63,10 @@ describe('Dataelement Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Project query and add missing value', () => {
       const dataelement: IDataelement = { id: 'CBA' };
-      const project: IProject = { id: 24602 };
+      const project: IProject = { id: 88150 };
       dataelement.project = project;
 
-      const projectCollection: IProject[] = [{ id: 21128 }];
+      const projectCollection: IProject[] = [{ id: 8926 }];
       jest.spyOn(projectService, 'query').mockReturnValue(of(new HttpResponse({ body: projectCollection })));
       const additionalProjects = [project];
       const expectedCollection: IProject[] = [...additionalProjects, ...projectCollection];
@@ -84,19 +78,19 @@ describe('Dataelement Management Update Component', () => {
       expect(projectService.query).toHaveBeenCalled();
       expect(projectService.addProjectToCollectionIfMissing).toHaveBeenCalledWith(
         projectCollection,
-        ...additionalProjects.map(expect.objectContaining),
+        ...additionalProjects.map(expect.objectContaining)
       );
       expect(comp.projectsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call DHISUser query and add missing value', () => {
       const dataelement: IDataelement = { id: 'CBA' };
-      const createdBy: IDHISUser = { id: '34881db4-3448-4db1-a608-b83e7d3bbb3a' };
+      const createdBy: IDHISUser = { id: '2f560acf-7540-483d-b11e-011d061b3150' };
       dataelement.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '3d0ece05-d15f-4a3d-a740-0710c0a7a43c' };
+      const lastUpdatedBy: IDHISUser = { id: 'd44c7afa-8f2d-41a5-9c71-d1eb3b9b9b0b' };
       dataelement.lastUpdatedBy = lastUpdatedBy;
 
-      const dHISUserCollection: IDHISUser[] = [{ id: '49e22701-46b2-46cf-a8f6-da5b6277b990' }];
+      const dHISUserCollection: IDHISUser[] = [{ id: '0c0afef3-ec72-485f-b540-d5bcb3cae3a5' }];
       jest.spyOn(dHISUserService, 'query').mockReturnValue(of(new HttpResponse({ body: dHISUserCollection })));
       const additionalDHISUsers = [createdBy, lastUpdatedBy];
       const expectedCollection: IDHISUser[] = [...additionalDHISUsers, ...dHISUserCollection];
@@ -108,17 +102,17 @@ describe('Dataelement Management Update Component', () => {
       expect(dHISUserService.query).toHaveBeenCalled();
       expect(dHISUserService.addDHISUserToCollectionIfMissing).toHaveBeenCalledWith(
         dHISUserCollection,
-        ...additionalDHISUsers.map(expect.objectContaining),
+        ...additionalDHISUsers.map(expect.objectContaining)
       );
       expect(comp.dHISUsersSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call Categorycombo query and add missing value', () => {
       const dataelement: IDataelement = { id: 'CBA' };
-      const categoryCombo: ICategorycombo = { id: '92a18f14-9f26-4f5f-8179-12dd03528549' };
+      const categoryCombo: ICategorycombo = { id: '783dfc60-6e4c-4e0e-8259-522dd66bfe0e' };
       dataelement.categoryCombo = categoryCombo;
 
-      const categorycomboCollection: ICategorycombo[] = [{ id: 'b9d49675-2eec-4069-be16-565403872432' }];
+      const categorycomboCollection: ICategorycombo[] = [{ id: '8a59f957-6a60-4d8f-9c02-c32c64976a71' }];
       jest.spyOn(categorycomboService, 'query').mockReturnValue(of(new HttpResponse({ body: categorycomboCollection })));
       const additionalCategorycombos = [categoryCombo];
       const expectedCollection: ICategorycombo[] = [...additionalCategorycombos, ...categorycomboCollection];
@@ -130,17 +124,17 @@ describe('Dataelement Management Update Component', () => {
       expect(categorycomboService.query).toHaveBeenCalled();
       expect(categorycomboService.addCategorycomboToCollectionIfMissing).toHaveBeenCalledWith(
         categorycomboCollection,
-        ...additionalCategorycombos.map(expect.objectContaining),
+        ...additionalCategorycombos.map(expect.objectContaining)
       );
       expect(comp.categorycombosSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call Optionset query and add missing value', () => {
       const dataelement: IDataelement = { id: 'CBA' };
-      const optionSet: IOptionset = { id: '70151ef1-f602-4cf4-8afc-548e23bf7b56' };
+      const optionSet: IOptionset = { id: 'a418c6bb-1a54-4b96-88c8-4c9fe85ead03' };
       dataelement.optionSet = optionSet;
 
-      const optionsetCollection: IOptionset[] = [{ id: 'a2693341-a4ca-4e86-acd9-a69a70c83b59' }];
+      const optionsetCollection: IOptionset[] = [{ id: '4f096a77-7850-49eb-8401-ff11b19f4d38' }];
       jest.spyOn(optionsetService, 'query').mockReturnValue(of(new HttpResponse({ body: optionsetCollection })));
       const additionalOptionsets = [optionSet];
       const expectedCollection: IOptionset[] = [...additionalOptionsets, ...optionsetCollection];
@@ -152,71 +146,23 @@ describe('Dataelement Management Update Component', () => {
       expect(optionsetService.query).toHaveBeenCalled();
       expect(optionsetService.addOptionsetToCollectionIfMissing).toHaveBeenCalledWith(
         optionsetCollection,
-        ...additionalOptionsets.map(expect.objectContaining),
+        ...additionalOptionsets.map(expect.objectContaining)
       );
       expect(comp.optionsetsSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Dataset query and add missing value', () => {
-      const dataelement: IDataelement = { id: 'CBA' };
-      const datasets: IDataset[] = [{ id: 'b607c556-0d4a-47e0-9421-949f282b07cc' }];
-      dataelement.datasets = datasets;
-
-      const datasetCollection: IDataset[] = [{ id: 'ff17240e-7425-4d8f-892b-b185431165f9' }];
-      jest.spyOn(datasetService, 'query').mockReturnValue(of(new HttpResponse({ body: datasetCollection })));
-      const additionalDatasets = [...datasets];
-      const expectedCollection: IDataset[] = [...additionalDatasets, ...datasetCollection];
-      jest.spyOn(datasetService, 'addDatasetToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ dataelement });
-      comp.ngOnInit();
-
-      expect(datasetService.query).toHaveBeenCalled();
-      expect(datasetService.addDatasetToCollectionIfMissing).toHaveBeenCalledWith(
-        datasetCollection,
-        ...additionalDatasets.map(expect.objectContaining),
-      );
-      expect(comp.datasetsSharedCollection).toEqual(expectedCollection);
-    });
-
-    it('Should call ProgramStage query and add missing value', () => {
-      const dataelement: IDataelement = { id: 'CBA' };
-      const programStages: IProgramStage[] = [{ id: 'e1d64e74-b17c-4e81-bc3e-4e514fcdad11' }];
-      dataelement.programStages = programStages;
-
-      const programStageCollection: IProgramStage[] = [{ id: '01b6cded-68c0-4a43-98fc-4ace2be908d6' }];
-      jest.spyOn(programStageService, 'query').mockReturnValue(of(new HttpResponse({ body: programStageCollection })));
-      const additionalProgramStages = [...programStages];
-      const expectedCollection: IProgramStage[] = [...additionalProgramStages, ...programStageCollection];
-      jest.spyOn(programStageService, 'addProgramStageToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ dataelement });
-      comp.ngOnInit();
-
-      expect(programStageService.query).toHaveBeenCalled();
-      expect(programStageService.addProgramStageToCollectionIfMissing).toHaveBeenCalledWith(
-        programStageCollection,
-        ...additionalProgramStages.map(expect.objectContaining),
-      );
-      expect(comp.programStagesSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const dataelement: IDataelement = { id: 'CBA' };
-      const project: IProject = { id: 19412 };
+      const project: IProject = { id: 2711 };
       dataelement.project = project;
-      const createdBy: IDHISUser = { id: 'cf8ceb0b-f60a-400d-9157-43a191d5ab07' };
+      const createdBy: IDHISUser = { id: '89c518ed-dff9-4612-a8dd-e85b3af2c9ae' };
       dataelement.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: 'b3fb9280-ac3b-4df2-96ff-4b2eb7e90439' };
+      const lastUpdatedBy: IDHISUser = { id: 'd4c5ba72-71e1-4737-ab71-f8a1a71aaec6' };
       dataelement.lastUpdatedBy = lastUpdatedBy;
-      const categoryCombo: ICategorycombo = { id: '60c0e846-56bf-461b-a1a1-43e008b60ccc' };
+      const categoryCombo: ICategorycombo = { id: '20ac43a3-98f4-4a7e-a0e3-86a890c46ab8' };
       dataelement.categoryCombo = categoryCombo;
-      const optionSet: IOptionset = { id: 'c5d3e47b-3ea0-4b4f-b585-95b80cf0217b' };
+      const optionSet: IOptionset = { id: '79fef54c-18f6-45b1-9e5a-d21edd2564bf' };
       dataelement.optionSet = optionSet;
-      const dataset: IDataset = { id: '60cf7719-b8ec-4b31-ac75-039c96044df4' };
-      dataelement.datasets = [dataset];
-      const programStage: IProgramStage = { id: 'ea31a87e-852d-4353-a169-421af0f845c1' };
-      dataelement.programStages = [programStage];
 
       activatedRoute.data = of({ dataelement });
       comp.ngOnInit();
@@ -226,8 +172,6 @@ describe('Dataelement Management Update Component', () => {
       expect(comp.dHISUsersSharedCollection).toContain(lastUpdatedBy);
       expect(comp.categorycombosSharedCollection).toContain(categoryCombo);
       expect(comp.optionsetsSharedCollection).toContain(optionSet);
-      expect(comp.datasetsSharedCollection).toContain(dataset);
-      expect(comp.programStagesSharedCollection).toContain(programStage);
       expect(comp.dataelement).toEqual(dataelement);
     });
   });
@@ -338,26 +282,6 @@ describe('Dataelement Management Update Component', () => {
         jest.spyOn(optionsetService, 'compareOptionset');
         comp.compareOptionset(entity, entity2);
         expect(optionsetService.compareOptionset).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
-    describe('compareDataset', () => {
-      it('Should forward to datasetService', () => {
-        const entity = { id: 'ABC' };
-        const entity2 = { id: 'CBA' };
-        jest.spyOn(datasetService, 'compareDataset');
-        comp.compareDataset(entity, entity2);
-        expect(datasetService.compareDataset).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
-    describe('compareProgramStage', () => {
-      it('Should forward to programStageService', () => {
-        const entity = { id: 'ABC' };
-        const entity2 = { id: 'CBA' };
-        jest.spyOn(programStageService, 'compareProgramStage');
-        comp.compareProgramStage(entity, entity2);
-        expect(programStageService.compareProgramStage).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

@@ -1,23 +1,18 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { IProject } from 'app/entities/project/project.model';
-import { ProjectService } from 'app/entities/project/service/project.service';
+import { PersonNotifierFormService, PersonNotifierFormGroup } from './person-notifier-form.service';
 import { IPersonNotifier } from '../person-notifier.model';
 import { PersonNotifierService } from '../service/person-notifier.service';
-import { PersonNotifierFormService, PersonNotifierFormGroup } from './person-notifier-form.service';
+import { IProject } from 'app/entities/project/project.model';
+import { ProjectService } from 'app/entities/project/service/project.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-person-notifier-update',
   templateUrl: './person-notifier-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class PersonNotifierUpdateComponent implements OnInit {
   isSaving = false;
@@ -25,13 +20,14 @@ export class PersonNotifierUpdateComponent implements OnInit {
 
   projectsSharedCollection: IProject[] = [];
 
-  protected personNotifierService = inject(PersonNotifierService);
-  protected personNotifierFormService = inject(PersonNotifierFormService);
-  protected projectService = inject(ProjectService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: PersonNotifierFormGroup = this.personNotifierFormService.createPersonNotifierFormGroup();
+
+  constructor(
+    protected personNotifierService: PersonNotifierService,
+    protected personNotifierFormService: PersonNotifierFormService,
+    protected projectService: ProjectService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   compareProject = (o1: IProject | null, o2: IProject | null): boolean => this.projectService.compareProject(o1, o2);
 
@@ -85,7 +81,7 @@ export class PersonNotifierUpdateComponent implements OnInit {
 
     this.projectsSharedCollection = this.projectService.addProjectToCollectionIfMissing<IProject>(
       this.projectsSharedCollection,
-      personNotifier.project,
+      personNotifier.project
     );
   }
 
@@ -94,9 +90,7 @@ export class PersonNotifierUpdateComponent implements OnInit {
       .query()
       .pipe(map((res: HttpResponse<IProject[]>) => res.body ?? []))
       .pipe(
-        map((projects: IProject[]) =>
-          this.projectService.addProjectToCollectionIfMissing<IProject>(projects, this.personNotifier?.project),
-        ),
+        map((projects: IProject[]) => this.projectService.addProjectToCollectionIfMissing<IProject>(projects, this.personNotifier?.project))
       )
       .subscribe((projects: IProject[]) => (this.projectsSharedCollection = projects));
   }

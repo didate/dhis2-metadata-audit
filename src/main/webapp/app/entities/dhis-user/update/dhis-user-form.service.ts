@@ -59,11 +59,11 @@ export class DHISUserFormService {
     });
     return new FormGroup<DHISUserFormGroupContent>({
       id: new FormControl(
-        { value: dHISUserRawValue.id, disabled: true },
+        { value: dHISUserRawValue.id, disabled: dHISUserRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       code: new FormControl(dHISUserRawValue.code),
       name: new FormControl(dHISUserRawValue.name, {
@@ -95,8 +95,8 @@ export class DHISUserFormService {
     form.reset(
       {
         ...dHISUserRawValue,
-        id: { value: dHISUserRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: dHISUserRawValue.id, disabled: dHISUserRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 
@@ -124,7 +124,7 @@ export class DHISUserFormService {
   }
 
   private convertDHISUserToDHISUserRawValue(
-    dHISUser: IDHISUser | (Partial<NewDHISUser> & DHISUserFormDefaults),
+    dHISUser: IDHISUser | (Partial<NewDHISUser> & DHISUserFormDefaults)
   ): DHISUserFormRawValue | PartialWithRequiredKeyOf<NewDHISUserFormRawValue> {
     return {
       ...dHISUser,

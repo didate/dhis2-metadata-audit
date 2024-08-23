@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link com.didate.domain.PersonNotifier}.
+ * Service Interface for managing {@link PersonNotifier}.
  */
 public interface PersonNotifierService {
     /**

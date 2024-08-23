@@ -1,16 +1,16 @@
 import { ICategorycombo, NewCategorycombo } from './categorycombo.model';
 
 export const sampleWithRequiredData: ICategorycombo = {
-  id: '2c6d059a-e356-4e3e-a2ed-f08ccf9e75d9',
+  id: '918ac1e9-cb62-467e-84c6-533cd04ae21b',
 };
 
 export const sampleWithPartialData: ICategorycombo = {
-  id: '01bbd5bd-00e3-44ca-b004-0a9808f21151',
+  id: '21caee35-0a38-450a-b064-fcd25da4e363',
 };
 
 export const sampleWithFullData: ICategorycombo = {
-  id: 'a0845fad-5a47-459d-93fc-07f10b6f85c5',
-  name: 'miaou touriste interpréter',
+  id: '692aba26-9c8f-48c1-9df4-a18cec4cf6e3',
+  name: 'Pizza',
 };
 
 export const sampleWithNewData: NewCategorycombo = {

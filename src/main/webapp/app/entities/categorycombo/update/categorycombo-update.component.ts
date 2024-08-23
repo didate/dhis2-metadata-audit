@@ -1,32 +1,28 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { CategorycomboFormService, CategorycomboFormGroup } from './categorycombo-form.service';
 import { ICategorycombo } from '../categorycombo.model';
 import { CategorycomboService } from '../service/categorycombo.service';
-import { CategorycomboFormService, CategorycomboFormGroup } from './categorycombo-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-categorycombo-update',
   templateUrl: './categorycombo-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class CategorycomboUpdateComponent implements OnInit {
   isSaving = false;
   categorycombo: ICategorycombo | null = null;
 
-  protected categorycomboService = inject(CategorycomboService);
-  protected categorycomboFormService = inject(CategorycomboFormService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: CategorycomboFormGroup = this.categorycomboFormService.createCategorycomboFormGroup();
+
+  constructor(
+    protected categorycomboService: CategorycomboService,
+    protected categorycomboFormService: CategorycomboFormService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ categorycombo }) => {

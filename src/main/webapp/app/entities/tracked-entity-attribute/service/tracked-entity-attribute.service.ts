@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
@@ -27,10 +27,9 @@ export type EntityArrayResponseType = HttpResponse<ITrackedEntityAttribute[]>;
 
 @Injectable({ providedIn: 'root' })
 export class TrackedEntityAttributeService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/tracked-entity-attributes');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(trackedEntityAttribute: NewTrackedEntityAttribute): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(trackedEntityAttribute);
@@ -88,8 +87,8 @@ export class TrackedEntityAttributeService {
   ): Type[] {
     const trackedEntityAttributes: Type[] = trackedEntityAttributesToCheck.filter(isPresent);
     if (trackedEntityAttributes.length > 0) {
-      const trackedEntityAttributeCollectionIdentifiers = trackedEntityAttributeCollection.map(trackedEntityAttributeItem =>
-        this.getTrackedEntityAttributeIdentifier(trackedEntityAttributeItem),
+      const trackedEntityAttributeCollectionIdentifiers = trackedEntityAttributeCollection.map(
+        trackedEntityAttributeItem => this.getTrackedEntityAttributeIdentifier(trackedEntityAttributeItem)!
       );
       const trackedEntityAttributesToAdd = trackedEntityAttributes.filter(trackedEntityAttributeItem => {
         const trackedEntityAttributeIdentifier = this.getTrackedEntityAttributeIdentifier(trackedEntityAttributeItem);
@@ -105,7 +104,7 @@ export class TrackedEntityAttributeService {
   }
 
   protected convertDateFromClient<T extends ITrackedEntityAttribute | NewTrackedEntityAttribute | PartialUpdateTrackedEntityAttribute>(
-    trackedEntityAttribute: T,
+    trackedEntityAttribute: T
   ): RestOf<T> {
     return {
       ...trackedEntityAttribute,

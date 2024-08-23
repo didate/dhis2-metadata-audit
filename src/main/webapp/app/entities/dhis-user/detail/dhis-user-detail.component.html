@@ -1,80 +1,76 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    @if (dHISUser()) {
-      <div>
-        <h2 data-cy="dHISUserDetailsHeading"><span jhiTranslate="dhis2AuditApp.dHISUser.detail.title">DHIS User</span></h2>
+    <div *ngIf="dHISUser">
+      <h2 data-cy="dHISUserDetailsHeading"><span jhiTranslate="dhis2TrackApp.dHISUser.detail.title">DHIS User</span></h2>
 
-        <hr />
+      <hr />
 
-        <jhi-alert-error></jhi-alert-error>
+      <jhi-alert-error></jhi-alert-error>
 
-        <jhi-alert></jhi-alert>
+      <jhi-alert></jhi-alert>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.id">Id</span></dt>
-          <dd>
-            <span>{{ dHISUser()!.id }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.code">Code</span></dt>
-          <dd>
-            <span>{{ dHISUser()!.code }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.name">Name</span></dt>
-          <dd>
-            <span>{{ dHISUser()!.name }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.displayName">Display Name</span></dt>
-          <dd>
-            <span>{{ dHISUser()!.displayName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.username">Username</span></dt>
-          <dd>
-            <span>{{ dHISUser()!.username }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.lastLogin">Last Login</span></dt>
-          <dd>
-            <span>{{ dHISUser()!.lastLogin | formatMediumDatetime }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.email">Email</span></dt>
-          <dd>
-            <span>{{ dHISUser()!.email }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.phoneNumber">Phone Number</span></dt>
-          <dd>
-            <span>{{ dHISUser()!.phoneNumber }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.disabled">Disabled</span></dt>
-          <dd>
-            <span>{{ dHISUser()!.disabled }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.passwordLastUpdated">Password Last Updated</span></dt>
-          <dd>
-            <span>{{ dHISUser()!.passwordLastUpdated | formatMediumDatetime }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.created">Created</span></dt>
-          <dd>
-            <span>{{ dHISUser()!.created | formatMediumDatetime }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.lastUpdated">Last Updated</span></dt>
-          <dd>
-            <span>{{ dHISUser()!.lastUpdated | formatMediumDatetime }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.track">Track</span></dt>
-          <dd>
-            <span [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (dHISUser()!.track ?? 'null')">{{
-              { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[dHISUser()!.track ?? 'null']
-            }}</span>
-          </dd>
-        </dl>
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.id">Id</span></dt>
+        <dd>
+          <span>{{ dHISUser.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.code">Code</span></dt>
+        <dd>
+          <span>{{ dHISUser.code }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.name">Name</span></dt>
+        <dd>
+          <span>{{ dHISUser.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.displayName">Display Name</span></dt>
+        <dd>
+          <span>{{ dHISUser.displayName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.username">Username</span></dt>
+        <dd>
+          <span>{{ dHISUser.username }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.lastLogin">Last Login</span></dt>
+        <dd>
+          <span>{{ dHISUser.lastLogin | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.email">Email</span></dt>
+        <dd>
+          <span>{{ dHISUser.email }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.phoneNumber">Phone Number</span></dt>
+        <dd>
+          <span>{{ dHISUser.phoneNumber }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.disabled">Disabled</span></dt>
+        <dd>
+          <span>{{ dHISUser.disabled }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.passwordLastUpdated">Password Last Updated</span></dt>
+        <dd>
+          <span>{{ dHISUser.passwordLastUpdated | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.created">Created</span></dt>
+        <dd>
+          <span>{{ dHISUser.created | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.lastUpdated">Last Updated</span></dt>
+        <dd>
+          <span>{{ dHISUser.lastUpdated | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.track">Track</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + dHISUser.track }}">{{ dHISUser.track }}</span>
+        </dd>
+      </dl>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-        </button>
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
 
-        <button type="button" [routerLink]="['/dhis-user', dHISUser()!.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-        </button>
-      </div>
-    }
+      <button type="button" [routerLink]="['/dhis-user', dHISUser.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
   </div>
 </div>

@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { ITrackedEntityAttribute } from '../tracked-entity-attribute.model';
 import {
@@ -25,7 +24,7 @@ describe('TrackedEntityAttribute Service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      imports: [HttpClientTestingModule],
     });
     expectedResult = null;
     service = TestBed.inject(TrackedEntityAttributeService);
@@ -45,6 +44,7 @@ describe('TrackedEntityAttribute Service', () => {
     });
 
     it('should create a TrackedEntityAttribute', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const trackedEntityAttribute = { ...sampleWithNewData };
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
@@ -136,7 +136,7 @@ describe('TrackedEntityAttribute Service', () => {
         const trackedEntityAttributeCollection: ITrackedEntityAttribute[] = [sampleWithRequiredData];
         expectedResult = service.addTrackedEntityAttributeToCollectionIfMissing(
           trackedEntityAttributeCollection,
-          ...trackedEntityAttributeArray,
+          ...trackedEntityAttributeArray
         );
         expect(expectedResult).toHaveLength(3);
       });

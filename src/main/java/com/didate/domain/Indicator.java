@@ -2,23 +2,25 @@ package com.didate.domain;
 
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.springframework.data.domain.Persistable;
 
 /**
  * A Indicator.
  */
+@JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "indicator")
 @Audited
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Indicator implements Serializable {
+public class Indicator implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -85,12 +87,16 @@ public class Indicator implements Serializable {
     @Column(name = "dimension_item")
     private String dimensionItem;
 
+    @NotAudited
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "track", nullable = false)
     private TypeTrack track;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Transient
+    private boolean isPersisted;
+
+    @ManyToOne
     private Project project;
 
     @ManyToOne(optional = false)
@@ -105,12 +111,12 @@ public class Indicator implements Serializable {
     @NotNull
     private Indicatortype indicatorType;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "indicators")
+    @ManyToMany(mappedBy = "indicators")
     @JsonIgnoreProperties(
         value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataSetElements", "indicators", "organisationUnits" },
         allowSetters = true
     )
-    private Set<Dataset> datasets = new HashSet<>();
+    private Set<Dataset> dataSets = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -361,6 +367,23 @@ public class Indicator implements Serializable {
         this.track = track;
     }
 
+    @Transient
+    @Override
+    public boolean isNew() {
+        return !this.isPersisted;
+    }
+
+    public Indicator setIsPersisted() {
+        this.isPersisted = true;
+        return this;
+    }
+
+    @PostLoad
+    @PostPersist
+    public void updateEntityState() {
+        this.setIsPersisted();
+    }
+
     public Project getProject() {
         return this.project;
     }
@@ -413,33 +436,33 @@ public class Indicator implements Serializable {
         return this;
     }
 
-    public Set<Dataset> getDatasets() {
-        return this.datasets;
+    public Set<Dataset> getDataSets() {
+        return this.dataSets;
     }
 
-    public void setDatasets(Set<Dataset> datasets) {
-        if (this.datasets != null) {
-            this.datasets.forEach(i -> i.removeIndicators(this));
+    public void setDataSets(Set<Dataset> datasets) {
+        if (this.dataSets != null) {
+            this.dataSets.forEach(i -> i.removeIndicators(this));
         }
         if (datasets != null) {
             datasets.forEach(i -> i.addIndicators(this));
         }
-        this.datasets = datasets;
+        this.dataSets = datasets;
     }
 
-    public Indicator datasets(Set<Dataset> datasets) {
-        this.setDatasets(datasets);
+    public Indicator dataSets(Set<Dataset> datasets) {
+        this.setDataSets(datasets);
         return this;
     }
 
-    public Indicator addDataset(Dataset dataset) {
-        this.datasets.add(dataset);
+    public Indicator addDataSets(Dataset dataset) {
+        this.dataSets.add(dataset);
         dataset.getIndicators().add(this);
         return this;
     }
 
-    public Indicator removeDataset(Dataset dataset) {
-        this.datasets.remove(dataset);
+    public Indicator removeDataSets(Dataset dataset) {
+        this.dataSets.remove(dataset);
         dataset.getIndicators().remove(this);
         return this;
     }
@@ -454,7 +477,7 @@ public class Indicator implements Serializable {
         if (!(o instanceof Indicator)) {
             return false;
         }
-        return getId() != null && getId().equals(((Indicator) o).getId());
+        return id != null && id.equals(((Indicator) o).id);
     }
 
     @Override

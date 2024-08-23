@@ -1,23 +1,26 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRouteSnapshot, ActivatedRoute, Router, convertToParamMap } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 
 import { IProgramRule } from '../program-rule.model';
 import { ProgramRuleService } from '../service/program-rule.service';
 
-import programRuleResolve from './program-rule-routing-resolve.service';
+import { ProgramRuleRoutingResolveService } from './program-rule-routing-resolve.service';
 
 describe('ProgramRule routing resolve service', () => {
   let mockRouter: Router;
   let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
+  let routingResolveService: ProgramRuleRoutingResolveService;
   let service: ProgramRuleService;
   let resultProgramRule: IProgramRule | null | undefined;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
       providers: [
-        provideHttpClient(),
         {
           provide: ActivatedRoute,
           useValue: {
@@ -31,6 +34,7 @@ describe('ProgramRule routing resolve service', () => {
     mockRouter = TestBed.inject(Router);
     jest.spyOn(mockRouter, 'navigate').mockImplementation(() => Promise.resolve(true));
     mockActivatedRouteSnapshot = TestBed.inject(ActivatedRoute).snapshot;
+    routingResolveService = TestBed.inject(ProgramRuleRoutingResolveService);
     service = TestBed.inject(ProgramRuleService);
     resultProgramRule = undefined;
   });
@@ -42,16 +46,12 @@ describe('ProgramRule routing resolve service', () => {
       mockActivatedRouteSnapshot.params = { id: 'ABC' };
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        programRuleResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultProgramRule = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultProgramRule = result;
       });
 
       // THEN
-      expect(service.find).toHaveBeenCalledWith('ABC');
+      expect(service.find).toBeCalledWith('ABC');
       expect(resultProgramRule).toEqual({ id: 'ABC' });
     });
 
@@ -61,12 +61,8 @@ describe('ProgramRule routing resolve service', () => {
       mockActivatedRouteSnapshot.params = {};
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        programRuleResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultProgramRule = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultProgramRule = result;
       });
 
       // THEN
@@ -80,16 +76,12 @@ describe('ProgramRule routing resolve service', () => {
       mockActivatedRouteSnapshot.params = { id: 'ABC' };
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        programRuleResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultProgramRule = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultProgramRule = result;
       });
 
       // THEN
-      expect(service.find).toHaveBeenCalledWith('ABC');
+      expect(service.find).toBeCalledWith('ABC');
       expect(resultProgramRule).toEqual(undefined);
       expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
     });

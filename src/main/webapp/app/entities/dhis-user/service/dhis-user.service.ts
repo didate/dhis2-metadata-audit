@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
@@ -29,10 +29,9 @@ export type EntityArrayResponseType = HttpResponse<IDHISUser[]>;
 
 @Injectable({ providedIn: 'root' })
 export class DHISUserService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/dhis-users');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(dHISUser: NewDHISUser): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(dHISUser);
@@ -86,7 +85,7 @@ export class DHISUserService {
   ): Type[] {
     const dHISUsers: Type[] = dHISUsersToCheck.filter(isPresent);
     if (dHISUsers.length > 0) {
-      const dHISUserCollectionIdentifiers = dHISUserCollection.map(dHISUserItem => this.getDHISUserIdentifier(dHISUserItem));
+      const dHISUserCollectionIdentifiers = dHISUserCollection.map(dHISUserItem => this.getDHISUserIdentifier(dHISUserItem)!);
       const dHISUsersToAdd = dHISUsers.filter(dHISUserItem => {
         const dHISUserIdentifier = this.getDHISUserIdentifier(dHISUserItem);
         if (dHISUserCollectionIdentifiers.includes(dHISUserIdentifier)) {

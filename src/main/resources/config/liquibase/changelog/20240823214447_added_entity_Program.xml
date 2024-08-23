@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity Program.
+    -->
+    <changeSet id="20240823214447-1" author="jhipster">
+        <createTable tableName="program">
+            <column name="id" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="created" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_updated" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="short_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="version" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="enrollment_date_label" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="incident_date_label" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="program_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="display_incident_date" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="ignore_overdue_events" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="user_roles" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="only_enroll_once" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="notification_templates" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="select_enrollment_dates_in_future" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="select_incident_dates_in_future" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="tracked_entity_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="style" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="skip_offline" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="display_front_page_list" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="use_first_stage_during_registration" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="expiry_days" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="complete_events_expiry_days" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="open_days_after_co_end_date" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="min_attributes_required_to_search" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="max_tei_count_to_return" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="access_level" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="display_enrollment_date_label" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="display_incident_date_label" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="registration" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="without_registration" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="display_short_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="display_description" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="display_form_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="display_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="organisation_units_count" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="program_stages_count" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="program_indicators_count" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="program_tracked_entity_attributes_count" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="organisation_units_content" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="program_stages_content" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="program_indicators_content" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="program_tracked_entity_attributes_content" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="track" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="project_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_by_id" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_updated_by_id" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="category_combo_id" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20240823214447-1-relations" author="jhipster">
+
+        <createTable tableName="rel_program__program_tracked_entity_attributes">
+            <column name="program_tracked_entity_attributes_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="program_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="program_id, program_tracked_entity_attributes_id" tableName="rel_program__program_tracked_entity_attributes"/>
+
+        <createTable tableName="rel_program__organisation_units">
+            <column name="organisation_units_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="program_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="program_id, organisation_units_id" tableName="rel_program__organisation_units"/>
+
+        <createTable tableName="rel_program__program_indicators">
+            <column name="program_indicators_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="program_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="program_id, program_indicators_id" tableName="rel_program__program_indicators"/>
+
+        <createTable tableName="rel_program__program_stage">
+            <column name="program_stage_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="program_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="program_id, program_stage_id" tableName="rel_program__program_stage"/>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20240823214447-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/program.csv"
+                  separator=";"
+                  tableName="program"
+                  usePreparedStatements="true">
+            <column name="id" type="string"/>
+            <column name="name" type="string"/>
+            <column name="created" type="string"/>
+            <column name="last_updated" type="string"/>
+            <column name="short_name" type="string"/>
+            <column name="description" type="string"/>
+            <column name="version" type="numeric"/>
+            <column name="enrollment_date_label" type="string"/>
+            <column name="incident_date_label" type="string"/>
+            <column name="program_type" type="string"/>
+            <column name="display_incident_date" type="boolean"/>
+            <column name="ignore_overdue_events" type="boolean"/>
+            <column name="user_roles" type="string"/>
+            <column name="only_enroll_once" type="boolean"/>
+            <column name="notification_templates" type="string"/>
+            <column name="select_enrollment_dates_in_future" type="boolean"/>
+            <column name="select_incident_dates_in_future" type="boolean"/>
+            <column name="tracked_entity_type" type="string"/>
+            <column name="style" type="string"/>
+            <column name="skip_offline" type="boolean"/>
+            <column name="display_front_page_list" type="boolean"/>
+            <column name="use_first_stage_during_registration" type="boolean"/>
+            <column name="expiry_days" type="numeric"/>
+            <column name="complete_events_expiry_days" type="numeric"/>
+            <column name="open_days_after_co_end_date" type="numeric"/>
+            <column name="min_attributes_required_to_search" type="numeric"/>
+            <column name="max_tei_count_to_return" type="numeric"/>
+            <column name="access_level" type="string"/>
+            <column name="display_enrollment_date_label" type="string"/>
+            <column name="display_incident_date_label" type="string"/>
+            <column name="registration" type="boolean"/>
+            <column name="without_registration" type="boolean"/>
+            <column name="display_short_name" type="string"/>
+            <column name="display_description" type="string"/>
+            <column name="display_form_name" type="string"/>
+            <column name="display_name" type="string"/>
+            <column name="organisation_units_count" type="numeric"/>
+            <column name="program_stages_count" type="numeric"/>
+            <column name="program_indicators_count" type="numeric"/>
+            <column name="program_tracked_entity_attributes_count" type="numeric"/>
+            <column name="organisation_units_content" type="string"/>
+            <column name="program_stages_content" type="string"/>
+            <column name="program_indicators_content" type="string"/>
+            <column name="program_tracked_entity_attributes_content" type="string"/>
+            <column name="track" type="string"/>
+            <column name="created_by_id" type="string"/>
+            <column name="last_updated_by_id" type="string"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

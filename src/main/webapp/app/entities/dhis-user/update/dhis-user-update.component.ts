@@ -1,34 +1,30 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { TypeTrack } from 'app/entities/enumerations/type-track.model';
+import { DHISUserFormService, DHISUserFormGroup } from './dhis-user-form.service';
 import { IDHISUser } from '../dhis-user.model';
 import { DHISUserService } from '../service/dhis-user.service';
-import { DHISUserFormService, DHISUserFormGroup } from './dhis-user-form.service';
+import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 @Component({
-  standalone: true,
   selector: 'jhi-dhis-user-update',
   templateUrl: './dhis-user-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class DHISUserUpdateComponent implements OnInit {
   isSaving = false;
   dHISUser: IDHISUser | null = null;
   typeTrackValues = Object.keys(TypeTrack);
 
-  protected dHISUserService = inject(DHISUserService);
-  protected dHISUserFormService = inject(DHISUserFormService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: DHISUserFormGroup = this.dHISUserFormService.createDHISUserFormGroup();
+
+  constructor(
+    protected dHISUserService: DHISUserService,
+    protected dHISUserFormService: DHISUserFormService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ dHISUser }) => {

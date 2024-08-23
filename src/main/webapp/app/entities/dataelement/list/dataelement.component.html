@@ -1,11 +1,11 @@
 <div>
   <h2 id="page-heading" data-cy="DataelementHeading">
-    <span jhiTranslate="dhis2AuditApp.dataelement.home.title">Dataelements</span>
+    <span jhiTranslate="dhis2TrackApp.dataelement.home.title">Dataelements</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span jhiTranslate="dhis2AuditApp.dataelement.home.refreshListLabel">Actualiser la liste</span>
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="dhis2TrackApp.dataelement.home.refreshListLabel">Actualiser la liste</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/dataelement/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2AuditApp.dataelement.home.createLabel">Créer un nouveau Dataelement</span>
+        <span jhiTranslate="dhis2TrackApp.dataelement.home.createLabel"> Créer un nouveau Dataelement </span>
       </button>
     </div>
   </h2>
@@ -24,285 +24,257 @@
 
   <jhi-alert></jhi-alert>
 
-  @if (dataelements?.length === 0) {
-    <div class="alert alert-warning" id="no-result">
-      <span jhiTranslate="dhis2AuditApp.dataelement.home.notFound">Aucun Dataelement trouvé</span>
+  <div class="alert alert-warning" id="no-result" *ngIf="dataelements?.length === 0">
+    <span jhiTranslate="dhis2TrackApp.dataelement.home.notFound">Aucun Dataelement trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="dataelements && dataelements.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.id">Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="name">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.name">Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="shortName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.shortName">Short Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="formName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.formName">Form Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="description">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.description">Description</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayShortName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.displayShortName">Display Short Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.displayName">Display Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayFormName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.displayFormName">Display Form Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="created">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.created">Created</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastUpdated">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.lastUpdated">Last Updated</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="publicAccess">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.publicAccess">Public Access</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dimensionItemType">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.dimensionItemType">Dimension Item Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="aggregationType">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.aggregationType">Aggregation Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="valueType">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.valueType">Value Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="domainType">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.domainType">Domain Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="zeroIsSignificant">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.zeroIsSignificant">Zero Is Significant</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="optionSetValue">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.optionSetValue">Option Set Value</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dimensionItem">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.dimensionItem">Dimension Item</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="track">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.track">Track</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="project.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.project">Project</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="createdBy.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.createdBy">Created By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastUpdatedBy.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.lastUpdatedBy">Last Updated By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="categoryCombo.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.categoryCombo">Category Combo</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="optionSet.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.dataelement.optionSet">Option Set</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dataelement of dataelements; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/dataelement', dataelement.id, 'view']">{{ dataelement.id }}</a>
+          </td>
+          <td>{{ dataelement.name }}</td>
+          <td>{{ dataelement.shortName }}</td>
+          <td>{{ dataelement.formName }}</td>
+          <td>{{ dataelement.description }}</td>
+          <td>{{ dataelement.displayShortName }}</td>
+          <td>{{ dataelement.displayName }}</td>
+          <td>{{ dataelement.displayFormName }}</td>
+          <td>{{ dataelement.created | formatMediumDatetime }}</td>
+          <td>{{ dataelement.lastUpdated | formatMediumDatetime }}</td>
+          <td>{{ dataelement.publicAccess }}</td>
+          <td>{{ dataelement.dimensionItemType }}</td>
+          <td>{{ dataelement.aggregationType }}</td>
+          <td>{{ dataelement.valueType }}</td>
+          <td>{{ dataelement.domainType }}</td>
+          <td>{{ dataelement.zeroIsSignificant }}</td>
+          <td>{{ dataelement.optionSetValue }}</td>
+          <td>{{ dataelement.dimensionItem }}</td>
+          <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + dataelement.track }}">{{ dataelement.track }}</td>
+          <td>
+            <div *ngIf="dataelement.project">
+              <a [routerLink]="['/project', dataelement.project.id, 'view']">{{ dataelement.project.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="dataelement.createdBy">
+              <a [routerLink]="['/dhis-user', dataelement.createdBy.id, 'view']">{{ dataelement.createdBy.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="dataelement.lastUpdatedBy">
+              <a [routerLink]="['/dhis-user', dataelement.lastUpdatedBy.id, 'view']">{{ dataelement.lastUpdatedBy.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="dataelement.categoryCombo">
+              <a [routerLink]="['/categorycombo', dataelement.categoryCombo.id, 'view']">{{ dataelement.categoryCombo.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="dataelement.optionSet">
+              <a [routerLink]="['/optionset', dataelement.optionSet.id, 'view']">{{ dataelement.optionSet.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/dataelement', dataelement.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/dataelement', dataelement.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+              </button>
+
+              <button type="submit" (click)="delete(dataelement)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="dataelements && dataelements.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
     </div>
-  }
 
-  @if (dataelements && dataelements.length > 0) {
-    <div class="table-responsive table-entities" id="entities">
-      <table class="table table-striped" aria-describedby="page-heading">
-        <thead>
-          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.id">Id</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="name">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.name">Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="shortName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.shortName">Short Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="formName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.formName">Form Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="description">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.description">Description</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayShortName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.displayShortName">Display Short Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.displayName">Display Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayFormName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.displayFormName">Display Form Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="created">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.created">Created</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="lastUpdated">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.lastUpdated">Last Updated</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="publicAccess">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.publicAccess">Public Access</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dimensionItemType">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.dimensionItemType">Dimension Item Type</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="aggregationType">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.aggregationType">Aggregation Type</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="valueType">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.valueType">Value Type</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="domainType">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.domainType">Domain Type</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="zeroIsSignificant">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.zeroIsSignificant">Zero Is Significant</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="optionSetValue">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.optionSetValue">Option Set Value</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dimensionItem">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.dimensionItem">Dimension Item</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="track">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.track">Track</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="project.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.project">Project</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="createdBy.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.createdBy">Created By</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="lastUpdatedBy.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.lastUpdatedBy">Last Updated By</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="categoryCombo.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.categoryCombo">Category Combo</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="optionSet.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.dataelement.optionSet">Option Set</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (dataelement of dataelements; track trackId) {
-            <tr data-cy="entityTable">
-              <td>
-                <a [routerLink]="['/dataelement', dataelement.id, 'view']">{{ dataelement.id }}</a>
-              </td>
-              <td>{{ dataelement.name }}</td>
-              <td>{{ dataelement.shortName }}</td>
-              <td>{{ dataelement.formName }}</td>
-              <td>{{ dataelement.description }}</td>
-              <td>{{ dataelement.displayShortName }}</td>
-              <td>{{ dataelement.displayName }}</td>
-              <td>{{ dataelement.displayFormName }}</td>
-              <td>{{ dataelement.created | formatMediumDatetime }}</td>
-              <td>{{ dataelement.lastUpdated | formatMediumDatetime }}</td>
-              <td>{{ dataelement.publicAccess }}</td>
-              <td>{{ dataelement.dimensionItemType }}</td>
-              <td>{{ dataelement.aggregationType }}</td>
-              <td>{{ dataelement.valueType }}</td>
-              <td>{{ dataelement.domainType }}</td>
-              <td>{{ dataelement.zeroIsSignificant }}</td>
-              <td>{{ dataelement.optionSetValue }}</td>
-              <td>{{ dataelement.dimensionItem }}</td>
-              <td [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (dataelement.track ?? 'null')">
-                {{ { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[dataelement.track ?? 'null'] }}
-              </td>
-              <td>
-                @if (dataelement.project) {
-                  <div>
-                    <a [routerLink]="['/project', dataelement.project.id, 'view']">{{ dataelement.project.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (dataelement.createdBy) {
-                  <div>
-                    <a [routerLink]="['/dhis-user', dataelement.createdBy.id, 'view']">{{ dataelement.createdBy.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (dataelement.lastUpdatedBy) {
-                  <div>
-                    <a [routerLink]="['/dhis-user', dataelement.lastUpdatedBy.id, 'view']">{{ dataelement.lastUpdatedBy.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (dataelement.categoryCombo) {
-                  <div>
-                    <a [routerLink]="['/categorycombo', dataelement.categoryCombo.id, 'view']">{{ dataelement.categoryCombo.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (dataelement.optionSet) {
-                  <div>
-                    <a [routerLink]="['/optionset', dataelement.optionSet.id, 'view']">{{ dataelement.optionSet.id }}</a>
-                  </div>
-                }
-              </td>
-              <td class="text-end">
-                <div class="btn-group">
-                  <a [routerLink]="['/dataelement', dataelement.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-                  </a>
-
-                  <a [routerLink]="['/dataelement', dataelement.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(dataelement)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
     </div>
-  }
-  @if (dataelements && dataelements.length > 0) {
-    <div>
-      <div class="d-flex justify-content-center">
-        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-      </div>
-
-      <div class="d-flex justify-content-center">
-        <ngb-pagination
-          [collectionSize]="totalItems"
-          [page]="page"
-          [pageSize]="itemsPerPage"
-          [maxSize]="5"
-          [rotate]="true"
-          [boundaryLinks]="true"
-          (pageChange)="navigateToPage($event)"
-        ></ngb-pagination>
-      </div>
-    </div>
-  }
+  </div>
 </div>

@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { ICategorycombo } from '../categorycombo.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../categorycombo.test-samples';
@@ -18,7 +17,7 @@ describe('Categorycombo Service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      imports: [HttpClientTestingModule],
     });
     expectedResult = null;
     service = TestBed.inject(CategorycomboService);
@@ -38,6 +37,7 @@ describe('Categorycombo Service', () => {
     });
 
     it('should create a Categorycombo', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const categorycombo = { ...sampleWithNewData };
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };

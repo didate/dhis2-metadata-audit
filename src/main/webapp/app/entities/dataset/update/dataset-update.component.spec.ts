@@ -1,9 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
+import { DatasetFormService } from './dataset-form.service';
+import { DatasetService } from '../service/dataset.service';
+import { IDataset } from '../dataset.model';
 import { IProject } from 'app/entities/project/project.model';
 import { ProjectService } from 'app/entities/project/service/project.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
@@ -16,9 +21,6 @@ import { IIndicator } from 'app/entities/indicator/indicator.model';
 import { IndicatorService } from 'app/entities/indicator/service/indicator.service';
 import { IOrganisationUnit } from 'app/entities/organisation-unit/organisation-unit.model';
 import { OrganisationUnitService } from 'app/entities/organisation-unit/service/organisation-unit.service';
-import { IDataset } from '../dataset.model';
-import { DatasetService } from '../service/dataset.service';
-import { DatasetFormService } from './dataset-form.service';
 
 import { DatasetUpdateComponent } from './dataset-update.component';
 
@@ -37,9 +39,9 @@ describe('Dataset Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DatasetUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [DatasetUpdateComponent],
       providers: [
-        provideHttpClient(),
         FormBuilder,
         {
           provide: ActivatedRoute,
@@ -69,10 +71,10 @@ describe('Dataset Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Project query and add missing value', () => {
       const dataset: IDataset = { id: 'CBA' };
-      const project: IProject = { id: 18245 };
+      const project: IProject = { id: 30664 };
       dataset.project = project;
 
-      const projectCollection: IProject[] = [{ id: 31864 }];
+      const projectCollection: IProject[] = [{ id: 67728 }];
       jest.spyOn(projectService, 'query').mockReturnValue(of(new HttpResponse({ body: projectCollection })));
       const additionalProjects = [project];
       const expectedCollection: IProject[] = [...additionalProjects, ...projectCollection];
@@ -84,19 +86,19 @@ describe('Dataset Management Update Component', () => {
       expect(projectService.query).toHaveBeenCalled();
       expect(projectService.addProjectToCollectionIfMissing).toHaveBeenCalledWith(
         projectCollection,
-        ...additionalProjects.map(expect.objectContaining),
+        ...additionalProjects.map(expect.objectContaining)
       );
       expect(comp.projectsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call DHISUser query and add missing value', () => {
       const dataset: IDataset = { id: 'CBA' };
-      const createdBy: IDHISUser = { id: 'f12e638a-48e9-4568-9055-4460cf99b72d' };
+      const createdBy: IDHISUser = { id: '73d95213-3d49-43b9-95a1-567b17941712' };
       dataset.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '98a62221-ef27-488f-ba25-209cf5235da1' };
+      const lastUpdatedBy: IDHISUser = { id: '64a67c6d-9562-4066-b734-309f2c013fc3' };
       dataset.lastUpdatedBy = lastUpdatedBy;
 
-      const dHISUserCollection: IDHISUser[] = [{ id: 'ffcce77a-4e6e-4f47-be18-1715cd5495c5' }];
+      const dHISUserCollection: IDHISUser[] = [{ id: '717e1459-5f94-4fa4-bf45-b4b59dafec1a' }];
       jest.spyOn(dHISUserService, 'query').mockReturnValue(of(new HttpResponse({ body: dHISUserCollection })));
       const additionalDHISUsers = [createdBy, lastUpdatedBy];
       const expectedCollection: IDHISUser[] = [...additionalDHISUsers, ...dHISUserCollection];
@@ -108,17 +110,17 @@ describe('Dataset Management Update Component', () => {
       expect(dHISUserService.query).toHaveBeenCalled();
       expect(dHISUserService.addDHISUserToCollectionIfMissing).toHaveBeenCalledWith(
         dHISUserCollection,
-        ...additionalDHISUsers.map(expect.objectContaining),
+        ...additionalDHISUsers.map(expect.objectContaining)
       );
       expect(comp.dHISUsersSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call Categorycombo query and add missing value', () => {
       const dataset: IDataset = { id: 'CBA' };
-      const categoryCombo: ICategorycombo = { id: '8e8a984e-22cd-469f-8961-b4187ee868d1' };
+      const categoryCombo: ICategorycombo = { id: '39c76803-2ec2-4772-a2eb-7885cdec1df0' };
       dataset.categoryCombo = categoryCombo;
 
-      const categorycomboCollection: ICategorycombo[] = [{ id: '77135af1-bc22-4855-aa41-4d1732b6dbc7' }];
+      const categorycomboCollection: ICategorycombo[] = [{ id: 'f47e5641-4c4a-4471-b878-412d660183b9' }];
       jest.spyOn(categorycomboService, 'query').mockReturnValue(of(new HttpResponse({ body: categorycomboCollection })));
       const additionalCategorycombos = [categoryCombo];
       const expectedCollection: ICategorycombo[] = [...additionalCategorycombos, ...categorycomboCollection];
@@ -130,17 +132,17 @@ describe('Dataset Management Update Component', () => {
       expect(categorycomboService.query).toHaveBeenCalled();
       expect(categorycomboService.addCategorycomboToCollectionIfMissing).toHaveBeenCalledWith(
         categorycomboCollection,
-        ...additionalCategorycombos.map(expect.objectContaining),
+        ...additionalCategorycombos.map(expect.objectContaining)
       );
       expect(comp.categorycombosSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call Dataelement query and add missing value', () => {
       const dataset: IDataset = { id: 'CBA' };
-      const dataSetElements: IDataelement[] = [{ id: '3213dc67-4cdd-4635-88a2-a3a365aa753c' }];
+      const dataSetElements: IDataelement[] = [{ id: 'd7a97b6e-6760-4628-993c-53fdffd7fcf1' }];
       dataset.dataSetElements = dataSetElements;
 
-      const dataelementCollection: IDataelement[] = [{ id: '2392c4ea-7406-4b08-aed0-ce45ffb782cd' }];
+      const dataelementCollection: IDataelement[] = [{ id: '246763d2-a568-4659-b960-286e68a838c1' }];
       jest.spyOn(dataelementService, 'query').mockReturnValue(of(new HttpResponse({ body: dataelementCollection })));
       const additionalDataelements = [...dataSetElements];
       const expectedCollection: IDataelement[] = [...additionalDataelements, ...dataelementCollection];
@@ -152,17 +154,17 @@ describe('Dataset Management Update Component', () => {
       expect(dataelementService.query).toHaveBeenCalled();
       expect(dataelementService.addDataelementToCollectionIfMissing).toHaveBeenCalledWith(
         dataelementCollection,
-        ...additionalDataelements.map(expect.objectContaining),
+        ...additionalDataelements.map(expect.objectContaining)
       );
       expect(comp.dataelementsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call Indicator query and add missing value', () => {
       const dataset: IDataset = { id: 'CBA' };
-      const indicators: IIndicator[] = [{ id: '387de805-1213-4cb9-a5ec-c1ea499131cc' }];
+      const indicators: IIndicator[] = [{ id: '7e3f08e7-3cb5-4bc8-978d-faeba0c8da1b' }];
       dataset.indicators = indicators;
 
-      const indicatorCollection: IIndicator[] = [{ id: '2b3c7707-2de7-4a06-ad70-f895d16b239e' }];
+      const indicatorCollection: IIndicator[] = [{ id: 'd60d1787-49c9-4a4a-9867-d55700b4d265' }];
       jest.spyOn(indicatorService, 'query').mockReturnValue(of(new HttpResponse({ body: indicatorCollection })));
       const additionalIndicators = [...indicators];
       const expectedCollection: IIndicator[] = [...additionalIndicators, ...indicatorCollection];
@@ -174,17 +176,17 @@ describe('Dataset Management Update Component', () => {
       expect(indicatorService.query).toHaveBeenCalled();
       expect(indicatorService.addIndicatorToCollectionIfMissing).toHaveBeenCalledWith(
         indicatorCollection,
-        ...additionalIndicators.map(expect.objectContaining),
+        ...additionalIndicators.map(expect.objectContaining)
       );
       expect(comp.indicatorsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call OrganisationUnit query and add missing value', () => {
       const dataset: IDataset = { id: 'CBA' };
-      const organisationUnits: IOrganisationUnit[] = [{ id: '3efdaf39-150c-44ba-b749-05ed89cfd086' }];
+      const organisationUnits: IOrganisationUnit[] = [{ id: 'fc419e68-d4a1-4091-af5b-d9d1fe816caf' }];
       dataset.organisationUnits = organisationUnits;
 
-      const organisationUnitCollection: IOrganisationUnit[] = [{ id: '850ce730-fc1e-4167-ac64-298adfd56504' }];
+      const organisationUnitCollection: IOrganisationUnit[] = [{ id: '5db784d9-a061-474c-8b02-0b62403256f3' }];
       jest.spyOn(organisationUnitService, 'query').mockReturnValue(of(new HttpResponse({ body: organisationUnitCollection })));
       const additionalOrganisationUnits = [...organisationUnits];
       const expectedCollection: IOrganisationUnit[] = [...additionalOrganisationUnits, ...organisationUnitCollection];
@@ -196,26 +198,26 @@ describe('Dataset Management Update Component', () => {
       expect(organisationUnitService.query).toHaveBeenCalled();
       expect(organisationUnitService.addOrganisationUnitToCollectionIfMissing).toHaveBeenCalledWith(
         organisationUnitCollection,
-        ...additionalOrganisationUnits.map(expect.objectContaining),
+        ...additionalOrganisationUnits.map(expect.objectContaining)
       );
       expect(comp.organisationUnitsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
       const dataset: IDataset = { id: 'CBA' };
-      const project: IProject = { id: 7481 };
+      const project: IProject = { id: 18531 };
       dataset.project = project;
-      const createdBy: IDHISUser = { id: '32427d94-1528-4917-9a99-2a367631a424' };
+      const createdBy: IDHISUser = { id: '0b4807b9-c688-4a96-8d84-dd5bf8243dc8' };
       dataset.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: 'eb5e1061-1da4-4642-806e-33b68704d2cd' };
+      const lastUpdatedBy: IDHISUser = { id: 'ceb4a50a-6b2d-4844-9988-b468ce89c554' };
       dataset.lastUpdatedBy = lastUpdatedBy;
-      const categoryCombo: ICategorycombo = { id: '2fc0ff7f-58ed-4cc8-8b42-9ac8995c0071' };
+      const categoryCombo: ICategorycombo = { id: '95f43e2c-d330-47f3-993a-70b30a55ea57' };
       dataset.categoryCombo = categoryCombo;
-      const dataSetElements: IDataelement = { id: '5ab1b9f5-a128-47db-a901-b581b65e79b5' };
+      const dataSetElements: IDataelement = { id: '0d34d1eb-5568-478e-a9cd-f7428404d4e7' };
       dataset.dataSetElements = [dataSetElements];
-      const indicators: IIndicator = { id: '6e685e7e-8a11-46bd-8b33-6ba58a7953e0' };
+      const indicators: IIndicator = { id: '63543dd0-2f3d-4320-a38f-cbd659ccd6ad' };
       dataset.indicators = [indicators];
-      const organisationUnits: IOrganisationUnit = { id: '4f290506-d254-43a2-a524-a0643bd2121e' };
+      const organisationUnits: IOrganisationUnit = { id: 'df88237f-6f57-4488-975f-338ffcbe275a' };
       dataset.organisationUnits = [organisationUnits];
 
       activatedRoute.data = of({ dataset });

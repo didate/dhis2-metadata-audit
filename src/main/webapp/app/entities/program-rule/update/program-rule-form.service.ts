@@ -56,11 +56,11 @@ export class ProgramRuleFormService {
     });
     return new FormGroup<ProgramRuleFormGroupContent>({
       id: new FormControl(
-        { value: programRuleRawValue.id, disabled: true },
+        { value: programRuleRawValue.id, disabled: programRuleRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       lastUpdated: new FormControl(programRuleRawValue.lastUpdated),
       created: new FormControl(programRuleRawValue.created),
@@ -93,8 +93,8 @@ export class ProgramRuleFormService {
     form.reset(
       {
         ...programRuleRawValue,
-        id: { value: programRuleRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: programRuleRawValue.id, disabled: programRuleRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 
@@ -109,7 +109,7 @@ export class ProgramRuleFormService {
   }
 
   private convertProgramRuleRawValueToProgramRule(
-    rawProgramRule: ProgramRuleFormRawValue | NewProgramRuleFormRawValue,
+    rawProgramRule: ProgramRuleFormRawValue | NewProgramRuleFormRawValue
   ): IProgramRule | NewProgramRule {
     return {
       ...rawProgramRule,
@@ -119,7 +119,7 @@ export class ProgramRuleFormService {
   }
 
   private convertProgramRuleToProgramRuleRawValue(
-    programRule: IProgramRule | (Partial<NewProgramRule> & ProgramRuleFormDefaults),
+    programRule: IProgramRule | (Partial<NewProgramRule> & ProgramRuleFormDefaults)
   ): ProgramRuleFormRawValue | PartialWithRequiredKeyOf<NewProgramRuleFormRawValue> {
     return {
       ...programRule,

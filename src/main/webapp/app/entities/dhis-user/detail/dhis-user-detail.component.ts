@@ -1,18 +1,22 @@
-import { Component, input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import SharedModule from 'app/shared/shared.module';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { IDHISUser } from '../dhis-user.model';
 
 @Component({
-  standalone: true,
   selector: 'jhi-dhis-user-detail',
   templateUrl: './dhis-user-detail.component.html',
-  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
-export class DHISUserDetailComponent {
-  dHISUser = input<IDHISUser | null>(null);
+export class DHISUserDetailComponent implements OnInit {
+  dHISUser: IDHISUser | null = null;
+
+  constructor(protected activatedRoute: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ dHISUser }) => {
+      this.dHISUser = dHISUser;
+    });
+  }
 
   previousState(): void {
     window.history.back();

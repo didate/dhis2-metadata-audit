@@ -1,12 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { DataelementFormService, DataelementFormGroup } from './dataelement-form.service';
+import { IDataelement } from '../dataelement.model';
+import { DataelementService } from '../service/dataelement.service';
 import { IProject } from 'app/entities/project/project.model';
 import { ProjectService } from 'app/entities/project/service/project.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
@@ -15,20 +15,11 @@ import { ICategorycombo } from 'app/entities/categorycombo/categorycombo.model';
 import { CategorycomboService } from 'app/entities/categorycombo/service/categorycombo.service';
 import { IOptionset } from 'app/entities/optionset/optionset.model';
 import { OptionsetService } from 'app/entities/optionset/service/optionset.service';
-import { IDataset } from 'app/entities/dataset/dataset.model';
-import { DatasetService } from 'app/entities/dataset/service/dataset.service';
-import { IProgramStage } from 'app/entities/program-stage/program-stage.model';
-import { ProgramStageService } from 'app/entities/program-stage/service/program-stage.service';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
-import { DataelementService } from '../service/dataelement.service';
-import { IDataelement } from '../dataelement.model';
-import { DataelementFormService, DataelementFormGroup } from './dataelement-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-dataelement-update',
   templateUrl: './dataelement-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class DataelementUpdateComponent implements OnInit {
   isSaving = false;
@@ -39,21 +30,18 @@ export class DataelementUpdateComponent implements OnInit {
   dHISUsersSharedCollection: IDHISUser[] = [];
   categorycombosSharedCollection: ICategorycombo[] = [];
   optionsetsSharedCollection: IOptionset[] = [];
-  datasetsSharedCollection: IDataset[] = [];
-  programStagesSharedCollection: IProgramStage[] = [];
 
-  protected dataelementService = inject(DataelementService);
-  protected dataelementFormService = inject(DataelementFormService);
-  protected projectService = inject(ProjectService);
-  protected dHISUserService = inject(DHISUserService);
-  protected categorycomboService = inject(CategorycomboService);
-  protected optionsetService = inject(OptionsetService);
-  protected datasetService = inject(DatasetService);
-  protected programStageService = inject(ProgramStageService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: DataelementFormGroup = this.dataelementFormService.createDataelementFormGroup();
+
+  constructor(
+    protected dataelementService: DataelementService,
+    protected dataelementFormService: DataelementFormService,
+    protected projectService: ProjectService,
+    protected dHISUserService: DHISUserService,
+    protected categorycomboService: CategorycomboService,
+    protected optionsetService: OptionsetService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   compareProject = (o1: IProject | null, o2: IProject | null): boolean => this.projectService.compareProject(o1, o2);
 
@@ -63,11 +51,6 @@ export class DataelementUpdateComponent implements OnInit {
     this.categorycomboService.compareCategorycombo(o1, o2);
 
   compareOptionset = (o1: IOptionset | null, o2: IOptionset | null): boolean => this.optionsetService.compareOptionset(o1, o2);
-
-  compareDataset = (o1: IDataset | null, o2: IDataset | null): boolean => this.datasetService.compareDataset(o1, o2);
-
-  compareProgramStage = (o1: IProgramStage | null, o2: IProgramStage | null): boolean =>
-    this.programStageService.compareProgramStage(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ dataelement }) => {
@@ -119,28 +102,20 @@ export class DataelementUpdateComponent implements OnInit {
 
     this.projectsSharedCollection = this.projectService.addProjectToCollectionIfMissing<IProject>(
       this.projectsSharedCollection,
-      dataelement.project,
+      dataelement.project
     );
     this.dHISUsersSharedCollection = this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
       this.dHISUsersSharedCollection,
       dataelement.createdBy,
-      dataelement.lastUpdatedBy,
+      dataelement.lastUpdatedBy
     );
     this.categorycombosSharedCollection = this.categorycomboService.addCategorycomboToCollectionIfMissing<ICategorycombo>(
       this.categorycombosSharedCollection,
-      dataelement.categoryCombo,
+      dataelement.categoryCombo
     );
     this.optionsetsSharedCollection = this.optionsetService.addOptionsetToCollectionIfMissing<IOptionset>(
       this.optionsetsSharedCollection,
-      dataelement.optionSet,
-    );
-    this.datasetsSharedCollection = this.datasetService.addDatasetToCollectionIfMissing<IDataset>(
-      this.datasetsSharedCollection,
-      ...(dataelement.datasets ?? []),
-    );
-    this.programStagesSharedCollection = this.programStageService.addProgramStageToCollectionIfMissing<IProgramStage>(
-      this.programStagesSharedCollection,
-      ...(dataelement.programStages ?? []),
+      dataelement.optionSet
     );
   }
 
@@ -149,7 +124,7 @@ export class DataelementUpdateComponent implements OnInit {
       .query()
       .pipe(map((res: HttpResponse<IProject[]>) => res.body ?? []))
       .pipe(
-        map((projects: IProject[]) => this.projectService.addProjectToCollectionIfMissing<IProject>(projects, this.dataelement?.project)),
+        map((projects: IProject[]) => this.projectService.addProjectToCollectionIfMissing<IProject>(projects, this.dataelement?.project))
       )
       .subscribe((projects: IProject[]) => (this.projectsSharedCollection = projects));
 
@@ -161,9 +136,9 @@ export class DataelementUpdateComponent implements OnInit {
           this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
             dHISUsers,
             this.dataelement?.createdBy,
-            this.dataelement?.lastUpdatedBy,
-          ),
-        ),
+            this.dataelement?.lastUpdatedBy
+          )
+        )
       )
       .subscribe((dHISUsers: IDHISUser[]) => (this.dHISUsersSharedCollection = dHISUsers));
 
@@ -172,8 +147,8 @@ export class DataelementUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ICategorycombo[]>) => res.body ?? []))
       .pipe(
         map((categorycombos: ICategorycombo[]) =>
-          this.categorycomboService.addCategorycomboToCollectionIfMissing<ICategorycombo>(categorycombos, this.dataelement?.categoryCombo),
-        ),
+          this.categorycomboService.addCategorycomboToCollectionIfMissing<ICategorycombo>(categorycombos, this.dataelement?.categoryCombo)
+        )
       )
       .subscribe((categorycombos: ICategorycombo[]) => (this.categorycombosSharedCollection = categorycombos));
 
@@ -182,32 +157,9 @@ export class DataelementUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IOptionset[]>) => res.body ?? []))
       .pipe(
         map((optionsets: IOptionset[]) =>
-          this.optionsetService.addOptionsetToCollectionIfMissing<IOptionset>(optionsets, this.dataelement?.optionSet),
-        ),
+          this.optionsetService.addOptionsetToCollectionIfMissing<IOptionset>(optionsets, this.dataelement?.optionSet)
+        )
       )
       .subscribe((optionsets: IOptionset[]) => (this.optionsetsSharedCollection = optionsets));
-
-    this.datasetService
-      .query()
-      .pipe(map((res: HttpResponse<IDataset[]>) => res.body ?? []))
-      .pipe(
-        map((datasets: IDataset[]) =>
-          this.datasetService.addDatasetToCollectionIfMissing<IDataset>(datasets, ...(this.dataelement?.datasets ?? [])),
-        ),
-      )
-      .subscribe((datasets: IDataset[]) => (this.datasetsSharedCollection = datasets));
-
-    this.programStageService
-      .query()
-      .pipe(map((res: HttpResponse<IProgramStage[]>) => res.body ?? []))
-      .pipe(
-        map((programStages: IProgramStage[]) =>
-          this.programStageService.addProgramStageToCollectionIfMissing<IProgramStage>(
-            programStages,
-            ...(this.dataelement?.programStages ?? []),
-          ),
-        ),
-      )
-      .subscribe((programStages: IProgramStage[]) => (this.programStagesSharedCollection = programStages));
   }
 }

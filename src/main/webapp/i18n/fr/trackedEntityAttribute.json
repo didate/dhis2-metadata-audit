@@ -1,5 +1,5 @@
 {
-  "dhis2AuditApp": {
+  "dhis2TrackApp": {
     "trackedEntityAttribute": {
       "home": {
         "title": "TrackedEntityAttributes",
@@ -46,7 +46,7 @@
       "createdBy": "Created By",
       "lastUpdatedBy": "Last Updated By",
       "optionSet": "Option Set",
-      "program": "Program"
+      "programs": "Programs"
     }
   }
 }

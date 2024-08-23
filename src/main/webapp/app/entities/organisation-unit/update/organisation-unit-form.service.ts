@@ -29,7 +29,7 @@ type OrganisationUnitFormRawValue = FormValueOf<IOrganisationUnit>;
 
 type NewOrganisationUnitFormRawValue = FormValueOf<NewOrganisationUnit>;
 
-type OrganisationUnitFormDefaults = Pick<NewOrganisationUnit, 'id' | 'created' | 'lastUpdated' | 'openingDate' | 'programs' | 'datasets'>;
+type OrganisationUnitFormDefaults = Pick<NewOrganisationUnit, 'id' | 'created' | 'lastUpdated' | 'openingDate' | 'programs' | 'dataSets'>;
 
 type OrganisationUnitFormGroupContent = {
   id: FormControl<OrganisationUnitFormRawValue['id'] | NewOrganisationUnit['id']>;
@@ -43,7 +43,7 @@ type OrganisationUnitFormGroupContent = {
   createdBy: FormControl<OrganisationUnitFormRawValue['createdBy']>;
   lastUpdatedBy: FormControl<OrganisationUnitFormRawValue['lastUpdatedBy']>;
   programs: FormControl<OrganisationUnitFormRawValue['programs']>;
-  datasets: FormControl<OrganisationUnitFormRawValue['datasets']>;
+  dataSets: FormControl<OrganisationUnitFormRawValue['dataSets']>;
 };
 
 export type OrganisationUnitFormGroup = FormGroup<OrganisationUnitFormGroupContent>;
@@ -57,11 +57,11 @@ export class OrganisationUnitFormService {
     });
     return new FormGroup<OrganisationUnitFormGroupContent>({
       id: new FormControl(
-        { value: organisationUnitRawValue.id, disabled: true },
+        { value: organisationUnitRawValue.id, disabled: organisationUnitRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       name: new FormControl(organisationUnitRawValue.name, {
         validators: [Validators.required],
@@ -87,13 +87,13 @@ export class OrganisationUnitFormService {
         validators: [Validators.required],
       }),
       programs: new FormControl(organisationUnitRawValue.programs ?? []),
-      datasets: new FormControl(organisationUnitRawValue.datasets ?? []),
+      dataSets: new FormControl(organisationUnitRawValue.dataSets ?? []),
     });
   }
 
   getOrganisationUnit(form: OrganisationUnitFormGroup): IOrganisationUnit | NewOrganisationUnit {
     return this.convertOrganisationUnitRawValueToOrganisationUnit(
-      form.getRawValue() as OrganisationUnitFormRawValue | NewOrganisationUnitFormRawValue,
+      form.getRawValue() as OrganisationUnitFormRawValue | NewOrganisationUnitFormRawValue
     );
   }
 
@@ -105,8 +105,8 @@ export class OrganisationUnitFormService {
     form.reset(
       {
         ...organisationUnitRawValue,
-        id: { value: organisationUnitRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: organisationUnitRawValue.id, disabled: organisationUnitRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 
@@ -119,12 +119,12 @@ export class OrganisationUnitFormService {
       lastUpdated: currentTime,
       openingDate: currentTime,
       programs: [],
-      datasets: [],
+      dataSets: [],
     };
   }
 
   private convertOrganisationUnitRawValueToOrganisationUnit(
-    rawOrganisationUnit: OrganisationUnitFormRawValue | NewOrganisationUnitFormRawValue,
+    rawOrganisationUnit: OrganisationUnitFormRawValue | NewOrganisationUnitFormRawValue
   ): IOrganisationUnit | NewOrganisationUnit {
     return {
       ...rawOrganisationUnit,
@@ -135,7 +135,7 @@ export class OrganisationUnitFormService {
   }
 
   private convertOrganisationUnitToOrganisationUnitRawValue(
-    organisationUnit: IOrganisationUnit | (Partial<NewOrganisationUnit> & OrganisationUnitFormDefaults),
+    organisationUnit: IOrganisationUnit | (Partial<NewOrganisationUnit> & OrganisationUnitFormDefaults)
   ): OrganisationUnitFormRawValue | PartialWithRequiredKeyOf<NewOrganisationUnitFormRawValue> {
     return {
       ...organisationUnit,
@@ -143,7 +143,7 @@ export class OrganisationUnitFormService {
       lastUpdated: organisationUnit.lastUpdated ? organisationUnit.lastUpdated.format(DATE_TIME_FORMAT) : undefined,
       openingDate: organisationUnit.openingDate ? organisationUnit.openingDate.format(DATE_TIME_FORMAT) : undefined,
       programs: organisationUnit.programs ?? [],
-      datasets: organisationUnit.datasets ?? [],
+      dataSets: organisationUnit.dataSets ?? [],
     };
   }
 }

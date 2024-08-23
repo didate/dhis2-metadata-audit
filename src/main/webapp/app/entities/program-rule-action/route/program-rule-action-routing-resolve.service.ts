@@ -1,29 +1,30 @@
-import { inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { of, EMPTY, Observable } from 'rxjs';
+import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { IProgramRuleAction } from '../program-rule-action.model';
 import { ProgramRuleActionService } from '../service/program-rule-action.service';
 
-const programRuleActionResolve = (route: ActivatedRouteSnapshot): Observable<null | IProgramRuleAction> => {
-  const id = route.params['id'];
-  if (id) {
-    return inject(ProgramRuleActionService)
-      .find(id)
-      .pipe(
+@Injectable({ providedIn: 'root' })
+export class ProgramRuleActionRoutingResolveService implements Resolve<IProgramRuleAction | null> {
+  constructor(protected service: ProgramRuleActionService, protected router: Router) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<IProgramRuleAction | null | never> {
+    const id = route.params['id'];
+    if (id) {
+      return this.service.find(id).pipe(
         mergeMap((programRuleAction: HttpResponse<IProgramRuleAction>) => {
           if (programRuleAction.body) {
             return of(programRuleAction.body);
           } else {
-            inject(Router).navigate(['404']);
+            this.router.navigate(['404']);
             return EMPTY;
           }
-        }),
+        })
       );
+    }
+    return of(null);
   }
-  return of(null);
-};
-
-export default programRuleActionResolve;
+}

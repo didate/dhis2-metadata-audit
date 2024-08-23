@@ -1,5 +1,5 @@
 {
-  "dhis2AuditApp": {
+  "dhis2TrackApp": {
     "indicator": {
       "home": {
         "title": "Indicators",
@@ -40,7 +40,7 @@
       "createdBy": "Created By",
       "lastUpdatedBy": "Last Updated By",
       "indicatorType": "Indicator Type",
-      "dataset": "Dataset"
+      "dataSets": "Data Sets"
     }
   }
 }

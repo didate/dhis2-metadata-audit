@@ -72,7 +72,7 @@ describe('Program Form Service', () => {
             organisationUnits: expect.any(Object),
             programIndicators: expect.any(Object),
             programStages: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -134,13 +134,14 @@ describe('Program Form Service', () => {
             organisationUnits: expect.any(Object),
             programIndicators: expect.any(Object),
             programStages: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getProgram', () => {
       it('should return NewProgram for default Program initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createProgramFormGroup(sampleWithNewData);
 
         const program = service.getProgram(formGroup) as any;

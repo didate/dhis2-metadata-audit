@@ -1,30 +1,23 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { TrackedEntityAttributeFormService, TrackedEntityAttributeFormGroup } from './tracked-entity-attribute-form.service';
+import { ITrackedEntityAttribute } from '../tracked-entity-attribute.model';
+import { TrackedEntityAttributeService } from '../service/tracked-entity-attribute.service';
 import { IProject } from 'app/entities/project/project.model';
 import { ProjectService } from 'app/entities/project/service/project.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { DHISUserService } from 'app/entities/dhis-user/service/dhis-user.service';
 import { IOptionset } from 'app/entities/optionset/optionset.model';
 import { OptionsetService } from 'app/entities/optionset/service/optionset.service';
-import { IProgram } from 'app/entities/program/program.model';
-import { ProgramService } from 'app/entities/program/service/program.service';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
-import { TrackedEntityAttributeService } from '../service/tracked-entity-attribute.service';
-import { ITrackedEntityAttribute } from '../tracked-entity-attribute.model';
-import { TrackedEntityAttributeFormService, TrackedEntityAttributeFormGroup } from './tracked-entity-attribute-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-tracked-entity-attribute-update',
   templateUrl: './tracked-entity-attribute-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class TrackedEntityAttributeUpdateComponent implements OnInit {
   isSaving = false;
@@ -34,26 +27,23 @@ export class TrackedEntityAttributeUpdateComponent implements OnInit {
   projectsSharedCollection: IProject[] = [];
   dHISUsersSharedCollection: IDHISUser[] = [];
   optionsetsSharedCollection: IOptionset[] = [];
-  programsSharedCollection: IProgram[] = [];
 
-  protected trackedEntityAttributeService = inject(TrackedEntityAttributeService);
-  protected trackedEntityAttributeFormService = inject(TrackedEntityAttributeFormService);
-  protected projectService = inject(ProjectService);
-  protected dHISUserService = inject(DHISUserService);
-  protected optionsetService = inject(OptionsetService);
-  protected programService = inject(ProgramService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: TrackedEntityAttributeFormGroup = this.trackedEntityAttributeFormService.createTrackedEntityAttributeFormGroup();
+
+  constructor(
+    protected trackedEntityAttributeService: TrackedEntityAttributeService,
+    protected trackedEntityAttributeFormService: TrackedEntityAttributeFormService,
+    protected projectService: ProjectService,
+    protected dHISUserService: DHISUserService,
+    protected optionsetService: OptionsetService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   compareProject = (o1: IProject | null, o2: IProject | null): boolean => this.projectService.compareProject(o1, o2);
 
   compareDHISUser = (o1: IDHISUser | null, o2: IDHISUser | null): boolean => this.dHISUserService.compareDHISUser(o1, o2);
 
   compareOptionset = (o1: IOptionset | null, o2: IOptionset | null): boolean => this.optionsetService.compareOptionset(o1, o2);
-
-  compareProgram = (o1: IProgram | null, o2: IProgram | null): boolean => this.programService.compareProgram(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ trackedEntityAttribute }) => {
@@ -105,20 +95,16 @@ export class TrackedEntityAttributeUpdateComponent implements OnInit {
 
     this.projectsSharedCollection = this.projectService.addProjectToCollectionIfMissing<IProject>(
       this.projectsSharedCollection,
-      trackedEntityAttribute.project,
+      trackedEntityAttribute.project
     );
     this.dHISUsersSharedCollection = this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
       this.dHISUsersSharedCollection,
       trackedEntityAttribute.createdBy,
-      trackedEntityAttribute.lastUpdatedBy,
+      trackedEntityAttribute.lastUpdatedBy
     );
     this.optionsetsSharedCollection = this.optionsetService.addOptionsetToCollectionIfMissing<IOptionset>(
       this.optionsetsSharedCollection,
-      trackedEntityAttribute.optionSet,
-    );
-    this.programsSharedCollection = this.programService.addProgramToCollectionIfMissing<IProgram>(
-      this.programsSharedCollection,
-      ...(trackedEntityAttribute.programs ?? []),
+      trackedEntityAttribute.optionSet
     );
   }
 
@@ -128,8 +114,8 @@ export class TrackedEntityAttributeUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IProject[]>) => res.body ?? []))
       .pipe(
         map((projects: IProject[]) =>
-          this.projectService.addProjectToCollectionIfMissing<IProject>(projects, this.trackedEntityAttribute?.project),
-        ),
+          this.projectService.addProjectToCollectionIfMissing<IProject>(projects, this.trackedEntityAttribute?.project)
+        )
       )
       .subscribe((projects: IProject[]) => (this.projectsSharedCollection = projects));
 
@@ -141,9 +127,9 @@ export class TrackedEntityAttributeUpdateComponent implements OnInit {
           this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
             dHISUsers,
             this.trackedEntityAttribute?.createdBy,
-            this.trackedEntityAttribute?.lastUpdatedBy,
-          ),
-        ),
+            this.trackedEntityAttribute?.lastUpdatedBy
+          )
+        )
       )
       .subscribe((dHISUsers: IDHISUser[]) => (this.dHISUsersSharedCollection = dHISUsers));
 
@@ -152,19 +138,9 @@ export class TrackedEntityAttributeUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IOptionset[]>) => res.body ?? []))
       .pipe(
         map((optionsets: IOptionset[]) =>
-          this.optionsetService.addOptionsetToCollectionIfMissing<IOptionset>(optionsets, this.trackedEntityAttribute?.optionSet),
-        ),
+          this.optionsetService.addOptionsetToCollectionIfMissing<IOptionset>(optionsets, this.trackedEntityAttribute?.optionSet)
+        )
       )
       .subscribe((optionsets: IOptionset[]) => (this.optionsetsSharedCollection = optionsets));
-
-    this.programService
-      .query()
-      .pipe(map((res: HttpResponse<IProgram[]>) => res.body ?? []))
-      .pipe(
-        map((programs: IProgram[]) =>
-          this.programService.addProgramToCollectionIfMissing<IProgram>(programs, ...(this.trackedEntityAttribute?.programs ?? [])),
-        ),
-      )
-      .subscribe((programs: IProgram[]) => (this.programsSharedCollection = programs));
   }
 }

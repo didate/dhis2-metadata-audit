@@ -1,26 +1,28 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    @if (optionGroup()) {
-      <div>
-        <h2 data-cy="optionGroupDetailsHeading"><span jhiTranslate="dhis2AuditApp.optionGroup.detail.title">Option Group</span></h2>
+    <div *ngIf="optionGroup">
+      <h2 data-cy="optionGroupDetailsHeading"><span jhiTranslate="dhis2TrackApp.optionGroup.detail.title">Option Group</span></h2>
 
-        <hr />
+      <hr />
 
-        <jhi-alert-error></jhi-alert-error>
+      <jhi-alert-error></jhi-alert-error>
 
-        <jhi-alert></jhi-alert>
+      <jhi-alert></jhi-alert>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="dhis2AuditApp.optionGroup.id">Id</span></dt>
-          <dd>
-            <span>{{ optionGroup()!.id }}</span>
-          </dd>
-        </dl>
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="dhis2TrackApp.optionGroup.id">Id</span></dt>
+        <dd>
+          <span>{{ optionGroup.id }}</span>
+        </dd>
+      </dl>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-        </button>
-      </div>
-    }
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+
+      <button type="button" [routerLink]="['/option-group', optionGroup.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
   </div>
 </div>

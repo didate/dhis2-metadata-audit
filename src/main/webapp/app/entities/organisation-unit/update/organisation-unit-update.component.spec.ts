@@ -1,18 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
+import { OrganisationUnitFormService } from './organisation-unit-form.service';
+import { OrganisationUnitService } from '../service/organisation-unit.service';
+import { IOrganisationUnit } from '../organisation-unit.model';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { DHISUserService } from 'app/entities/dhis-user/service/dhis-user.service';
-import { IProgram } from 'app/entities/program/program.model';
-import { ProgramService } from 'app/entities/program/service/program.service';
-import { IDataset } from 'app/entities/dataset/dataset.model';
-import { DatasetService } from 'app/entities/dataset/service/dataset.service';
-import { IOrganisationUnit } from '../organisation-unit.model';
-import { OrganisationUnitService } from '../service/organisation-unit.service';
-import { OrganisationUnitFormService } from './organisation-unit-form.service';
 
 import { OrganisationUnitUpdateComponent } from './organisation-unit-update.component';
 
@@ -23,14 +21,12 @@ describe('OrganisationUnit Management Update Component', () => {
   let organisationUnitFormService: OrganisationUnitFormService;
   let organisationUnitService: OrganisationUnitService;
   let dHISUserService: DHISUserService;
-  let programService: ProgramService;
-  let datasetService: DatasetService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [OrganisationUnitUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [OrganisationUnitUpdateComponent],
       providers: [
-        provideHttpClient(),
         FormBuilder,
         {
           provide: ActivatedRoute,
@@ -48,8 +44,6 @@ describe('OrganisationUnit Management Update Component', () => {
     organisationUnitFormService = TestBed.inject(OrganisationUnitFormService);
     organisationUnitService = TestBed.inject(OrganisationUnitService);
     dHISUserService = TestBed.inject(DHISUserService);
-    programService = TestBed.inject(ProgramService);
-    datasetService = TestBed.inject(DatasetService);
 
     comp = fixture.componentInstance;
   });
@@ -57,12 +51,12 @@ describe('OrganisationUnit Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call DHISUser query and add missing value', () => {
       const organisationUnit: IOrganisationUnit = { id: 'CBA' };
-      const createdBy: IDHISUser = { id: '60caddfb-e284-4888-9813-c010d7798d5b' };
+      const createdBy: IDHISUser = { id: '15c9b95c-201f-4555-8ca6-c74538a0acaa' };
       organisationUnit.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '166cd1b5-1075-4880-8422-8c60d1dbb3cd' };
+      const lastUpdatedBy: IDHISUser = { id: '02825a20-dfba-48a0-8e6e-790300a1a4fd' };
       organisationUnit.lastUpdatedBy = lastUpdatedBy;
 
-      const dHISUserCollection: IDHISUser[] = [{ id: '683de805-c3a5-4a76-9b09-5ef733097c1c' }];
+      const dHISUserCollection: IDHISUser[] = [{ id: '150e83cc-9495-442e-953b-2db8aa7a64c8' }];
       jest.spyOn(dHISUserService, 'query').mockReturnValue(of(new HttpResponse({ body: dHISUserCollection })));
       const additionalDHISUsers = [createdBy, lastUpdatedBy];
       const expectedCollection: IDHISUser[] = [...additionalDHISUsers, ...dHISUserCollection];
@@ -74,73 +68,23 @@ describe('OrganisationUnit Management Update Component', () => {
       expect(dHISUserService.query).toHaveBeenCalled();
       expect(dHISUserService.addDHISUserToCollectionIfMissing).toHaveBeenCalledWith(
         dHISUserCollection,
-        ...additionalDHISUsers.map(expect.objectContaining),
+        ...additionalDHISUsers.map(expect.objectContaining)
       );
       expect(comp.dHISUsersSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Program query and add missing value', () => {
-      const organisationUnit: IOrganisationUnit = { id: 'CBA' };
-      const programs: IProgram[] = [{ id: 'e48769fe-a44e-40d8-a702-f4bf5b07c4d8' }];
-      organisationUnit.programs = programs;
-
-      const programCollection: IProgram[] = [{ id: '2f4b8b48-131d-49fd-b37e-f425d161b3c1' }];
-      jest.spyOn(programService, 'query').mockReturnValue(of(new HttpResponse({ body: programCollection })));
-      const additionalPrograms = [...programs];
-      const expectedCollection: IProgram[] = [...additionalPrograms, ...programCollection];
-      jest.spyOn(programService, 'addProgramToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ organisationUnit });
-      comp.ngOnInit();
-
-      expect(programService.query).toHaveBeenCalled();
-      expect(programService.addProgramToCollectionIfMissing).toHaveBeenCalledWith(
-        programCollection,
-        ...additionalPrograms.map(expect.objectContaining),
-      );
-      expect(comp.programsSharedCollection).toEqual(expectedCollection);
-    });
-
-    it('Should call Dataset query and add missing value', () => {
-      const organisationUnit: IOrganisationUnit = { id: 'CBA' };
-      const datasets: IDataset[] = [{ id: 'c98059f5-2e18-4875-bae5-d115203008b7' }];
-      organisationUnit.datasets = datasets;
-
-      const datasetCollection: IDataset[] = [{ id: 'e59291c9-9454-4674-a4d5-0a9c2c2a91b6' }];
-      jest.spyOn(datasetService, 'query').mockReturnValue(of(new HttpResponse({ body: datasetCollection })));
-      const additionalDatasets = [...datasets];
-      const expectedCollection: IDataset[] = [...additionalDatasets, ...datasetCollection];
-      jest.spyOn(datasetService, 'addDatasetToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ organisationUnit });
-      comp.ngOnInit();
-
-      expect(datasetService.query).toHaveBeenCalled();
-      expect(datasetService.addDatasetToCollectionIfMissing).toHaveBeenCalledWith(
-        datasetCollection,
-        ...additionalDatasets.map(expect.objectContaining),
-      );
-      expect(comp.datasetsSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const organisationUnit: IOrganisationUnit = { id: 'CBA' };
-      const createdBy: IDHISUser = { id: '7cf6b5c8-50f0-45a0-ac7b-fb22216348d3' };
+      const createdBy: IDHISUser = { id: '6f7683c1-9e64-4a46-8e36-e43c89411282' };
       organisationUnit.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '1f639dcb-bcdd-4dc7-af38-cac2ce7a327f' };
+      const lastUpdatedBy: IDHISUser = { id: '8e6e40ee-5f6f-439e-ac41-81227e7106a3' };
       organisationUnit.lastUpdatedBy = lastUpdatedBy;
-      const program: IProgram = { id: '47968a92-0c34-4b6d-bfac-e7ca5155da35' };
-      organisationUnit.programs = [program];
-      const dataset: IDataset = { id: 'be20d7dd-bf5c-4f57-8115-03be7b9675c8' };
-      organisationUnit.datasets = [dataset];
 
       activatedRoute.data = of({ organisationUnit });
       comp.ngOnInit();
 
       expect(comp.dHISUsersSharedCollection).toContain(createdBy);
       expect(comp.dHISUsersSharedCollection).toContain(lastUpdatedBy);
-      expect(comp.programsSharedCollection).toContain(program);
-      expect(comp.datasetsSharedCollection).toContain(dataset);
       expect(comp.organisationUnit).toEqual(organisationUnit);
     });
   });
@@ -221,26 +165,6 @@ describe('OrganisationUnit Management Update Component', () => {
         jest.spyOn(dHISUserService, 'compareDHISUser');
         comp.compareDHISUser(entity, entity2);
         expect(dHISUserService.compareDHISUser).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
-    describe('compareProgram', () => {
-      it('Should forward to programService', () => {
-        const entity = { id: 'ABC' };
-        const entity2 = { id: 'CBA' };
-        jest.spyOn(programService, 'compareProgram');
-        comp.compareProgram(entity, entity2);
-        expect(programService.compareProgram).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
-    describe('compareDataset', () => {
-      it('Should forward to datasetService', () => {
-        const entity = { id: 'ABC' };
-        const entity2 = { id: 'CBA' };
-        jest.spyOn(datasetService, 'compareDataset');
-        comp.compareDataset(entity, entity2);
-        expect(datasetService.compareDataset).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

@@ -1,54 +1,52 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    @if (project()) {
-      <div>
-        <h2 data-cy="projectDetailsHeading"><span jhiTranslate="dhis2AuditApp.project.detail.title">Project</span></h2>
+    <div *ngIf="project">
+      <h2 data-cy="projectDetailsHeading"><span jhiTranslate="dhis2TrackApp.project.detail.title">Project</span></h2>
 
-        <hr />
+      <hr />
 
-        <jhi-alert-error></jhi-alert-error>
+      <jhi-alert-error></jhi-alert-error>
 
-        <jhi-alert></jhi-alert>
+      <jhi-alert></jhi-alert>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="global.field.id">ID</span></dt>
-          <dd>
-            <span>{{ project()!.id }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.project.projectName">Project Name</span></dt>
-          <dd>
-            <span>{{ project()!.projectName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.project.dhis2URL">Dhis 2 URL</span></dt>
-          <dd>
-            <span>{{ project()!.dhis2URL }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.project.dhis2Version">Dhis 2 Version</span></dt>
-          <dd>
-            <span>{{ project()!.dhis2Version }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.project.token">Token</span></dt>
-          <dd>
-            <span>{{ project()!.token }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.project.emailNotification">Email Notification</span></dt>
-          <dd>
-            <span>{{ project()!.emailNotification }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.project.notificationTime">Notification Time</span></dt>
-          <dd>
-            <span>{{ project()!.notificationTime }}</span>
-          </dd>
-        </dl>
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ project.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.project.projectName">Project Name</span></dt>
+        <dd>
+          <span>{{ project.projectName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.project.dhis2URL">Dhis 2 URL</span></dt>
+        <dd>
+          <span>{{ project.dhis2URL }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.project.dhis2Version">Dhis 2 Version</span></dt>
+        <dd>
+          <span>{{ project.dhis2Version }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.project.token">Token</span></dt>
+        <dd>
+          <span>{{ project.token }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.project.emailNotification">Email Notification</span></dt>
+        <dd>
+          <span>{{ project.emailNotification }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.project.notificationTime">Notification Time</span></dt>
+        <dd>
+          <span>{{ project.notificationTime }}</span>
+        </dd>
+      </dl>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-        </button>
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
 
-        <button type="button" [routerLink]="['/project', project()!.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-        </button>
-      </div>
-    }
+      <button type="button" [routerLink]="['/project', project.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
   </div>
 </div>

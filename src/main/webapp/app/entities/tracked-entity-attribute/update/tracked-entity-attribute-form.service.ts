@@ -83,7 +83,7 @@ export type TrackedEntityAttributeFormGroup = FormGroup<TrackedEntityAttributeFo
 @Injectable({ providedIn: 'root' })
 export class TrackedEntityAttributeFormService {
   createTrackedEntityAttributeFormGroup(
-    trackedEntityAttribute: TrackedEntityAttributeFormGroupInput = { id: null },
+    trackedEntityAttribute: TrackedEntityAttributeFormGroupInput = { id: null }
   ): TrackedEntityAttributeFormGroup {
     const trackedEntityAttributeRawValue = this.convertTrackedEntityAttributeToTrackedEntityAttributeRawValue({
       ...this.getFormDefaults(),
@@ -91,11 +91,11 @@ export class TrackedEntityAttributeFormService {
     });
     return new FormGroup<TrackedEntityAttributeFormGroupContent>({
       id: new FormControl(
-        { value: trackedEntityAttributeRawValue.id, disabled: true },
+        { value: trackedEntityAttributeRawValue.id, disabled: trackedEntityAttributeRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       lastUpdated: new FormControl(trackedEntityAttributeRawValue.lastUpdated),
       created: new FormControl(trackedEntityAttributeRawValue.created),
@@ -137,7 +137,7 @@ export class TrackedEntityAttributeFormService {
 
   getTrackedEntityAttribute(form: TrackedEntityAttributeFormGroup): ITrackedEntityAttribute | NewTrackedEntityAttribute {
     return this.convertTrackedEntityAttributeRawValueToTrackedEntityAttribute(
-      form.getRawValue() as TrackedEntityAttributeFormRawValue | NewTrackedEntityAttributeFormRawValue,
+      form.getRawValue() as TrackedEntityAttributeFormRawValue | NewTrackedEntityAttributeFormRawValue
     );
   }
 
@@ -149,8 +149,8 @@ export class TrackedEntityAttributeFormService {
     form.reset(
       {
         ...trackedEntityAttributeRawValue,
-        id: { value: trackedEntityAttributeRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: trackedEntityAttributeRawValue.id, disabled: trackedEntityAttributeRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 
@@ -175,7 +175,7 @@ export class TrackedEntityAttributeFormService {
   }
 
   private convertTrackedEntityAttributeRawValueToTrackedEntityAttribute(
-    rawTrackedEntityAttribute: TrackedEntityAttributeFormRawValue | NewTrackedEntityAttributeFormRawValue,
+    rawTrackedEntityAttribute: TrackedEntityAttributeFormRawValue | NewTrackedEntityAttributeFormRawValue
   ): ITrackedEntityAttribute | NewTrackedEntityAttribute {
     return {
       ...rawTrackedEntityAttribute,
@@ -185,7 +185,7 @@ export class TrackedEntityAttributeFormService {
   }
 
   private convertTrackedEntityAttributeToTrackedEntityAttributeRawValue(
-    trackedEntityAttribute: ITrackedEntityAttribute | (Partial<NewTrackedEntityAttribute> & TrackedEntityAttributeFormDefaults),
+    trackedEntityAttribute: ITrackedEntityAttribute | (Partial<NewTrackedEntityAttribute> & TrackedEntityAttributeFormDefaults)
   ): TrackedEntityAttributeFormRawValue | PartialWithRequiredKeyOf<NewTrackedEntityAttributeFormRawValue> {
     return {
       ...trackedEntityAttribute,

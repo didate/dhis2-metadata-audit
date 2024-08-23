@@ -1,162 +1,130 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    @if (dataelement()) {
-      <div>
-        <h2 data-cy="dataelementDetailsHeading"><span jhiTranslate="dhis2AuditApp.dataelement.detail.title">Dataelement</span></h2>
+    <div *ngIf="dataelement">
+      <h2 data-cy="dataelementDetailsHeading"><span jhiTranslate="dhis2TrackApp.dataelement.detail.title">Dataelement</span></h2>
 
-        <hr />
+      <hr />
 
-        <jhi-alert-error></jhi-alert-error>
+      <jhi-alert-error></jhi-alert-error>
 
-        <jhi-alert></jhi-alert>
+      <jhi-alert></jhi-alert>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.id">Id</span></dt>
-          <dd>
-            <span>{{ dataelement()!.id }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.name">Name</span></dt>
-          <dd>
-            <span>{{ dataelement()!.name }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.shortName">Short Name</span></dt>
-          <dd>
-            <span>{{ dataelement()!.shortName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.formName">Form Name</span></dt>
-          <dd>
-            <span>{{ dataelement()!.formName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.description">Description</span></dt>
-          <dd>
-            <span>{{ dataelement()!.description }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.displayShortName">Display Short Name</span></dt>
-          <dd>
-            <span>{{ dataelement()!.displayShortName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.displayName">Display Name</span></dt>
-          <dd>
-            <span>{{ dataelement()!.displayName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.displayFormName">Display Form Name</span></dt>
-          <dd>
-            <span>{{ dataelement()!.displayFormName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.created">Created</span></dt>
-          <dd>
-            <span>{{ dataelement()!.created | formatMediumDatetime }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.lastUpdated">Last Updated</span></dt>
-          <dd>
-            <span>{{ dataelement()!.lastUpdated | formatMediumDatetime }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.publicAccess">Public Access</span></dt>
-          <dd>
-            <span>{{ dataelement()!.publicAccess }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.dimensionItemType">Dimension Item Type</span></dt>
-          <dd>
-            <span>{{ dataelement()!.dimensionItemType }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.aggregationType">Aggregation Type</span></dt>
-          <dd>
-            <span>{{ dataelement()!.aggregationType }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.valueType">Value Type</span></dt>
-          <dd>
-            <span>{{ dataelement()!.valueType }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.domainType">Domain Type</span></dt>
-          <dd>
-            <span>{{ dataelement()!.domainType }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.zeroIsSignificant">Zero Is Significant</span></dt>
-          <dd>
-            <span>{{ dataelement()!.zeroIsSignificant }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.optionSetValue">Option Set Value</span></dt>
-          <dd>
-            <span>{{ dataelement()!.optionSetValue }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.dimensionItem">Dimension Item</span></dt>
-          <dd>
-            <span>{{ dataelement()!.dimensionItem }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.track">Track</span></dt>
-          <dd>
-            <span [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (dataelement()!.track ?? 'null')">{{
-              { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[dataelement()!.track ?? 'null']
-            }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.project">Project</span></dt>
-          <dd>
-            @if (dataelement()!.project) {
-              <div>
-                <a [routerLink]="['/project', dataelement()!.project?.id, 'view']">{{ dataelement()!.project?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.createdBy">Created By</span></dt>
-          <dd>
-            @if (dataelement()!.createdBy) {
-              <div>
-                <a [routerLink]="['/dhis-user', dataelement()!.createdBy?.id, 'view']">{{ dataelement()!.createdBy?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.lastUpdatedBy">Last Updated By</span></dt>
-          <dd>
-            @if (dataelement()!.lastUpdatedBy) {
-              <div>
-                <a [routerLink]="['/dhis-user', dataelement()!.lastUpdatedBy?.id, 'view']">{{ dataelement()!.lastUpdatedBy?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.categoryCombo">Category Combo</span></dt>
-          <dd>
-            @if (dataelement()!.categoryCombo) {
-              <div>
-                <a [routerLink]="['/categorycombo', dataelement()!.categoryCombo?.id, 'view']">{{ dataelement()!.categoryCombo?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.optionSet">Option Set</span></dt>
-          <dd>
-            @if (dataelement()!.optionSet) {
-              <div>
-                <a [routerLink]="['/optionset', dataelement()!.optionSet?.id, 'view']">{{ dataelement()!.optionSet?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.dataset">Dataset</span></dt>
-          <dd>
-            @for (dataset of dataelement()!.datasets; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/dataset', dataset.id, 'view']">{{ dataset?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.dataelement.programStage">Program Stage</span></dt>
-          <dd>
-            @for (programStage of dataelement()!.programStages; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/program-stage', programStage.id, 'view']">{{ programStage?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
-          </dd>
-        </dl>
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.id">Id</span></dt>
+        <dd>
+          <span>{{ dataelement.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.name">Name</span></dt>
+        <dd>
+          <span>{{ dataelement.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.shortName">Short Name</span></dt>
+        <dd>
+          <span>{{ dataelement.shortName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.formName">Form Name</span></dt>
+        <dd>
+          <span>{{ dataelement.formName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.description">Description</span></dt>
+        <dd>
+          <span>{{ dataelement.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.displayShortName">Display Short Name</span></dt>
+        <dd>
+          <span>{{ dataelement.displayShortName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.displayName">Display Name</span></dt>
+        <dd>
+          <span>{{ dataelement.displayName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.displayFormName">Display Form Name</span></dt>
+        <dd>
+          <span>{{ dataelement.displayFormName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.created">Created</span></dt>
+        <dd>
+          <span>{{ dataelement.created | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.lastUpdated">Last Updated</span></dt>
+        <dd>
+          <span>{{ dataelement.lastUpdated | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.publicAccess">Public Access</span></dt>
+        <dd>
+          <span>{{ dataelement.publicAccess }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.dimensionItemType">Dimension Item Type</span></dt>
+        <dd>
+          <span>{{ dataelement.dimensionItemType }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.aggregationType">Aggregation Type</span></dt>
+        <dd>
+          <span>{{ dataelement.aggregationType }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.valueType">Value Type</span></dt>
+        <dd>
+          <span>{{ dataelement.valueType }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.domainType">Domain Type</span></dt>
+        <dd>
+          <span>{{ dataelement.domainType }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.zeroIsSignificant">Zero Is Significant</span></dt>
+        <dd>
+          <span>{{ dataelement.zeroIsSignificant }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.optionSetValue">Option Set Value</span></dt>
+        <dd>
+          <span>{{ dataelement.optionSetValue }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.dimensionItem">Dimension Item</span></dt>
+        <dd>
+          <span>{{ dataelement.dimensionItem }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.track">Track</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + dataelement.track }}">{{ dataelement.track }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.project">Project</span></dt>
+        <dd>
+          <div *ngIf="dataelement.project">
+            <a [routerLink]="['/project', dataelement.project.id, 'view']">{{ dataelement.project.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.createdBy">Created By</span></dt>
+        <dd>
+          <div *ngIf="dataelement.createdBy">
+            <a [routerLink]="['/dhis-user', dataelement.createdBy.id, 'view']">{{ dataelement.createdBy.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.lastUpdatedBy">Last Updated By</span></dt>
+        <dd>
+          <div *ngIf="dataelement.lastUpdatedBy">
+            <a [routerLink]="['/dhis-user', dataelement.lastUpdatedBy.id, 'view']">{{ dataelement.lastUpdatedBy.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.categoryCombo">Category Combo</span></dt>
+        <dd>
+          <div *ngIf="dataelement.categoryCombo">
+            <a [routerLink]="['/categorycombo', dataelement.categoryCombo.id, 'view']">{{ dataelement.categoryCombo.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.dataelement.optionSet">Option Set</span></dt>
+        <dd>
+          <div *ngIf="dataelement.optionSet">
+            <a [routerLink]="['/optionset', dataelement.optionSet.id, 'view']">{{ dataelement.optionSet.id }}</a>
+          </div>
+        </dd>
+      </dl>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-        </button>
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
 
-        <button type="button" [routerLink]="['/dataelement', dataelement()!.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-        </button>
-      </div>
-    }
+      <button type="button" [routerLink]="['/dataelement', dataelement.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
   </div>
 </div>

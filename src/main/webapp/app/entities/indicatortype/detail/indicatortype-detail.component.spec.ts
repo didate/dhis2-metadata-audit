@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { RouterTestingHarness } from '@angular/router/testing';
+import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { IndicatortypeDetailComponent } from './indicatortype-detail.component';
@@ -9,46 +8,29 @@ describe('Indicatortype Management Detail Component', () => {
   let comp: IndicatortypeDetailComponent;
   let fixture: ComponentFixture<IndicatortypeDetailComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [IndicatortypeDetailComponent],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [IndicatortypeDetailComponent],
       providers: [
-        provideRouter(
-          [
-            {
-              path: '**',
-              component: IndicatortypeDetailComponent,
-              resolve: { indicatortype: () => of({ id: 'ABC' }) },
-            },
-          ],
-          withComponentInputBinding(),
-        ),
+        {
+          provide: ActivatedRoute,
+          useValue: { data: of({ indicatortype: { id: 'ABC' } }) },
+        },
       ],
     })
       .overrideTemplate(IndicatortypeDetailComponent, '')
       .compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(IndicatortypeDetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
-    it('Should load indicatortype on init', async () => {
-      const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', IndicatortypeDetailComponent);
+    it('Should load indicatortype on init', () => {
+      // WHEN
+      comp.ngOnInit();
 
       // THEN
-      expect(instance.indicatortype()).toEqual(expect.objectContaining({ id: 'ABC' }));
-    });
-  });
-
-  describe('PreviousState', () => {
-    it('Should navigate to previous state', () => {
-      jest.spyOn(window.history, 'back');
-      comp.previousState();
-      expect(window.history.back).toHaveBeenCalled();
+      expect(comp.indicatortype).toEqual(expect.objectContaining({ id: 'ABC' }));
     });
   });
 });

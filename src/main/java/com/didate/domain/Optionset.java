@@ -1,20 +1,21 @@
 package com.didate.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.envers.Audited;
+import org.springframework.data.domain.Persistable;
 
 /**
  * A Optionset.
  */
+@JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "optionset")
 @Audited
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Optionset implements Serializable {
+public class Optionset implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,6 +26,9 @@ public class Optionset implements Serializable {
 
     @Column(name = "name")
     private String name;
+
+    @Transient
+    private boolean isPersisted;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -54,6 +58,23 @@ public class Optionset implements Serializable {
         this.name = name;
     }
 
+    @Transient
+    @Override
+    public boolean isNew() {
+        return !this.isPersisted;
+    }
+
+    public Optionset setIsPersisted() {
+        this.isPersisted = true;
+        return this;
+    }
+
+    @PostLoad
+    @PostPersist
+    public void updateEntityState() {
+        this.setIsPersisted();
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -64,7 +85,7 @@ public class Optionset implements Serializable {
         if (!(o instanceof Optionset)) {
             return false;
         }
-        return getId() != null && getId().equals(((Optionset) o).getId());
+        return id != null && id.equals(((Optionset) o).id);
     }
 
     @Override

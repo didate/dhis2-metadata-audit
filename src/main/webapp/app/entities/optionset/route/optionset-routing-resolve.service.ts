@@ -1,29 +1,30 @@
-import { inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { of, EMPTY, Observable } from 'rxjs';
+import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { IOptionset } from '../optionset.model';
 import { OptionsetService } from '../service/optionset.service';
 
-const optionsetResolve = (route: ActivatedRouteSnapshot): Observable<null | IOptionset> => {
-  const id = route.params['id'];
-  if (id) {
-    return inject(OptionsetService)
-      .find(id)
-      .pipe(
+@Injectable({ providedIn: 'root' })
+export class OptionsetRoutingResolveService implements Resolve<IOptionset | null> {
+  constructor(protected service: OptionsetService, protected router: Router) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<IOptionset | null | never> {
+    const id = route.params['id'];
+    if (id) {
+      return this.service.find(id).pipe(
         mergeMap((optionset: HttpResponse<IOptionset>) => {
           if (optionset.body) {
             return of(optionset.body);
           } else {
-            inject(Router).navigate(['404']);
+            this.router.navigate(['404']);
             return EMPTY;
           }
-        }),
+        })
       );
+    }
+    return of(null);
   }
-  return of(null);
-};
-
-export default optionsetResolve;
+}

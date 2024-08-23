@@ -1,5 +1,5 @@
 {
-  "dhis2AuditApp": {
+  "dhis2TrackApp": {
     "indicatortype": {
       "home": {
         "title": "Indicatortypes",

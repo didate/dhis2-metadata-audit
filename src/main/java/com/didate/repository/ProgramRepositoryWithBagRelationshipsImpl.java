@@ -1,13 +1,14 @@
 package com.didate.repository;
 
 import com.didate.domain.Program;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import org.hibernate.annotations.QueryHints;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -15,9 +16,6 @@ import org.springframework.data.domain.PageImpl;
  * Utility repository to load bag relationships based on https://vladmihalcea.com/hibernate-multiplebagfetchexception/
  */
 public class ProgramRepositoryWithBagRelationshipsImpl implements ProgramRepositoryWithBagRelationships {
-
-    private static final String ID_PARAMETER = "id";
-    private static final String PROGRAMS_PARAMETER = "programs";
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -38,7 +36,8 @@ public class ProgramRepositoryWithBagRelationshipsImpl implements ProgramReposit
 
     @Override
     public List<Program> fetchBagRelationships(List<Program> programs) {
-        return Optional.of(programs)
+        return Optional
+            .of(programs)
             .map(this::fetchProgramTrackedEntityAttributes)
             .map(this::fetchOrganisationUnits)
             .map(this::fetchProgramIndicators)
@@ -49,10 +48,10 @@ public class ProgramRepositoryWithBagRelationshipsImpl implements ProgramReposit
     Program fetchProgramTrackedEntityAttributes(Program result) {
         return entityManager
             .createQuery(
-                "select program from Program program left join fetch program.programTrackedEntityAttributes where program.id = :id",
+                "select program from Program program left join fetch program.programTrackedEntityAttributes where program is :program",
                 Program.class
             )
-            .setParameter(ID_PARAMETER, result.getId())
+            .setParameter("program", result)
             .getSingleResult();
     }
 
@@ -61,10 +60,10 @@ public class ProgramRepositoryWithBagRelationshipsImpl implements ProgramReposit
         IntStream.range(0, programs.size()).forEach(index -> order.put(programs.get(index).getId(), index));
         List<Program> result = entityManager
             .createQuery(
-                "select program from Program program left join fetch program.programTrackedEntityAttributes where program in :programs",
+                "select distinct program from Program program left join fetch program.programTrackedEntityAttributes where program in :programs",
                 Program.class
             )
-            .setParameter(PROGRAMS_PARAMETER, programs)
+            .setParameter("programs", programs)
             .getResultList();
         Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
         return result;
@@ -73,10 +72,10 @@ public class ProgramRepositoryWithBagRelationshipsImpl implements ProgramReposit
     Program fetchOrganisationUnits(Program result) {
         return entityManager
             .createQuery(
-                "select program from Program program left join fetch program.organisationUnits where program.id = :id",
+                "select program from Program program left join fetch program.organisationUnits where program is :program",
                 Program.class
             )
-            .setParameter(ID_PARAMETER, result.getId())
+            .setParameter("program", result)
             .getSingleResult();
     }
 
@@ -85,10 +84,10 @@ public class ProgramRepositoryWithBagRelationshipsImpl implements ProgramReposit
         IntStream.range(0, programs.size()).forEach(index -> order.put(programs.get(index).getId(), index));
         List<Program> result = entityManager
             .createQuery(
-                "select program from Program program left join fetch program.organisationUnits where program in :programs",
+                "select distinct program from Program program left join fetch program.organisationUnits where program in :programs",
                 Program.class
             )
-            .setParameter(PROGRAMS_PARAMETER, programs)
+            .setParameter("programs", programs)
             .getResultList();
         Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
         return result;
@@ -97,10 +96,10 @@ public class ProgramRepositoryWithBagRelationshipsImpl implements ProgramReposit
     Program fetchProgramIndicators(Program result) {
         return entityManager
             .createQuery(
-                "select program from Program program left join fetch program.programIndicators where program.id = :id",
+                "select program from Program program left join fetch program.programIndicators where program is :program",
                 Program.class
             )
-            .setParameter(ID_PARAMETER, result.getId())
+            .setParameter("program", result)
             .getSingleResult();
     }
 
@@ -109,10 +108,10 @@ public class ProgramRepositoryWithBagRelationshipsImpl implements ProgramReposit
         IntStream.range(0, programs.size()).forEach(index -> order.put(programs.get(index).getId(), index));
         List<Program> result = entityManager
             .createQuery(
-                "select program from Program program left join fetch program.programIndicators where program in :programs",
+                "select distinct program from Program program left join fetch program.programIndicators where program in :programs",
                 Program.class
             )
-            .setParameter(PROGRAMS_PARAMETER, programs)
+            .setParameter("programs", programs)
             .getResultList();
         Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
         return result;
@@ -120,8 +119,11 @@ public class ProgramRepositoryWithBagRelationshipsImpl implements ProgramReposit
 
     Program fetchProgramStages(Program result) {
         return entityManager
-            .createQuery("select program from Program program left join fetch program.programStages where program.id = :id", Program.class)
-            .setParameter(ID_PARAMETER, result.getId())
+            .createQuery(
+                "select program from Program program left join fetch program.programStages where program is :program",
+                Program.class
+            )
+            .setParameter("program", result)
             .getSingleResult();
     }
 
@@ -130,12 +132,20 @@ public class ProgramRepositoryWithBagRelationshipsImpl implements ProgramReposit
         IntStream.range(0, programs.size()).forEach(index -> order.put(programs.get(index).getId(), index));
         List<Program> result = entityManager
             .createQuery(
-                "select program from Program program left join fetch program.programStages where program in :programs",
+                "select distinct program from Program program left join fetch program.programStages where program in :programs",
                 Program.class
             )
-            .setParameter(PROGRAMS_PARAMETER, programs)
+            .setParameter("programs", programs)
             .getResultList();
         Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
         return result;
     }
 }
+/* .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+.setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+.setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+.setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+.setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+.setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+.setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+.setHint(QueryHints.PASS_DISTINCT_THROUGH, false) */

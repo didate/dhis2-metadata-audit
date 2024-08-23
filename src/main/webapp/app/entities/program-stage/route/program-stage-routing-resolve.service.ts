@@ -1,29 +1,30 @@
-import { inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { of, EMPTY, Observable } from 'rxjs';
+import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { IProgramStage } from '../program-stage.model';
 import { ProgramStageService } from '../service/program-stage.service';
 
-const programStageResolve = (route: ActivatedRouteSnapshot): Observable<null | IProgramStage> => {
-  const id = route.params['id'];
-  if (id) {
-    return inject(ProgramStageService)
-      .find(id)
-      .pipe(
+@Injectable({ providedIn: 'root' })
+export class ProgramStageRoutingResolveService implements Resolve<IProgramStage | null> {
+  constructor(protected service: ProgramStageService, protected router: Router) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<IProgramStage | null | never> {
+    const id = route.params['id'];
+    if (id) {
+      return this.service.find(id).pipe(
         mergeMap((programStage: HttpResponse<IProgramStage>) => {
           if (programStage.body) {
             return of(programStage.body);
           } else {
-            inject(Router).navigate(['404']);
+            this.router.navigate(['404']);
             return EMPTY;
           }
-        }),
+        })
       );
+    }
+    return of(null);
   }
-  return of(null);
-};
-
-export default programStageResolve;
+}

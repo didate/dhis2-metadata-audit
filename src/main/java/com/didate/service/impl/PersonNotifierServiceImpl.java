@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.PersonNotifier}.
+ * Service Implementation for managing {@link PersonNotifier}.
  */
 @Service
 @Transactional
 public class PersonNotifierServiceImpl implements PersonNotifierService {
 
-    private static final Logger log = LoggerFactory.getLogger(PersonNotifierServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(PersonNotifierServiceImpl.class);
 
     private final PersonNotifierRepository personNotifierRepository;
 

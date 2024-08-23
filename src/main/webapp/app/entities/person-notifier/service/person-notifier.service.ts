@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -14,10 +14,9 @@ export type EntityArrayResponseType = HttpResponse<IPersonNotifier[]>;
 
 @Injectable({ providedIn: 'root' })
 export class PersonNotifierService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/person-notifiers');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(personNotifier: NewPersonNotifier): Observable<EntityResponseType> {
     return this.http.post<IPersonNotifier>(this.resourceUrl, personNotifier, { observe: 'response' });
@@ -62,8 +61,8 @@ export class PersonNotifierService {
   ): Type[] {
     const personNotifiers: Type[] = personNotifiersToCheck.filter(isPresent);
     if (personNotifiers.length > 0) {
-      const personNotifierCollectionIdentifiers = personNotifierCollection.map(personNotifierItem =>
-        this.getPersonNotifierIdentifier(personNotifierItem),
+      const personNotifierCollectionIdentifiers = personNotifierCollection.map(
+        personNotifierItem => this.getPersonNotifierIdentifier(personNotifierItem)!
       );
       const personNotifiersToAdd = personNotifiers.filter(personNotifierItem => {
         const personNotifierIdentifier = this.getPersonNotifierIdentifier(personNotifierItem);

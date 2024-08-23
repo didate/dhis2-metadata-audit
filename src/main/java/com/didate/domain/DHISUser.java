@@ -2,21 +2,23 @@ package com.didate.domain;
 
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.springframework.data.domain.Persistable;
 
 /**
  * A DHISUser.
  */
+@JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "dhis_user")
 @Audited
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class DHISUser implements Serializable {
+public class DHISUser implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -60,10 +62,14 @@ public class DHISUser implements Serializable {
     @Column(name = "last_updated")
     private Instant lastUpdated;
 
+    @NotAudited
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "track", nullable = false)
     private TypeTrack track;
+
+    @Transient
+    private boolean isPersisted;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -236,6 +242,23 @@ public class DHISUser implements Serializable {
         this.track = track;
     }
 
+    @Transient
+    @Override
+    public boolean isNew() {
+        return !this.isPersisted;
+    }
+
+    public DHISUser setIsPersisted() {
+        this.isPersisted = true;
+        return this;
+    }
+
+    @PostLoad
+    @PostPersist
+    public void updateEntityState() {
+        this.setIsPersisted();
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -246,7 +269,7 @@ public class DHISUser implements Serializable {
         if (!(o instanceof DHISUser)) {
             return false;
         }
-        return getId() != null && getId().equals(((DHISUser) o).getId());
+        return id != null && id.equals(((DHISUser) o).id);
     }
 
     @Override

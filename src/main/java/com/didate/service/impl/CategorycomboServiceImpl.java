@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.Categorycombo}.
+ * Service Implementation for managing {@link Categorycombo}.
  */
 @Service
 @Transactional
 public class CategorycomboServiceImpl implements CategorycomboService {
 
-    private static final Logger log = LoggerFactory.getLogger(CategorycomboServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(CategorycomboServiceImpl.class);
 
     private final CategorycomboRepository categorycomboRepository;
 
@@ -35,6 +35,7 @@ public class CategorycomboServiceImpl implements CategorycomboService {
     @Override
     public Categorycombo update(Categorycombo categorycombo) {
         log.debug("Request to update Categorycombo : {}", categorycombo);
+        categorycombo.setIsPersisted();
         return categorycomboRepository.save(categorycombo);
     }
 

@@ -1,32 +1,28 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { OptionsetFormService, OptionsetFormGroup } from './optionset-form.service';
 import { IOptionset } from '../optionset.model';
 import { OptionsetService } from '../service/optionset.service';
-import { OptionsetFormService, OptionsetFormGroup } from './optionset-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-optionset-update',
   templateUrl: './optionset-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class OptionsetUpdateComponent implements OnInit {
   isSaving = false;
   optionset: IOptionset | null = null;
 
-  protected optionsetService = inject(OptionsetService);
-  protected optionsetFormService = inject(OptionsetFormService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: OptionsetFormGroup = this.optionsetFormService.createOptionsetFormGroup();
+
+  constructor(
+    protected optionsetService: OptionsetService,
+    protected optionsetFormService: OptionsetFormService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ optionset }) => {

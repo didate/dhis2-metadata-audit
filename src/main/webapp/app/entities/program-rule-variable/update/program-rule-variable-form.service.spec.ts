@@ -33,7 +33,7 @@ describe('ProgramRuleVariable Form Service', () => {
             program: expect.any(Object),
             trackedEntityAttribute: expect.any(Object),
             dataElement: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -56,13 +56,14 @@ describe('ProgramRuleVariable Form Service', () => {
             program: expect.any(Object),
             trackedEntityAttribute: expect.any(Object),
             dataElement: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getProgramRuleVariable', () => {
       it('should return NewProgramRuleVariable for default ProgramRuleVariable initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createProgramRuleVariableFormGroup(sampleWithNewData);
 
         const programRuleVariable = service.getProgramRuleVariable(formGroup) as any;

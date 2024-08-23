@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.Dataelement}.
+ * Service Implementation for managing {@link Dataelement}.
  */
 @Service
 @Transactional
 public class DataelementServiceImpl implements DataelementService {
 
-    private static final Logger log = LoggerFactory.getLogger(DataelementServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(DataelementServiceImpl.class);
 
     private final DataelementRepository dataelementRepository;
 
@@ -35,6 +35,7 @@ public class DataelementServiceImpl implements DataelementService {
     @Override
     public Dataelement update(Dataelement dataelement) {
         log.debug("Request to update Dataelement : {}", dataelement);
+        dataelement.setIsPersisted();
         return dataelementRepository.save(dataelement);
     }
 

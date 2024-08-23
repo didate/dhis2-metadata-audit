@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.OptionGroup}.
+ * Service Implementation for managing {@link OptionGroup}.
  */
 @Service
 @Transactional
 public class OptionGroupServiceImpl implements OptionGroupService {
 
-    private static final Logger log = LoggerFactory.getLogger(OptionGroupServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(OptionGroupServiceImpl.class);
 
     private final OptionGroupRepository optionGroupRepository;
 
@@ -30,6 +30,25 @@ public class OptionGroupServiceImpl implements OptionGroupService {
     public OptionGroup save(OptionGroup optionGroup) {
         log.debug("Request to save OptionGroup : {}", optionGroup);
         return optionGroupRepository.save(optionGroup);
+    }
+
+    @Override
+    public OptionGroup update(OptionGroup optionGroup) {
+        log.debug("Request to update OptionGroup : {}", optionGroup);
+        optionGroup.setIsPersisted();
+        // no save call needed as we have no fields that can be updated
+        return optionGroup;
+    }
+
+    @Override
+    public Optional<OptionGroup> partialUpdate(OptionGroup optionGroup) {
+        log.debug("Request to partially update OptionGroup : {}", optionGroup);
+
+        return optionGroupRepository
+            .findById(optionGroup.getId())
+            .map(existingOptionGroup -> {
+                return existingOptionGroup;
+            }); // .map(optionGroupRepository::save)
     }
 
     @Override
@@ -50,18 +69,6 @@ public class OptionGroupServiceImpl implements OptionGroupService {
     public void delete(String id) {
         log.debug("Request to delete OptionGroup : {}", id);
         optionGroupRepository.deleteById(id);
-    }
-
-    @Override
-    public OptionGroup update(OptionGroup optionGroup) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
-    public Optional<OptionGroup> partialUpdate(OptionGroup optionGroup) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'partialUpdate'");
     }
 
     @Override

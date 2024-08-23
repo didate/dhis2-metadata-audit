@@ -43,14 +43,14 @@ export interface IDataset {
   dataSetElementsContent?: string | null;
   indicatorsContent?: string | null;
   organisationUnitsContent?: string | null;
-  track?: keyof typeof TypeTrack | null;
-  project?: IProject | null;
-  createdBy?: IDHISUser | null;
-  lastUpdatedBy?: IDHISUser | null;
-  categoryCombo?: ICategorycombo | null;
-  dataSetElements?: IDataelement[] | null;
-  indicators?: IIndicator[] | null;
-  organisationUnits?: IOrganisationUnit[] | null;
+  track?: TypeTrack | null;
+  project?: Pick<IProject, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'id'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  categoryCombo?: Pick<ICategorycombo, 'id'> | null;
+  dataSetElements?: Pick<IDataelement, 'id'>[] | null;
+  indicators?: Pick<IIndicator, 'id'>[] | null;
+  organisationUnits?: Pick<IOrganisationUnit, 'id'>[] | null;
 }
 
 export type NewDataset = Omit<IDataset, 'id'> & { id: null };

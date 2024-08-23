@@ -1,12 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { ProgramRuleFormService, ProgramRuleFormGroup } from './program-rule-form.service';
+import { IProgramRule } from '../program-rule.model';
+import { ProgramRuleService } from '../service/program-rule.service';
 import { IProject } from 'app/entities/project/project.model';
 import { ProjectService } from 'app/entities/project/service/project.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
@@ -14,15 +14,10 @@ import { DHISUserService } from 'app/entities/dhis-user/service/dhis-user.servic
 import { IProgram } from 'app/entities/program/program.model';
 import { ProgramService } from 'app/entities/program/service/program.service';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
-import { ProgramRuleService } from '../service/program-rule.service';
-import { IProgramRule } from '../program-rule.model';
-import { ProgramRuleFormService, ProgramRuleFormGroup } from './program-rule-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-program-rule-update',
   templateUrl: './program-rule-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ProgramRuleUpdateComponent implements OnInit {
   isSaving = false;
@@ -33,15 +28,16 @@ export class ProgramRuleUpdateComponent implements OnInit {
   dHISUsersSharedCollection: IDHISUser[] = [];
   programsSharedCollection: IProgram[] = [];
 
-  protected programRuleService = inject(ProgramRuleService);
-  protected programRuleFormService = inject(ProgramRuleFormService);
-  protected projectService = inject(ProjectService);
-  protected dHISUserService = inject(DHISUserService);
-  protected programService = inject(ProgramService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ProgramRuleFormGroup = this.programRuleFormService.createProgramRuleFormGroup();
+
+  constructor(
+    protected programRuleService: ProgramRuleService,
+    protected programRuleFormService: ProgramRuleFormService,
+    protected projectService: ProjectService,
+    protected dHISUserService: DHISUserService,
+    protected programService: ProgramService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   compareProject = (o1: IProject | null, o2: IProject | null): boolean => this.projectService.compareProject(o1, o2);
 
@@ -99,16 +95,16 @@ export class ProgramRuleUpdateComponent implements OnInit {
 
     this.projectsSharedCollection = this.projectService.addProjectToCollectionIfMissing<IProject>(
       this.projectsSharedCollection,
-      programRule.project,
+      programRule.project
     );
     this.dHISUsersSharedCollection = this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
       this.dHISUsersSharedCollection,
       programRule.createdBy,
-      programRule.lastUpdatedBy,
+      programRule.lastUpdatedBy
     );
     this.programsSharedCollection = this.programService.addProgramToCollectionIfMissing<IProgram>(
       this.programsSharedCollection,
-      programRule.program,
+      programRule.program
     );
   }
 
@@ -117,7 +113,7 @@ export class ProgramRuleUpdateComponent implements OnInit {
       .query()
       .pipe(map((res: HttpResponse<IProject[]>) => res.body ?? []))
       .pipe(
-        map((projects: IProject[]) => this.projectService.addProjectToCollectionIfMissing<IProject>(projects, this.programRule?.project)),
+        map((projects: IProject[]) => this.projectService.addProjectToCollectionIfMissing<IProject>(projects, this.programRule?.project))
       )
       .subscribe((projects: IProject[]) => (this.projectsSharedCollection = projects));
 
@@ -129,9 +125,9 @@ export class ProgramRuleUpdateComponent implements OnInit {
           this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
             dHISUsers,
             this.programRule?.createdBy,
-            this.programRule?.lastUpdatedBy,
-          ),
-        ),
+            this.programRule?.lastUpdatedBy
+          )
+        )
       )
       .subscribe((dHISUsers: IDHISUser[]) => (this.dHISUsersSharedCollection = dHISUsers));
 
@@ -139,7 +135,7 @@ export class ProgramRuleUpdateComponent implements OnInit {
       .query()
       .pipe(map((res: HttpResponse<IProgram[]>) => res.body ?? []))
       .pipe(
-        map((programs: IProgram[]) => this.programService.addProgramToCollectionIfMissing<IProgram>(programs, this.programRule?.program)),
+        map((programs: IProgram[]) => this.programService.addProgramToCollectionIfMissing<IProgram>(programs, this.programRule?.program))
       )
       .subscribe((programs: IProgram[]) => (this.programsSharedCollection = programs));
   }

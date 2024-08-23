@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.Indicatortype}.
+ * Service Implementation for managing {@link Indicatortype}.
  */
 @Service
 @Transactional
 public class IndicatortypeServiceImpl implements IndicatortypeService {
 
-    private static final Logger log = LoggerFactory.getLogger(IndicatortypeServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(IndicatortypeServiceImpl.class);
 
     private final IndicatortypeRepository indicatortypeRepository;
 
@@ -35,6 +35,7 @@ public class IndicatortypeServiceImpl implements IndicatortypeService {
     @Override
     public Indicatortype update(Indicatortype indicatortype) {
         log.debug("Request to update Indicatortype : {}", indicatortype);
+        indicatortype.setIsPersisted();
         return indicatortypeRepository.save(indicatortype);
     }
 

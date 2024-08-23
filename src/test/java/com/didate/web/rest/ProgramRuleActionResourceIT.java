@@ -1,7 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.ProgramRuleActionAsserts.*;
-import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -13,12 +11,11 @@ import com.didate.domain.ProgramRule;
 import com.didate.domain.ProgramRuleAction;
 import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.ProgramRuleActionRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +64,6 @@ class ProgramRuleActionResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private ProgramRuleActionRepository programRuleActionRepository;
 
     @Autowired
@@ -79,8 +73,6 @@ class ProgramRuleActionResourceIT {
     private MockMvc restProgramRuleActionMockMvc;
 
     private ProgramRuleAction programRuleAction;
-
-    private ProgramRuleAction insertedProgramRuleAction;
 
     /**
      * Create an entity for this test.
@@ -171,34 +163,30 @@ class ProgramRuleActionResourceIT {
         programRuleAction = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedProgramRuleAction != null) {
-            programRuleActionRepository.delete(insertedProgramRuleAction);
-            insertedProgramRuleAction = null;
-        }
-    }
-
     @Test
     @Transactional
     void createProgramRuleAction() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = programRuleActionRepository.findAll().size();
         // Create the ProgramRuleAction
-        var returnedProgramRuleAction = om.readValue(
-            restProgramRuleActionMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRuleAction)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            ProgramRuleAction.class
-        );
+        restProgramRuleActionMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRuleAction))
+            )
+            .andExpect(status().isCreated());
 
         // Validate the ProgramRuleAction in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertProgramRuleActionUpdatableFieldsEquals(returnedProgramRuleAction, getPersistedProgramRuleAction(returnedProgramRuleAction));
-
-        insertedProgramRuleAction = returnedProgramRuleAction;
+        List<ProgramRuleAction> programRuleActionList = programRuleActionRepository.findAll();
+        assertThat(programRuleActionList).hasSize(databaseSizeBeforeCreate + 1);
+        ProgramRuleAction testProgramRuleAction = programRuleActionList.get(programRuleActionList.size() - 1);
+        assertThat(testProgramRuleAction.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testProgramRuleAction.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testProgramRuleAction.getProgramRuleActionType()).isEqualTo(DEFAULT_PROGRAM_RULE_ACTION_TYPE);
+        assertThat(testProgramRuleAction.getEvaluationTime()).isEqualTo(DEFAULT_EVALUATION_TIME);
+        assertThat(testProgramRuleAction.getData()).isEqualTo(DEFAULT_DATA);
+        assertThat(testProgramRuleAction.getTemplateUid()).isEqualTo(DEFAULT_TEMPLATE_UID);
+        assertThat(testProgramRuleAction.getContent()).isEqualTo(DEFAULT_CONTENT);
+        assertThat(testProgramRuleAction.getDisplayContent()).isEqualTo(DEFAULT_DISPLAY_CONTENT);
+        assertThat(testProgramRuleAction.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
@@ -207,38 +195,45 @@ class ProgramRuleActionResourceIT {
         // Create the ProgramRuleAction with an existing ID
         programRuleAction.setId("existing_id");
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = programRuleActionRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProgramRuleActionMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRuleAction)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRuleAction))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRuleAction in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<ProgramRuleAction> programRuleActionList = programRuleActionRepository.findAll();
+        assertThat(programRuleActionList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void checkTrackIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = programRuleActionRepository.findAll().size();
         // set the field null
         programRuleAction.setTrack(null);
 
         // Create the ProgramRuleAction, which fails.
 
         restProgramRuleActionMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRuleAction)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRuleAction))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<ProgramRuleAction> programRuleActionList = programRuleActionRepository.findAll();
+        assertThat(programRuleActionList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void getAllProgramRuleActions() throws Exception {
         // Initialize the database
-        insertedProgramRuleAction = programRuleActionRepository.saveAndFlush(programRuleAction);
+        programRuleAction.setId(UUID.randomUUID().toString());
+        programRuleActionRepository.saveAndFlush(programRuleAction);
 
         // Get all the programRuleActionList
         restProgramRuleActionMockMvc
@@ -261,7 +256,8 @@ class ProgramRuleActionResourceIT {
     @Transactional
     void getProgramRuleAction() throws Exception {
         // Initialize the database
-        insertedProgramRuleAction = programRuleActionRepository.saveAndFlush(programRuleAction);
+        programRuleAction.setId(UUID.randomUUID().toString());
+        programRuleActionRepository.saveAndFlush(programRuleAction);
 
         // Get the programRuleAction
         restProgramRuleActionMockMvc
@@ -291,12 +287,13 @@ class ProgramRuleActionResourceIT {
     @Transactional
     void putExistingProgramRuleAction() throws Exception {
         // Initialize the database
-        insertedProgramRuleAction = programRuleActionRepository.saveAndFlush(programRuleAction);
+        programRuleAction.setId(UUID.randomUUID().toString());
+        programRuleActionRepository.saveAndFlush(programRuleAction);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleActionRepository.findAll().size();
 
         // Update the programRuleAction
-        ProgramRuleAction updatedProgramRuleAction = programRuleActionRepository.findById(programRuleAction.getId()).orElseThrow();
+        ProgramRuleAction updatedProgramRuleAction = programRuleActionRepository.findById(programRuleAction.getId()).get();
         // Disconnect from session so that the updates on updatedProgramRuleAction are not directly saved in db
         em.detach(updatedProgramRuleAction);
         updatedProgramRuleAction
@@ -314,19 +311,29 @@ class ProgramRuleActionResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, updatedProgramRuleAction.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedProgramRuleAction))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedProgramRuleAction))
             )
             .andExpect(status().isOk());
 
         // Validate the ProgramRuleAction in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedProgramRuleActionToMatchAllProperties(updatedProgramRuleAction);
+        List<ProgramRuleAction> programRuleActionList = programRuleActionRepository.findAll();
+        assertThat(programRuleActionList).hasSize(databaseSizeBeforeUpdate);
+        ProgramRuleAction testProgramRuleAction = programRuleActionList.get(programRuleActionList.size() - 1);
+        assertThat(testProgramRuleAction.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testProgramRuleAction.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testProgramRuleAction.getProgramRuleActionType()).isEqualTo(UPDATED_PROGRAM_RULE_ACTION_TYPE);
+        assertThat(testProgramRuleAction.getEvaluationTime()).isEqualTo(UPDATED_EVALUATION_TIME);
+        assertThat(testProgramRuleAction.getData()).isEqualTo(UPDATED_DATA);
+        assertThat(testProgramRuleAction.getTemplateUid()).isEqualTo(UPDATED_TEMPLATE_UID);
+        assertThat(testProgramRuleAction.getContent()).isEqualTo(UPDATED_CONTENT);
+        assertThat(testProgramRuleAction.getDisplayContent()).isEqualTo(UPDATED_DISPLAY_CONTENT);
+        assertThat(testProgramRuleAction.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void putNonExistingProgramRuleAction() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleActionRepository.findAll().size();
         programRuleAction.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -334,18 +341,19 @@ class ProgramRuleActionResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, programRuleAction.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(programRuleAction))
+                    .content(TestUtil.convertObjectToJsonBytes(programRuleAction))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRuleAction in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRuleAction> programRuleActionList = programRuleActionRepository.findAll();
+        assertThat(programRuleActionList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchProgramRuleAction() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleActionRepository.findAll().size();
         programRuleAction.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -353,45 +361,51 @@ class ProgramRuleActionResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(programRuleAction))
+                    .content(TestUtil.convertObjectToJsonBytes(programRuleAction))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRuleAction in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRuleAction> programRuleActionList = programRuleActionRepository.findAll();
+        assertThat(programRuleActionList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamProgramRuleAction() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleActionRepository.findAll().size();
         programRuleAction.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProgramRuleActionMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRuleAction)))
+            .perform(
+                put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRuleAction))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the ProgramRuleAction in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRuleAction> programRuleActionList = programRuleActionRepository.findAll();
+        assertThat(programRuleActionList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void partialUpdateProgramRuleActionWithPatch() throws Exception {
         // Initialize the database
-        insertedProgramRuleAction = programRuleActionRepository.saveAndFlush(programRuleAction);
+        programRuleAction.setId(UUID.randomUUID().toString());
+        programRuleActionRepository.saveAndFlush(programRuleAction);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleActionRepository.findAll().size();
 
         // Update the programRuleAction using partial update
         ProgramRuleAction partialUpdatedProgramRuleAction = new ProgramRuleAction();
         partialUpdatedProgramRuleAction.setId(programRuleAction.getId());
 
         partialUpdatedProgramRuleAction
-            .lastUpdated(UPDATED_LAST_UPDATED)
-            .created(UPDATED_CREATED)
-            .evaluationTime(UPDATED_EVALUATION_TIME)
+            .programRuleActionType(UPDATED_PROGRAM_RULE_ACTION_TYPE)
+            .data(UPDATED_DATA)
+            .templateUid(UPDATED_TEMPLATE_UID)
+            .content(UPDATED_CONTENT)
             .displayContent(UPDATED_DISPLAY_CONTENT)
             .track(UPDATED_TRACK);
 
@@ -399,26 +413,33 @@ class ProgramRuleActionResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedProgramRuleAction.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedProgramRuleAction))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedProgramRuleAction))
             )
             .andExpect(status().isOk());
 
         // Validate the ProgramRuleAction in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertProgramRuleActionUpdatableFieldsEquals(
-            createUpdateProxyForBean(partialUpdatedProgramRuleAction, programRuleAction),
-            getPersistedProgramRuleAction(programRuleAction)
-        );
+        List<ProgramRuleAction> programRuleActionList = programRuleActionRepository.findAll();
+        assertThat(programRuleActionList).hasSize(databaseSizeBeforeUpdate);
+        ProgramRuleAction testProgramRuleAction = programRuleActionList.get(programRuleActionList.size() - 1);
+        assertThat(testProgramRuleAction.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testProgramRuleAction.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testProgramRuleAction.getProgramRuleActionType()).isEqualTo(UPDATED_PROGRAM_RULE_ACTION_TYPE);
+        assertThat(testProgramRuleAction.getEvaluationTime()).isEqualTo(DEFAULT_EVALUATION_TIME);
+        assertThat(testProgramRuleAction.getData()).isEqualTo(UPDATED_DATA);
+        assertThat(testProgramRuleAction.getTemplateUid()).isEqualTo(UPDATED_TEMPLATE_UID);
+        assertThat(testProgramRuleAction.getContent()).isEqualTo(UPDATED_CONTENT);
+        assertThat(testProgramRuleAction.getDisplayContent()).isEqualTo(UPDATED_DISPLAY_CONTENT);
+        assertThat(testProgramRuleAction.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void fullUpdateProgramRuleActionWithPatch() throws Exception {
         // Initialize the database
-        insertedProgramRuleAction = programRuleActionRepository.saveAndFlush(programRuleAction);
+        programRuleAction.setId(UUID.randomUUID().toString());
+        programRuleActionRepository.saveAndFlush(programRuleAction);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleActionRepository.findAll().size();
 
         // Update the programRuleAction using partial update
         ProgramRuleAction partialUpdatedProgramRuleAction = new ProgramRuleAction();
@@ -439,23 +460,29 @@ class ProgramRuleActionResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedProgramRuleAction.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedProgramRuleAction))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedProgramRuleAction))
             )
             .andExpect(status().isOk());
 
         // Validate the ProgramRuleAction in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertProgramRuleActionUpdatableFieldsEquals(
-            partialUpdatedProgramRuleAction,
-            getPersistedProgramRuleAction(partialUpdatedProgramRuleAction)
-        );
+        List<ProgramRuleAction> programRuleActionList = programRuleActionRepository.findAll();
+        assertThat(programRuleActionList).hasSize(databaseSizeBeforeUpdate);
+        ProgramRuleAction testProgramRuleAction = programRuleActionList.get(programRuleActionList.size() - 1);
+        assertThat(testProgramRuleAction.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testProgramRuleAction.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testProgramRuleAction.getProgramRuleActionType()).isEqualTo(UPDATED_PROGRAM_RULE_ACTION_TYPE);
+        assertThat(testProgramRuleAction.getEvaluationTime()).isEqualTo(UPDATED_EVALUATION_TIME);
+        assertThat(testProgramRuleAction.getData()).isEqualTo(UPDATED_DATA);
+        assertThat(testProgramRuleAction.getTemplateUid()).isEqualTo(UPDATED_TEMPLATE_UID);
+        assertThat(testProgramRuleAction.getContent()).isEqualTo(UPDATED_CONTENT);
+        assertThat(testProgramRuleAction.getDisplayContent()).isEqualTo(UPDATED_DISPLAY_CONTENT);
+        assertThat(testProgramRuleAction.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void patchNonExistingProgramRuleAction() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleActionRepository.findAll().size();
         programRuleAction.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -463,18 +490,19 @@ class ProgramRuleActionResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, programRuleAction.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(programRuleAction))
+                    .content(TestUtil.convertObjectToJsonBytes(programRuleAction))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRuleAction in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRuleAction> programRuleActionList = programRuleActionRepository.findAll();
+        assertThat(programRuleActionList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchProgramRuleAction() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleActionRepository.findAll().size();
         programRuleAction.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -482,36 +510,43 @@ class ProgramRuleActionResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(programRuleAction))
+                    .content(TestUtil.convertObjectToJsonBytes(programRuleAction))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRuleAction in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRuleAction> programRuleActionList = programRuleActionRepository.findAll();
+        assertThat(programRuleActionList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamProgramRuleAction() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleActionRepository.findAll().size();
         programRuleAction.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProgramRuleActionMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(programRuleAction)))
+            .perform(
+                patch(ENTITY_API_URL)
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(programRuleAction))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the ProgramRuleAction in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRuleAction> programRuleActionList = programRuleActionRepository.findAll();
+        assertThat(programRuleActionList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void deleteProgramRuleAction() throws Exception {
         // Initialize the database
-        insertedProgramRuleAction = programRuleActionRepository.saveAndFlush(programRuleAction);
+        programRuleAction.setId(UUID.randomUUID().toString());
+        programRuleActionRepository.saveAndFlush(programRuleAction);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = programRuleActionRepository.findAll().size();
 
         // Delete the programRuleAction
         restProgramRuleActionMockMvc
@@ -519,37 +554,7 @@ class ProgramRuleActionResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return programRuleActionRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected ProgramRuleAction getPersistedProgramRuleAction(ProgramRuleAction programRuleAction) {
-        return programRuleActionRepository.findById(programRuleAction.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedProgramRuleActionToMatchAllProperties(ProgramRuleAction expectedProgramRuleAction) {
-        assertProgramRuleActionAllPropertiesEquals(expectedProgramRuleAction, getPersistedProgramRuleAction(expectedProgramRuleAction));
-    }
-
-    protected void assertPersistedProgramRuleActionToMatchUpdatableProperties(ProgramRuleAction expectedProgramRuleAction) {
-        assertProgramRuleActionAllUpdatablePropertiesEquals(
-            expectedProgramRuleAction,
-            getPersistedProgramRuleAction(expectedProgramRuleAction)
-        );
+        List<ProgramRuleAction> programRuleActionList = programRuleActionRepository.findAll();
+        assertThat(programRuleActionList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

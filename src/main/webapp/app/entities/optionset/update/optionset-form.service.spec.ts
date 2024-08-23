@@ -21,7 +21,7 @@ describe('Optionset Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             name: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -32,13 +32,14 @@ describe('Optionset Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             name: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getOptionset', () => {
       it('should return NewOptionset for default Optionset initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createOptionsetFormGroup(sampleWithNewData);
 
         const optionset = service.getOptionset(formGroup) as any;

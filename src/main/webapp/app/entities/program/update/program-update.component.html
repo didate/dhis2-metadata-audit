@@ -1,32 +1,38 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-program-heading" data-cy="ProgramCreateUpdateHeading" jhiTranslate="dhis2AuditApp.program.home.createOrEditLabel">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-program-heading" data-cy="ProgramCreateUpdateHeading" jhiTranslate="dhis2TrackApp.program.home.createOrEditLabel">
         Créer ou éditer un Program
       </h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="dhis2AuditApp.program.id">Id</label>
-            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-          </div>
-        }
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.id" for="field_id">Id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="id"
+            id="field_id"
+            data-cy="id"
+            formControlName="id"
+            [readonly]="editForm.get('id')!.value != null"
+          />
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_name" jhiTranslate="dhis2AuditApp.program.name">Name</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.name" for="field_name">Name</label>
           <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_created" jhiTranslate="dhis2AuditApp.program.created">Created</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.created" for="field_created">Created</label>
           <input type="text" class="form-control" name="created" id="field_created" data-cy="created" formControlName="created" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_lastUpdated" jhiTranslate="dhis2AuditApp.program.lastUpdated">Last Updated</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.lastUpdated" for="field_lastUpdated">Last Updated</label>
           <input
             type="text"
             class="form-control"
@@ -37,13 +43,13 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_shortName" jhiTranslate="dhis2AuditApp.program.shortName">Short Name</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.shortName" for="field_shortName">Short Name</label>
           <input type="text" class="form-control" name="shortName" id="field_shortName" data-cy="shortName" formControlName="shortName" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_description" jhiTranslate="dhis2AuditApp.program.description">Description</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.description" for="field_description">Description</label>
           <input
             type="text"
             class="form-control"
@@ -54,13 +60,13 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_version" jhiTranslate="dhis2AuditApp.program.version">Version</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.version" for="field_version">Version</label>
           <input type="number" class="form-control" name="version" id="field_version" data-cy="version" formControlName="version" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_enrollmentDateLabel" jhiTranslate="dhis2AuditApp.program.enrollmentDateLabel"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.enrollmentDateLabel" for="field_enrollmentDateLabel"
             >Enrollment Date Label</label
           >
           <input
@@ -73,8 +79,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_incidentDateLabel" jhiTranslate="dhis2AuditApp.program.incidentDateLabel"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.incidentDateLabel" for="field_incidentDateLabel"
             >Incident Date Label</label
           >
           <input
@@ -87,8 +93,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_programType" jhiTranslate="dhis2AuditApp.program.programType">Program Type</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.programType" for="field_programType">Program Type</label>
           <input
             type="text"
             class="form-control"
@@ -99,8 +105,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayIncidentDate" jhiTranslate="dhis2AuditApp.program.displayIncidentDate"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.displayIncidentDate" for="field_displayIncidentDate"
             >Display Incident Date</label
           >
           <input
@@ -113,8 +119,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_ignoreOverdueEvents" jhiTranslate="dhis2AuditApp.program.ignoreOverdueEvents"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.ignoreOverdueEvents" for="field_ignoreOverdueEvents"
             >Ignore Overdue Events</label
           >
           <input
@@ -127,13 +133,13 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_userRoles" jhiTranslate="dhis2AuditApp.program.userRoles">User Roles</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.userRoles" for="field_userRoles">User Roles</label>
           <input type="text" class="form-control" name="userRoles" id="field_userRoles" data-cy="userRoles" formControlName="userRoles" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_onlyEnrollOnce" jhiTranslate="dhis2AuditApp.program.onlyEnrollOnce">Only Enroll Once</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.onlyEnrollOnce" for="field_onlyEnrollOnce">Only Enroll Once</label>
           <input
             type="checkbox"
             class="form-check"
@@ -144,8 +150,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_notificationTemplates" jhiTranslate="dhis2AuditApp.program.notificationTemplates"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.notificationTemplates" for="field_notificationTemplates"
             >Notification Templates</label
           >
           <input
@@ -158,11 +164,11 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label
             class="form-label"
+            jhiTranslate="dhis2TrackApp.program.selectEnrollmentDatesInFuture"
             for="field_selectEnrollmentDatesInFuture"
-            jhiTranslate="dhis2AuditApp.program.selectEnrollmentDatesInFuture"
             >Select Enrollment Dates In Future</label
           >
           <input
@@ -175,8 +181,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_selectIncidentDatesInFuture" jhiTranslate="dhis2AuditApp.program.selectIncidentDatesInFuture"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.selectIncidentDatesInFuture" for="field_selectIncidentDatesInFuture"
             >Select Incident Dates In Future</label
           >
           <input
@@ -189,8 +195,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_trackedEntityType" jhiTranslate="dhis2AuditApp.program.trackedEntityType"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.trackedEntityType" for="field_trackedEntityType"
             >Tracked Entity Type</label
           >
           <input
@@ -203,13 +209,13 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_style" jhiTranslate="dhis2AuditApp.program.style">Style</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.style" for="field_style">Style</label>
           <input type="text" class="form-control" name="style" id="field_style" data-cy="style" formControlName="style" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_skipOffline" jhiTranslate="dhis2AuditApp.program.skipOffline">Skip Offline</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.skipOffline" for="field_skipOffline">Skip Offline</label>
           <input
             type="checkbox"
             class="form-check"
@@ -220,8 +226,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayFrontPageList" jhiTranslate="dhis2AuditApp.program.displayFrontPageList"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.displayFrontPageList" for="field_displayFrontPageList"
             >Display Front Page List</label
           >
           <input
@@ -234,11 +240,11 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label
             class="form-label"
+            jhiTranslate="dhis2TrackApp.program.useFirstStageDuringRegistration"
             for="field_useFirstStageDuringRegistration"
-            jhiTranslate="dhis2AuditApp.program.useFirstStageDuringRegistration"
             >Use First Stage During Registration</label
           >
           <input
@@ -251,8 +257,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_expiryDays" jhiTranslate="dhis2AuditApp.program.expiryDays">Expiry Days</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.expiryDays" for="field_expiryDays">Expiry Days</label>
           <input
             type="number"
             class="form-control"
@@ -263,8 +269,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_completeEventsExpiryDays" jhiTranslate="dhis2AuditApp.program.completeEventsExpiryDays"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.completeEventsExpiryDays" for="field_completeEventsExpiryDays"
             >Complete Events Expiry Days</label
           >
           <input
@@ -277,8 +283,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_openDaysAfterCoEndDate" jhiTranslate="dhis2AuditApp.program.openDaysAfterCoEndDate"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.openDaysAfterCoEndDate" for="field_openDaysAfterCoEndDate"
             >Open Days After Co End Date</label
           >
           <input
@@ -291,11 +297,11 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label
             class="form-label"
+            jhiTranslate="dhis2TrackApp.program.minAttributesRequiredToSearch"
             for="field_minAttributesRequiredToSearch"
-            jhiTranslate="dhis2AuditApp.program.minAttributesRequiredToSearch"
             >Min Attributes Required To Search</label
           >
           <input
@@ -308,8 +314,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_maxTeiCountToReturn" jhiTranslate="dhis2AuditApp.program.maxTeiCountToReturn"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.maxTeiCountToReturn" for="field_maxTeiCountToReturn"
             >Max Tei Count To Return</label
           >
           <input
@@ -322,8 +328,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_accessLevel" jhiTranslate="dhis2AuditApp.program.accessLevel">Access Level</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.accessLevel" for="field_accessLevel">Access Level</label>
           <input
             type="text"
             class="form-control"
@@ -334,8 +340,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayEnrollmentDateLabel" jhiTranslate="dhis2AuditApp.program.displayEnrollmentDateLabel"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.displayEnrollmentDateLabel" for="field_displayEnrollmentDateLabel"
             >Display Enrollment Date Label</label
           >
           <input
@@ -348,8 +354,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayIncidentDateLabel" jhiTranslate="dhis2AuditApp.program.displayIncidentDateLabel"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.displayIncidentDateLabel" for="field_displayIncidentDateLabel"
             >Display Incident Date Label</label
           >
           <input
@@ -362,8 +368,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_registration" jhiTranslate="dhis2AuditApp.program.registration">Registration</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.registration" for="field_registration">Registration</label>
           <input
             type="checkbox"
             class="form-check"
@@ -374,8 +380,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_withoutRegistration" jhiTranslate="dhis2AuditApp.program.withoutRegistration"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.withoutRegistration" for="field_withoutRegistration"
             >Without Registration</label
           >
           <input
@@ -388,8 +394,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayShortName" jhiTranslate="dhis2AuditApp.program.displayShortName"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.displayShortName" for="field_displayShortName"
             >Display Short Name</label
           >
           <input
@@ -402,8 +408,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayDescription" jhiTranslate="dhis2AuditApp.program.displayDescription"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.displayDescription" for="field_displayDescription"
             >Display Description</label
           >
           <input
@@ -416,8 +422,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayFormName" jhiTranslate="dhis2AuditApp.program.displayFormName"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.displayFormName" for="field_displayFormName"
             >Display Form Name</label
           >
           <input
@@ -430,8 +436,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayName" jhiTranslate="dhis2AuditApp.program.displayName">Display Name</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.displayName" for="field_displayName">Display Name</label>
           <input
             type="text"
             class="form-control"
@@ -442,8 +448,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_organisationUnitsCount" jhiTranslate="dhis2AuditApp.program.organisationUnitsCount"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.organisationUnitsCount" for="field_organisationUnitsCount"
             >Organisation Units Count</label
           >
           <input
@@ -456,8 +462,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_programStagesCount" jhiTranslate="dhis2AuditApp.program.programStagesCount"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.programStagesCount" for="field_programStagesCount"
             >Program Stages Count</label
           >
           <input
@@ -470,8 +476,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_programIndicatorsCount" jhiTranslate="dhis2AuditApp.program.programIndicatorsCount"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.programIndicatorsCount" for="field_programIndicatorsCount"
             >Program Indicators Count</label
           >
           <input
@@ -484,11 +490,11 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label
             class="form-label"
+            jhiTranslate="dhis2TrackApp.program.programTrackedEntityAttributesCount"
             for="field_programTrackedEntityAttributesCount"
-            jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributesCount"
             >Program Tracked Entity Attributes Count</label
           >
           <input
@@ -501,8 +507,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_organisationUnitsContent" jhiTranslate="dhis2AuditApp.program.organisationUnitsContent"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.organisationUnitsContent" for="field_organisationUnitsContent"
             >Organisation Units Content</label
           >
           <input
@@ -515,8 +521,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_programStagesContent" jhiTranslate="dhis2AuditApp.program.programStagesContent"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.programStagesContent" for="field_programStagesContent"
             >Program Stages Content</label
           >
           <input
@@ -529,8 +535,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_programIndicatorsContent" jhiTranslate="dhis2AuditApp.program.programIndicatorsContent"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.programIndicatorsContent" for="field_programIndicatorsContent"
             >Program Indicators Content</label
           >
           <input
@@ -543,11 +549,11 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label
             class="form-label"
+            jhiTranslate="dhis2TrackApp.program.programTrackedEntityAttributesContent"
             for="field_programTrackedEntityAttributesContent"
-            jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributesContent"
             >Program Tracked Entity Attributes Content</label
           >
           <input
@@ -560,25 +566,23 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_track" jhiTranslate="dhis2AuditApp.program.track">Track</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.track" for="field_track">Track</label>
           <select class="form-control" name="track" formControlName="track" id="field_track" data-cy="track">
-            <option [ngValue]="null">{{ 'dhis2AuditApp.TypeTrack.null' | translate }}</option>
-            @for (typeTrack of typeTrackValues; track $index) {
-              <option [value]="typeTrack">{{ 'dhis2AuditApp.TypeTrack.' + typeTrack | translate }}</option>
-            }
+            <option [ngValue]="null">{{ 'dhis2TrackApp.TypeTrack.null' | translate }}</option>
+            <option *ngFor="let typeTrack of typeTrackValues" [value]="typeTrack">
+              {{ 'dhis2TrackApp.TypeTrack.' + typeTrack | translate }}
+            </option>
           </select>
-          @if (editForm.get('track')!.invalid && (editForm.get('track')!.dirty || editForm.get('track')!.touched)) {
-            <div>
-              @if (editForm.get('track')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+          <div *ngIf="editForm.get('track')!.invalid && (editForm.get('track')!.dirty || editForm.get('track')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('track')?.errors?.required" jhiTranslate="entity.validation.required">
+              Ce champ est obligatoire.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_project" jhiTranslate="dhis2AuditApp.program.project">Project</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.project" for="field_project">Project</label>
           <select
             class="form-control"
             id="field_project"
@@ -588,14 +592,12 @@
             [compareWith]="compareProject"
           >
             <option [ngValue]="null"></option>
-            @for (projectOption of projectsSharedCollection; track $index) {
-              <option [ngValue]="projectOption">{{ projectOption.id }}</option>
-            }
+            <option [ngValue]="projectOption" *ngFor="let projectOption of projectsSharedCollection">{{ projectOption.id }}</option>
           </select>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_createdBy" jhiTranslate="dhis2AuditApp.program.createdBy">Created By</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.createdBy" for="field_createdBy">Created By</label>
           <select
             class="form-control"
             id="field_createdBy"
@@ -604,24 +606,22 @@
             formControlName="createdBy"
             [compareWith]="compareDHISUser"
           >
-            @if (!editForm.get('createdBy')!.value) {
-              <option [ngValue]="null" selected></option>
-            }
-            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
-              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
-            }
+            <option *ngIf="!editForm.get('createdBy')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="dHISUserOption" *ngFor="let dHISUserOption of dHISUsersSharedCollection">{{ dHISUserOption.id }}</option>
           </select>
         </div>
-        @if (editForm.get(['createdBy'])!.invalid && (editForm.get(['createdBy'])!.dirty || editForm.get(['createdBy'])!.touched)) {
-          <div>
-            @if (editForm.get(['createdBy'])?.errors?.required) {
-              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-            }
-          </div>
-        }
+        <div *ngIf="editForm.get(['createdBy'])!.invalid && (editForm.get(['createdBy'])!.dirty || editForm.get(['createdBy'])!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['createdBy'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Ce champ est obligatoire.
+          </small>
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_lastUpdatedBy" jhiTranslate="dhis2AuditApp.program.lastUpdatedBy">Last Updated By</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.lastUpdatedBy" for="field_lastUpdatedBy">Last Updated By</label>
           <select
             class="form-control"
             id="field_lastUpdatedBy"
@@ -630,26 +630,26 @@
             formControlName="lastUpdatedBy"
             [compareWith]="compareDHISUser"
           >
-            @if (!editForm.get('lastUpdatedBy')!.value) {
-              <option [ngValue]="null" selected></option>
-            }
-            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
-              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
-            }
+            <option *ngIf="!editForm.get('lastUpdatedBy')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="dHISUserOption" *ngFor="let dHISUserOption of dHISUsersSharedCollection">{{ dHISUserOption.id }}</option>
           </select>
         </div>
-        @if (
-          editForm.get(['lastUpdatedBy'])!.invalid && (editForm.get(['lastUpdatedBy'])!.dirty || editForm.get(['lastUpdatedBy'])!.touched)
-        ) {
-          <div>
-            @if (editForm.get(['lastUpdatedBy'])?.errors?.required) {
-              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-            }
-          </div>
-        }
+        <div
+          *ngIf="
+            editForm.get(['lastUpdatedBy'])!.invalid && (editForm.get(['lastUpdatedBy'])!.dirty || editForm.get(['lastUpdatedBy'])!.touched)
+          "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['lastUpdatedBy'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Ce champ est obligatoire.
+          </small>
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_categoryCombo" jhiTranslate="dhis2AuditApp.program.categoryCombo">Category Combo</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.program.categoryCombo" for="field_categoryCombo">Category Combo</label>
           <select
             class="form-control"
             id="field_categoryCombo"
@@ -659,14 +659,14 @@
             [compareWith]="compareCategorycombo"
           >
             <option [ngValue]="null"></option>
-            @for (categorycomboOption of categorycombosSharedCollection; track $index) {
-              <option [ngValue]="categorycomboOption">{{ categorycomboOption.id }}</option>
-            }
+            <option [ngValue]="categorycomboOption" *ngFor="let categorycomboOption of categorycombosSharedCollection">
+              {{ categorycomboOption.id }}
+            </option>
           </select>
         </div>
 
-        <div class="mb-3">
-          <label for="field_programTrackedEntityAttributes" jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributes"
+        <div class="row mb-3">
+          <label jhiTranslate="dhis2TrackApp.program.programTrackedEntityAttributes" for="field_programTrackedEntityAttributes"
             >Program Tracked Entity Attributes</label
           >
           <select
@@ -678,14 +678,17 @@
             formControlName="programTrackedEntityAttributes"
             [compareWith]="compareTrackedEntityAttribute"
           >
-            @for (trackedEntityAttributeOption of trackedEntityAttributesSharedCollection; track $index) {
-              <option [ngValue]="trackedEntityAttributeOption">{{ trackedEntityAttributeOption.id }}</option>
-            }
+            <option
+              [ngValue]="trackedEntityAttributeOption"
+              *ngFor="let trackedEntityAttributeOption of trackedEntityAttributesSharedCollection"
+            >
+              {{ trackedEntityAttributeOption.id }}
+            </option>
           </select>
         </div>
 
-        <div class="mb-3">
-          <label for="field_organisationUnits" jhiTranslate="dhis2AuditApp.program.organisationUnits">Organisation Units</label>
+        <div class="row mb-3">
+          <label jhiTranslate="dhis2TrackApp.program.organisationUnits" for="field_organisationUnits">Organisation Units</label>
           <select
             class="form-control"
             id="field_organisationUnits"
@@ -695,14 +698,14 @@
             formControlName="organisationUnits"
             [compareWith]="compareOrganisationUnit"
           >
-            @for (organisationUnitOption of organisationUnitsSharedCollection; track $index) {
-              <option [ngValue]="organisationUnitOption">{{ organisationUnitOption.id }}</option>
-            }
+            <option [ngValue]="organisationUnitOption" *ngFor="let organisationUnitOption of organisationUnitsSharedCollection">
+              {{ organisationUnitOption.id }}
+            </option>
           </select>
         </div>
 
-        <div class="mb-3">
-          <label for="field_programIndicators" jhiTranslate="dhis2AuditApp.program.programIndicators">Program Indicators</label>
+        <div class="row mb-3">
+          <label jhiTranslate="dhis2TrackApp.program.programIndicators" for="field_programIndicators">Program Indicators</label>
           <select
             class="form-control"
             id="field_programIndicators"
@@ -712,14 +715,14 @@
             formControlName="programIndicators"
             [compareWith]="compareProgramIndicator"
           >
-            @for (programIndicatorOption of programIndicatorsSharedCollection; track $index) {
-              <option [ngValue]="programIndicatorOption">{{ programIndicatorOption.id }}</option>
-            }
+            <option [ngValue]="programIndicatorOption" *ngFor="let programIndicatorOption of programIndicatorsSharedCollection">
+              {{ programIndicatorOption.id }}
+            </option>
           </select>
         </div>
 
-        <div class="mb-3">
-          <label for="field_programStages" jhiTranslate="dhis2AuditApp.program.programStage">Program Stage</label>
+        <div class="row mb-3">
+          <label jhiTranslate="dhis2TrackApp.program.programStage" for="field_programStages">Program Stage</label>
           <select
             class="form-control"
             id="field_programStages"
@@ -729,9 +732,9 @@
             formControlName="programStages"
             [compareWith]="compareProgramStage"
           >
-            @for (programStageOption of programStagesSharedCollection; track $index) {
-              <option [ngValue]="programStageOption">{{ programStageOption.id }}</option>
-            }
+            <option [ngValue]="programStageOption" *ngFor="let programStageOption of programStagesSharedCollection">
+              {{ programStageOption.id }}
+            </option>
           </select>
         </div>
       </div>

@@ -2,23 +2,25 @@ package com.didate.domain;
 
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.springframework.data.domain.Persistable;
 
 /**
  * A Dataset.
  */
+@JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "dataset")
 @Audited
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Dataset implements Serializable {
+public class Dataset implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -130,12 +132,16 @@ public class Dataset implements Serializable {
     @Column(name = "organisation_units_content")
     private String organisationUnitsContent;
 
+    @NotAudited
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "track", nullable = false)
     private TypeTrack track;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Transient
+    private boolean isPersisted;
+
+    @ManyToOne
     private Project project;
 
     @ManyToOne(optional = false)
@@ -146,37 +152,37 @@ public class Dataset implements Serializable {
     @NotNull
     private DHISUser lastUpdatedBy;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Categorycombo categoryCombo;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "rel_dataset__data_set_elements",
         joinColumns = @JoinColumn(name = "dataset_id"),
         inverseJoinColumns = @JoinColumn(name = "data_set_elements_id")
     )
     @JsonIgnoreProperties(
-        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "datasets", "programStages" },
+        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "dataSets", "programStages" },
         allowSetters = true
     )
     private Set<Dataelement> dataSetElements = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "rel_dataset__indicators",
         joinColumns = @JoinColumn(name = "dataset_id"),
         inverseJoinColumns = @JoinColumn(name = "indicators_id")
     )
-    @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "indicatorType", "datasets" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "indicatorType", "dataSets" }, allowSetters = true)
     private Set<Indicator> indicators = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "rel_dataset__organisation_units",
         joinColumns = @JoinColumn(name = "dataset_id"),
         inverseJoinColumns = @JoinColumn(name = "organisation_units_id")
     )
-    @JsonIgnoreProperties(value = { "createdBy", "lastUpdatedBy", "programs", "datasets" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "createdBy", "lastUpdatedBy", "programs", "dataSets" }, allowSetters = true)
     private Set<OrganisationUnit> organisationUnits = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -649,6 +655,23 @@ public class Dataset implements Serializable {
         this.track = track;
     }
 
+    @Transient
+    @Override
+    public boolean isNew() {
+        return !this.isPersisted;
+    }
+
+    public Dataset setIsPersisted() {
+        this.isPersisted = true;
+        return this;
+    }
+
+    @PostLoad
+    @PostPersist
+    public void updateEntityState() {
+        this.setIsPersisted();
+    }
+
     public Project getProject() {
         return this.project;
     }
@@ -716,11 +739,13 @@ public class Dataset implements Serializable {
 
     public Dataset addDataSetElements(Dataelement dataelement) {
         this.dataSetElements.add(dataelement);
+        dataelement.getDataSets().add(this);
         return this;
     }
 
     public Dataset removeDataSetElements(Dataelement dataelement) {
         this.dataSetElements.remove(dataelement);
+        dataelement.getDataSets().remove(this);
         return this;
     }
 
@@ -739,11 +764,13 @@ public class Dataset implements Serializable {
 
     public Dataset addIndicators(Indicator indicator) {
         this.indicators.add(indicator);
+        indicator.getDataSets().add(this);
         return this;
     }
 
     public Dataset removeIndicators(Indicator indicator) {
         this.indicators.remove(indicator);
+        indicator.getDataSets().remove(this);
         return this;
     }
 
@@ -762,11 +789,13 @@ public class Dataset implements Serializable {
 
     public Dataset addOrganisationUnits(OrganisationUnit organisationUnit) {
         this.organisationUnits.add(organisationUnit);
+        organisationUnit.getDataSets().add(this);
         return this;
     }
 
     public Dataset removeOrganisationUnits(OrganisationUnit organisationUnit) {
         this.organisationUnits.remove(organisationUnit);
+        organisationUnit.getDataSets().remove(this);
         return this;
     }
 
@@ -780,7 +809,7 @@ public class Dataset implements Serializable {
         if (!(o instanceof Dataset)) {
             return false;
         }
-        return getId() != null && getId().equals(((Dataset) o).getId());
+        return id != null && id.equals(((Dataset) o).id);
     }
 
     @Override

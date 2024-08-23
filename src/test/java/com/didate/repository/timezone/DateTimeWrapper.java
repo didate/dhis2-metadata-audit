@@ -1,9 +1,9 @@
 package com.didate.repository.timezone;
 
-import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.*;
 import java.util.Objects;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "jhi_date_time_wrapper")
@@ -11,7 +11,8 @@ public class DateTimeWrapper implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 

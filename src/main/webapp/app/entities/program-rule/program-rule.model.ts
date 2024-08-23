@@ -12,11 +12,11 @@ export interface IProgramRule {
   displayName?: string | null;
   priority?: number | null;
   condition?: string | null;
-  track?: keyof typeof TypeTrack | null;
-  project?: IProject | null;
-  createdBy?: IDHISUser | null;
-  lastUpdatedBy?: IDHISUser | null;
-  program?: IProgram | null;
+  track?: TypeTrack | null;
+  project?: Pick<IProject, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'id'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  program?: Pick<IProgram, 'id'> | null;
 }
 
 export type NewProgramRule = Omit<IProgramRule, 'id'> & { id: null };

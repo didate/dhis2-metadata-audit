@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
+import { DHISUserFormService } from './dhis-user-form.service';
 import { DHISUserService } from '../service/dhis-user.service';
 import { IDHISUser } from '../dhis-user.model';
-import { DHISUserFormService } from './dhis-user-form.service';
 
 import { DHISUserUpdateComponent } from './dhis-user-update.component';
 
@@ -19,9 +21,9 @@ describe('DHISUser Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DHISUserUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [DHISUserUpdateComponent],
       providers: [
-        provideHttpClient(),
         FormBuilder,
         {
           provide: ActivatedRoute,

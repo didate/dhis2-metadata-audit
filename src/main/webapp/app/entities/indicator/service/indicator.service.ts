@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
@@ -27,10 +27,9 @@ export type EntityArrayResponseType = HttpResponse<IIndicator[]>;
 
 @Injectable({ providedIn: 'root' })
 export class IndicatorService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/indicators');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(indicator: NewIndicator): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(indicator);
@@ -84,7 +83,7 @@ export class IndicatorService {
   ): Type[] {
     const indicators: Type[] = indicatorsToCheck.filter(isPresent);
     if (indicators.length > 0) {
-      const indicatorCollectionIdentifiers = indicatorCollection.map(indicatorItem => this.getIndicatorIdentifier(indicatorItem));
+      const indicatorCollectionIdentifiers = indicatorCollection.map(indicatorItem => this.getIndicatorIdentifier(indicatorItem)!);
       const indicatorsToAdd = indicators.filter(indicatorItem => {
         const indicatorIdentifier = this.getIndicatorIdentifier(indicatorItem);
         if (indicatorCollectionIdentifiers.includes(indicatorIdentifier)) {

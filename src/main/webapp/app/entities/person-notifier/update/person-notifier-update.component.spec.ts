@@ -1,14 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
-import { IProject } from 'app/entities/project/project.model';
-import { ProjectService } from 'app/entities/project/service/project.service';
+import { PersonNotifierFormService } from './person-notifier-form.service';
 import { PersonNotifierService } from '../service/person-notifier.service';
 import { IPersonNotifier } from '../person-notifier.model';
-import { PersonNotifierFormService } from './person-notifier-form.service';
+import { IProject } from 'app/entities/project/project.model';
+import { ProjectService } from 'app/entities/project/service/project.service';
 
 import { PersonNotifierUpdateComponent } from './person-notifier-update.component';
 
@@ -22,9 +24,9 @@ describe('PersonNotifier Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [PersonNotifierUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [PersonNotifierUpdateComponent],
       providers: [
-        provideHttpClient(),
         FormBuilder,
         {
           provide: ActivatedRoute,
@@ -49,10 +51,10 @@ describe('PersonNotifier Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Project query and add missing value', () => {
       const personNotifier: IPersonNotifier = { id: 456 };
-      const project: IProject = { id: 25022 };
+      const project: IProject = { id: 76825 };
       personNotifier.project = project;
 
-      const projectCollection: IProject[] = [{ id: 21198 }];
+      const projectCollection: IProject[] = [{ id: 13339 }];
       jest.spyOn(projectService, 'query').mockReturnValue(of(new HttpResponse({ body: projectCollection })));
       const additionalProjects = [project];
       const expectedCollection: IProject[] = [...additionalProjects, ...projectCollection];
@@ -64,14 +66,14 @@ describe('PersonNotifier Management Update Component', () => {
       expect(projectService.query).toHaveBeenCalled();
       expect(projectService.addProjectToCollectionIfMissing).toHaveBeenCalledWith(
         projectCollection,
-        ...additionalProjects.map(expect.objectContaining),
+        ...additionalProjects.map(expect.objectContaining)
       );
       expect(comp.projectsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
       const personNotifier: IPersonNotifier = { id: 456 };
-      const project: IProject = { id: 12603 };
+      const project: IProject = { id: 98907 };
       personNotifier.project = project;
 
       activatedRoute.data = of({ personNotifier });

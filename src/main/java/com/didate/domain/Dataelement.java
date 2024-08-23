@@ -2,23 +2,25 @@ package com.didate.domain;
 
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.springframework.data.domain.Persistable;
 
 /**
  * A Dataelement.
  */
+@JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "dataelement")
 @Audited
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Dataelement implements Serializable {
+public class Dataelement implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -87,12 +89,16 @@ public class Dataelement implements Serializable {
     @Column(name = "dimension_item")
     private String dimensionItem;
 
+    @NotAudited
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "track", nullable = false)
     private TypeTrack track;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Transient
+    private boolean isPersisted;
+
+    @ManyToOne
     private Project project;
 
     @ManyToOne(optional = false)
@@ -103,20 +109,20 @@ public class Dataelement implements Serializable {
     @NotNull
     private DHISUser lastUpdatedBy;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Categorycombo categoryCombo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Optionset optionSet;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dataSetElements")
+    @ManyToMany(mappedBy = "dataSetElements")
     @JsonIgnoreProperties(
         value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataSetElements", "indicators", "organisationUnits" },
         allowSetters = true
     )
-    private Set<Dataset> datasets = new HashSet<>();
+    private Set<Dataset> dataSets = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "programStageDataElements")
+    @ManyToMany(mappedBy = "programStageDataElements")
     @JsonIgnoreProperties(value = { "createdBy", "lastUpdatedBy", "program", "programStageDataElements", "programs" }, allowSetters = true)
     private Set<ProgramStage> programStages = new HashSet<>();
 
@@ -369,6 +375,23 @@ public class Dataelement implements Serializable {
         this.track = track;
     }
 
+    @Transient
+    @Override
+    public boolean isNew() {
+        return !this.isPersisted;
+    }
+
+    public Dataelement setIsPersisted() {
+        this.isPersisted = true;
+        return this;
+    }
+
+    @PostLoad
+    @PostPersist
+    public void updateEntityState() {
+        this.setIsPersisted();
+    }
+
     public Project getProject() {
         return this.project;
     }
@@ -434,33 +457,33 @@ public class Dataelement implements Serializable {
         return this;
     }
 
-    public Set<Dataset> getDatasets() {
-        return this.datasets;
+    public Set<Dataset> getDataSets() {
+        return this.dataSets;
     }
 
-    public void setDatasets(Set<Dataset> datasets) {
-        if (this.datasets != null) {
-            this.datasets.forEach(i -> i.removeDataSetElements(this));
+    public void setDataSets(Set<Dataset> datasets) {
+        if (this.dataSets != null) {
+            this.dataSets.forEach(i -> i.removeDataSetElements(this));
         }
         if (datasets != null) {
             datasets.forEach(i -> i.addDataSetElements(this));
         }
-        this.datasets = datasets;
+        this.dataSets = datasets;
     }
 
-    public Dataelement datasets(Set<Dataset> datasets) {
-        this.setDatasets(datasets);
+    public Dataelement dataSets(Set<Dataset> datasets) {
+        this.setDataSets(datasets);
         return this;
     }
 
-    public Dataelement addDataset(Dataset dataset) {
-        this.datasets.add(dataset);
+    public Dataelement addDataSets(Dataset dataset) {
+        this.dataSets.add(dataset);
         dataset.getDataSetElements().add(this);
         return this;
     }
 
-    public Dataelement removeDataset(Dataset dataset) {
-        this.datasets.remove(dataset);
+    public Dataelement removeDataSets(Dataset dataset) {
+        this.dataSets.remove(dataset);
         dataset.getDataSetElements().remove(this);
         return this;
     }
@@ -484,13 +507,13 @@ public class Dataelement implements Serializable {
         return this;
     }
 
-    public Dataelement addProgramStage(ProgramStage programStage) {
+    public Dataelement addProgramStages(ProgramStage programStage) {
         this.programStages.add(programStage);
         programStage.getProgramStageDataElements().add(this);
         return this;
     }
 
-    public Dataelement removeProgramStage(ProgramStage programStage) {
+    public Dataelement removeProgramStages(ProgramStage programStage) {
         this.programStages.remove(programStage);
         programStage.getProgramStageDataElements().remove(this);
         return this;
@@ -506,7 +529,7 @@ public class Dataelement implements Serializable {
         if (!(o instanceof Dataelement)) {
             return false;
         }
-        return getId() != null && getId().equals(((Dataelement) o).getId());
+        return id != null && id.equals(((Dataelement) o).id);
     }
 
     @Override

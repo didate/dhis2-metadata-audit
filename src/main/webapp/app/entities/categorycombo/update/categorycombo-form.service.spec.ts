@@ -21,7 +21,7 @@ describe('Categorycombo Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             name: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -32,13 +32,14 @@ describe('Categorycombo Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             name: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getCategorycombo', () => {
       it('should return NewCategorycombo for default Categorycombo initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createCategorycomboFormGroup(sampleWithNewData);
 
         const categorycombo = service.getCategorycombo(formGroup) as any;

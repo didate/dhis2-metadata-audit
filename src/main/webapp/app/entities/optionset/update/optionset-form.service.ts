@@ -32,11 +32,11 @@ export class OptionsetFormService {
     };
     return new FormGroup<OptionsetFormGroupContent>({
       id: new FormControl(
-        { value: optionsetRawValue.id, disabled: true },
+        { value: optionsetRawValue.id, disabled: optionsetRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       name: new FormControl(optionsetRawValue.name),
     });
@@ -51,8 +51,8 @@ export class OptionsetFormService {
     form.reset(
       {
         ...optionsetRawValue,
-        id: { value: optionsetRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: optionsetRawValue.id, disabled: optionsetRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 

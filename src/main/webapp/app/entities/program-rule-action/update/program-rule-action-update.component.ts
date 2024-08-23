@@ -1,12 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { ProgramRuleActionFormService, ProgramRuleActionFormGroup } from './program-rule-action-form.service';
+import { IProgramRuleAction } from '../program-rule-action.model';
+import { ProgramRuleActionService } from '../service/program-rule-action.service';
 import { IProject } from 'app/entities/project/project.model';
 import { ProjectService } from 'app/entities/project/service/project.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
@@ -18,15 +18,10 @@ import { TrackedEntityAttributeService } from 'app/entities/tracked-entity-attri
 import { IOptionGroup } from 'app/entities/option-group/option-group.model';
 import { OptionGroupService } from 'app/entities/option-group/service/option-group.service';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
-import { ProgramRuleActionService } from '../service/program-rule-action.service';
-import { IProgramRuleAction } from '../program-rule-action.model';
-import { ProgramRuleActionFormService, ProgramRuleActionFormGroup } from './program-rule-action-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-program-rule-action-update',
   templateUrl: './program-rule-action-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ProgramRuleActionUpdateComponent implements OnInit {
   isSaving = false;
@@ -39,17 +34,18 @@ export class ProgramRuleActionUpdateComponent implements OnInit {
   trackedEntityAttributesSharedCollection: ITrackedEntityAttribute[] = [];
   optionGroupsSharedCollection: IOptionGroup[] = [];
 
-  protected programRuleActionService = inject(ProgramRuleActionService);
-  protected programRuleActionFormService = inject(ProgramRuleActionFormService);
-  protected projectService = inject(ProjectService);
-  protected dHISUserService = inject(DHISUserService);
-  protected programRuleService = inject(ProgramRuleService);
-  protected trackedEntityAttributeService = inject(TrackedEntityAttributeService);
-  protected optionGroupService = inject(OptionGroupService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ProgramRuleActionFormGroup = this.programRuleActionFormService.createProgramRuleActionFormGroup();
+
+  constructor(
+    protected programRuleActionService: ProgramRuleActionService,
+    protected programRuleActionFormService: ProgramRuleActionFormService,
+    protected projectService: ProjectService,
+    protected dHISUserService: DHISUserService,
+    protected programRuleService: ProgramRuleService,
+    protected trackedEntityAttributeService: TrackedEntityAttributeService,
+    protected optionGroupService: OptionGroupService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   compareProject = (o1: IProject | null, o2: IProject | null): boolean => this.projectService.compareProject(o1, o2);
 
@@ -112,26 +108,26 @@ export class ProgramRuleActionUpdateComponent implements OnInit {
 
     this.projectsSharedCollection = this.projectService.addProjectToCollectionIfMissing<IProject>(
       this.projectsSharedCollection,
-      programRuleAction.project,
+      programRuleAction.project
     );
     this.dHISUsersSharedCollection = this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
       this.dHISUsersSharedCollection,
       programRuleAction.createdBy,
-      programRuleAction.lastUpdatedBy,
+      programRuleAction.lastUpdatedBy
     );
     this.programRulesSharedCollection = this.programRuleService.addProgramRuleToCollectionIfMissing<IProgramRule>(
       this.programRulesSharedCollection,
-      programRuleAction.programRule,
+      programRuleAction.programRule
     );
     this.trackedEntityAttributesSharedCollection =
       this.trackedEntityAttributeService.addTrackedEntityAttributeToCollectionIfMissing<ITrackedEntityAttribute>(
         this.trackedEntityAttributesSharedCollection,
         programRuleAction.trackedEntityAttribute,
-        programRuleAction.dataElement,
+        programRuleAction.dataElement
       );
     this.optionGroupsSharedCollection = this.optionGroupService.addOptionGroupToCollectionIfMissing<IOptionGroup>(
       this.optionGroupsSharedCollection,
-      programRuleAction.optionGroup,
+      programRuleAction.optionGroup
     );
   }
 
@@ -141,8 +137,8 @@ export class ProgramRuleActionUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IProject[]>) => res.body ?? []))
       .pipe(
         map((projects: IProject[]) =>
-          this.projectService.addProjectToCollectionIfMissing<IProject>(projects, this.programRuleAction?.project),
-        ),
+          this.projectService.addProjectToCollectionIfMissing<IProject>(projects, this.programRuleAction?.project)
+        )
       )
       .subscribe((projects: IProject[]) => (this.projectsSharedCollection = projects));
 
@@ -154,9 +150,9 @@ export class ProgramRuleActionUpdateComponent implements OnInit {
           this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
             dHISUsers,
             this.programRuleAction?.createdBy,
-            this.programRuleAction?.lastUpdatedBy,
-          ),
-        ),
+            this.programRuleAction?.lastUpdatedBy
+          )
+        )
       )
       .subscribe((dHISUsers: IDHISUser[]) => (this.dHISUsersSharedCollection = dHISUsers));
 
@@ -165,8 +161,8 @@ export class ProgramRuleActionUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IProgramRule[]>) => res.body ?? []))
       .pipe(
         map((programRules: IProgramRule[]) =>
-          this.programRuleService.addProgramRuleToCollectionIfMissing<IProgramRule>(programRules, this.programRuleAction?.programRule),
-        ),
+          this.programRuleService.addProgramRuleToCollectionIfMissing<IProgramRule>(programRules, this.programRuleAction?.programRule)
+        )
       )
       .subscribe((programRules: IProgramRule[]) => (this.programRulesSharedCollection = programRules));
 
@@ -178,12 +174,12 @@ export class ProgramRuleActionUpdateComponent implements OnInit {
           this.trackedEntityAttributeService.addTrackedEntityAttributeToCollectionIfMissing<ITrackedEntityAttribute>(
             trackedEntityAttributes,
             this.programRuleAction?.trackedEntityAttribute,
-            this.programRuleAction?.dataElement,
-          ),
-        ),
+            this.programRuleAction?.dataElement
+          )
+        )
       )
       .subscribe(
-        (trackedEntityAttributes: ITrackedEntityAttribute[]) => (this.trackedEntityAttributesSharedCollection = trackedEntityAttributes),
+        (trackedEntityAttributes: ITrackedEntityAttribute[]) => (this.trackedEntityAttributesSharedCollection = trackedEntityAttributes)
       );
 
     this.optionGroupService
@@ -191,8 +187,8 @@ export class ProgramRuleActionUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IOptionGroup[]>) => res.body ?? []))
       .pipe(
         map((optionGroups: IOptionGroup[]) =>
-          this.optionGroupService.addOptionGroupToCollectionIfMissing<IOptionGroup>(optionGroups, this.programRuleAction?.optionGroup),
-        ),
+          this.optionGroupService.addOptionGroupToCollectionIfMissing<IOptionGroup>(optionGroups, this.programRuleAction?.optionGroup)
+        )
       )
       .subscribe((optionGroups: IOptionGroup[]) => (this.optionGroupsSharedCollection = optionGroups));
   }

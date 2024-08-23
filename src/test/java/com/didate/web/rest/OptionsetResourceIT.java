@@ -1,7 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.OptionsetAsserts.*;
-import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -10,10 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.didate.IntegrationTest;
 import com.didate.domain.Optionset;
 import com.didate.repository.OptionsetRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
+import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +35,6 @@ class OptionsetResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private OptionsetRepository optionsetRepository;
 
     @Autowired
@@ -50,8 +44,6 @@ class OptionsetResourceIT {
     private MockMvc restOptionsetMockMvc;
 
     private Optionset optionset;
-
-    private Optionset insertedOptionset;
 
     /**
      * Create an entity for this test.
@@ -80,34 +72,20 @@ class OptionsetResourceIT {
         optionset = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedOptionset != null) {
-            optionsetRepository.delete(insertedOptionset);
-            insertedOptionset = null;
-        }
-    }
-
     @Test
     @Transactional
     void createOptionset() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = optionsetRepository.findAll().size();
         // Create the Optionset
-        var returnedOptionset = om.readValue(
-            restOptionsetMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(optionset)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            Optionset.class
-        );
+        restOptionsetMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(optionset)))
+            .andExpect(status().isCreated());
 
         // Validate the Optionset in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertOptionsetUpdatableFieldsEquals(returnedOptionset, getPersistedOptionset(returnedOptionset));
-
-        insertedOptionset = returnedOptionset;
+        List<Optionset> optionsetList = optionsetRepository.findAll();
+        assertThat(optionsetList).hasSize(databaseSizeBeforeCreate + 1);
+        Optionset testOptionset = optionsetList.get(optionsetList.size() - 1);
+        assertThat(testOptionset.getName()).isEqualTo(DEFAULT_NAME);
     }
 
     @Test
@@ -116,22 +94,24 @@ class OptionsetResourceIT {
         // Create the Optionset with an existing ID
         optionset.setId("existing_id");
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = optionsetRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOptionsetMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(optionset)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(optionset)))
             .andExpect(status().isBadRequest());
 
         // Validate the Optionset in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<Optionset> optionsetList = optionsetRepository.findAll();
+        assertThat(optionsetList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void getAllOptionsets() throws Exception {
         // Initialize the database
-        insertedOptionset = optionsetRepository.saveAndFlush(optionset);
+        optionset.setId(UUID.randomUUID().toString());
+        optionsetRepository.saveAndFlush(optionset);
 
         // Get all the optionsetList
         restOptionsetMockMvc
@@ -146,7 +126,8 @@ class OptionsetResourceIT {
     @Transactional
     void getOptionset() throws Exception {
         // Initialize the database
-        insertedOptionset = optionsetRepository.saveAndFlush(optionset);
+        optionset.setId(UUID.randomUUID().toString());
+        optionsetRepository.saveAndFlush(optionset);
 
         // Get the optionset
         restOptionsetMockMvc
@@ -168,12 +149,13 @@ class OptionsetResourceIT {
     @Transactional
     void putExistingOptionset() throws Exception {
         // Initialize the database
-        insertedOptionset = optionsetRepository.saveAndFlush(optionset);
+        optionset.setId(UUID.randomUUID().toString());
+        optionsetRepository.saveAndFlush(optionset);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = optionsetRepository.findAll().size();
 
         // Update the optionset
-        Optionset updatedOptionset = optionsetRepository.findById(optionset.getId()).orElseThrow();
+        Optionset updatedOptionset = optionsetRepository.findById(optionset.getId()).get();
         // Disconnect from session so that the updates on updatedOptionset are not directly saved in db
         em.detach(updatedOptionset);
         updatedOptionset.name(UPDATED_NAME);
@@ -182,36 +164,41 @@ class OptionsetResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, updatedOptionset.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedOptionset))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedOptionset))
             )
             .andExpect(status().isOk());
 
         // Validate the Optionset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedOptionsetToMatchAllProperties(updatedOptionset);
+        List<Optionset> optionsetList = optionsetRepository.findAll();
+        assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
+        Optionset testOptionset = optionsetList.get(optionsetList.size() - 1);
+        assertThat(testOptionset.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test
     @Transactional
     void putNonExistingOptionset() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = optionsetRepository.findAll().size();
         optionset.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restOptionsetMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, optionset.getId()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(optionset))
+                put(ENTITY_API_URL_ID, optionset.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(optionset))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Optionset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Optionset> optionsetList = optionsetRepository.findAll();
+        assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchOptionset() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = optionsetRepository.findAll().size();
         optionset.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -219,36 +206,39 @@ class OptionsetResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(optionset))
+                    .content(TestUtil.convertObjectToJsonBytes(optionset))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Optionset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Optionset> optionsetList = optionsetRepository.findAll();
+        assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamOptionset() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = optionsetRepository.findAll().size();
         optionset.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOptionsetMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(optionset)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(optionset)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Optionset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Optionset> optionsetList = optionsetRepository.findAll();
+        assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void partialUpdateOptionsetWithPatch() throws Exception {
         // Initialize the database
-        insertedOptionset = optionsetRepository.saveAndFlush(optionset);
+        optionset.setId(UUID.randomUUID().toString());
+        optionsetRepository.saveAndFlush(optionset);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = optionsetRepository.findAll().size();
 
         // Update the optionset using partial update
         Optionset partialUpdatedOptionset = new Optionset();
@@ -260,26 +250,25 @@ class OptionsetResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedOptionset.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedOptionset))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedOptionset))
             )
             .andExpect(status().isOk());
 
         // Validate the Optionset in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertOptionsetUpdatableFieldsEquals(
-            createUpdateProxyForBean(partialUpdatedOptionset, optionset),
-            getPersistedOptionset(optionset)
-        );
+        List<Optionset> optionsetList = optionsetRepository.findAll();
+        assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
+        Optionset testOptionset = optionsetList.get(optionsetList.size() - 1);
+        assertThat(testOptionset.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test
     @Transactional
     void fullUpdateOptionsetWithPatch() throws Exception {
         // Initialize the database
-        insertedOptionset = optionsetRepository.saveAndFlush(optionset);
+        optionset.setId(UUID.randomUUID().toString());
+        optionsetRepository.saveAndFlush(optionset);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = optionsetRepository.findAll().size();
 
         // Update the optionset using partial update
         Optionset partialUpdatedOptionset = new Optionset();
@@ -291,20 +280,21 @@ class OptionsetResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedOptionset.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedOptionset))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedOptionset))
             )
             .andExpect(status().isOk());
 
         // Validate the Optionset in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertOptionsetUpdatableFieldsEquals(partialUpdatedOptionset, getPersistedOptionset(partialUpdatedOptionset));
+        List<Optionset> optionsetList = optionsetRepository.findAll();
+        assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
+        Optionset testOptionset = optionsetList.get(optionsetList.size() - 1);
+        assertThat(testOptionset.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test
     @Transactional
     void patchNonExistingOptionset() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = optionsetRepository.findAll().size();
         optionset.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -312,18 +302,19 @@ class OptionsetResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, optionset.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(optionset))
+                    .content(TestUtil.convertObjectToJsonBytes(optionset))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Optionset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Optionset> optionsetList = optionsetRepository.findAll();
+        assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchOptionset() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = optionsetRepository.findAll().size();
         optionset.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -331,36 +322,41 @@ class OptionsetResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(optionset))
+                    .content(TestUtil.convertObjectToJsonBytes(optionset))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Optionset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Optionset> optionsetList = optionsetRepository.findAll();
+        assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamOptionset() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = optionsetRepository.findAll().size();
         optionset.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOptionsetMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(optionset)))
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(optionset))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Optionset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Optionset> optionsetList = optionsetRepository.findAll();
+        assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void deleteOptionset() throws Exception {
         // Initialize the database
-        insertedOptionset = optionsetRepository.saveAndFlush(optionset);
+        optionset.setId(UUID.randomUUID().toString());
+        optionsetRepository.saveAndFlush(optionset);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = optionsetRepository.findAll().size();
 
         // Delete the optionset
         restOptionsetMockMvc
@@ -368,34 +364,7 @@ class OptionsetResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return optionsetRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected Optionset getPersistedOptionset(Optionset optionset) {
-        return optionsetRepository.findById(optionset.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedOptionsetToMatchAllProperties(Optionset expectedOptionset) {
-        assertOptionsetAllPropertiesEquals(expectedOptionset, getPersistedOptionset(expectedOptionset));
-    }
-
-    protected void assertPersistedOptionsetToMatchUpdatableProperties(Optionset expectedOptionset) {
-        assertOptionsetAllUpdatablePropertiesEquals(expectedOptionset, getPersistedOptionset(expectedOptionset));
+        List<Optionset> optionsetList = optionsetRepository.findAll();
+        assertThat(optionsetList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

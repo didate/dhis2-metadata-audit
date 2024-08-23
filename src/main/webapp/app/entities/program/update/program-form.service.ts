@@ -100,11 +100,11 @@ export class ProgramFormService {
     };
     return new FormGroup<ProgramFormGroupContent>({
       id: new FormControl(
-        { value: programRawValue.id, disabled: true },
+        { value: programRawValue.id, disabled: programRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       name: new FormControl(programRawValue.name),
       created: new FormControl(programRawValue.created),
@@ -176,8 +176,8 @@ export class ProgramFormService {
     form.reset(
       {
         ...programRawValue,
-        id: { value: programRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: programRawValue.id, disabled: programRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 

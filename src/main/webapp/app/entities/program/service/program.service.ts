@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -14,10 +14,9 @@ export type EntityArrayResponseType = HttpResponse<IProgram[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ProgramService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/programs');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(program: NewProgram): Observable<EntityResponseType> {
     return this.http.post<IProgram>(this.resourceUrl, program, { observe: 'response' });
@@ -58,7 +57,7 @@ export class ProgramService {
   ): Type[] {
     const programs: Type[] = programsToCheck.filter(isPresent);
     if (programs.length > 0) {
-      const programCollectionIdentifiers = programCollection.map(programItem => this.getProgramIdentifier(programItem));
+      const programCollectionIdentifiers = programCollection.map(programItem => this.getProgramIdentifier(programItem)!);
       const programsToAdd = programs.filter(programItem => {
         const programIdentifier = this.getProgramIdentifier(programItem);
         if (programCollectionIdentifiers.includes(programIdentifier)) {

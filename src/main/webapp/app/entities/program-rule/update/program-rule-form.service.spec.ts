@@ -31,7 +31,7 @@ describe('ProgramRule Form Service', () => {
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
             program: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -52,13 +52,14 @@ describe('ProgramRule Form Service', () => {
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
             program: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getProgramRule', () => {
       it('should return NewProgramRule for default ProgramRule initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createProgramRuleFormGroup(sampleWithNewData);
 
         const programRule = service.getProgramRule(formGroup) as any;

@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { IProgramIndicator } from '../program-indicator.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../program-indicator.test-samples';
@@ -20,7 +19,7 @@ describe('ProgramIndicator Service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      imports: [HttpClientTestingModule],
     });
     expectedResult = null;
     service = TestBed.inject(ProgramIndicatorService);
@@ -40,6 +39,7 @@ describe('ProgramIndicator Service', () => {
     });
 
     it('should create a ProgramIndicator', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const programIndicator = { ...sampleWithNewData };
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };

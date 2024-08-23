@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { RouterTestingHarness } from '@angular/router/testing';
+import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { DataelementDetailComponent } from './dataelement-detail.component';
@@ -9,46 +8,29 @@ describe('Dataelement Management Detail Component', () => {
   let comp: DataelementDetailComponent;
   let fixture: ComponentFixture<DataelementDetailComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [DataelementDetailComponent],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [DataelementDetailComponent],
       providers: [
-        provideRouter(
-          [
-            {
-              path: '**',
-              component: DataelementDetailComponent,
-              resolve: { dataelement: () => of({ id: 'ABC' }) },
-            },
-          ],
-          withComponentInputBinding(),
-        ),
+        {
+          provide: ActivatedRoute,
+          useValue: { data: of({ dataelement: { id: 'ABC' } }) },
+        },
       ],
     })
       .overrideTemplate(DataelementDetailComponent, '')
       .compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(DataelementDetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
-    it('Should load dataelement on init', async () => {
-      const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', DataelementDetailComponent);
+    it('Should load dataelement on init', () => {
+      // WHEN
+      comp.ngOnInit();
 
       // THEN
-      expect(instance.dataelement()).toEqual(expect.objectContaining({ id: 'ABC' }));
-    });
-  });
-
-  describe('PreviousState', () => {
-    it('Should navigate to previous state', () => {
-      jest.spyOn(window.history, 'back');
-      comp.previousState();
-      expect(window.history.back).toHaveBeenCalled();
+      expect(comp.dataelement).toEqual(expect.objectContaining({ id: 'ABC' }));
     });
   });
 });

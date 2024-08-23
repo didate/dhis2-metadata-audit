@@ -1,34 +1,32 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    @if (categorycombo()) {
-      <div>
-        <h2 data-cy="categorycomboDetailsHeading"><span jhiTranslate="dhis2AuditApp.categorycombo.detail.title">Categorycombo</span></h2>
+    <div *ngIf="categorycombo">
+      <h2 data-cy="categorycomboDetailsHeading"><span jhiTranslate="dhis2TrackApp.categorycombo.detail.title">Categorycombo</span></h2>
 
-        <hr />
+      <hr />
 
-        <jhi-alert-error></jhi-alert-error>
+      <jhi-alert-error></jhi-alert-error>
 
-        <jhi-alert></jhi-alert>
+      <jhi-alert></jhi-alert>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="dhis2AuditApp.categorycombo.id">Id</span></dt>
-          <dd>
-            <span>{{ categorycombo()!.id }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.categorycombo.name">Name</span></dt>
-          <dd>
-            <span>{{ categorycombo()!.name }}</span>
-          </dd>
-        </dl>
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="dhis2TrackApp.categorycombo.id">Id</span></dt>
+        <dd>
+          <span>{{ categorycombo.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.categorycombo.name">Name</span></dt>
+        <dd>
+          <span>{{ categorycombo.name }}</span>
+        </dd>
+      </dl>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-        </button>
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
 
-        <button type="button" [routerLink]="['/categorycombo', categorycombo()!.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-        </button>
-      </div>
-    }
+      <button type="button" [routerLink]="['/categorycombo', categorycombo.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
   </div>
 </div>

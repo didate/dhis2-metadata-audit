@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
@@ -27,10 +27,9 @@ export type EntityArrayResponseType = HttpResponse<IProgramRule[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ProgramRuleService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/program-rules');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(programRule: NewProgramRule): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(programRule);
@@ -84,7 +83,9 @@ export class ProgramRuleService {
   ): Type[] {
     const programRules: Type[] = programRulesToCheck.filter(isPresent);
     if (programRules.length > 0) {
-      const programRuleCollectionIdentifiers = programRuleCollection.map(programRuleItem => this.getProgramRuleIdentifier(programRuleItem));
+      const programRuleCollectionIdentifiers = programRuleCollection.map(
+        programRuleItem => this.getProgramRuleIdentifier(programRuleItem)!
+      );
       const programRulesToAdd = programRules.filter(programRuleItem => {
         const programRuleIdentifier = this.getProgramRuleIdentifier(programRuleItem);
         if (programRuleCollectionIdentifiers.includes(programRuleIdentifier)) {

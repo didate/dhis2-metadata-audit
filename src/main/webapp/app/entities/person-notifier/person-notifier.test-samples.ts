@@ -1,34 +1,34 @@
 import { IPersonNotifier, NewPersonNotifier } from './person-notifier.model';
 
 export const sampleWithRequiredData: IPersonNotifier = {
-  id: 29343,
-  personName: 'parlementaire bzzz',
-  personPhone: 'de lunatique',
-  personEmail: 'K}H9^@"g.YGyy',
-  personOrganization: "accéder d'entre foule",
+  id: 84263,
+  personName: 'la Bedfordshire',
+  personPhone: 'overriding partnerships index',
+  personEmail: '/TQ@ZW.zB2a&Y',
+  personOrganization: 'Games',
 };
 
 export const sampleWithPartialData: IPersonNotifier = {
-  id: 17301,
-  personName: 'absolument hormis police',
-  personPhone: 'même si',
-  personEmail: '`=zH1@NLMOd.<sWBR',
-  personOrganization: 'emporter paraître à même',
+  id: 82055,
+  personName: 'Bedfordshire Dominique multi-byte',
+  personPhone: 'Yemeni firewall Licensed',
+  personEmail: 'VkBY@3(;p.R(RT?p',
+  personOrganization: 'up relationships Rubber',
 };
 
 export const sampleWithFullData: IPersonNotifier = {
-  id: 9092,
-  personName: 'bien moyennant solitaire',
-  personPhone: 'occuper dès que combler',
-  personEmail: 'i@`BoJ2.z#Zr&',
-  personOrganization: 'sédentaire quoique',
+  id: 23437,
+  personName: 'payment',
+  personPhone: 'hardware',
+  personEmail: 'jA@LF[L.~KYB&',
+  personOrganization: 'Intelligent Account',
 };
 
 export const sampleWithNewData: NewPersonNotifier = {
-  personName: 'affable raide',
-  personPhone: 'vivace',
-  personEmail: 'deD6a@\\3.C0Im',
-  personOrganization: 'si bien que',
+  personName: 'pink',
+  personPhone: 'payment',
+  personEmail: '"?a`k@!J}g$Q.-&{',
+  personOrganization: 'Leone Assistant',
   id: null,
 };
 

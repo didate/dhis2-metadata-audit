@@ -31,12 +31,8 @@ public class DataElementApiService {
         dataElements.addAll(dataElementResponse.getDataElements());
 
         while (DhisServiceUtil.hasNextPage(dataElementResponse.getPager())) {
-            dataElementResponse = DhisServiceUtil.fetchPage(
-                client,
-                dataElementResponse.getPager().getNextPage(),
-                DataElementResponse.class,
-                objectMapper
-            );
+            dataElementResponse =
+                DhisServiceUtil.fetchPage(client, dataElementResponse.getPager().getNextPage(), DataElementResponse.class, objectMapper);
             dataElements.addAll(dataElementResponse.getDataElements());
         }
 

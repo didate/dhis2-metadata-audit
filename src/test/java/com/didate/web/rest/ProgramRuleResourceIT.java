@@ -1,7 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.ProgramRuleAsserts.*;
-import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -13,12 +11,11 @@ import com.didate.domain.Program;
 import com.didate.domain.ProgramRule;
 import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.ProgramRuleRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,9 +58,6 @@ class ProgramRuleResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private ProgramRuleRepository programRuleRepository;
 
     @Autowired
@@ -73,8 +67,6 @@ class ProgramRuleResourceIT {
     private MockMvc restProgramRuleMockMvc;
 
     private ProgramRule programRule;
-
-    private ProgramRule insertedProgramRule;
 
     /**
      * Create an entity for this test.
@@ -161,34 +153,26 @@ class ProgramRuleResourceIT {
         programRule = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedProgramRule != null) {
-            programRuleRepository.delete(insertedProgramRule);
-            insertedProgramRule = null;
-        }
-    }
-
     @Test
     @Transactional
     void createProgramRule() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = programRuleRepository.findAll().size();
         // Create the ProgramRule
-        var returnedProgramRule = om.readValue(
-            restProgramRuleMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRule)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            ProgramRule.class
-        );
+        restProgramRuleMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRule)))
+            .andExpect(status().isCreated());
 
         // Validate the ProgramRule in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertProgramRuleUpdatableFieldsEquals(returnedProgramRule, getPersistedProgramRule(returnedProgramRule));
-
-        insertedProgramRule = returnedProgramRule;
+        List<ProgramRule> programRuleList = programRuleRepository.findAll();
+        assertThat(programRuleList).hasSize(databaseSizeBeforeCreate + 1);
+        ProgramRule testProgramRule = programRuleList.get(programRuleList.size() - 1);
+        assertThat(testProgramRule.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testProgramRule.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testProgramRule.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testProgramRule.getDisplayName()).isEqualTo(DEFAULT_DISPLAY_NAME);
+        assertThat(testProgramRule.getPriority()).isEqualTo(DEFAULT_PRIORITY);
+        assertThat(testProgramRule.getCondition()).isEqualTo(DEFAULT_CONDITION);
+        assertThat(testProgramRule.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
@@ -197,38 +181,41 @@ class ProgramRuleResourceIT {
         // Create the ProgramRule with an existing ID
         programRule.setId("existing_id");
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = programRuleRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProgramRuleMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRule)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRule)))
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRule in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<ProgramRule> programRuleList = programRuleRepository.findAll();
+        assertThat(programRuleList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void checkTrackIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = programRuleRepository.findAll().size();
         // set the field null
         programRule.setTrack(null);
 
         // Create the ProgramRule, which fails.
 
         restProgramRuleMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRule)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRule)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<ProgramRule> programRuleList = programRuleRepository.findAll();
+        assertThat(programRuleList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void getAllProgramRules() throws Exception {
         // Initialize the database
-        insertedProgramRule = programRuleRepository.saveAndFlush(programRule);
+        programRule.setId(UUID.randomUUID().toString());
+        programRuleRepository.saveAndFlush(programRule);
 
         // Get all the programRuleList
         restProgramRuleMockMvc
@@ -249,7 +236,8 @@ class ProgramRuleResourceIT {
     @Transactional
     void getProgramRule() throws Exception {
         // Initialize the database
-        insertedProgramRule = programRuleRepository.saveAndFlush(programRule);
+        programRule.setId(UUID.randomUUID().toString());
+        programRuleRepository.saveAndFlush(programRule);
 
         // Get the programRule
         restProgramRuleMockMvc
@@ -277,12 +265,13 @@ class ProgramRuleResourceIT {
     @Transactional
     void putExistingProgramRule() throws Exception {
         // Initialize the database
-        insertedProgramRule = programRuleRepository.saveAndFlush(programRule);
+        programRule.setId(UUID.randomUUID().toString());
+        programRuleRepository.saveAndFlush(programRule);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleRepository.findAll().size();
 
         // Update the programRule
-        ProgramRule updatedProgramRule = programRuleRepository.findById(programRule.getId()).orElseThrow();
+        ProgramRule updatedProgramRule = programRuleRepository.findById(programRule.getId()).get();
         // Disconnect from session so that the updates on updatedProgramRule are not directly saved in db
         em.detach(updatedProgramRule);
         updatedProgramRule
@@ -298,19 +287,27 @@ class ProgramRuleResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, updatedProgramRule.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedProgramRule))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedProgramRule))
             )
             .andExpect(status().isOk());
 
         // Validate the ProgramRule in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedProgramRuleToMatchAllProperties(updatedProgramRule);
+        List<ProgramRule> programRuleList = programRuleRepository.findAll();
+        assertThat(programRuleList).hasSize(databaseSizeBeforeUpdate);
+        ProgramRule testProgramRule = programRuleList.get(programRuleList.size() - 1);
+        assertThat(testProgramRule.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testProgramRule.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testProgramRule.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testProgramRule.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testProgramRule.getPriority()).isEqualTo(UPDATED_PRIORITY);
+        assertThat(testProgramRule.getCondition()).isEqualTo(UPDATED_CONDITION);
+        assertThat(testProgramRule.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void putNonExistingProgramRule() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleRepository.findAll().size();
         programRule.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -318,18 +315,19 @@ class ProgramRuleResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, programRule.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(programRule))
+                    .content(TestUtil.convertObjectToJsonBytes(programRule))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRule in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRule> programRuleList = programRuleRepository.findAll();
+        assertThat(programRuleList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchProgramRule() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleRepository.findAll().size();
         programRule.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -337,67 +335,79 @@ class ProgramRuleResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(programRule))
+                    .content(TestUtil.convertObjectToJsonBytes(programRule))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRule in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRule> programRuleList = programRuleRepository.findAll();
+        assertThat(programRuleList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamProgramRule() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleRepository.findAll().size();
         programRule.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProgramRuleMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(programRule)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programRule)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the ProgramRule in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRule> programRuleList = programRuleRepository.findAll();
+        assertThat(programRuleList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void partialUpdateProgramRuleWithPatch() throws Exception {
         // Initialize the database
-        insertedProgramRule = programRuleRepository.saveAndFlush(programRule);
+        programRule.setId(UUID.randomUUID().toString());
+        programRuleRepository.saveAndFlush(programRule);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleRepository.findAll().size();
 
         // Update the programRule using partial update
         ProgramRule partialUpdatedProgramRule = new ProgramRule();
         partialUpdatedProgramRule.setId(programRule.getId());
 
-        partialUpdatedProgramRule.displayName(UPDATED_DISPLAY_NAME).priority(UPDATED_PRIORITY).condition(UPDATED_CONDITION);
+        partialUpdatedProgramRule
+            .created(UPDATED_CREATED)
+            .displayName(UPDATED_DISPLAY_NAME)
+            .priority(UPDATED_PRIORITY)
+            .condition(UPDATED_CONDITION);
 
         restProgramRuleMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedProgramRule.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedProgramRule))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedProgramRule))
             )
             .andExpect(status().isOk());
 
         // Validate the ProgramRule in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertProgramRuleUpdatableFieldsEquals(
-            createUpdateProxyForBean(partialUpdatedProgramRule, programRule),
-            getPersistedProgramRule(programRule)
-        );
+        List<ProgramRule> programRuleList = programRuleRepository.findAll();
+        assertThat(programRuleList).hasSize(databaseSizeBeforeUpdate);
+        ProgramRule testProgramRule = programRuleList.get(programRuleList.size() - 1);
+        assertThat(testProgramRule.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testProgramRule.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testProgramRule.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testProgramRule.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testProgramRule.getPriority()).isEqualTo(UPDATED_PRIORITY);
+        assertThat(testProgramRule.getCondition()).isEqualTo(UPDATED_CONDITION);
+        assertThat(testProgramRule.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
     @Transactional
     void fullUpdateProgramRuleWithPatch() throws Exception {
         // Initialize the database
-        insertedProgramRule = programRuleRepository.saveAndFlush(programRule);
+        programRule.setId(UUID.randomUUID().toString());
+        programRuleRepository.saveAndFlush(programRule);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleRepository.findAll().size();
 
         // Update the programRule using partial update
         ProgramRule partialUpdatedProgramRule = new ProgramRule();
@@ -416,20 +426,27 @@ class ProgramRuleResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedProgramRule.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedProgramRule))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedProgramRule))
             )
             .andExpect(status().isOk());
 
         // Validate the ProgramRule in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertProgramRuleUpdatableFieldsEquals(partialUpdatedProgramRule, getPersistedProgramRule(partialUpdatedProgramRule));
+        List<ProgramRule> programRuleList = programRuleRepository.findAll();
+        assertThat(programRuleList).hasSize(databaseSizeBeforeUpdate);
+        ProgramRule testProgramRule = programRuleList.get(programRuleList.size() - 1);
+        assertThat(testProgramRule.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testProgramRule.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testProgramRule.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testProgramRule.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testProgramRule.getPriority()).isEqualTo(UPDATED_PRIORITY);
+        assertThat(testProgramRule.getCondition()).isEqualTo(UPDATED_CONDITION);
+        assertThat(testProgramRule.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void patchNonExistingProgramRule() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleRepository.findAll().size();
         programRule.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -437,18 +454,19 @@ class ProgramRuleResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, programRule.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(programRule))
+                    .content(TestUtil.convertObjectToJsonBytes(programRule))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRule in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRule> programRuleList = programRuleRepository.findAll();
+        assertThat(programRuleList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchProgramRule() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleRepository.findAll().size();
         programRule.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -456,36 +474,41 @@ class ProgramRuleResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(programRule))
+                    .content(TestUtil.convertObjectToJsonBytes(programRule))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ProgramRule in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRule> programRuleList = programRuleRepository.findAll();
+        assertThat(programRuleList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamProgramRule() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = programRuleRepository.findAll().size();
         programRule.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProgramRuleMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(programRule)))
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(programRule))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the ProgramRule in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<ProgramRule> programRuleList = programRuleRepository.findAll();
+        assertThat(programRuleList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void deleteProgramRule() throws Exception {
         // Initialize the database
-        insertedProgramRule = programRuleRepository.saveAndFlush(programRule);
+        programRule.setId(UUID.randomUUID().toString());
+        programRuleRepository.saveAndFlush(programRule);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = programRuleRepository.findAll().size();
 
         // Delete the programRule
         restProgramRuleMockMvc
@@ -493,34 +516,7 @@ class ProgramRuleResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return programRuleRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected ProgramRule getPersistedProgramRule(ProgramRule programRule) {
-        return programRuleRepository.findById(programRule.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedProgramRuleToMatchAllProperties(ProgramRule expectedProgramRule) {
-        assertProgramRuleAllPropertiesEquals(expectedProgramRule, getPersistedProgramRule(expectedProgramRule));
-    }
-
-    protected void assertPersistedProgramRuleToMatchUpdatableProperties(ProgramRule expectedProgramRule) {
-        assertProgramRuleAllUpdatablePropertiesEquals(expectedProgramRule, getPersistedProgramRule(expectedProgramRule));
+        List<ProgramRule> programRuleList = programRuleRepository.findAll();
+        assertThat(programRuleList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

@@ -2,23 +2,25 @@ package com.didate.domain;
 
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.springframework.data.domain.Persistable;
 
 /**
  * A ProgramIndicator.
  */
+@JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "program_indicator")
 @Audited
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ProgramIndicator implements Serializable {
+public class ProgramIndicator implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -66,10 +68,14 @@ public class ProgramIndicator implements Serializable {
     @Column(name = "display_form_name")
     private String displayFormName;
 
+    @NotAudited
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "track", nullable = false)
     private TypeTrack track;
+
+    @Transient
+    private boolean isPersisted;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -81,7 +87,6 @@ public class ProgramIndicator implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "programIndicators")
     @JsonIgnoreProperties(
         value = {
             "project",
@@ -97,9 +102,7 @@ public class ProgramIndicator implements Serializable {
     )
     private Program program;
 
-    @ManyToOne(optional = false)
-    @NotNull
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "programIndicators")
+    @ManyToMany(mappedBy = "programIndicators")
     @JsonIgnoreProperties(
         value = {
             "project",
@@ -299,6 +302,23 @@ public class ProgramIndicator implements Serializable {
         this.track = track;
     }
 
+    @Transient
+    @Override
+    public boolean isNew() {
+        return !this.isPersisted;
+    }
+
+    public ProgramIndicator setIsPersisted() {
+        this.isPersisted = true;
+        return this;
+    }
+
+    @PostLoad
+    @PostPersist
+    public void updateEntityState() {
+        this.setIsPersisted();
+    }
+
     public DHISUser getCreatedBy() {
         return this.createdBy;
     }
@@ -357,13 +377,13 @@ public class ProgramIndicator implements Serializable {
         return this;
     }
 
-    public ProgramIndicator addProgram(Program program) {
+    public ProgramIndicator addPrograms(Program program) {
         this.programs.add(program);
         program.getProgramIndicators().add(this);
         return this;
     }
 
-    public ProgramIndicator removeProgram(Program program) {
+    public ProgramIndicator removePrograms(Program program) {
         this.programs.remove(program);
         program.getProgramIndicators().remove(this);
         return this;
@@ -379,7 +399,7 @@ public class ProgramIndicator implements Serializable {
         if (!(o instanceof ProgramIndicator)) {
             return false;
         }
-        return getId() != null && getId().equals(((ProgramIndicator) o).getId());
+        return id != null && id.equals(((ProgramIndicator) o).id);
     }
 
     @Override

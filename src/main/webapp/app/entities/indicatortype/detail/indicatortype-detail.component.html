@@ -1,34 +1,32 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    @if (indicatortype()) {
-      <div>
-        <h2 data-cy="indicatortypeDetailsHeading"><span jhiTranslate="dhis2AuditApp.indicatortype.detail.title">Indicatortype</span></h2>
+    <div *ngIf="indicatortype">
+      <h2 data-cy="indicatortypeDetailsHeading"><span jhiTranslate="dhis2TrackApp.indicatortype.detail.title">Indicatortype</span></h2>
 
-        <hr />
+      <hr />
 
-        <jhi-alert-error></jhi-alert-error>
+      <jhi-alert-error></jhi-alert-error>
 
-        <jhi-alert></jhi-alert>
+      <jhi-alert></jhi-alert>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="dhis2AuditApp.indicatortype.id">Id</span></dt>
-          <dd>
-            <span>{{ indicatortype()!.id }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicatortype.name">Name</span></dt>
-          <dd>
-            <span>{{ indicatortype()!.name }}</span>
-          </dd>
-        </dl>
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="dhis2TrackApp.indicatortype.id">Id</span></dt>
+        <dd>
+          <span>{{ indicatortype.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicatortype.name">Name</span></dt>
+        <dd>
+          <span>{{ indicatortype.name }}</span>
+        </dd>
+      </dl>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-        </button>
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
 
-        <button type="button" [routerLink]="['/indicatortype', indicatortype()!.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-        </button>
-      </div>
-    }
+      <button type="button" [routerLink]="['/indicatortype', indicatortype.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
   </div>
 </div>

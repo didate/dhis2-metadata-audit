@@ -1,18 +1,22 @@
-import { Component, input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import SharedModule from 'app/shared/shared.module';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { IIndicator } from '../indicator.model';
 
 @Component({
-  standalone: true,
   selector: 'jhi-indicator-detail',
   templateUrl: './indicator-detail.component.html',
-  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
-export class IndicatorDetailComponent {
-  indicator = input<IIndicator | null>(null);
+export class IndicatorDetailComponent implements OnInit {
+  indicator: IIndicator | null = null;
+
+  constructor(protected activatedRoute: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ indicator }) => {
+      this.indicator = indicator;
+    });
+  }
 
   previousState(): void {
     window.history.back();

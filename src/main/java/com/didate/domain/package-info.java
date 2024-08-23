@@ -1,4 +1,4 @@
 /**
- * Domain objects.
+ * JPA domain objects.
  */
 package com.didate.domain;
