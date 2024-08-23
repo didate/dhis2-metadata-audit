@@ -1,8 +1,8 @@
 package com.didate.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 
 /**
  * A PersonNotifier.
@@ -37,7 +37,7 @@ public class PersonNotifier implements Serializable {
     @Column(name = "person_organization", nullable = false)
     private String personOrganization;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Project project;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -130,7 +130,7 @@ public class PersonNotifier implements Serializable {
         if (!(o instanceof PersonNotifier)) {
             return false;
         }
-        return getId() != null && getId().equals(((PersonNotifier) o).getId());
+        return id != null && id.equals(((PersonNotifier) o).id);
     }
 
     @Override

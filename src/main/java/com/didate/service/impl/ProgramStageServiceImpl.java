@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.ProgramStage}.
+ * Service Implementation for managing {@link ProgramStage}.
  */
 @Service
 @Transactional
 public class ProgramStageServiceImpl implements ProgramStageService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProgramStageServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(ProgramStageServiceImpl.class);
 
     private final ProgramStageRepository programStageRepository;
 
@@ -35,6 +35,7 @@ public class ProgramStageServiceImpl implements ProgramStageService {
     @Override
     public ProgramStage update(ProgramStage programStage) {
         log.debug("Request to update ProgramStage : {}", programStage);
+        programStage.setIsPersisted();
         return programStageRepository.save(programStage);
     }
 

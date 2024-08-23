@@ -40,7 +40,7 @@ export class PersonNotifierFormService {
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       personName: new FormControl(personNotifierRawValue.personName, {
         validators: [Validators.required],
@@ -68,7 +68,7 @@ export class PersonNotifierFormService {
       {
         ...personNotifierRawValue,
         id: { value: personNotifierRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 

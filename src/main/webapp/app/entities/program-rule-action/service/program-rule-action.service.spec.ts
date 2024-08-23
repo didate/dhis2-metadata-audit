@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { IProgramRuleAction } from '../program-rule-action.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../program-rule-action.test-samples';
@@ -19,7 +18,7 @@ describe('ProgramRuleAction Service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      imports: [HttpClientTestingModule],
     });
     expectedResult = null;
     service = TestBed.inject(ProgramRuleActionService);
@@ -39,6 +38,7 @@ describe('ProgramRuleAction Service', () => {
     });
 
     it('should create a ProgramRuleAction', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const programRuleAction = { ...sampleWithNewData };
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };

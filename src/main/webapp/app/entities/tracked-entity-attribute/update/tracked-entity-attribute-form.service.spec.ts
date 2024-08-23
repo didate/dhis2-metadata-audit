@@ -49,7 +49,7 @@ describe('TrackedEntityAttribute Form Service', () => {
             lastUpdatedBy: expect.any(Object),
             optionSet: expect.any(Object),
             programs: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -88,13 +88,14 @@ describe('TrackedEntityAttribute Form Service', () => {
             lastUpdatedBy: expect.any(Object),
             optionSet: expect.any(Object),
             programs: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getTrackedEntityAttribute', () => {
       it('should return NewTrackedEntityAttribute for default TrackedEntityAttribute initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createTrackedEntityAttributeFormGroup(sampleWithNewData);
 
         const trackedEntityAttribute = service.getTrackedEntityAttribute(formGroup) as any;

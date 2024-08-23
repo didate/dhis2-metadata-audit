@@ -52,15 +52,15 @@ export interface IProgram {
   programStagesContent?: string | null;
   programIndicatorsContent?: string | null;
   programTrackedEntityAttributesContent?: string | null;
-  track?: keyof typeof TypeTrack | null;
-  project?: IProject | null;
-  createdBy?: IDHISUser | null;
-  lastUpdatedBy?: IDHISUser | null;
-  categoryCombo?: ICategorycombo | null;
-  programTrackedEntityAttributes?: ITrackedEntityAttribute[] | null;
-  organisationUnits?: IOrganisationUnit[] | null;
-  programIndicators?: IProgramIndicator[] | null;
-  programStages?: IProgramStage[] | null;
+  track?: TypeTrack | null;
+  project?: Pick<IProject, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'id'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  categoryCombo?: Pick<ICategorycombo, 'id'> | null;
+  programTrackedEntityAttributes?: Pick<ITrackedEntityAttribute, 'id'>[] | null;
+  organisationUnits?: Pick<IOrganisationUnit, 'id'>[] | null;
+  programIndicators?: Pick<IProgramIndicator, 'id'>[] | null;
+  programStages?: Pick<IProgramStage, 'id'>[] | null;
 }
 
 export type NewProgram = Omit<IProgram, 'id'> & { id: null };

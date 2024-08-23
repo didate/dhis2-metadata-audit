@@ -1,6 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.OptionGroupAsserts.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -9,9 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.didate.IntegrationTest;
 import com.didate.domain.OptionGroup;
 import com.didate.repository.OptionGroupRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
-import org.junit.jupiter.api.AfterEach;
+import java.util.List;
+import java.util.UUID;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +32,6 @@ class OptionGroupResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private OptionGroupRepository optionGroupRepository;
 
     @Autowired
@@ -45,8 +41,6 @@ class OptionGroupResourceIT {
     private MockMvc restOptionGroupMockMvc;
 
     private OptionGroup optionGroup;
-
-    private OptionGroup insertedOptionGroup;
 
     /**
      * Create an entity for this test.
@@ -75,34 +69,19 @@ class OptionGroupResourceIT {
         optionGroup = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedOptionGroup != null) {
-            optionGroupRepository.delete(insertedOptionGroup);
-            insertedOptionGroup = null;
-        }
-    }
-
     @Test
     @Transactional
     void createOptionGroup() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = optionGroupRepository.findAll().size();
         // Create the OptionGroup
-        var returnedOptionGroup = om.readValue(
-            restOptionGroupMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(optionGroup)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            OptionGroup.class
-        );
+        restOptionGroupMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(optionGroup)))
+            .andExpect(status().isCreated());
 
         // Validate the OptionGroup in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertOptionGroupUpdatableFieldsEquals(returnedOptionGroup, getPersistedOptionGroup(returnedOptionGroup));
-
-        insertedOptionGroup = returnedOptionGroup;
+        List<OptionGroup> optionGroupList = optionGroupRepository.findAll();
+        assertThat(optionGroupList).hasSize(databaseSizeBeforeCreate + 1);
+        OptionGroup testOptionGroup = optionGroupList.get(optionGroupList.size() - 1);
     }
 
     @Test
@@ -111,22 +90,24 @@ class OptionGroupResourceIT {
         // Create the OptionGroup with an existing ID
         optionGroup.setId("existing_id");
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = optionGroupRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOptionGroupMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(optionGroup)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(optionGroup)))
             .andExpect(status().isBadRequest());
 
         // Validate the OptionGroup in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<OptionGroup> optionGroupList = optionGroupRepository.findAll();
+        assertThat(optionGroupList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void getAllOptionGroups() throws Exception {
         // Initialize the database
-        insertedOptionGroup = optionGroupRepository.saveAndFlush(optionGroup);
+        optionGroup.setId(UUID.randomUUID().toString());
+        optionGroupRepository.saveAndFlush(optionGroup);
 
         // Get all the optionGroupList
         restOptionGroupMockMvc
@@ -140,7 +121,8 @@ class OptionGroupResourceIT {
     @Transactional
     void getOptionGroup() throws Exception {
         // Initialize the database
-        insertedOptionGroup = optionGroupRepository.saveAndFlush(optionGroup);
+        optionGroup.setId(UUID.randomUUID().toString());
+        optionGroupRepository.saveAndFlush(optionGroup);
 
         // Get the optionGroup
         restOptionGroupMockMvc
@@ -159,11 +141,208 @@ class OptionGroupResourceIT {
 
     @Test
     @Transactional
+    void putExistingOptionGroup() throws Exception {
+        // Initialize the database
+        optionGroup.setId(UUID.randomUUID().toString());
+        optionGroupRepository.saveAndFlush(optionGroup);
+
+        int databaseSizeBeforeUpdate = optionGroupRepository.findAll().size();
+
+        // Update the optionGroup
+        OptionGroup updatedOptionGroup = optionGroupRepository.findById(optionGroup.getId()).get();
+        // Disconnect from session so that the updates on updatedOptionGroup are not directly saved in db
+        em.detach(updatedOptionGroup);
+
+        restOptionGroupMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedOptionGroup.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedOptionGroup))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the OptionGroup in the database
+        List<OptionGroup> optionGroupList = optionGroupRepository.findAll();
+        assertThat(optionGroupList).hasSize(databaseSizeBeforeUpdate);
+        OptionGroup testOptionGroup = optionGroupList.get(optionGroupList.size() - 1);
+    }
+
+    @Test
+    @Transactional
+    void putNonExistingOptionGroup() throws Exception {
+        int databaseSizeBeforeUpdate = optionGroupRepository.findAll().size();
+        optionGroup.setId(UUID.randomUUID().toString());
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restOptionGroupMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, optionGroup.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(optionGroup))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the OptionGroup in the database
+        List<OptionGroup> optionGroupList = optionGroupRepository.findAll();
+        assertThat(optionGroupList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithIdMismatchOptionGroup() throws Exception {
+        int databaseSizeBeforeUpdate = optionGroupRepository.findAll().size();
+        optionGroup.setId(UUID.randomUUID().toString());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restOptionGroupMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(optionGroup))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the OptionGroup in the database
+        List<OptionGroup> optionGroupList = optionGroupRepository.findAll();
+        assertThat(optionGroupList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamOptionGroup() throws Exception {
+        int databaseSizeBeforeUpdate = optionGroupRepository.findAll().size();
+        optionGroup.setId(UUID.randomUUID().toString());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restOptionGroupMockMvc
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(optionGroup)))
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the OptionGroup in the database
+        List<OptionGroup> optionGroupList = optionGroupRepository.findAll();
+        assertThat(optionGroupList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateOptionGroupWithPatch() throws Exception {
+        // Initialize the database
+        optionGroup.setId(UUID.randomUUID().toString());
+        optionGroupRepository.saveAndFlush(optionGroup);
+
+        int databaseSizeBeforeUpdate = optionGroupRepository.findAll().size();
+
+        // Update the optionGroup using partial update
+        OptionGroup partialUpdatedOptionGroup = new OptionGroup();
+        partialUpdatedOptionGroup.setId(optionGroup.getId());
+
+        restOptionGroupMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedOptionGroup.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedOptionGroup))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the OptionGroup in the database
+        List<OptionGroup> optionGroupList = optionGroupRepository.findAll();
+        assertThat(optionGroupList).hasSize(databaseSizeBeforeUpdate);
+        OptionGroup testOptionGroup = optionGroupList.get(optionGroupList.size() - 1);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateOptionGroupWithPatch() throws Exception {
+        // Initialize the database
+        optionGroup.setId(UUID.randomUUID().toString());
+        optionGroupRepository.saveAndFlush(optionGroup);
+
+        int databaseSizeBeforeUpdate = optionGroupRepository.findAll().size();
+
+        // Update the optionGroup using partial update
+        OptionGroup partialUpdatedOptionGroup = new OptionGroup();
+        partialUpdatedOptionGroup.setId(optionGroup.getId());
+
+        restOptionGroupMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedOptionGroup.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedOptionGroup))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the OptionGroup in the database
+        List<OptionGroup> optionGroupList = optionGroupRepository.findAll();
+        assertThat(optionGroupList).hasSize(databaseSizeBeforeUpdate);
+        OptionGroup testOptionGroup = optionGroupList.get(optionGroupList.size() - 1);
+    }
+
+    @Test
+    @Transactional
+    void patchNonExistingOptionGroup() throws Exception {
+        int databaseSizeBeforeUpdate = optionGroupRepository.findAll().size();
+        optionGroup.setId(UUID.randomUUID().toString());
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restOptionGroupMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, optionGroup.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(optionGroup))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the OptionGroup in the database
+        List<OptionGroup> optionGroupList = optionGroupRepository.findAll();
+        assertThat(optionGroupList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchOptionGroup() throws Exception {
+        int databaseSizeBeforeUpdate = optionGroupRepository.findAll().size();
+        optionGroup.setId(UUID.randomUUID().toString());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restOptionGroupMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(optionGroup))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the OptionGroup in the database
+        List<OptionGroup> optionGroupList = optionGroupRepository.findAll();
+        assertThat(optionGroupList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamOptionGroup() throws Exception {
+        int databaseSizeBeforeUpdate = optionGroupRepository.findAll().size();
+        optionGroup.setId(UUID.randomUUID().toString());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restOptionGroupMockMvc
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(optionGroup))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the OptionGroup in the database
+        List<OptionGroup> optionGroupList = optionGroupRepository.findAll();
+        assertThat(optionGroupList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
     void deleteOptionGroup() throws Exception {
         // Initialize the database
-        insertedOptionGroup = optionGroupRepository.saveAndFlush(optionGroup);
+        optionGroup.setId(UUID.randomUUID().toString());
+        optionGroupRepository.saveAndFlush(optionGroup);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = optionGroupRepository.findAll().size();
 
         // Delete the optionGroup
         restOptionGroupMockMvc
@@ -171,34 +350,7 @@ class OptionGroupResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return optionGroupRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected OptionGroup getPersistedOptionGroup(OptionGroup optionGroup) {
-        return optionGroupRepository.findById(optionGroup.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedOptionGroupToMatchAllProperties(OptionGroup expectedOptionGroup) {
-        assertOptionGroupAllPropertiesEquals(expectedOptionGroup, getPersistedOptionGroup(expectedOptionGroup));
-    }
-
-    protected void assertPersistedOptionGroupToMatchUpdatableProperties(OptionGroup expectedOptionGroup) {
-        assertOptionGroupAllUpdatablePropertiesEquals(expectedOptionGroup, getPersistedOptionGroup(expectedOptionGroup));
+        List<OptionGroup> optionGroupList = optionGroupRepository.findAll();
+        assertThat(optionGroupList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

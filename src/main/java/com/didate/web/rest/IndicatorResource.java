@@ -4,19 +4,20 @@ import com.didate.domain.Indicator;
 import com.didate.repository.IndicatorRepository;
 import com.didate.service.IndicatorService;
 import com.didate.web.rest.errors.BadRequestAlertException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,10 +29,10 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.didate.domain.Indicator}.
  */
 @RestController
-@RequestMapping("/api/indicators")
+@RequestMapping("/api")
 public class IndicatorResource {
 
-    private static final Logger log = LoggerFactory.getLogger(IndicatorResource.class);
+    private final Logger log = LoggerFactory.getLogger(IndicatorResource.class);
 
     private static final String ENTITY_NAME = "indicator";
 
@@ -54,16 +55,17 @@ public class IndicatorResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new indicator, or with status {@code 400 (Bad Request)} if the indicator has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/indicators")
     public ResponseEntity<Indicator> createIndicator(@Valid @RequestBody Indicator indicator) throws URISyntaxException {
         log.debug("REST request to save Indicator : {}", indicator);
         if (indicator.getId() != null) {
             throw new BadRequestAlertException("A new indicator cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        indicator = indicatorService.save(indicator);
-        return ResponseEntity.created(new URI("/api/indicators/" + indicator.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, indicator.getId()))
-            .body(indicator);
+        Indicator result = indicatorService.save(indicator);
+        return ResponseEntity
+            .created(new URI("/api/indicators/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
+            .body(result);
     }
 
     /**
@@ -76,7 +78,7 @@ public class IndicatorResource {
      * or with status {@code 500 (Internal Server Error)} if the indicator couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/indicators/{id}")
     public ResponseEntity<Indicator> updateIndicator(
         @PathVariable(value = "id", required = false) final String id,
         @Valid @RequestBody Indicator indicator
@@ -93,10 +95,11 @@ public class IndicatorResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        indicator = indicatorService.update(indicator);
-        return ResponseEntity.ok()
+        Indicator result = indicatorService.update(indicator);
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, indicator.getId()))
-            .body(indicator);
+            .body(result);
     }
 
     /**
@@ -110,7 +113,7 @@ public class IndicatorResource {
      * or with status {@code 500 (Internal Server Error)} if the indicator couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/indicators/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Indicator> partialUpdateIndicator(
         @PathVariable(value = "id", required = false) final String id,
         @NotNull @RequestBody Indicator indicator
@@ -141,8 +144,8 @@ public class IndicatorResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of indicators in body.
      */
-    @GetMapping("")
-    public ResponseEntity<List<Indicator>> getAllIndicators(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    @GetMapping("/indicators")
+    public ResponseEntity<List<Indicator>> getAllIndicators(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Indicators");
         Page<Indicator> page = indicatorService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
@@ -155,8 +158,8 @@ public class IndicatorResource {
      * @param id the id of the indicator to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the indicator, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<Indicator> getIndicator(@PathVariable("id") String id) {
+    @GetMapping("/indicators/{id}")
+    public ResponseEntity<Indicator> getIndicator(@PathVariable String id) {
         log.debug("REST request to get Indicator : {}", id);
         Optional<Indicator> indicator = indicatorService.findOne(id);
         return ResponseUtil.wrapOrNotFound(indicator);
@@ -168,8 +171,8 @@ public class IndicatorResource {
      * @param id the id of the indicator to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteIndicator(@PathVariable("id") String id) {
+    @DeleteMapping("/indicators/{id}")
+    public ResponseEntity<Void> deleteIndicator(@PathVariable String id) {
         log.debug("REST request to delete Indicator : {}", id);
         indicatorService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();

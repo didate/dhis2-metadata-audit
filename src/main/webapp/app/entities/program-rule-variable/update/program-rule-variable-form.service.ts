@@ -58,11 +58,11 @@ export class ProgramRuleVariableFormService {
     });
     return new FormGroup<ProgramRuleVariableFormGroupContent>({
       id: new FormControl(
-        { value: programRuleVariableRawValue.id, disabled: true },
+        { value: programRuleVariableRawValue.id, disabled: programRuleVariableRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       lastUpdated: new FormControl(programRuleVariableRawValue.lastUpdated, {
         validators: [Validators.required],
@@ -96,7 +96,7 @@ export class ProgramRuleVariableFormService {
 
   getProgramRuleVariable(form: ProgramRuleVariableFormGroup): IProgramRuleVariable | NewProgramRuleVariable {
     return this.convertProgramRuleVariableRawValueToProgramRuleVariable(
-      form.getRawValue() as ProgramRuleVariableFormRawValue | NewProgramRuleVariableFormRawValue,
+      form.getRawValue() as ProgramRuleVariableFormRawValue | NewProgramRuleVariableFormRawValue
     );
   }
 
@@ -108,8 +108,8 @@ export class ProgramRuleVariableFormService {
     form.reset(
       {
         ...programRuleVariableRawValue,
-        id: { value: programRuleVariableRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: programRuleVariableRawValue.id, disabled: programRuleVariableRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 
@@ -125,7 +125,7 @@ export class ProgramRuleVariableFormService {
   }
 
   private convertProgramRuleVariableRawValueToProgramRuleVariable(
-    rawProgramRuleVariable: ProgramRuleVariableFormRawValue | NewProgramRuleVariableFormRawValue,
+    rawProgramRuleVariable: ProgramRuleVariableFormRawValue | NewProgramRuleVariableFormRawValue
   ): IProgramRuleVariable | NewProgramRuleVariable {
     return {
       ...rawProgramRuleVariable,
@@ -135,7 +135,7 @@ export class ProgramRuleVariableFormService {
   }
 
   private convertProgramRuleVariableToProgramRuleVariableRawValue(
-    programRuleVariable: IProgramRuleVariable | (Partial<NewProgramRuleVariable> & ProgramRuleVariableFormDefaults),
+    programRuleVariable: IProgramRuleVariable | (Partial<NewProgramRuleVariable> & ProgramRuleVariableFormDefaults)
   ): ProgramRuleVariableFormRawValue | PartialWithRequiredKeyOf<NewProgramRuleVariableFormRawValue> {
     return {
       ...programRuleVariable,

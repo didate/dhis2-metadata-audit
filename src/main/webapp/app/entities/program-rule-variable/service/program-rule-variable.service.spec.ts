@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { IProgramRuleVariable } from '../program-rule-variable.model';
 import {
@@ -25,7 +24,7 @@ describe('ProgramRuleVariable Service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      imports: [HttpClientTestingModule],
     });
     expectedResult = null;
     service = TestBed.inject(ProgramRuleVariableService);
@@ -45,6 +44,7 @@ describe('ProgramRuleVariable Service', () => {
     });
 
     it('should create a ProgramRuleVariable', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const programRuleVariable = { ...sampleWithNewData };
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };

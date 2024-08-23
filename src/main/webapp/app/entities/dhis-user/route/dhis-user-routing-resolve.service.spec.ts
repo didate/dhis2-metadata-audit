@@ -1,23 +1,26 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRouteSnapshot, ActivatedRoute, Router, convertToParamMap } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 
 import { IDHISUser } from '../dhis-user.model';
 import { DHISUserService } from '../service/dhis-user.service';
 
-import dHISUserResolve from './dhis-user-routing-resolve.service';
+import { DHISUserRoutingResolveService } from './dhis-user-routing-resolve.service';
 
 describe('DHISUser routing resolve service', () => {
   let mockRouter: Router;
   let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
+  let routingResolveService: DHISUserRoutingResolveService;
   let service: DHISUserService;
   let resultDHISUser: IDHISUser | null | undefined;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
       providers: [
-        provideHttpClient(),
         {
           provide: ActivatedRoute,
           useValue: {
@@ -31,6 +34,7 @@ describe('DHISUser routing resolve service', () => {
     mockRouter = TestBed.inject(Router);
     jest.spyOn(mockRouter, 'navigate').mockImplementation(() => Promise.resolve(true));
     mockActivatedRouteSnapshot = TestBed.inject(ActivatedRoute).snapshot;
+    routingResolveService = TestBed.inject(DHISUserRoutingResolveService);
     service = TestBed.inject(DHISUserService);
     resultDHISUser = undefined;
   });
@@ -42,16 +46,12 @@ describe('DHISUser routing resolve service', () => {
       mockActivatedRouteSnapshot.params = { id: 'ABC' };
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        dHISUserResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultDHISUser = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultDHISUser = result;
       });
 
       // THEN
-      expect(service.find).toHaveBeenCalledWith('ABC');
+      expect(service.find).toBeCalledWith('ABC');
       expect(resultDHISUser).toEqual({ id: 'ABC' });
     });
 
@@ -61,12 +61,8 @@ describe('DHISUser routing resolve service', () => {
       mockActivatedRouteSnapshot.params = {};
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        dHISUserResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultDHISUser = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultDHISUser = result;
       });
 
       // THEN
@@ -80,16 +76,12 @@ describe('DHISUser routing resolve service', () => {
       mockActivatedRouteSnapshot.params = { id: 'ABC' };
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        dHISUserResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultDHISUser = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultDHISUser = result;
       });
 
       // THEN
-      expect(service.find).toHaveBeenCalledWith('ABC');
+      expect(service.find).toBeCalledWith('ABC');
       expect(resultDHISUser).toEqual(undefined);
       expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
     });

@@ -95,11 +95,11 @@ export class ProgramStageFormService {
     });
     return new FormGroup<ProgramStageFormGroupContent>({
       id: new FormControl(
-        { value: programStageRawValue.id, disabled: true },
+        { value: programStageRawValue.id, disabled: programStageRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       name: new FormControl(programStageRawValue.name),
       created: new FormControl(programStageRawValue.created),
@@ -150,8 +150,8 @@ export class ProgramStageFormService {
     form.reset(
       {
         ...programStageRawValue,
-        id: { value: programStageRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: programStageRawValue.id, disabled: programStageRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 
@@ -180,7 +180,7 @@ export class ProgramStageFormService {
   }
 
   private convertProgramStageRawValueToProgramStage(
-    rawProgramStage: ProgramStageFormRawValue | NewProgramStageFormRawValue,
+    rawProgramStage: ProgramStageFormRawValue | NewProgramStageFormRawValue
   ): IProgramStage | NewProgramStage {
     return {
       ...rawProgramStage,
@@ -190,7 +190,7 @@ export class ProgramStageFormService {
   }
 
   private convertProgramStageToProgramStageRawValue(
-    programStage: IProgramStage | (Partial<NewProgramStage> & ProgramStageFormDefaults),
+    programStage: IProgramStage | (Partial<NewProgramStage> & ProgramStageFormDefaults)
   ): ProgramStageFormRawValue | PartialWithRequiredKeyOf<NewProgramStageFormRawValue> {
     return {
       ...programStage,

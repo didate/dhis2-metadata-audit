@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link com.didate.domain.OrganisationUnit}.
+ * Service Interface for managing {@link OrganisationUnit}.
  */
 public interface OrganisationUnitService {
     /**
@@ -55,4 +55,6 @@ public interface OrganisationUnitService {
      * @param id the id of the entity.
      */
     void delete(String id);
+
+    Boolean exist(String id);
 }

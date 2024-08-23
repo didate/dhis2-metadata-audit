@@ -16,14 +16,14 @@ export interface IProgramRuleAction {
   templateUid?: string | null;
   content?: string | null;
   displayContent?: string | null;
-  track?: keyof typeof TypeTrack | null;
-  project?: IProject | null;
-  createdBy?: IDHISUser | null;
-  lastUpdatedBy?: IDHISUser | null;
-  programRule?: IProgramRule | null;
-  trackedEntityAttribute?: ITrackedEntityAttribute | null;
-  dataElement?: ITrackedEntityAttribute | null;
-  optionGroup?: IOptionGroup | null;
+  track?: TypeTrack | null;
+  project?: Pick<IProject, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'id'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  programRule?: Pick<IProgramRule, 'id'> | null;
+  trackedEntityAttribute?: Pick<ITrackedEntityAttribute, 'id'> | null;
+  dataElement?: Pick<ITrackedEntityAttribute, 'id'> | null;
+  optionGroup?: Pick<IOptionGroup, 'id'> | null;
 }
 
 export type NewProgramRuleAction = Omit<IProgramRuleAction, 'id'> & { id: null };

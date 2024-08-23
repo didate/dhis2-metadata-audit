@@ -2,22 +2,24 @@ package com.didate.domain;
 
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.springframework.data.domain.Persistable;
 
 /**
  * A Program.
  */
+@JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "program")
 @Audited
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Program implements Serializable {
+public class Program implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -154,12 +156,16 @@ public class Program implements Serializable {
     @Column(name = "program_tracked_entity_attributes_content")
     private String programTrackedEntityAttributesContent;
 
+    @NotAudited
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "track", nullable = false)
     private TypeTrack track;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Transient
+    private boolean isPersisted;
+
+    @ManyToOne
     private Project project;
 
     @ManyToOne(optional = false)
@@ -170,10 +176,10 @@ public class Program implements Serializable {
     @NotNull
     private DHISUser lastUpdatedBy;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Categorycombo categoryCombo;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "rel_program__program_tracked_entity_attributes",
         joinColumns = @JoinColumn(name = "program_id"),
@@ -182,16 +188,16 @@ public class Program implements Serializable {
     @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "optionSet", "programs" }, allowSetters = true)
     private Set<TrackedEntityAttribute> programTrackedEntityAttributes = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "rel_program__organisation_units",
         joinColumns = @JoinColumn(name = "program_id"),
         inverseJoinColumns = @JoinColumn(name = "organisation_units_id")
     )
-    @JsonIgnoreProperties(value = { "createdBy", "lastUpdatedBy", "programs", "datasets" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "createdBy", "lastUpdatedBy", "programs", "dataSets" }, allowSetters = true)
     private Set<OrganisationUnit> organisationUnits = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "rel_program__program_indicators",
         joinColumns = @JoinColumn(name = "program_id"),
@@ -200,7 +206,7 @@ public class Program implements Serializable {
     @JsonIgnoreProperties(value = { "createdBy", "lastUpdatedBy", "program", "programs" }, allowSetters = true)
     private Set<ProgramIndicator> programIndicators = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "rel_program__program_stage",
         joinColumns = @JoinColumn(name = "program_id"),
@@ -796,6 +802,23 @@ public class Program implements Serializable {
         this.track = track;
     }
 
+    @Transient
+    @Override
+    public boolean isNew() {
+        return !this.isPersisted;
+    }
+
+    public Program setIsPersisted() {
+        this.isPersisted = true;
+        return this;
+    }
+
+    @PostLoad
+    @PostPersist
+    public void updateEntityState() {
+        this.setIsPersisted();
+    }
+
     public Project getProject() {
         return this.project;
     }
@@ -863,11 +886,13 @@ public class Program implements Serializable {
 
     public Program addProgramTrackedEntityAttributes(TrackedEntityAttribute trackedEntityAttribute) {
         this.programTrackedEntityAttributes.add(trackedEntityAttribute);
+        trackedEntityAttribute.getPrograms().add(this);
         return this;
     }
 
     public Program removeProgramTrackedEntityAttributes(TrackedEntityAttribute trackedEntityAttribute) {
         this.programTrackedEntityAttributes.remove(trackedEntityAttribute);
+        trackedEntityAttribute.getPrograms().remove(this);
         return this;
     }
 
@@ -886,11 +911,13 @@ public class Program implements Serializable {
 
     public Program addOrganisationUnits(OrganisationUnit organisationUnit) {
         this.organisationUnits.add(organisationUnit);
+        organisationUnit.getPrograms().add(this);
         return this;
     }
 
     public Program removeOrganisationUnits(OrganisationUnit organisationUnit) {
         this.organisationUnits.remove(organisationUnit);
+        organisationUnit.getPrograms().remove(this);
         return this;
     }
 
@@ -909,11 +936,13 @@ public class Program implements Serializable {
 
     public Program addProgramIndicators(ProgramIndicator programIndicator) {
         this.programIndicators.add(programIndicator);
+        programIndicator.getPrograms().add(this);
         return this;
     }
 
     public Program removeProgramIndicators(ProgramIndicator programIndicator) {
         this.programIndicators.remove(programIndicator);
+        programIndicator.getPrograms().remove(this);
         return this;
     }
 
@@ -932,11 +961,13 @@ public class Program implements Serializable {
 
     public Program addProgramStage(ProgramStage programStage) {
         this.programStages.add(programStage);
+        programStage.getPrograms().add(this);
         return this;
     }
 
     public Program removeProgramStage(ProgramStage programStage) {
         this.programStages.remove(programStage);
+        programStage.getPrograms().remove(this);
         return this;
     }
 
@@ -950,7 +981,7 @@ public class Program implements Serializable {
         if (!(o instanceof Program)) {
             return false;
         }
-        return getId() != null && getId().equals(((Program) o).getId());
+        return id != null && id.equals(((Program) o).id);
     }
 
     @Override

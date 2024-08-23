@@ -12,11 +12,11 @@ export interface IOrganisationUnit {
   path?: string | null;
   openingDate?: dayjs.Dayjs | null;
   level?: number | null;
-  track?: keyof typeof TypeTrack | null;
-  createdBy?: IDHISUser | null;
-  lastUpdatedBy?: IDHISUser | null;
-  programs?: IProgram[] | null;
-  datasets?: IDataset[] | null;
+  track?: TypeTrack | null;
+  createdBy?: Pick<IDHISUser, 'id'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  programs?: Pick<IProgram, 'id'>[] | null;
+  dataSets?: Pick<IDataset, 'id'>[] | null;
 }
 
 export type NewOrganisationUnit = Omit<IOrganisationUnit, 'id'> & { id: null };

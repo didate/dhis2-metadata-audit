@@ -1,28 +1,19 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { OrganisationUnitFormService, OrganisationUnitFormGroup } from './organisation-unit-form.service';
+import { IOrganisationUnit } from '../organisation-unit.model';
+import { OrganisationUnitService } from '../service/organisation-unit.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { DHISUserService } from 'app/entities/dhis-user/service/dhis-user.service';
-import { IProgram } from 'app/entities/program/program.model';
-import { ProgramService } from 'app/entities/program/service/program.service';
-import { IDataset } from 'app/entities/dataset/dataset.model';
-import { DatasetService } from 'app/entities/dataset/service/dataset.service';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
-import { OrganisationUnitService } from '../service/organisation-unit.service';
-import { IOrganisationUnit } from '../organisation-unit.model';
-import { OrganisationUnitFormService, OrganisationUnitFormGroup } from './organisation-unit-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-organisation-unit-update',
   templateUrl: './organisation-unit-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class OrganisationUnitUpdateComponent implements OnInit {
   isSaving = false;
@@ -30,24 +21,17 @@ export class OrganisationUnitUpdateComponent implements OnInit {
   typeTrackValues = Object.keys(TypeTrack);
 
   dHISUsersSharedCollection: IDHISUser[] = [];
-  programsSharedCollection: IProgram[] = [];
-  datasetsSharedCollection: IDataset[] = [];
 
-  protected organisationUnitService = inject(OrganisationUnitService);
-  protected organisationUnitFormService = inject(OrganisationUnitFormService);
-  protected dHISUserService = inject(DHISUserService);
-  protected programService = inject(ProgramService);
-  protected datasetService = inject(DatasetService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: OrganisationUnitFormGroup = this.organisationUnitFormService.createOrganisationUnitFormGroup();
 
+  constructor(
+    protected organisationUnitService: OrganisationUnitService,
+    protected organisationUnitFormService: OrganisationUnitFormService,
+    protected dHISUserService: DHISUserService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
+
   compareDHISUser = (o1: IDHISUser | null, o2: IDHISUser | null): boolean => this.dHISUserService.compareDHISUser(o1, o2);
-
-  compareProgram = (o1: IProgram | null, o2: IProgram | null): boolean => this.programService.compareProgram(o1, o2);
-
-  compareDataset = (o1: IDataset | null, o2: IDataset | null): boolean => this.datasetService.compareDataset(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ organisationUnit }) => {
@@ -100,15 +84,7 @@ export class OrganisationUnitUpdateComponent implements OnInit {
     this.dHISUsersSharedCollection = this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
       this.dHISUsersSharedCollection,
       organisationUnit.createdBy,
-      organisationUnit.lastUpdatedBy,
-    );
-    this.programsSharedCollection = this.programService.addProgramToCollectionIfMissing<IProgram>(
-      this.programsSharedCollection,
-      ...(organisationUnit.programs ?? []),
-    );
-    this.datasetsSharedCollection = this.datasetService.addDatasetToCollectionIfMissing<IDataset>(
-      this.datasetsSharedCollection,
-      ...(organisationUnit.datasets ?? []),
+      organisationUnit.lastUpdatedBy
     );
   }
 
@@ -121,30 +97,10 @@ export class OrganisationUnitUpdateComponent implements OnInit {
           this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
             dHISUsers,
             this.organisationUnit?.createdBy,
-            this.organisationUnit?.lastUpdatedBy,
-          ),
-        ),
+            this.organisationUnit?.lastUpdatedBy
+          )
+        )
       )
       .subscribe((dHISUsers: IDHISUser[]) => (this.dHISUsersSharedCollection = dHISUsers));
-
-    this.programService
-      .query()
-      .pipe(map((res: HttpResponse<IProgram[]>) => res.body ?? []))
-      .pipe(
-        map((programs: IProgram[]) =>
-          this.programService.addProgramToCollectionIfMissing<IProgram>(programs, ...(this.organisationUnit?.programs ?? [])),
-        ),
-      )
-      .subscribe((programs: IProgram[]) => (this.programsSharedCollection = programs));
-
-    this.datasetService
-      .query()
-      .pipe(map((res: HttpResponse<IDataset[]>) => res.body ?? []))
-      .pipe(
-        map((datasets: IDataset[]) =>
-          this.datasetService.addDatasetToCollectionIfMissing<IDataset>(datasets, ...(this.organisationUnit?.datasets ?? [])),
-        ),
-      )
-      .subscribe((datasets: IDataset[]) => (this.datasetsSharedCollection = datasets));
   }
 }

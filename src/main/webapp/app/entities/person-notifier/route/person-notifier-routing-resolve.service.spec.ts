@@ -1,23 +1,26 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRouteSnapshot, ActivatedRoute, Router, convertToParamMap } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 
 import { IPersonNotifier } from '../person-notifier.model';
 import { PersonNotifierService } from '../service/person-notifier.service';
 
-import personNotifierResolve from './person-notifier-routing-resolve.service';
+import { PersonNotifierRoutingResolveService } from './person-notifier-routing-resolve.service';
 
 describe('PersonNotifier routing resolve service', () => {
   let mockRouter: Router;
   let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
+  let routingResolveService: PersonNotifierRoutingResolveService;
   let service: PersonNotifierService;
   let resultPersonNotifier: IPersonNotifier | null | undefined;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
       providers: [
-        provideHttpClient(),
         {
           provide: ActivatedRoute,
           useValue: {
@@ -31,6 +34,7 @@ describe('PersonNotifier routing resolve service', () => {
     mockRouter = TestBed.inject(Router);
     jest.spyOn(mockRouter, 'navigate').mockImplementation(() => Promise.resolve(true));
     mockActivatedRouteSnapshot = TestBed.inject(ActivatedRoute).snapshot;
+    routingResolveService = TestBed.inject(PersonNotifierRoutingResolveService);
     service = TestBed.inject(PersonNotifierService);
     resultPersonNotifier = undefined;
   });
@@ -42,16 +46,12 @@ describe('PersonNotifier routing resolve service', () => {
       mockActivatedRouteSnapshot.params = { id: 123 };
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        personNotifierResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultPersonNotifier = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultPersonNotifier = result;
       });
 
       // THEN
-      expect(service.find).toHaveBeenCalledWith(123);
+      expect(service.find).toBeCalledWith(123);
       expect(resultPersonNotifier).toEqual({ id: 123 });
     });
 
@@ -61,12 +61,8 @@ describe('PersonNotifier routing resolve service', () => {
       mockActivatedRouteSnapshot.params = {};
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        personNotifierResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultPersonNotifier = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultPersonNotifier = result;
       });
 
       // THEN
@@ -80,16 +76,12 @@ describe('PersonNotifier routing resolve service', () => {
       mockActivatedRouteSnapshot.params = { id: 123 };
 
       // WHEN
-      TestBed.runInInjectionContext(() => {
-        personNotifierResolve(mockActivatedRouteSnapshot).subscribe({
-          next(result) {
-            resultPersonNotifier = result;
-          },
-        });
+      routingResolveService.resolve(mockActivatedRouteSnapshot).subscribe(result => {
+        resultPersonNotifier = result;
       });
 
       // THEN
-      expect(service.find).toHaveBeenCalledWith(123);
+      expect(service.find).toBeCalledWith(123);
       expect(resultPersonNotifier).toEqual(undefined);
       expect(mockRouter.navigate).toHaveBeenCalledWith(['404']);
     });

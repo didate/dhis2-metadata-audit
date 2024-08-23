@@ -31,12 +31,8 @@ public class DatasetApiService {
         dataSets.addAll(dataSetResponse.getDataSets());
 
         while (DhisServiceUtil.hasNextPage(dataSetResponse.getPager())) {
-            dataSetResponse = DhisServiceUtil.fetchPage(
-                client,
-                dataSetResponse.getPager().getNextPage(),
-                DataSetResponse.class,
-                objectMapper
-            );
+            dataSetResponse =
+                DhisServiceUtil.fetchPage(client, dataSetResponse.getPager().getNextPage(), DataSetResponse.class, objectMapper);
             dataSets.addAll(dataSetResponse.getDataSets());
         }
 

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
+import { TrackedEntityAttributeFormService } from './tracked-entity-attribute-form.service';
+import { TrackedEntityAttributeService } from '../service/tracked-entity-attribute.service';
+import { ITrackedEntityAttribute } from '../tracked-entity-attribute.model';
 import { IProject } from 'app/entities/project/project.model';
 import { ProjectService } from 'app/entities/project/service/project.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { DHISUserService } from 'app/entities/dhis-user/service/dhis-user.service';
 import { IOptionset } from 'app/entities/optionset/optionset.model';
 import { OptionsetService } from 'app/entities/optionset/service/optionset.service';
-import { IProgram } from 'app/entities/program/program.model';
-import { ProgramService } from 'app/entities/program/service/program.service';
-import { ITrackedEntityAttribute } from '../tracked-entity-attribute.model';
-import { TrackedEntityAttributeService } from '../service/tracked-entity-attribute.service';
-import { TrackedEntityAttributeFormService } from './tracked-entity-attribute-form.service';
 
 import { TrackedEntityAttributeUpdateComponent } from './tracked-entity-attribute-update.component';
 
@@ -27,13 +27,12 @@ describe('TrackedEntityAttribute Management Update Component', () => {
   let projectService: ProjectService;
   let dHISUserService: DHISUserService;
   let optionsetService: OptionsetService;
-  let programService: ProgramService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [TrackedEntityAttributeUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [TrackedEntityAttributeUpdateComponent],
       providers: [
-        provideHttpClient(),
         FormBuilder,
         {
           provide: ActivatedRoute,
@@ -53,7 +52,6 @@ describe('TrackedEntityAttribute Management Update Component', () => {
     projectService = TestBed.inject(ProjectService);
     dHISUserService = TestBed.inject(DHISUserService);
     optionsetService = TestBed.inject(OptionsetService);
-    programService = TestBed.inject(ProgramService);
 
     comp = fixture.componentInstance;
   });
@@ -61,10 +59,10 @@ describe('TrackedEntityAttribute Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Project query and add missing value', () => {
       const trackedEntityAttribute: ITrackedEntityAttribute = { id: 'CBA' };
-      const project: IProject = { id: 6425 };
+      const project: IProject = { id: 7822 };
       trackedEntityAttribute.project = project;
 
-      const projectCollection: IProject[] = [{ id: 26161 }];
+      const projectCollection: IProject[] = [{ id: 11684 }];
       jest.spyOn(projectService, 'query').mockReturnValue(of(new HttpResponse({ body: projectCollection })));
       const additionalProjects = [project];
       const expectedCollection: IProject[] = [...additionalProjects, ...projectCollection];
@@ -76,19 +74,19 @@ describe('TrackedEntityAttribute Management Update Component', () => {
       expect(projectService.query).toHaveBeenCalled();
       expect(projectService.addProjectToCollectionIfMissing).toHaveBeenCalledWith(
         projectCollection,
-        ...additionalProjects.map(expect.objectContaining),
+        ...additionalProjects.map(expect.objectContaining)
       );
       expect(comp.projectsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call DHISUser query and add missing value', () => {
       const trackedEntityAttribute: ITrackedEntityAttribute = { id: 'CBA' };
-      const createdBy: IDHISUser = { id: '6cd8b814-b1bb-4c2f-84f8-0b550ccdf6e5' };
+      const createdBy: IDHISUser = { id: 'a0f47659-742e-472e-9e0c-1f118a6c2ecb' };
       trackedEntityAttribute.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '9ef6b195-0639-4c0d-bcbb-f2ad24338d64' };
+      const lastUpdatedBy: IDHISUser = { id: '69ae6a38-a950-4d27-a0d5-d33401c0a36b' };
       trackedEntityAttribute.lastUpdatedBy = lastUpdatedBy;
 
-      const dHISUserCollection: IDHISUser[] = [{ id: '6a562e17-faed-4119-ab96-2c20f906b594' }];
+      const dHISUserCollection: IDHISUser[] = [{ id: 'c7827181-939c-4290-aa26-213ba7b9514d' }];
       jest.spyOn(dHISUserService, 'query').mockReturnValue(of(new HttpResponse({ body: dHISUserCollection })));
       const additionalDHISUsers = [createdBy, lastUpdatedBy];
       const expectedCollection: IDHISUser[] = [...additionalDHISUsers, ...dHISUserCollection];
@@ -100,17 +98,17 @@ describe('TrackedEntityAttribute Management Update Component', () => {
       expect(dHISUserService.query).toHaveBeenCalled();
       expect(dHISUserService.addDHISUserToCollectionIfMissing).toHaveBeenCalledWith(
         dHISUserCollection,
-        ...additionalDHISUsers.map(expect.objectContaining),
+        ...additionalDHISUsers.map(expect.objectContaining)
       );
       expect(comp.dHISUsersSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call Optionset query and add missing value', () => {
       const trackedEntityAttribute: ITrackedEntityAttribute = { id: 'CBA' };
-      const optionSet: IOptionset = { id: 'aacbb074-eb0d-4187-a48b-db45a9492b51' };
+      const optionSet: IOptionset = { id: '81982c8a-d658-445f-931f-b82409fe7154' };
       trackedEntityAttribute.optionSet = optionSet;
 
-      const optionsetCollection: IOptionset[] = [{ id: 'ff21b246-56da-4788-9da2-769c3a9b44bf' }];
+      const optionsetCollection: IOptionset[] = [{ id: '2ede9b43-89a3-4384-857c-8934730aeda1' }];
       jest.spyOn(optionsetService, 'query').mockReturnValue(of(new HttpResponse({ body: optionsetCollection })));
       const additionalOptionsets = [optionSet];
       const expectedCollection: IOptionset[] = [...additionalOptionsets, ...optionsetCollection];
@@ -122,45 +120,21 @@ describe('TrackedEntityAttribute Management Update Component', () => {
       expect(optionsetService.query).toHaveBeenCalled();
       expect(optionsetService.addOptionsetToCollectionIfMissing).toHaveBeenCalledWith(
         optionsetCollection,
-        ...additionalOptionsets.map(expect.objectContaining),
+        ...additionalOptionsets.map(expect.objectContaining)
       );
       expect(comp.optionsetsSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Program query and add missing value', () => {
-      const trackedEntityAttribute: ITrackedEntityAttribute = { id: 'CBA' };
-      const programs: IProgram[] = [{ id: 'c4fff314-4c8b-488b-bbee-d7bdc109112a' }];
-      trackedEntityAttribute.programs = programs;
-
-      const programCollection: IProgram[] = [{ id: '7cbead7f-3dfd-4dea-a3fb-2d7698466e97' }];
-      jest.spyOn(programService, 'query').mockReturnValue(of(new HttpResponse({ body: programCollection })));
-      const additionalPrograms = [...programs];
-      const expectedCollection: IProgram[] = [...additionalPrograms, ...programCollection];
-      jest.spyOn(programService, 'addProgramToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ trackedEntityAttribute });
-      comp.ngOnInit();
-
-      expect(programService.query).toHaveBeenCalled();
-      expect(programService.addProgramToCollectionIfMissing).toHaveBeenCalledWith(
-        programCollection,
-        ...additionalPrograms.map(expect.objectContaining),
-      );
-      expect(comp.programsSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const trackedEntityAttribute: ITrackedEntityAttribute = { id: 'CBA' };
-      const project: IProject = { id: 10284 };
+      const project: IProject = { id: 23801 };
       trackedEntityAttribute.project = project;
-      const createdBy: IDHISUser = { id: '5a3e1daf-ab40-45d2-8e23-752e1d2b09fd' };
+      const createdBy: IDHISUser = { id: 'ebe7d183-7192-4251-8209-28b64332c773' };
       trackedEntityAttribute.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: '3b642165-50bf-4ecc-9ddd-9c08ff5c9198' };
+      const lastUpdatedBy: IDHISUser = { id: 'd2e89d52-2ae9-462a-bd25-8f742eaf39a5' };
       trackedEntityAttribute.lastUpdatedBy = lastUpdatedBy;
-      const optionSet: IOptionset = { id: '141e7d33-1d64-41e5-a220-ec6d18942a7f' };
+      const optionSet: IOptionset = { id: 'e91cd4d9-caae-4e24-90b5-1a834fa4fb70' };
       trackedEntityAttribute.optionSet = optionSet;
-      const program: IProgram = { id: 'd5deaff5-3681-4c50-beed-213a2a947353' };
-      trackedEntityAttribute.programs = [program];
 
       activatedRoute.data = of({ trackedEntityAttribute });
       comp.ngOnInit();
@@ -169,7 +143,6 @@ describe('TrackedEntityAttribute Management Update Component', () => {
       expect(comp.dHISUsersSharedCollection).toContain(createdBy);
       expect(comp.dHISUsersSharedCollection).toContain(lastUpdatedBy);
       expect(comp.optionsetsSharedCollection).toContain(optionSet);
-      expect(comp.programsSharedCollection).toContain(program);
       expect(comp.trackedEntityAttribute).toEqual(trackedEntityAttribute);
     });
   });
@@ -270,16 +243,6 @@ describe('TrackedEntityAttribute Management Update Component', () => {
         jest.spyOn(optionsetService, 'compareOptionset');
         comp.compareOptionset(entity, entity2);
         expect(optionsetService.compareOptionset).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
-    describe('compareProgram', () => {
-      it('Should forward to programService', () => {
-        const entity = { id: 'ABC' };
-        const entity2 = { id: 'CBA' };
-        jest.spyOn(programService, 'compareProgram');
-        comp.compareProgram(entity, entity2);
-        expect(programService.compareProgram).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

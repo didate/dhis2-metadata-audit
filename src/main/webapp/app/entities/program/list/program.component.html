@@ -1,11 +1,11 @@
 <div>
   <h2 id="page-heading" data-cy="ProgramHeading">
-    <span jhiTranslate="dhis2AuditApp.program.home.title">Programs</span>
+    <span jhiTranslate="dhis2TrackApp.program.home.title">Programs</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span jhiTranslate="dhis2AuditApp.program.home.refreshListLabel">Actualiser la liste</span>
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="dhis2TrackApp.program.home.refreshListLabel">Actualiser la liste</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/program/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2AuditApp.program.home.createLabel">Créer un nouveau Program</span>
+        <span jhiTranslate="dhis2TrackApp.program.home.createLabel"> Créer un nouveau Program </span>
       </button>
     </div>
   </h2>
@@ -24,484 +24,430 @@
 
   <jhi-alert></jhi-alert>
 
-  @if (programs?.length === 0) {
-    <div class="alert alert-warning" id="no-result">
-      <span jhiTranslate="dhis2AuditApp.program.home.notFound">Aucun Program trouvé</span>
+  <div class="alert alert-warning" id="no-result" *ngIf="programs?.length === 0">
+    <span jhiTranslate="dhis2TrackApp.program.home.notFound">Aucun Program trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="programs && programs.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.id">Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="name">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.name">Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="created">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.created">Created</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastUpdated">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.lastUpdated">Last Updated</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="shortName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.shortName">Short Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="description">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.description">Description</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="version">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.version">Version</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="enrollmentDateLabel">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.enrollmentDateLabel">Enrollment Date Label</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="incidentDateLabel">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.incidentDateLabel">Incident Date Label</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="programType">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.programType">Program Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayIncidentDate">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.displayIncidentDate">Display Incident Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="ignoreOverdueEvents">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.ignoreOverdueEvents">Ignore Overdue Events</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="userRoles">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.userRoles">User Roles</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="onlyEnrollOnce">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.onlyEnrollOnce">Only Enroll Once</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="notificationTemplates">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.notificationTemplates">Notification Templates</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="selectEnrollmentDatesInFuture">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.selectEnrollmentDatesInFuture">Select Enrollment Dates In Future</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="selectIncidentDatesInFuture">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.selectIncidentDatesInFuture">Select Incident Dates In Future</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="trackedEntityType">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.trackedEntityType">Tracked Entity Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="style">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.style">Style</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="skipOffline">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.skipOffline">Skip Offline</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayFrontPageList">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.displayFrontPageList">Display Front Page List</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="useFirstStageDuringRegistration">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.useFirstStageDuringRegistration">Use First Stage During Registration</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="expiryDays">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.expiryDays">Expiry Days</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="completeEventsExpiryDays">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.completeEventsExpiryDays">Complete Events Expiry Days</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="openDaysAfterCoEndDate">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.openDaysAfterCoEndDate">Open Days After Co End Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="minAttributesRequiredToSearch">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.minAttributesRequiredToSearch">Min Attributes Required To Search</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="maxTeiCountToReturn">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.maxTeiCountToReturn">Max Tei Count To Return</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="accessLevel">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.accessLevel">Access Level</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayEnrollmentDateLabel">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.displayEnrollmentDateLabel">Display Enrollment Date Label</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayIncidentDateLabel">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.displayIncidentDateLabel">Display Incident Date Label</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="registration">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.registration">Registration</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="withoutRegistration">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.withoutRegistration">Without Registration</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayShortName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.displayShortName">Display Short Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayDescription">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.displayDescription">Display Description</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayFormName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.displayFormName">Display Form Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.displayName">Display Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="organisationUnitsCount">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.organisationUnitsCount">Organisation Units Count</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="programStagesCount">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.programStagesCount">Program Stages Count</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="programIndicatorsCount">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.programIndicatorsCount">Program Indicators Count</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="programTrackedEntityAttributesCount">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.programTrackedEntityAttributesCount">Program Tracked Entity Attributes Count</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="organisationUnitsContent">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.organisationUnitsContent">Organisation Units Content</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="programStagesContent">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.programStagesContent">Program Stages Content</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="programIndicatorsContent">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.programIndicatorsContent">Program Indicators Content</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="programTrackedEntityAttributesContent">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.programTrackedEntityAttributesContent"
+                >Program Tracked Entity Attributes Content</span
+              >
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="track">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.track">Track</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="project.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.project">Project</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="createdBy.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.createdBy">Created By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastUpdatedBy.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.lastUpdatedBy">Last Updated By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="categoryCombo.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.program.categoryCombo">Category Combo</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let program of programs; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/program', program.id, 'view']">{{ program.id }}</a>
+          </td>
+          <td>{{ program.name }}</td>
+          <td>{{ program.created }}</td>
+          <td>{{ program.lastUpdated }}</td>
+          <td>{{ program.shortName }}</td>
+          <td>{{ program.description }}</td>
+          <td>{{ program.version }}</td>
+          <td>{{ program.enrollmentDateLabel }}</td>
+          <td>{{ program.incidentDateLabel }}</td>
+          <td>{{ program.programType }}</td>
+          <td>{{ program.displayIncidentDate }}</td>
+          <td>{{ program.ignoreOverdueEvents }}</td>
+          <td>{{ program.userRoles }}</td>
+          <td>{{ program.onlyEnrollOnce }}</td>
+          <td>{{ program.notificationTemplates }}</td>
+          <td>{{ program.selectEnrollmentDatesInFuture }}</td>
+          <td>{{ program.selectIncidentDatesInFuture }}</td>
+          <td>{{ program.trackedEntityType }}</td>
+          <td>{{ program.style }}</td>
+          <td>{{ program.skipOffline }}</td>
+          <td>{{ program.displayFrontPageList }}</td>
+          <td>{{ program.useFirstStageDuringRegistration }}</td>
+          <td>{{ program.expiryDays }}</td>
+          <td>{{ program.completeEventsExpiryDays }}</td>
+          <td>{{ program.openDaysAfterCoEndDate }}</td>
+          <td>{{ program.minAttributesRequiredToSearch }}</td>
+          <td>{{ program.maxTeiCountToReturn }}</td>
+          <td>{{ program.accessLevel }}</td>
+          <td>{{ program.displayEnrollmentDateLabel }}</td>
+          <td>{{ program.displayIncidentDateLabel }}</td>
+          <td>{{ program.registration }}</td>
+          <td>{{ program.withoutRegistration }}</td>
+          <td>{{ program.displayShortName }}</td>
+          <td>{{ program.displayDescription }}</td>
+          <td>{{ program.displayFormName }}</td>
+          <td>{{ program.displayName }}</td>
+          <td>{{ program.organisationUnitsCount }}</td>
+          <td>{{ program.programStagesCount }}</td>
+          <td>{{ program.programIndicatorsCount }}</td>
+          <td>{{ program.programTrackedEntityAttributesCount }}</td>
+          <td>{{ program.organisationUnitsContent }}</td>
+          <td>{{ program.programStagesContent }}</td>
+          <td>{{ program.programIndicatorsContent }}</td>
+          <td>{{ program.programTrackedEntityAttributesContent }}</td>
+          <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + program.track }}">{{ program.track }}</td>
+          <td>
+            <div *ngIf="program.project">
+              <a [routerLink]="['/project', program.project.id, 'view']">{{ program.project.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="program.createdBy">
+              <a [routerLink]="['/dhis-user', program.createdBy.id, 'view']">{{ program.createdBy.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="program.lastUpdatedBy">
+              <a [routerLink]="['/dhis-user', program.lastUpdatedBy.id, 'view']">{{ program.lastUpdatedBy.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="program.categoryCombo">
+              <a [routerLink]="['/categorycombo', program.categoryCombo.id, 'view']">{{ program.categoryCombo.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/program', program.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/program', program.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+              </button>
+
+              <button type="submit" (click)="delete(program)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="programs && programs.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
     </div>
-  }
 
-  @if (programs && programs.length > 0) {
-    <div class="table-responsive table-entities" id="entities">
-      <table class="table table-striped" aria-describedby="page-heading">
-        <thead>
-          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.id">Id</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="name">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.name">Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="created">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.created">Created</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="lastUpdated">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.lastUpdated">Last Updated</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="shortName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.shortName">Short Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="description">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.description">Description</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="version">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.version">Version</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="enrollmentDateLabel">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.enrollmentDateLabel">Enrollment Date Label</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="incidentDateLabel">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.incidentDateLabel">Incident Date Label</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="programType">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.programType">Program Type</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayIncidentDate">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.displayIncidentDate">Display Incident Date</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="ignoreOverdueEvents">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.ignoreOverdueEvents">Ignore Overdue Events</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="userRoles">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.userRoles">User Roles</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="onlyEnrollOnce">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.onlyEnrollOnce">Only Enroll Once</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="notificationTemplates">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.notificationTemplates">Notification Templates</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="selectEnrollmentDatesInFuture">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.selectEnrollmentDatesInFuture">Select Enrollment Dates In Future</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="selectIncidentDatesInFuture">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.selectIncidentDatesInFuture">Select Incident Dates In Future</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="trackedEntityType">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.trackedEntityType">Tracked Entity Type</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="style">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.style">Style</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="skipOffline">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.skipOffline">Skip Offline</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayFrontPageList">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.displayFrontPageList">Display Front Page List</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="useFirstStageDuringRegistration">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.useFirstStageDuringRegistration">Use First Stage During Registration</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="expiryDays">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.expiryDays">Expiry Days</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="completeEventsExpiryDays">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.completeEventsExpiryDays">Complete Events Expiry Days</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="openDaysAfterCoEndDate">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.openDaysAfterCoEndDate">Open Days After Co End Date</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="minAttributesRequiredToSearch">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.minAttributesRequiredToSearch">Min Attributes Required To Search</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="maxTeiCountToReturn">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.maxTeiCountToReturn">Max Tei Count To Return</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="accessLevel">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.accessLevel">Access Level</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayEnrollmentDateLabel">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.displayEnrollmentDateLabel">Display Enrollment Date Label</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayIncidentDateLabel">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.displayIncidentDateLabel">Display Incident Date Label</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="registration">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.registration">Registration</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="withoutRegistration">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.withoutRegistration">Without Registration</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayShortName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.displayShortName">Display Short Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayDescription">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.displayDescription">Display Description</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayFormName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.displayFormName">Display Form Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.displayName">Display Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="organisationUnitsCount">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.organisationUnitsCount">Organisation Units Count</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="programStagesCount">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.programStagesCount">Program Stages Count</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="programIndicatorsCount">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.programIndicatorsCount">Program Indicators Count</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="programTrackedEntityAttributesCount">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributesCount"
-                  >Program Tracked Entity Attributes Count</span
-                >
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="organisationUnitsContent">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.organisationUnitsContent">Organisation Units Content</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="programStagesContent">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.programStagesContent">Program Stages Content</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="programIndicatorsContent">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.programIndicatorsContent">Program Indicators Content</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="programTrackedEntityAttributesContent">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributesContent"
-                  >Program Tracked Entity Attributes Content</span
-                >
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="track">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.track">Track</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="project.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.project">Project</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="createdBy.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.createdBy">Created By</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="lastUpdatedBy.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.lastUpdatedBy">Last Updated By</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="categoryCombo.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.program.categoryCombo">Category Combo</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (program of programs; track trackId) {
-            <tr data-cy="entityTable">
-              <td>
-                <a [routerLink]="['/program', program.id, 'view']">{{ program.id }}</a>
-              </td>
-              <td>{{ program.name }}</td>
-              <td>{{ program.created }}</td>
-              <td>{{ program.lastUpdated }}</td>
-              <td>{{ program.shortName }}</td>
-              <td>{{ program.description }}</td>
-              <td>{{ program.version }}</td>
-              <td>{{ program.enrollmentDateLabel }}</td>
-              <td>{{ program.incidentDateLabel }}</td>
-              <td>{{ program.programType }}</td>
-              <td>{{ program.displayIncidentDate }}</td>
-              <td>{{ program.ignoreOverdueEvents }}</td>
-              <td>{{ program.userRoles }}</td>
-              <td>{{ program.onlyEnrollOnce }}</td>
-              <td>{{ program.notificationTemplates }}</td>
-              <td>{{ program.selectEnrollmentDatesInFuture }}</td>
-              <td>{{ program.selectIncidentDatesInFuture }}</td>
-              <td>{{ program.trackedEntityType }}</td>
-              <td>{{ program.style }}</td>
-              <td>{{ program.skipOffline }}</td>
-              <td>{{ program.displayFrontPageList }}</td>
-              <td>{{ program.useFirstStageDuringRegistration }}</td>
-              <td>{{ program.expiryDays }}</td>
-              <td>{{ program.completeEventsExpiryDays }}</td>
-              <td>{{ program.openDaysAfterCoEndDate }}</td>
-              <td>{{ program.minAttributesRequiredToSearch }}</td>
-              <td>{{ program.maxTeiCountToReturn }}</td>
-              <td>{{ program.accessLevel }}</td>
-              <td>{{ program.displayEnrollmentDateLabel }}</td>
-              <td>{{ program.displayIncidentDateLabel }}</td>
-              <td>{{ program.registration }}</td>
-              <td>{{ program.withoutRegistration }}</td>
-              <td>{{ program.displayShortName }}</td>
-              <td>{{ program.displayDescription }}</td>
-              <td>{{ program.displayFormName }}</td>
-              <td>{{ program.displayName }}</td>
-              <td>{{ program.organisationUnitsCount }}</td>
-              <td>{{ program.programStagesCount }}</td>
-              <td>{{ program.programIndicatorsCount }}</td>
-              <td>{{ program.programTrackedEntityAttributesCount }}</td>
-              <td>{{ program.organisationUnitsContent }}</td>
-              <td>{{ program.programStagesContent }}</td>
-              <td>{{ program.programIndicatorsContent }}</td>
-              <td>{{ program.programTrackedEntityAttributesContent }}</td>
-              <td [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (program.track ?? 'null')">
-                {{ { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[program.track ?? 'null'] }}
-              </td>
-              <td>
-                @if (program.project) {
-                  <div>
-                    <a [routerLink]="['/project', program.project.id, 'view']">{{ program.project.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (program.createdBy) {
-                  <div>
-                    <a [routerLink]="['/dhis-user', program.createdBy.id, 'view']">{{ program.createdBy.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (program.lastUpdatedBy) {
-                  <div>
-                    <a [routerLink]="['/dhis-user', program.lastUpdatedBy.id, 'view']">{{ program.lastUpdatedBy.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (program.categoryCombo) {
-                  <div>
-                    <a [routerLink]="['/categorycombo', program.categoryCombo.id, 'view']">{{ program.categoryCombo.id }}</a>
-                  </div>
-                }
-              </td>
-              <td class="text-end">
-                <div class="btn-group">
-                  <a [routerLink]="['/program', program.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-                  </a>
-
-                  <a [routerLink]="['/program', program.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(program)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
     </div>
-  }
-  @if (programs && programs.length > 0) {
-    <div>
-      <div class="d-flex justify-content-center">
-        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-      </div>
-
-      <div class="d-flex justify-content-center">
-        <ngb-pagination
-          [collectionSize]="totalItems"
-          [page]="page"
-          [pageSize]="itemsPerPage"
-          [maxSize]="5"
-          [rotate]="true"
-          [boundaryLinks]="true"
-          (pageChange)="navigateToPage($event)"
-        ></ngb-pagination>
-      </div>
-    </div>
-  }
+  </div>
 </div>

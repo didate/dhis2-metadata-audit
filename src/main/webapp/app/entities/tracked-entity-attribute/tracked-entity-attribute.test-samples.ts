@@ -1,56 +1,60 @@
 import dayjs from 'dayjs/esm';
 
+import { TypeTrack } from 'app/entities/enumerations/type-track.model';
+
 import { ITrackedEntityAttribute, NewTrackedEntityAttribute } from './tracked-entity-attribute.model';
 
 export const sampleWithRequiredData: ITrackedEntityAttribute = {
-  id: '15846750-c991-496b-83c3-78ab4db09796',
-  track: 'NEW',
+  id: '37b1f49c-fc0d-4e58-86f2-3a1174fea80a',
+  track: TypeTrack['NONE'],
 };
 
 export const sampleWithPartialData: ITrackedEntityAttribute = {
-  id: '5f61836b-c905-42da-a92e-ee38ad3c18b3',
-  lastUpdated: dayjs('2024-08-22T05:29'),
-  created: dayjs('2024-08-22T03:07'),
-  shortName: 'raccrocher vouh',
-  generated: false,
-  valueType: 'pourvu que',
-  uniquee: false,
+  id: '817b6054-f414-4d08-86fa-33f9bd49140a',
+  lastUpdated: dayjs('2024-08-23T20:25'),
+  confidential: true,
+  uniquee: true,
+  dimensionItemType: 'extend virtual',
+  aggregationType: 'web-enabled Health Aquitaine',
+  displayInListNoProgram: false,
+  displayShortName: 'Metal application virtual',
+  periodOffset: 80760,
   displayOnVisitSchedule: true,
-  inherit: true,
-  optionSetValue: true,
-  track: 'NONE',
+  orgunitScope: false,
+  dimensionItem: 'metrics',
+  track: TypeTrack['NONE'],
 };
 
 export const sampleWithFullData: ITrackedEntityAttribute = {
-  id: 'de0b11fb-299c-4634-9390-2dd66d76dd5c',
-  lastUpdated: dayjs('2024-08-23T00:09'),
-  created: dayjs('2024-08-22T14:50'),
-  name: 'parce que au-dessous',
-  shortName: 'estimer',
-  generated: false,
-  valueType: 'après que vraisemblablement',
-  confidential: false,
-  displayFormName: 'bè présidence',
+  id: '3df25f2e-9332-4443-a089-d1786ac3ca1b',
+  lastUpdated: dayjs('2024-08-23T10:06'),
+  created: dayjs('2024-08-23T20:31'),
+  name: 'Concrete digital Consultant',
+  shortName: 'engage b',
+  generated: true,
+  valueType: 'Loan Buckinghamshire Hat',
+  confidential: true,
+  displayFormName: 'TCP Saint-Bernard',
   uniquee: true,
-  dimensionItemType: 'de la part de traîner où',
-  aggregationType: 'extatique en bas de délégation',
+  dimensionItemType: 'white neural',
+  aggregationType: 'Shoes intranet',
   displayInListNoProgram: true,
-  displayName: 'moins cuicui membre à vie',
-  patterne: 'pendant que gens vorace',
+  displayName: 'Borders',
+  patterne: 'connect Multi-layered parsing',
   skipSynchronization: false,
-  displayShortName: 'sentir ding quoique',
-  periodOffset: 30293,
-  displayOnVisitSchedule: true,
-  formName: 'vroum rectorat',
+  displayShortName: 'Manager a',
+  periodOffset: 23256,
+  displayOnVisitSchedule: false,
+  formName: 'synthesizing RAM foreground',
   orgunitScope: false,
-  dimensionItem: 'aux alentours de à la merci pourvu que',
+  dimensionItem: 'Berkshire feed',
   inherit: true,
   optionSetValue: true,
-  track: 'NEW',
+  track: TypeTrack['NEW'],
 };
 
 export const sampleWithNewData: NewTrackedEntityAttribute = {
-  track: 'NEW',
+  track: TypeTrack['NONE'],
   id: null,
 };
 

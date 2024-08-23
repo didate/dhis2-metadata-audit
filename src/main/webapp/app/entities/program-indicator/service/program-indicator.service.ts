@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
@@ -27,10 +27,9 @@ export type EntityArrayResponseType = HttpResponse<IProgramIndicator[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ProgramIndicatorService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/program-indicators');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(programIndicator: NewProgramIndicator): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(programIndicator);
@@ -88,8 +87,8 @@ export class ProgramIndicatorService {
   ): Type[] {
     const programIndicators: Type[] = programIndicatorsToCheck.filter(isPresent);
     if (programIndicators.length > 0) {
-      const programIndicatorCollectionIdentifiers = programIndicatorCollection.map(programIndicatorItem =>
-        this.getProgramIndicatorIdentifier(programIndicatorItem),
+      const programIndicatorCollectionIdentifiers = programIndicatorCollection.map(
+        programIndicatorItem => this.getProgramIndicatorIdentifier(programIndicatorItem)!
       );
       const programIndicatorsToAdd = programIndicators.filter(programIndicatorItem => {
         const programIndicatorIdentifier = this.getProgramIndicatorIdentifier(programIndicatorItem);
@@ -105,7 +104,7 @@ export class ProgramIndicatorService {
   }
 
   protected convertDateFromClient<T extends IProgramIndicator | NewProgramIndicator | PartialUpdateProgramIndicator>(
-    programIndicator: T,
+    programIndicator: T
   ): RestOf<T> {
     return {
       ...programIndicator,

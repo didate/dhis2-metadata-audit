@@ -1,13 +1,14 @@
 package com.didate.repository;
 
 import com.didate.domain.Dataset;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import org.hibernate.annotations.QueryHints;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -15,9 +16,6 @@ import org.springframework.data.domain.PageImpl;
  * Utility repository to load bag relationships based on https://vladmihalcea.com/hibernate-multiplebagfetchexception/
  */
 public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetRepositoryWithBagRelationships {
-
-    private static final String ID_PARAMETER = "id";
-    private static final String DATASETS_PARAMETER = "datasets";
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -34,7 +32,8 @@ public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetReposit
 
     @Override
     public List<Dataset> fetchBagRelationships(List<Dataset> datasets) {
-        return Optional.of(datasets)
+        return Optional
+            .of(datasets)
             .map(this::fetchDataSetElements)
             .map(this::fetchIndicators)
             .map(this::fetchOrganisationUnits)
@@ -44,10 +43,10 @@ public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetReposit
     Dataset fetchDataSetElements(Dataset result) {
         return entityManager
             .createQuery(
-                "select dataset from Dataset dataset left join fetch dataset.dataSetElements where dataset.id = :id",
+                "select dataset from Dataset dataset left join fetch dataset.dataSetElements where dataset is :dataset",
                 Dataset.class
             )
-            .setParameter(ID_PARAMETER, result.getId())
+            .setParameter("dataset", result)
             .getSingleResult();
     }
 
@@ -56,10 +55,10 @@ public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetReposit
         IntStream.range(0, datasets.size()).forEach(index -> order.put(datasets.get(index).getId(), index));
         List<Dataset> result = entityManager
             .createQuery(
-                "select dataset from Dataset dataset left join fetch dataset.dataSetElements where dataset in :datasets",
+                "select distinct dataset from Dataset dataset left join fetch dataset.dataSetElements where dataset in :datasets",
                 Dataset.class
             )
-            .setParameter(DATASETS_PARAMETER, datasets)
+            .setParameter("datasets", datasets)
             .getResultList();
         Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
         return result;
@@ -67,8 +66,8 @@ public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetReposit
 
     Dataset fetchIndicators(Dataset result) {
         return entityManager
-            .createQuery("select dataset from Dataset dataset left join fetch dataset.indicators where dataset.id = :id", Dataset.class)
-            .setParameter(ID_PARAMETER, result.getId())
+            .createQuery("select dataset from Dataset dataset left join fetch dataset.indicators where dataset is :dataset", Dataset.class)
+            .setParameter("dataset", result)
             .getSingleResult();
     }
 
@@ -76,8 +75,11 @@ public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetReposit
         HashMap<Object, Integer> order = new HashMap<>();
         IntStream.range(0, datasets.size()).forEach(index -> order.put(datasets.get(index).getId(), index));
         List<Dataset> result = entityManager
-            .createQuery("select dataset from Dataset dataset left join fetch dataset.indicators where dataset in :datasets", Dataset.class)
-            .setParameter(DATASETS_PARAMETER, datasets)
+            .createQuery(
+                "select distinct dataset from Dataset dataset left join fetch dataset.indicators where dataset in :datasets",
+                Dataset.class
+            )
+            .setParameter("datasets", datasets)
             .getResultList();
         Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
         return result;
@@ -86,10 +88,10 @@ public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetReposit
     Dataset fetchOrganisationUnits(Dataset result) {
         return entityManager
             .createQuery(
-                "select dataset from Dataset dataset left join fetch dataset.organisationUnits where dataset.id = :id",
+                "select dataset from Dataset dataset left join fetch dataset.organisationUnits where dataset is :dataset",
                 Dataset.class
             )
-            .setParameter(ID_PARAMETER, result.getId())
+            .setParameter("dataset", result)
             .getSingleResult();
     }
 
@@ -98,12 +100,18 @@ public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetReposit
         IntStream.range(0, datasets.size()).forEach(index -> order.put(datasets.get(index).getId(), index));
         List<Dataset> result = entityManager
             .createQuery(
-                "select dataset from Dataset dataset left join fetch dataset.organisationUnits where dataset in :datasets",
+                "select distinct dataset from Dataset dataset left join fetch dataset.organisationUnits where dataset in :datasets",
                 Dataset.class
             )
-            .setParameter(DATASETS_PARAMETER, datasets)
+            .setParameter("datasets", datasets)
             .getResultList();
         Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
         return result;
     }
 }
+/* .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+.setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+.setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+.setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+.setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+.setHint(QueryHints.PASS_DISTINCT_THROUGH, false) */

@@ -1,40 +1,41 @@
 import dayjs from 'dayjs/esm';
 
+import { TypeTrack } from 'app/entities/enumerations/type-track.model';
+
 import { IProgramRuleVariable, NewProgramRuleVariable } from './program-rule-variable.model';
 
 export const sampleWithRequiredData: IProgramRuleVariable = {
-  id: 'fd667f76-bee9-41ed-94bf-bfc4f628a862',
-  lastUpdated: dayjs('2024-08-22T05:14'),
-  created: dayjs('2024-08-22T18:37'),
-  name: 'rire au-dessous de',
-  track: 'NONE',
+  id: '57554e4c-e0e4-42d9-a8b4-5cb93ae61684',
+  lastUpdated: dayjs('2024-08-23T01:14'),
+  created: dayjs('2024-08-23T03:09'),
+  name: 'Rubber',
+  track: TypeTrack['UPDATE'],
 };
 
 export const sampleWithPartialData: IProgramRuleVariable = {
-  id: 'a261c665-5dfe-47d1-813b-e082d81b335c',
-  lastUpdated: dayjs('2024-08-22T08:13'),
-  created: dayjs('2024-08-22T21:04'),
-  name: 'crac modeler plic',
-  useCodeForOptionSet: true,
-  track: 'NEW',
+  id: 'a8e52d52-028e-40b8-a3ac-6057a56d1a7d',
+  lastUpdated: dayjs('2024-08-22T22:13'),
+  created: dayjs('2024-08-23T16:52'),
+  name: 'override transmitting',
+  track: TypeTrack['UPDATE'],
 };
 
 export const sampleWithFullData: IProgramRuleVariable = {
-  id: '900af34a-e011-4c8d-abb9-375686c428a8',
-  lastUpdated: dayjs('2024-08-22T14:36'),
-  created: dayjs('2024-08-23T01:07'),
-  name: 'jusqu’à ce que',
-  displayName: 'biathlète à condition que revenir',
-  programRuleVariableSourceType: 'ronron de peur que',
+  id: '66bcb121-7026-45f0-922f-40c91f91f0e6',
+  lastUpdated: dayjs('2024-08-23T09:51'),
+  created: dayjs('2024-08-23T05:15'),
+  name: 'Équateur program 1080p',
+  displayName: 'La',
+  programRuleVariableSourceType: 'Wooden Midi-Pyrénées Singapore',
   useCodeForOptionSet: true,
-  track: 'UPDATE',
+  track: TypeTrack['UPDATE'],
 };
 
 export const sampleWithNewData: NewProgramRuleVariable = {
-  lastUpdated: dayjs('2024-08-22T14:46'),
-  created: dayjs('2024-08-22T21:48'),
-  name: 'adopter bouger collègue',
-  track: 'NONE',
+  lastUpdated: dayjs('2024-08-23T05:22'),
+  created: dayjs('2024-08-23T16:30'),
+  name: 'interface Cotton',
+  track: TypeTrack['NEW'],
   id: null,
 };
 

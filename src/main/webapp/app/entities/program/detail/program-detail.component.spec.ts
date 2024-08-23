@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { RouterTestingHarness } from '@angular/router/testing';
+import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { ProgramDetailComponent } from './program-detail.component';
@@ -9,46 +8,29 @@ describe('Program Management Detail Component', () => {
   let comp: ProgramDetailComponent;
   let fixture: ComponentFixture<ProgramDetailComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ProgramDetailComponent],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [ProgramDetailComponent],
       providers: [
-        provideRouter(
-          [
-            {
-              path: '**',
-              component: ProgramDetailComponent,
-              resolve: { program: () => of({ id: 'ABC' }) },
-            },
-          ],
-          withComponentInputBinding(),
-        ),
+        {
+          provide: ActivatedRoute,
+          useValue: { data: of({ program: { id: 'ABC' } }) },
+        },
       ],
     })
       .overrideTemplate(ProgramDetailComponent, '')
       .compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(ProgramDetailComponent);
     comp = fixture.componentInstance;
   });
 
   describe('OnInit', () => {
-    it('Should load program on init', async () => {
-      const harness = await RouterTestingHarness.create();
-      const instance = await harness.navigateByUrl('/', ProgramDetailComponent);
+    it('Should load program on init', () => {
+      // WHEN
+      comp.ngOnInit();
 
       // THEN
-      expect(instance.program()).toEqual(expect.objectContaining({ id: 'ABC' }));
-    });
-  });
-
-  describe('PreviousState', () => {
-    it('Should navigate to previous state', () => {
-      jest.spyOn(window.history, 'back');
-      comp.previousState();
-      expect(window.history.back).toHaveBeenCalled();
+      expect(comp.program).toEqual(expect.objectContaining({ id: 'ABC' }));
     });
   });
 });

@@ -14,13 +14,13 @@ export interface IProgramRuleVariable {
   displayName?: string | null;
   programRuleVariableSourceType?: string | null;
   useCodeForOptionSet?: boolean | null;
-  track?: keyof typeof TypeTrack | null;
-  project?: IProject | null;
-  createdBy?: IDHISUser | null;
-  lastUpdatedBy?: IDHISUser | null;
-  program?: IProgram | null;
-  trackedEntityAttribute?: ITrackedEntityAttribute | null;
-  dataElement?: IDataelement | null;
+  track?: TypeTrack | null;
+  project?: Pick<IProject, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'id'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  program?: Pick<IProgram, 'id'> | null;
+  trackedEntityAttribute?: Pick<ITrackedEntityAttribute, 'id'> | null;
+  dataElement?: Pick<IDataelement, 'id'> | null;
 }
 
 export type NewProgramRuleVariable = Omit<IProgramRuleVariable, 'id'> & { id: null };

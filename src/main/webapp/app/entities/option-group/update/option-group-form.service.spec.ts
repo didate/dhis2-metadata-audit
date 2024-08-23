@@ -20,7 +20,7 @@ describe('OptionGroup Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -30,13 +30,14 @@ describe('OptionGroup Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getOptionGroup', () => {
       it('should return NewOptionGroup for default OptionGroup initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createOptionGroupFormGroup(sampleWithNewData);
 
         const optionGroup = service.getOptionGroup(formGroup) as any;

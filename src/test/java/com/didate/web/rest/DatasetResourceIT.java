@@ -1,7 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.DatasetAsserts.*;
-import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Mockito.*;
@@ -14,13 +12,12 @@ import com.didate.domain.Dataset;
 import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.DatasetRepository;
 import com.didate.service.DatasetService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +26,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -153,9 +151,6 @@ class DatasetResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private DatasetRepository datasetRepository;
 
     @Mock
@@ -171,8 +166,6 @@ class DatasetResourceIT {
     private MockMvc restDatasetMockMvc;
 
     private Dataset dataset;
-
-    private Dataset insertedDataset;
 
     /**
      * Create an entity for this test.
@@ -295,34 +288,54 @@ class DatasetResourceIT {
         dataset = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedDataset != null) {
-            datasetRepository.delete(insertedDataset);
-            insertedDataset = null;
-        }
-    }
-
     @Test
     @Transactional
     void createDataset() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = datasetRepository.findAll().size();
         // Create the Dataset
-        var returnedDataset = om.readValue(
-            restDatasetMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataset)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            Dataset.class
-        );
+        restDatasetMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataset)))
+            .andExpect(status().isCreated());
 
         // Validate the Dataset in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertDatasetUpdatableFieldsEquals(returnedDataset, getPersistedDataset(returnedDataset));
-
-        insertedDataset = returnedDataset;
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeCreate + 1);
+        Dataset testDataset = datasetList.get(datasetList.size() - 1);
+        assertThat(testDataset.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testDataset.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testDataset.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testDataset.getShortName()).isEqualTo(DEFAULT_SHORT_NAME);
+        assertThat(testDataset.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testDataset.getDimensionItemType()).isEqualTo(DEFAULT_DIMENSION_ITEM_TYPE);
+        assertThat(testDataset.getPeriodType()).isEqualTo(DEFAULT_PERIOD_TYPE);
+        assertThat(testDataset.getMobile()).isEqualTo(DEFAULT_MOBILE);
+        assertThat(testDataset.getVersion()).isEqualTo(DEFAULT_VERSION);
+        assertThat(testDataset.getExpiryDays()).isEqualTo(DEFAULT_EXPIRY_DAYS);
+        assertThat(testDataset.getTimelyDays()).isEqualTo(DEFAULT_TIMELY_DAYS);
+        assertThat(testDataset.getNotifyCompletingUser()).isEqualTo(DEFAULT_NOTIFY_COMPLETING_USER);
+        assertThat(testDataset.getOpenFuturePeriods()).isEqualTo(DEFAULT_OPEN_FUTURE_PERIODS);
+        assertThat(testDataset.getOpenPeriodsAfterCoEndDate()).isEqualTo(DEFAULT_OPEN_PERIODS_AFTER_CO_END_DATE);
+        assertThat(testDataset.getFieldCombinationRequired()).isEqualTo(DEFAULT_FIELD_COMBINATION_REQUIRED);
+        assertThat(testDataset.getValidCompleteOnly()).isEqualTo(DEFAULT_VALID_COMPLETE_ONLY);
+        assertThat(testDataset.getNoValueRequiresComment()).isEqualTo(DEFAULT_NO_VALUE_REQUIRES_COMMENT);
+        assertThat(testDataset.getSkipOffline()).isEqualTo(DEFAULT_SKIP_OFFLINE);
+        assertThat(testDataset.getDataElementDecoration()).isEqualTo(DEFAULT_DATA_ELEMENT_DECORATION);
+        assertThat(testDataset.getRenderAsTabs()).isEqualTo(DEFAULT_RENDER_AS_TABS);
+        assertThat(testDataset.getRenderHorizontally()).isEqualTo(DEFAULT_RENDER_HORIZONTALLY);
+        assertThat(testDataset.getCompulsoryFieldsCompleteOnly()).isEqualTo(DEFAULT_COMPULSORY_FIELDS_COMPLETE_ONLY);
+        assertThat(testDataset.getFormType()).isEqualTo(DEFAULT_FORM_TYPE);
+        assertThat(testDataset.getDisplayName()).isEqualTo(DEFAULT_DISPLAY_NAME);
+        assertThat(testDataset.getDimensionItem()).isEqualTo(DEFAULT_DIMENSION_ITEM);
+        assertThat(testDataset.getDisplayShortName()).isEqualTo(DEFAULT_DISPLAY_SHORT_NAME);
+        assertThat(testDataset.getDisplayDescription()).isEqualTo(DEFAULT_DISPLAY_DESCRIPTION);
+        assertThat(testDataset.getDisplayFormName()).isEqualTo(DEFAULT_DISPLAY_FORM_NAME);
+        assertThat(testDataset.getDataSetElementsCount()).isEqualTo(DEFAULT_DATA_SET_ELEMENTS_COUNT);
+        assertThat(testDataset.getIndicatorsCount()).isEqualTo(DEFAULT_INDICATORS_COUNT);
+        assertThat(testDataset.getOrganisationUnitsCount()).isEqualTo(DEFAULT_ORGANISATION_UNITS_COUNT);
+        assertThat(testDataset.getDataSetElementsContent()).isEqualTo(DEFAULT_DATA_SET_ELEMENTS_CONTENT);
+        assertThat(testDataset.getIndicatorsContent()).isEqualTo(DEFAULT_INDICATORS_CONTENT);
+        assertThat(testDataset.getOrganisationUnitsContent()).isEqualTo(DEFAULT_ORGANISATION_UNITS_CONTENT);
+        assertThat(testDataset.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
@@ -331,70 +344,75 @@ class DatasetResourceIT {
         // Create the Dataset with an existing ID
         dataset.setId("existing_id");
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = datasetRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restDatasetMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataset)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataset)))
             .andExpect(status().isBadRequest());
 
         // Validate the Dataset in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void checkCreatedIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = datasetRepository.findAll().size();
         // set the field null
         dataset.setCreated(null);
 
         // Create the Dataset, which fails.
 
         restDatasetMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataset)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataset)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkLastUpdatedIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = datasetRepository.findAll().size();
         // set the field null
         dataset.setLastUpdated(null);
 
         // Create the Dataset, which fails.
 
         restDatasetMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataset)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataset)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkTrackIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = datasetRepository.findAll().size();
         // set the field null
         dataset.setTrack(null);
 
         // Create the Dataset, which fails.
 
         restDatasetMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataset)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataset)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void getAllDatasets() throws Exception {
         // Initialize the database
-        insertedDataset = datasetRepository.saveAndFlush(dataset);
+        dataset.setId(UUID.randomUUID().toString());
+        datasetRepository.saveAndFlush(dataset);
 
         // Get all the datasetList
         restDatasetMockMvc
@@ -462,7 +480,8 @@ class DatasetResourceIT {
     @Transactional
     void getDataset() throws Exception {
         // Initialize the database
-        insertedDataset = datasetRepository.saveAndFlush(dataset);
+        dataset.setId(UUID.randomUUID().toString());
+        datasetRepository.saveAndFlush(dataset);
 
         // Get the dataset
         restDatasetMockMvc
@@ -518,12 +537,13 @@ class DatasetResourceIT {
     @Transactional
     void putExistingDataset() throws Exception {
         // Initialize the database
-        insertedDataset = datasetRepository.saveAndFlush(dataset);
+        dataset.setId(UUID.randomUUID().toString());
+        datasetRepository.saveAndFlush(dataset);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = datasetRepository.findAll().size();
 
         // Update the dataset
-        Dataset updatedDataset = datasetRepository.findById(dataset.getId()).orElseThrow();
+        Dataset updatedDataset = datasetRepository.findById(dataset.getId()).get();
         // Disconnect from session so that the updates on updatedDataset are not directly saved in db
         em.detach(updatedDataset);
         updatedDataset
@@ -567,34 +587,75 @@ class DatasetResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, updatedDataset.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedDataset))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedDataset))
             )
             .andExpect(status().isOk());
 
         // Validate the Dataset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedDatasetToMatchAllProperties(updatedDataset);
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
+        Dataset testDataset = datasetList.get(datasetList.size() - 1);
+        assertThat(testDataset.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDataset.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testDataset.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testDataset.getShortName()).isEqualTo(UPDATED_SHORT_NAME);
+        assertThat(testDataset.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testDataset.getDimensionItemType()).isEqualTo(UPDATED_DIMENSION_ITEM_TYPE);
+        assertThat(testDataset.getPeriodType()).isEqualTo(UPDATED_PERIOD_TYPE);
+        assertThat(testDataset.getMobile()).isEqualTo(UPDATED_MOBILE);
+        assertThat(testDataset.getVersion()).isEqualTo(UPDATED_VERSION);
+        assertThat(testDataset.getExpiryDays()).isEqualTo(UPDATED_EXPIRY_DAYS);
+        assertThat(testDataset.getTimelyDays()).isEqualTo(UPDATED_TIMELY_DAYS);
+        assertThat(testDataset.getNotifyCompletingUser()).isEqualTo(UPDATED_NOTIFY_COMPLETING_USER);
+        assertThat(testDataset.getOpenFuturePeriods()).isEqualTo(UPDATED_OPEN_FUTURE_PERIODS);
+        assertThat(testDataset.getOpenPeriodsAfterCoEndDate()).isEqualTo(UPDATED_OPEN_PERIODS_AFTER_CO_END_DATE);
+        assertThat(testDataset.getFieldCombinationRequired()).isEqualTo(UPDATED_FIELD_COMBINATION_REQUIRED);
+        assertThat(testDataset.getValidCompleteOnly()).isEqualTo(UPDATED_VALID_COMPLETE_ONLY);
+        assertThat(testDataset.getNoValueRequiresComment()).isEqualTo(UPDATED_NO_VALUE_REQUIRES_COMMENT);
+        assertThat(testDataset.getSkipOffline()).isEqualTo(UPDATED_SKIP_OFFLINE);
+        assertThat(testDataset.getDataElementDecoration()).isEqualTo(UPDATED_DATA_ELEMENT_DECORATION);
+        assertThat(testDataset.getRenderAsTabs()).isEqualTo(UPDATED_RENDER_AS_TABS);
+        assertThat(testDataset.getRenderHorizontally()).isEqualTo(UPDATED_RENDER_HORIZONTALLY);
+        assertThat(testDataset.getCompulsoryFieldsCompleteOnly()).isEqualTo(UPDATED_COMPULSORY_FIELDS_COMPLETE_ONLY);
+        assertThat(testDataset.getFormType()).isEqualTo(UPDATED_FORM_TYPE);
+        assertThat(testDataset.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testDataset.getDimensionItem()).isEqualTo(UPDATED_DIMENSION_ITEM);
+        assertThat(testDataset.getDisplayShortName()).isEqualTo(UPDATED_DISPLAY_SHORT_NAME);
+        assertThat(testDataset.getDisplayDescription()).isEqualTo(UPDATED_DISPLAY_DESCRIPTION);
+        assertThat(testDataset.getDisplayFormName()).isEqualTo(UPDATED_DISPLAY_FORM_NAME);
+        assertThat(testDataset.getDataSetElementsCount()).isEqualTo(UPDATED_DATA_SET_ELEMENTS_COUNT);
+        assertThat(testDataset.getIndicatorsCount()).isEqualTo(UPDATED_INDICATORS_COUNT);
+        assertThat(testDataset.getOrganisationUnitsCount()).isEqualTo(UPDATED_ORGANISATION_UNITS_COUNT);
+        assertThat(testDataset.getDataSetElementsContent()).isEqualTo(UPDATED_DATA_SET_ELEMENTS_CONTENT);
+        assertThat(testDataset.getIndicatorsContent()).isEqualTo(UPDATED_INDICATORS_CONTENT);
+        assertThat(testDataset.getOrganisationUnitsContent()).isEqualTo(UPDATED_ORGANISATION_UNITS_CONTENT);
+        assertThat(testDataset.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void putNonExistingDataset() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = datasetRepository.findAll().size();
         dataset.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restDatasetMockMvc
-            .perform(put(ENTITY_API_URL_ID, dataset.getId()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataset)))
+            .perform(
+                put(ENTITY_API_URL_ID, dataset.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(dataset))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Dataset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchDataset() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = datasetRepository.findAll().size();
         dataset.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -602,36 +663,39 @@ class DatasetResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(dataset))
+                    .content(TestUtil.convertObjectToJsonBytes(dataset))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Dataset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamDataset() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = datasetRepository.findAll().size();
         dataset.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restDatasetMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataset)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataset)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Dataset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void partialUpdateDatasetWithPatch() throws Exception {
         // Initialize the database
-        insertedDataset = datasetRepository.saveAndFlush(dataset);
+        dataset.setId(UUID.randomUUID().toString());
+        datasetRepository.saveAndFlush(dataset);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = datasetRepository.findAll().size();
 
         // Update the dataset using partial update
         Dataset partialUpdatedDataset = new Dataset();
@@ -639,45 +703,77 @@ class DatasetResourceIT {
 
         partialUpdatedDataset
             .name(UPDATED_NAME)
-            .shortName(UPDATED_SHORT_NAME)
-            .description(UPDATED_DESCRIPTION)
+            .created(UPDATED_CREATED)
+            .lastUpdated(UPDATED_LAST_UPDATED)
             .dimensionItemType(UPDATED_DIMENSION_ITEM_TYPE)
-            .timelyDays(UPDATED_TIMELY_DAYS)
-            .openPeriodsAfterCoEndDate(UPDATED_OPEN_PERIODS_AFTER_CO_END_DATE)
-            .fieldCombinationRequired(UPDATED_FIELD_COMBINATION_REQUIRED)
+            .periodType(UPDATED_PERIOD_TYPE)
+            .expiryDays(UPDATED_EXPIRY_DAYS)
+            .notifyCompletingUser(UPDATED_NOTIFY_COMPLETING_USER)
             .validCompleteOnly(UPDATED_VALID_COMPLETE_ONLY)
-            .noValueRequiresComment(UPDATED_NO_VALUE_REQUIRES_COMMENT)
-            .renderAsTabs(UPDATED_RENDER_AS_TABS)
-            .renderHorizontally(UPDATED_RENDER_HORIZONTALLY)
-            .compulsoryFieldsCompleteOnly(UPDATED_COMPULSORY_FIELDS_COMPLETE_ONLY)
-            .displayName(UPDATED_DISPLAY_NAME)
-            .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
-            .displayDescription(UPDATED_DISPLAY_DESCRIPTION)
+            .formType(UPDATED_FORM_TYPE)
+            .displayFormName(UPDATED_DISPLAY_FORM_NAME)
             .dataSetElementsCount(UPDATED_DATA_SET_ELEMENTS_COUNT)
-            .dataSetElementsContent(UPDATED_DATA_SET_ELEMENTS_CONTENT)
+            .indicatorsCount(UPDATED_INDICATORS_COUNT)
+            .organisationUnitsCount(UPDATED_ORGANISATION_UNITS_COUNT)
             .organisationUnitsContent(UPDATED_ORGANISATION_UNITS_CONTENT);
 
         restDatasetMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDataset.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedDataset))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedDataset))
             )
             .andExpect(status().isOk());
 
         // Validate the Dataset in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertDatasetUpdatableFieldsEquals(createUpdateProxyForBean(partialUpdatedDataset, dataset), getPersistedDataset(dataset));
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
+        Dataset testDataset = datasetList.get(datasetList.size() - 1);
+        assertThat(testDataset.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDataset.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testDataset.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testDataset.getShortName()).isEqualTo(DEFAULT_SHORT_NAME);
+        assertThat(testDataset.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testDataset.getDimensionItemType()).isEqualTo(UPDATED_DIMENSION_ITEM_TYPE);
+        assertThat(testDataset.getPeriodType()).isEqualTo(UPDATED_PERIOD_TYPE);
+        assertThat(testDataset.getMobile()).isEqualTo(DEFAULT_MOBILE);
+        assertThat(testDataset.getVersion()).isEqualTo(DEFAULT_VERSION);
+        assertThat(testDataset.getExpiryDays()).isEqualTo(UPDATED_EXPIRY_DAYS);
+        assertThat(testDataset.getTimelyDays()).isEqualTo(DEFAULT_TIMELY_DAYS);
+        assertThat(testDataset.getNotifyCompletingUser()).isEqualTo(UPDATED_NOTIFY_COMPLETING_USER);
+        assertThat(testDataset.getOpenFuturePeriods()).isEqualTo(DEFAULT_OPEN_FUTURE_PERIODS);
+        assertThat(testDataset.getOpenPeriodsAfterCoEndDate()).isEqualTo(DEFAULT_OPEN_PERIODS_AFTER_CO_END_DATE);
+        assertThat(testDataset.getFieldCombinationRequired()).isEqualTo(DEFAULT_FIELD_COMBINATION_REQUIRED);
+        assertThat(testDataset.getValidCompleteOnly()).isEqualTo(UPDATED_VALID_COMPLETE_ONLY);
+        assertThat(testDataset.getNoValueRequiresComment()).isEqualTo(DEFAULT_NO_VALUE_REQUIRES_COMMENT);
+        assertThat(testDataset.getSkipOffline()).isEqualTo(DEFAULT_SKIP_OFFLINE);
+        assertThat(testDataset.getDataElementDecoration()).isEqualTo(DEFAULT_DATA_ELEMENT_DECORATION);
+        assertThat(testDataset.getRenderAsTabs()).isEqualTo(DEFAULT_RENDER_AS_TABS);
+        assertThat(testDataset.getRenderHorizontally()).isEqualTo(DEFAULT_RENDER_HORIZONTALLY);
+        assertThat(testDataset.getCompulsoryFieldsCompleteOnly()).isEqualTo(DEFAULT_COMPULSORY_FIELDS_COMPLETE_ONLY);
+        assertThat(testDataset.getFormType()).isEqualTo(UPDATED_FORM_TYPE);
+        assertThat(testDataset.getDisplayName()).isEqualTo(DEFAULT_DISPLAY_NAME);
+        assertThat(testDataset.getDimensionItem()).isEqualTo(DEFAULT_DIMENSION_ITEM);
+        assertThat(testDataset.getDisplayShortName()).isEqualTo(DEFAULT_DISPLAY_SHORT_NAME);
+        assertThat(testDataset.getDisplayDescription()).isEqualTo(DEFAULT_DISPLAY_DESCRIPTION);
+        assertThat(testDataset.getDisplayFormName()).isEqualTo(UPDATED_DISPLAY_FORM_NAME);
+        assertThat(testDataset.getDataSetElementsCount()).isEqualTo(UPDATED_DATA_SET_ELEMENTS_COUNT);
+        assertThat(testDataset.getIndicatorsCount()).isEqualTo(UPDATED_INDICATORS_COUNT);
+        assertThat(testDataset.getOrganisationUnitsCount()).isEqualTo(UPDATED_ORGANISATION_UNITS_COUNT);
+        assertThat(testDataset.getDataSetElementsContent()).isEqualTo(DEFAULT_DATA_SET_ELEMENTS_CONTENT);
+        assertThat(testDataset.getIndicatorsContent()).isEqualTo(DEFAULT_INDICATORS_CONTENT);
+        assertThat(testDataset.getOrganisationUnitsContent()).isEqualTo(UPDATED_ORGANISATION_UNITS_CONTENT);
+        assertThat(testDataset.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
     @Transactional
     void fullUpdateDatasetWithPatch() throws Exception {
         // Initialize the database
-        insertedDataset = datasetRepository.saveAndFlush(dataset);
+        dataset.setId(UUID.randomUUID().toString());
+        datasetRepository.saveAndFlush(dataset);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = datasetRepository.findAll().size();
 
         // Update the dataset using partial update
         Dataset partialUpdatedDataset = new Dataset();
@@ -724,37 +820,75 @@ class DatasetResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDataset.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedDataset))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedDataset))
             )
             .andExpect(status().isOk());
 
         // Validate the Dataset in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertDatasetUpdatableFieldsEquals(partialUpdatedDataset, getPersistedDataset(partialUpdatedDataset));
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
+        Dataset testDataset = datasetList.get(datasetList.size() - 1);
+        assertThat(testDataset.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDataset.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testDataset.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testDataset.getShortName()).isEqualTo(UPDATED_SHORT_NAME);
+        assertThat(testDataset.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testDataset.getDimensionItemType()).isEqualTo(UPDATED_DIMENSION_ITEM_TYPE);
+        assertThat(testDataset.getPeriodType()).isEqualTo(UPDATED_PERIOD_TYPE);
+        assertThat(testDataset.getMobile()).isEqualTo(UPDATED_MOBILE);
+        assertThat(testDataset.getVersion()).isEqualTo(UPDATED_VERSION);
+        assertThat(testDataset.getExpiryDays()).isEqualTo(UPDATED_EXPIRY_DAYS);
+        assertThat(testDataset.getTimelyDays()).isEqualTo(UPDATED_TIMELY_DAYS);
+        assertThat(testDataset.getNotifyCompletingUser()).isEqualTo(UPDATED_NOTIFY_COMPLETING_USER);
+        assertThat(testDataset.getOpenFuturePeriods()).isEqualTo(UPDATED_OPEN_FUTURE_PERIODS);
+        assertThat(testDataset.getOpenPeriodsAfterCoEndDate()).isEqualTo(UPDATED_OPEN_PERIODS_AFTER_CO_END_DATE);
+        assertThat(testDataset.getFieldCombinationRequired()).isEqualTo(UPDATED_FIELD_COMBINATION_REQUIRED);
+        assertThat(testDataset.getValidCompleteOnly()).isEqualTo(UPDATED_VALID_COMPLETE_ONLY);
+        assertThat(testDataset.getNoValueRequiresComment()).isEqualTo(UPDATED_NO_VALUE_REQUIRES_COMMENT);
+        assertThat(testDataset.getSkipOffline()).isEqualTo(UPDATED_SKIP_OFFLINE);
+        assertThat(testDataset.getDataElementDecoration()).isEqualTo(UPDATED_DATA_ELEMENT_DECORATION);
+        assertThat(testDataset.getRenderAsTabs()).isEqualTo(UPDATED_RENDER_AS_TABS);
+        assertThat(testDataset.getRenderHorizontally()).isEqualTo(UPDATED_RENDER_HORIZONTALLY);
+        assertThat(testDataset.getCompulsoryFieldsCompleteOnly()).isEqualTo(UPDATED_COMPULSORY_FIELDS_COMPLETE_ONLY);
+        assertThat(testDataset.getFormType()).isEqualTo(UPDATED_FORM_TYPE);
+        assertThat(testDataset.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testDataset.getDimensionItem()).isEqualTo(UPDATED_DIMENSION_ITEM);
+        assertThat(testDataset.getDisplayShortName()).isEqualTo(UPDATED_DISPLAY_SHORT_NAME);
+        assertThat(testDataset.getDisplayDescription()).isEqualTo(UPDATED_DISPLAY_DESCRIPTION);
+        assertThat(testDataset.getDisplayFormName()).isEqualTo(UPDATED_DISPLAY_FORM_NAME);
+        assertThat(testDataset.getDataSetElementsCount()).isEqualTo(UPDATED_DATA_SET_ELEMENTS_COUNT);
+        assertThat(testDataset.getIndicatorsCount()).isEqualTo(UPDATED_INDICATORS_COUNT);
+        assertThat(testDataset.getOrganisationUnitsCount()).isEqualTo(UPDATED_ORGANISATION_UNITS_COUNT);
+        assertThat(testDataset.getDataSetElementsContent()).isEqualTo(UPDATED_DATA_SET_ELEMENTS_CONTENT);
+        assertThat(testDataset.getIndicatorsContent()).isEqualTo(UPDATED_INDICATORS_CONTENT);
+        assertThat(testDataset.getOrganisationUnitsContent()).isEqualTo(UPDATED_ORGANISATION_UNITS_CONTENT);
+        assertThat(testDataset.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void patchNonExistingDataset() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = datasetRepository.findAll().size();
         dataset.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restDatasetMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, dataset.getId()).contentType("application/merge-patch+json").content(om.writeValueAsBytes(dataset))
+                patch(ENTITY_API_URL_ID, dataset.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(dataset))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Dataset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchDataset() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = datasetRepository.findAll().size();
         dataset.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -762,36 +896,39 @@ class DatasetResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(dataset))
+                    .content(TestUtil.convertObjectToJsonBytes(dataset))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Dataset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamDataset() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = datasetRepository.findAll().size();
         dataset.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restDatasetMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(dataset)))
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(dataset)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Dataset in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void deleteDataset() throws Exception {
         // Initialize the database
-        insertedDataset = datasetRepository.saveAndFlush(dataset);
+        dataset.setId(UUID.randomUUID().toString());
+        datasetRepository.saveAndFlush(dataset);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = datasetRepository.findAll().size();
 
         // Delete the dataset
         restDatasetMockMvc
@@ -799,34 +936,7 @@ class DatasetResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return datasetRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected Dataset getPersistedDataset(Dataset dataset) {
-        return datasetRepository.findById(dataset.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedDatasetToMatchAllProperties(Dataset expectedDataset) {
-        assertDatasetAllPropertiesEquals(expectedDataset, getPersistedDataset(expectedDataset));
-    }
-
-    protected void assertPersistedDatasetToMatchUpdatableProperties(Dataset expectedDataset) {
-        assertDatasetAllUpdatablePropertiesEquals(expectedDataset, getPersistedDataset(expectedDataset));
+        List<Dataset> datasetList = datasetRepository.findAll();
+        assertThat(datasetList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

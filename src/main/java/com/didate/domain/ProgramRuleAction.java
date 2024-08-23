@@ -2,21 +2,23 @@ package com.didate.domain;
 
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.springframework.data.domain.Persistable;
 
 /**
  * A ProgramRuleAction.
  */
+@JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "program_rule_action")
 @Audited
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ProgramRuleAction implements Serializable {
+public class ProgramRuleAction implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -48,12 +50,16 @@ public class ProgramRuleAction implements Serializable {
     @Column(name = "display_content")
     private String displayContent;
 
+    @NotAudited
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "track", nullable = false)
     private TypeTrack track;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Transient
+    private boolean isPersisted;
+
+    @ManyToOne
     private Project project;
 
     @ManyToOne(optional = false)
@@ -69,15 +75,15 @@ public class ProgramRuleAction implements Serializable {
     @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "program" }, allowSetters = true)
     private ProgramRule programRule;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "optionSet", "programs" }, allowSetters = true)
     private TrackedEntityAttribute trackedEntityAttribute;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "optionSet", "programs" }, allowSetters = true)
     private TrackedEntityAttribute dataElement;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private OptionGroup optionGroup;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -212,6 +218,23 @@ public class ProgramRuleAction implements Serializable {
         this.track = track;
     }
 
+    @Transient
+    @Override
+    public boolean isNew() {
+        return !this.isPersisted;
+    }
+
+    public ProgramRuleAction setIsPersisted() {
+        this.isPersisted = true;
+        return this;
+    }
+
+    @PostLoad
+    @PostPersist
+    public void updateEntityState() {
+        this.setIsPersisted();
+    }
+
     public Project getProject() {
         return this.project;
     }
@@ -313,7 +336,7 @@ public class ProgramRuleAction implements Serializable {
         if (!(o instanceof ProgramRuleAction)) {
             return false;
         }
-        return getId() != null && getId().equals(((ProgramRuleAction) o).getId());
+        return id != null && id.equals(((ProgramRuleAction) o).id);
     }
 
     @Override

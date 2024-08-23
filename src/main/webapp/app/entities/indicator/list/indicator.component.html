@@ -1,11 +1,11 @@
 <div>
   <h2 id="page-heading" data-cy="IndicatorHeading">
-    <span jhiTranslate="dhis2AuditApp.indicator.home.title">Indicators</span>
+    <span jhiTranslate="dhis2TrackApp.indicator.home.title">Indicators</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span jhiTranslate="dhis2AuditApp.indicator.home.refreshListLabel">Actualiser la liste</span>
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="dhis2TrackApp.indicator.home.refreshListLabel">Actualiser la liste</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/indicator/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2AuditApp.indicator.home.createLabel">Créer un nouveau Indicator</span>
+        <span jhiTranslate="dhis2TrackApp.indicator.home.createLabel"> Créer un nouveau Indicator </span>
       </button>
     </div>
   </h2>
@@ -24,272 +24,246 @@
 
   <jhi-alert></jhi-alert>
 
-  @if (indicators?.length === 0) {
-    <div class="alert alert-warning" id="no-result">
-      <span jhiTranslate="dhis2AuditApp.indicator.home.notFound">Aucun Indicator trouvé</span>
+  <div class="alert alert-warning" id="no-result" *ngIf="indicators?.length === 0">
+    <span jhiTranslate="dhis2TrackApp.indicator.home.notFound">Aucun Indicator trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="indicators && indicators.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.id">Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="name">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.name">Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="shortName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.shortName">Short Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayShortName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.displayShortName">Display Short Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.displayName">Display Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayFormName">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.displayFormName">Display Form Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="created">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.created">Created</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastUpdated">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.lastUpdated">Last Updated</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="publicAccess">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.publicAccess">Public Access</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dimensionItemType">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.dimensionItemType">Dimension Item Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="annualized">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.annualized">Annualized</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="numerator">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.numerator">Numerator</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="numeratorDescription">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.numeratorDescription">Numerator Description</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="denominator">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.denominator">Denominator</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="denominatorDescription">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.denominatorDescription">Denominator Description</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayNumeratorDescription">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.displayNumeratorDescription">Display Numerator Description</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="displayDenominatorDescription">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.displayDenominatorDescription">Display Denominator Description</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dimensionItem">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.dimensionItem">Dimension Item</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="track">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.track">Track</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="project.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.project">Project</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="createdBy.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastUpdatedBy.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.lastUpdatedBy">Last Updated By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="indicatorType.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.indicatorType">Indicator Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let indicator of indicators; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/indicator', indicator.id, 'view']">{{ indicator.id }}</a>
+          </td>
+          <td>{{ indicator.name }}</td>
+          <td>{{ indicator.shortName }}</td>
+          <td>{{ indicator.displayShortName }}</td>
+          <td>{{ indicator.displayName }}</td>
+          <td>{{ indicator.displayFormName }}</td>
+          <td>{{ indicator.created | formatMediumDatetime }}</td>
+          <td>{{ indicator.lastUpdated | formatMediumDatetime }}</td>
+          <td>{{ indicator.publicAccess }}</td>
+          <td>{{ indicator.dimensionItemType }}</td>
+          <td>{{ indicator.annualized }}</td>
+          <td>{{ indicator.numerator }}</td>
+          <td>{{ indicator.numeratorDescription }}</td>
+          <td>{{ indicator.denominator }}</td>
+          <td>{{ indicator.denominatorDescription }}</td>
+          <td>{{ indicator.displayNumeratorDescription }}</td>
+          <td>{{ indicator.displayDenominatorDescription }}</td>
+          <td>{{ indicator.dimensionItem }}</td>
+          <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + indicator.track }}">{{ indicator.track }}</td>
+          <td>
+            <div *ngIf="indicator.project">
+              <a [routerLink]="['/project', indicator.project.id, 'view']">{{ indicator.project.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="indicator.createdBy">
+              <a [routerLink]="['/dhis-user', indicator.createdBy.id, 'view']">{{ indicator.createdBy.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="indicator.lastUpdatedBy">
+              <a [routerLink]="['/dhis-user', indicator.lastUpdatedBy.id, 'view']">{{ indicator.lastUpdatedBy.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="indicator.indicatorType">
+              <a [routerLink]="['/indicatortype', indicator.indicatorType.id, 'view']">{{ indicator.indicatorType.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/indicator', indicator.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/indicator', indicator.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+              </button>
+
+              <button type="submit" (click)="delete(indicator)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="indicators && indicators.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
     </div>
-  }
 
-  @if (indicators && indicators.length > 0) {
-    <div class="table-responsive table-entities" id="entities">
-      <table class="table table-striped" aria-describedby="page-heading">
-        <thead>
-          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.id">Id</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="name">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.name">Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="shortName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.shortName">Short Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayShortName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.displayShortName">Display Short Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.displayName">Display Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayFormName">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.displayFormName">Display Form Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="created">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.created">Created</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="lastUpdated">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.lastUpdated">Last Updated</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="publicAccess">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.publicAccess">Public Access</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dimensionItemType">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.dimensionItemType">Dimension Item Type</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="annualized">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.annualized">Annualized</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="numerator">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.numerator">Numerator</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="numeratorDescription">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.numeratorDescription">Numerator Description</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="denominator">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.denominator">Denominator</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="denominatorDescription">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.denominatorDescription">Denominator Description</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayNumeratorDescription">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.displayNumeratorDescription">Display Numerator Description</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="displayDenominatorDescription">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.displayDenominatorDescription">Display Denominator Description</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="dimensionItem">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.dimensionItem">Dimension Item</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="track">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.track">Track</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="project.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.project">Project</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="createdBy.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.createdBy">Created By</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="lastUpdatedBy.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.lastUpdatedBy">Last Updated By</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="indicatorType.id">
-              <div class="d-flex">
-                <span jhiTranslate="dhis2AuditApp.indicator.indicatorType">Indicator Type</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (indicator of indicators; track trackId) {
-            <tr data-cy="entityTable">
-              <td>
-                <a [routerLink]="['/indicator', indicator.id, 'view']">{{ indicator.id }}</a>
-              </td>
-              <td>{{ indicator.name }}</td>
-              <td>{{ indicator.shortName }}</td>
-              <td>{{ indicator.displayShortName }}</td>
-              <td>{{ indicator.displayName }}</td>
-              <td>{{ indicator.displayFormName }}</td>
-              <td>{{ indicator.created | formatMediumDatetime }}</td>
-              <td>{{ indicator.lastUpdated | formatMediumDatetime }}</td>
-              <td>{{ indicator.publicAccess }}</td>
-              <td>{{ indicator.dimensionItemType }}</td>
-              <td>{{ indicator.annualized }}</td>
-              <td>{{ indicator.numerator }}</td>
-              <td>{{ indicator.numeratorDescription }}</td>
-              <td>{{ indicator.denominator }}</td>
-              <td>{{ indicator.denominatorDescription }}</td>
-              <td>{{ indicator.displayNumeratorDescription }}</td>
-              <td>{{ indicator.displayDenominatorDescription }}</td>
-              <td>{{ indicator.dimensionItem }}</td>
-              <td [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (indicator.track ?? 'null')">
-                {{ { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[indicator.track ?? 'null'] }}
-              </td>
-              <td>
-                @if (indicator.project) {
-                  <div>
-                    <a [routerLink]="['/project', indicator.project.id, 'view']">{{ indicator.project.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (indicator.createdBy) {
-                  <div>
-                    <a [routerLink]="['/dhis-user', indicator.createdBy.id, 'view']">{{ indicator.createdBy.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (indicator.lastUpdatedBy) {
-                  <div>
-                    <a [routerLink]="['/dhis-user', indicator.lastUpdatedBy.id, 'view']">{{ indicator.lastUpdatedBy.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (indicator.indicatorType) {
-                  <div>
-                    <a [routerLink]="['/indicatortype', indicator.indicatorType.id, 'view']">{{ indicator.indicatorType.id }}</a>
-                  </div>
-                }
-              </td>
-              <td class="text-end">
-                <div class="btn-group">
-                  <a [routerLink]="['/indicator', indicator.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-                  </a>
-
-                  <a [routerLink]="['/indicator', indicator.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(indicator)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
     </div>
-  }
-  @if (indicators && indicators.length > 0) {
-    <div>
-      <div class="d-flex justify-content-center">
-        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-      </div>
-
-      <div class="d-flex justify-content-center">
-        <ngb-pagination
-          [collectionSize]="totalItems"
-          [page]="page"
-          [pageSize]="itemsPerPage"
-          [maxSize]="5"
-          [rotate]="true"
-          [boundaryLinks]="true"
-          (pageChange)="navigateToPage($event)"
-        ></ngb-pagination>
-      </div>
-    </div>
-  }
+  </div>
 </div>

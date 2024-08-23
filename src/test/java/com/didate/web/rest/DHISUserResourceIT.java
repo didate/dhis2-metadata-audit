@@ -1,7 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.DHISUserAsserts.*;
-import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -11,12 +9,11 @@ import com.didate.IntegrationTest;
 import com.didate.domain.DHISUser;
 import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.DHISUserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,9 +71,6 @@ class DHISUserResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private DHISUserRepository dHISUserRepository;
 
     @Autowired
@@ -86,8 +80,6 @@ class DHISUserResourceIT {
     private MockMvc restDHISUserMockMvc;
 
     private DHISUser dHISUser;
-
-    private DHISUser insertedDHISUser;
 
     /**
      * Create an entity for this test.
@@ -140,34 +132,31 @@ class DHISUserResourceIT {
         dHISUser = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedDHISUser != null) {
-            dHISUserRepository.delete(insertedDHISUser);
-            insertedDHISUser = null;
-        }
-    }
-
     @Test
     @Transactional
     void createDHISUser() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = dHISUserRepository.findAll().size();
         // Create the DHISUser
-        var returnedDHISUser = om.readValue(
-            restDHISUserMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dHISUser)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            DHISUser.class
-        );
+        restDHISUserMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dHISUser)))
+            .andExpect(status().isCreated());
 
         // Validate the DHISUser in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertDHISUserUpdatableFieldsEquals(returnedDHISUser, getPersistedDHISUser(returnedDHISUser));
-
-        insertedDHISUser = returnedDHISUser;
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeCreate + 1);
+        DHISUser testDHISUser = dHISUserList.get(dHISUserList.size() - 1);
+        assertThat(testDHISUser.getCode()).isEqualTo(DEFAULT_CODE);
+        assertThat(testDHISUser.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testDHISUser.getDisplayName()).isEqualTo(DEFAULT_DISPLAY_NAME);
+        assertThat(testDHISUser.getUsername()).isEqualTo(DEFAULT_USERNAME);
+        assertThat(testDHISUser.getLastLogin()).isEqualTo(DEFAULT_LAST_LOGIN);
+        assertThat(testDHISUser.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testDHISUser.getPhoneNumber()).isEqualTo(DEFAULT_PHONE_NUMBER);
+        assertThat(testDHISUser.getDisabled()).isEqualTo(DEFAULT_DISABLED);
+        assertThat(testDHISUser.getPasswordLastUpdated()).isEqualTo(DEFAULT_PASSWORD_LAST_UPDATED);
+        assertThat(testDHISUser.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testDHISUser.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testDHISUser.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
@@ -176,70 +165,75 @@ class DHISUserResourceIT {
         // Create the DHISUser with an existing ID
         dHISUser.setId("existing_id");
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = dHISUserRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restDHISUserMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dHISUser)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dHISUser)))
             .andExpect(status().isBadRequest());
 
         // Validate the DHISUser in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void checkNameIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = dHISUserRepository.findAll().size();
         // set the field null
         dHISUser.setName(null);
 
         // Create the DHISUser, which fails.
 
         restDHISUserMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dHISUser)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dHISUser)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkUsernameIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = dHISUserRepository.findAll().size();
         // set the field null
         dHISUser.setUsername(null);
 
         // Create the DHISUser, which fails.
 
         restDHISUserMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dHISUser)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dHISUser)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkTrackIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = dHISUserRepository.findAll().size();
         // set the field null
         dHISUser.setTrack(null);
 
         // Create the DHISUser, which fails.
 
         restDHISUserMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dHISUser)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dHISUser)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void getAllDHISUsers() throws Exception {
         // Initialize the database
-        insertedDHISUser = dHISUserRepository.saveAndFlush(dHISUser);
+        dHISUser.setId(UUID.randomUUID().toString());
+        dHISUserRepository.saveAndFlush(dHISUser);
 
         // Get all the dHISUserList
         restDHISUserMockMvc
@@ -265,7 +259,8 @@ class DHISUserResourceIT {
     @Transactional
     void getDHISUser() throws Exception {
         // Initialize the database
-        insertedDHISUser = dHISUserRepository.saveAndFlush(dHISUser);
+        dHISUser.setId(UUID.randomUUID().toString());
+        dHISUserRepository.saveAndFlush(dHISUser);
 
         // Get the dHISUser
         restDHISUserMockMvc
@@ -298,12 +293,13 @@ class DHISUserResourceIT {
     @Transactional
     void putExistingDHISUser() throws Exception {
         // Initialize the database
-        insertedDHISUser = dHISUserRepository.saveAndFlush(dHISUser);
+        dHISUser.setId(UUID.randomUUID().toString());
+        dHISUserRepository.saveAndFlush(dHISUser);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dHISUserRepository.findAll().size();
 
         // Update the dHISUser
-        DHISUser updatedDHISUser = dHISUserRepository.findById(dHISUser.getId()).orElseThrow();
+        DHISUser updatedDHISUser = dHISUserRepository.findById(dHISUser.getId()).get();
         // Disconnect from session so that the updates on updatedDHISUser are not directly saved in db
         em.detach(updatedDHISUser);
         updatedDHISUser
@@ -324,36 +320,52 @@ class DHISUserResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, updatedDHISUser.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedDHISUser))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedDHISUser))
             )
             .andExpect(status().isOk());
 
         // Validate the DHISUser in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedDHISUserToMatchAllProperties(updatedDHISUser);
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeUpdate);
+        DHISUser testDHISUser = dHISUserList.get(dHISUserList.size() - 1);
+        assertThat(testDHISUser.getCode()).isEqualTo(UPDATED_CODE);
+        assertThat(testDHISUser.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDHISUser.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testDHISUser.getUsername()).isEqualTo(UPDATED_USERNAME);
+        assertThat(testDHISUser.getLastLogin()).isEqualTo(UPDATED_LAST_LOGIN);
+        assertThat(testDHISUser.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testDHISUser.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
+        assertThat(testDHISUser.getDisabled()).isEqualTo(UPDATED_DISABLED);
+        assertThat(testDHISUser.getPasswordLastUpdated()).isEqualTo(UPDATED_PASSWORD_LAST_UPDATED);
+        assertThat(testDHISUser.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testDHISUser.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testDHISUser.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void putNonExistingDHISUser() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dHISUserRepository.findAll().size();
         dHISUser.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restDHISUserMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, dHISUser.getId()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dHISUser))
+                put(ENTITY_API_URL_ID, dHISUser.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(dHISUser))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the DHISUser in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchDHISUser() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dHISUserRepository.findAll().size();
         dHISUser.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -361,72 +373,90 @@ class DHISUserResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(dHISUser))
+                    .content(TestUtil.convertObjectToJsonBytes(dHISUser))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the DHISUser in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamDHISUser() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dHISUserRepository.findAll().size();
         dHISUser.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restDHISUserMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dHISUser)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dHISUser)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the DHISUser in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void partialUpdateDHISUserWithPatch() throws Exception {
         // Initialize the database
-        insertedDHISUser = dHISUserRepository.saveAndFlush(dHISUser);
+        dHISUser.setId(UUID.randomUUID().toString());
+        dHISUserRepository.saveAndFlush(dHISUser);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dHISUserRepository.findAll().size();
 
         // Update the dHISUser using partial update
         DHISUser partialUpdatedDHISUser = new DHISUser();
         partialUpdatedDHISUser.setId(dHISUser.getId());
 
         partialUpdatedDHISUser
-            .name(UPDATED_NAME)
+            .code(UPDATED_CODE)
             .displayName(UPDATED_DISPLAY_NAME)
             .username(UPDATED_USERNAME)
+            .lastLogin(UPDATED_LAST_LOGIN)
             .email(UPDATED_EMAIL)
             .phoneNumber(UPDATED_PHONE_NUMBER)
-            .disabled(UPDATED_DISABLED)
             .passwordLastUpdated(UPDATED_PASSWORD_LAST_UPDATED)
+            .created(UPDATED_CREATED)
+            .lastUpdated(UPDATED_LAST_UPDATED)
             .track(UPDATED_TRACK);
 
         restDHISUserMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDHISUser.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedDHISUser))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedDHISUser))
             )
             .andExpect(status().isOk());
 
         // Validate the DHISUser in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertDHISUserUpdatableFieldsEquals(createUpdateProxyForBean(partialUpdatedDHISUser, dHISUser), getPersistedDHISUser(dHISUser));
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeUpdate);
+        DHISUser testDHISUser = dHISUserList.get(dHISUserList.size() - 1);
+        assertThat(testDHISUser.getCode()).isEqualTo(UPDATED_CODE);
+        assertThat(testDHISUser.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testDHISUser.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testDHISUser.getUsername()).isEqualTo(UPDATED_USERNAME);
+        assertThat(testDHISUser.getLastLogin()).isEqualTo(UPDATED_LAST_LOGIN);
+        assertThat(testDHISUser.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testDHISUser.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
+        assertThat(testDHISUser.getDisabled()).isEqualTo(DEFAULT_DISABLED);
+        assertThat(testDHISUser.getPasswordLastUpdated()).isEqualTo(UPDATED_PASSWORD_LAST_UPDATED);
+        assertThat(testDHISUser.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testDHISUser.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testDHISUser.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void fullUpdateDHISUserWithPatch() throws Exception {
         // Initialize the database
-        insertedDHISUser = dHISUserRepository.saveAndFlush(dHISUser);
+        dHISUser.setId(UUID.randomUUID().toString());
+        dHISUserRepository.saveAndFlush(dHISUser);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dHISUserRepository.findAll().size();
 
         // Update the dHISUser using partial update
         DHISUser partialUpdatedDHISUser = new DHISUser();
@@ -450,20 +480,32 @@ class DHISUserResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDHISUser.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedDHISUser))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedDHISUser))
             )
             .andExpect(status().isOk());
 
         // Validate the DHISUser in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertDHISUserUpdatableFieldsEquals(partialUpdatedDHISUser, getPersistedDHISUser(partialUpdatedDHISUser));
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeUpdate);
+        DHISUser testDHISUser = dHISUserList.get(dHISUserList.size() - 1);
+        assertThat(testDHISUser.getCode()).isEqualTo(UPDATED_CODE);
+        assertThat(testDHISUser.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDHISUser.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testDHISUser.getUsername()).isEqualTo(UPDATED_USERNAME);
+        assertThat(testDHISUser.getLastLogin()).isEqualTo(UPDATED_LAST_LOGIN);
+        assertThat(testDHISUser.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testDHISUser.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
+        assertThat(testDHISUser.getDisabled()).isEqualTo(UPDATED_DISABLED);
+        assertThat(testDHISUser.getPasswordLastUpdated()).isEqualTo(UPDATED_PASSWORD_LAST_UPDATED);
+        assertThat(testDHISUser.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testDHISUser.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testDHISUser.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void patchNonExistingDHISUser() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dHISUserRepository.findAll().size();
         dHISUser.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -471,18 +513,19 @@ class DHISUserResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, dHISUser.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(dHISUser))
+                    .content(TestUtil.convertObjectToJsonBytes(dHISUser))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the DHISUser in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchDHISUser() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dHISUserRepository.findAll().size();
         dHISUser.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -490,36 +533,39 @@ class DHISUserResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(dHISUser))
+                    .content(TestUtil.convertObjectToJsonBytes(dHISUser))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the DHISUser in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamDHISUser() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dHISUserRepository.findAll().size();
         dHISUser.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restDHISUserMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(dHISUser)))
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(dHISUser)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the DHISUser in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void deleteDHISUser() throws Exception {
         // Initialize the database
-        insertedDHISUser = dHISUserRepository.saveAndFlush(dHISUser);
+        dHISUser.setId(UUID.randomUUID().toString());
+        dHISUserRepository.saveAndFlush(dHISUser);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = dHISUserRepository.findAll().size();
 
         // Delete the dHISUser
         restDHISUserMockMvc
@@ -527,34 +573,7 @@ class DHISUserResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return dHISUserRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected DHISUser getPersistedDHISUser(DHISUser dHISUser) {
-        return dHISUserRepository.findById(dHISUser.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedDHISUserToMatchAllProperties(DHISUser expectedDHISUser) {
-        assertDHISUserAllPropertiesEquals(expectedDHISUser, getPersistedDHISUser(expectedDHISUser));
-    }
-
-    protected void assertPersistedDHISUserToMatchUpdatableProperties(DHISUser expectedDHISUser) {
-        assertDHISUserAllUpdatablePropertiesEquals(expectedDHISUser, getPersistedDHISUser(expectedDHISUser));
+        List<DHISUser> dHISUserList = dHISUserRepository.findAll();
+        assertThat(dHISUserList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

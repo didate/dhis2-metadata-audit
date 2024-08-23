@@ -1,32 +1,28 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { IndicatortypeFormService, IndicatortypeFormGroup } from './indicatortype-form.service';
 import { IIndicatortype } from '../indicatortype.model';
 import { IndicatortypeService } from '../service/indicatortype.service';
-import { IndicatortypeFormService, IndicatortypeFormGroup } from './indicatortype-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-indicatortype-update',
   templateUrl: './indicatortype-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class IndicatortypeUpdateComponent implements OnInit {
   isSaving = false;
   indicatortype: IIndicatortype | null = null;
 
-  protected indicatortypeService = inject(IndicatortypeService);
-  protected indicatortypeFormService = inject(IndicatortypeFormService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: IndicatortypeFormGroup = this.indicatortypeFormService.createIndicatortypeFormGroup();
+
+  constructor(
+    protected indicatortypeService: IndicatortypeService,
+    protected indicatortypeFormService: IndicatortypeFormService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ indicatortype }) => {

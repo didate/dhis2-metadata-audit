@@ -1,14 +1,16 @@
 package com.didate.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.envers.Audited;
 
 /**
  * A Project.
  */
 @Entity
 @Table(name = "project")
+@Audited
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Project implements Serializable {
 
@@ -146,7 +148,7 @@ public class Project implements Serializable {
         if (!(o instanceof Project)) {
             return false;
         }
-        return getId() != null && getId().equals(((Project) o).getId());
+        return id != null && id.equals(((Project) o).id);
     }
 
     @Override

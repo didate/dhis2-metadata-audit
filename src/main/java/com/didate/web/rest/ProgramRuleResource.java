@@ -4,19 +4,20 @@ import com.didate.domain.ProgramRule;
 import com.didate.repository.ProgramRuleRepository;
 import com.didate.service.ProgramRuleService;
 import com.didate.web.rest.errors.BadRequestAlertException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,10 +29,10 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.didate.domain.ProgramRule}.
  */
 @RestController
-@RequestMapping("/api/program-rules")
+@RequestMapping("/api")
 public class ProgramRuleResource {
 
-    private static final Logger log = LoggerFactory.getLogger(ProgramRuleResource.class);
+    private final Logger log = LoggerFactory.getLogger(ProgramRuleResource.class);
 
     private static final String ENTITY_NAME = "programRule";
 
@@ -54,16 +55,17 @@ public class ProgramRuleResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new programRule, or with status {@code 400 (Bad Request)} if the programRule has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/program-rules")
     public ResponseEntity<ProgramRule> createProgramRule(@Valid @RequestBody ProgramRule programRule) throws URISyntaxException {
         log.debug("REST request to save ProgramRule : {}", programRule);
         if (programRule.getId() != null) {
             throw new BadRequestAlertException("A new programRule cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        programRule = programRuleService.save(programRule);
-        return ResponseEntity.created(new URI("/api/program-rules/" + programRule.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, programRule.getId()))
-            .body(programRule);
+        ProgramRule result = programRuleService.save(programRule);
+        return ResponseEntity
+            .created(new URI("/api/program-rules/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
+            .body(result);
     }
 
     /**
@@ -76,7 +78,7 @@ public class ProgramRuleResource {
      * or with status {@code 500 (Internal Server Error)} if the programRule couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/program-rules/{id}")
     public ResponseEntity<ProgramRule> updateProgramRule(
         @PathVariable(value = "id", required = false) final String id,
         @Valid @RequestBody ProgramRule programRule
@@ -93,10 +95,11 @@ public class ProgramRuleResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        programRule = programRuleService.update(programRule);
-        return ResponseEntity.ok()
+        ProgramRule result = programRuleService.update(programRule);
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, programRule.getId()))
-            .body(programRule);
+            .body(result);
     }
 
     /**
@@ -110,7 +113,7 @@ public class ProgramRuleResource {
      * or with status {@code 500 (Internal Server Error)} if the programRule couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/program-rules/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ProgramRule> partialUpdateProgramRule(
         @PathVariable(value = "id", required = false) final String id,
         @NotNull @RequestBody ProgramRule programRule
@@ -141,8 +144,8 @@ public class ProgramRuleResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of programRules in body.
      */
-    @GetMapping("")
-    public ResponseEntity<List<ProgramRule>> getAllProgramRules(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    @GetMapping("/program-rules")
+    public ResponseEntity<List<ProgramRule>> getAllProgramRules(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of ProgramRules");
         Page<ProgramRule> page = programRuleService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
@@ -155,8 +158,8 @@ public class ProgramRuleResource {
      * @param id the id of the programRule to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the programRule, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<ProgramRule> getProgramRule(@PathVariable("id") String id) {
+    @GetMapping("/program-rules/{id}")
+    public ResponseEntity<ProgramRule> getProgramRule(@PathVariable String id) {
         log.debug("REST request to get ProgramRule : {}", id);
         Optional<ProgramRule> programRule = programRuleService.findOne(id);
         return ResponseUtil.wrapOrNotFound(programRule);
@@ -168,8 +171,8 @@ public class ProgramRuleResource {
      * @param id the id of the programRule to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProgramRule(@PathVariable("id") String id) {
+    @DeleteMapping("/program-rules/{id}")
+    public ResponseEntity<Void> deleteProgramRule(@PathVariable String id) {
         log.debug("REST request to delete ProgramRule : {}", id);
         programRuleService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();

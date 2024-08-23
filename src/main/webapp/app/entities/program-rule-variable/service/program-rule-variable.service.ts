@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
@@ -27,10 +27,9 @@ export type EntityArrayResponseType = HttpResponse<IProgramRuleVariable[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ProgramRuleVariableService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/program-rule-variables');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(programRuleVariable: NewProgramRuleVariable): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(programRuleVariable);
@@ -88,8 +87,8 @@ export class ProgramRuleVariableService {
   ): Type[] {
     const programRuleVariables: Type[] = programRuleVariablesToCheck.filter(isPresent);
     if (programRuleVariables.length > 0) {
-      const programRuleVariableCollectionIdentifiers = programRuleVariableCollection.map(programRuleVariableItem =>
-        this.getProgramRuleVariableIdentifier(programRuleVariableItem),
+      const programRuleVariableCollectionIdentifiers = programRuleVariableCollection.map(
+        programRuleVariableItem => this.getProgramRuleVariableIdentifier(programRuleVariableItem)!
       );
       const programRuleVariablesToAdd = programRuleVariables.filter(programRuleVariableItem => {
         const programRuleVariableIdentifier = this.getProgramRuleVariableIdentifier(programRuleVariableItem);
@@ -105,7 +104,7 @@ export class ProgramRuleVariableService {
   }
 
   protected convertDateFromClient<T extends IProgramRuleVariable | NewProgramRuleVariable | PartialUpdateProgramRuleVariable>(
-    programRuleVariable: T,
+    programRuleVariable: T
   ): RestOf<T> {
     return {
       ...programRuleVariable,

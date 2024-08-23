@@ -36,7 +36,7 @@ describe('ProgramRuleAction Form Service', () => {
             trackedEntityAttribute: expect.any(Object),
             dataElement: expect.any(Object),
             optionGroup: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -62,13 +62,14 @@ describe('ProgramRuleAction Form Service', () => {
             trackedEntityAttribute: expect.any(Object),
             dataElement: expect.any(Object),
             optionGroup: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getProgramRuleAction', () => {
       it('should return NewProgramRuleAction for default ProgramRuleAction initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createProgramRuleActionFormGroup(sampleWithNewData);
 
         const programRuleAction = service.getProgramRuleAction(formGroup) as any;

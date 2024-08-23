@@ -42,8 +42,8 @@ describe('Indicator Form Service', () => {
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
             indicatorType: expect.any(Object),
-            datasets: expect.any(Object),
-          }),
+            dataSets: expect.any(Object),
+          })
         );
       });
 
@@ -75,14 +75,15 @@ describe('Indicator Form Service', () => {
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
             indicatorType: expect.any(Object),
-            datasets: expect.any(Object),
-          }),
+            dataSets: expect.any(Object),
+          })
         );
       });
     });
 
     describe('getIndicator', () => {
       it('should return NewIndicator for default Indicator initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createIndicatorFormGroup(sampleWithNewData);
 
         const indicator = service.getIndicator(formGroup) as any;

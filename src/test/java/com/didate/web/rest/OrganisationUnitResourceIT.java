@@ -1,7 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.OrganisationUnitAsserts.*;
-import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -12,12 +10,11 @@ import com.didate.domain.DHISUser;
 import com.didate.domain.OrganisationUnit;
 import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.OrganisationUnitRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,9 +57,6 @@ class OrganisationUnitResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private OrganisationUnitRepository organisationUnitRepository;
 
     @Autowired
@@ -72,8 +66,6 @@ class OrganisationUnitResourceIT {
     private MockMvc restOrganisationUnitMockMvc;
 
     private OrganisationUnit organisationUnit;
-
-    private OrganisationUnit insertedOrganisationUnit;
 
     /**
      * Create an entity for this test.
@@ -140,34 +132,28 @@ class OrganisationUnitResourceIT {
         organisationUnit = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedOrganisationUnit != null) {
-            organisationUnitRepository.delete(insertedOrganisationUnit);
-            insertedOrganisationUnit = null;
-        }
-    }
-
     @Test
     @Transactional
     void createOrganisationUnit() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = organisationUnitRepository.findAll().size();
         // Create the OrganisationUnit
-        var returnedOrganisationUnit = om.readValue(
-            restOrganisationUnitMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(organisationUnit)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            OrganisationUnit.class
-        );
+        restOrganisationUnitMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(organisationUnit))
+            )
+            .andExpect(status().isCreated());
 
         // Validate the OrganisationUnit in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertOrganisationUnitUpdatableFieldsEquals(returnedOrganisationUnit, getPersistedOrganisationUnit(returnedOrganisationUnit));
-
-        insertedOrganisationUnit = returnedOrganisationUnit;
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeCreate + 1);
+        OrganisationUnit testOrganisationUnit = organisationUnitList.get(organisationUnitList.size() - 1);
+        assertThat(testOrganisationUnit.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testOrganisationUnit.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testOrganisationUnit.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testOrganisationUnit.getPath()).isEqualTo(DEFAULT_PATH);
+        assertThat(testOrganisationUnit.getOpeningDate()).isEqualTo(DEFAULT_OPENING_DATE);
+        assertThat(testOrganisationUnit.getLevel()).isEqualTo(DEFAULT_LEVEL);
+        assertThat(testOrganisationUnit.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
@@ -176,102 +162,121 @@ class OrganisationUnitResourceIT {
         // Create the OrganisationUnit with an existing ID
         organisationUnit.setId("existing_id");
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = organisationUnitRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOrganisationUnitMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(organisationUnit)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(organisationUnit))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the OrganisationUnit in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void checkNameIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = organisationUnitRepository.findAll().size();
         // set the field null
         organisationUnit.setName(null);
 
         // Create the OrganisationUnit, which fails.
 
         restOrganisationUnitMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(organisationUnit)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(organisationUnit))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkCreatedIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = organisationUnitRepository.findAll().size();
         // set the field null
         organisationUnit.setCreated(null);
 
         // Create the OrganisationUnit, which fails.
 
         restOrganisationUnitMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(organisationUnit)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(organisationUnit))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkLastUpdatedIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = organisationUnitRepository.findAll().size();
         // set the field null
         organisationUnit.setLastUpdated(null);
 
         // Create the OrganisationUnit, which fails.
 
         restOrganisationUnitMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(organisationUnit)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(organisationUnit))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkOpeningDateIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = organisationUnitRepository.findAll().size();
         // set the field null
         organisationUnit.setOpeningDate(null);
 
         // Create the OrganisationUnit, which fails.
 
         restOrganisationUnitMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(organisationUnit)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(organisationUnit))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkTrackIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = organisationUnitRepository.findAll().size();
         // set the field null
         organisationUnit.setTrack(null);
 
         // Create the OrganisationUnit, which fails.
 
         restOrganisationUnitMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(organisationUnit)))
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(organisationUnit))
+            )
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void getAllOrganisationUnits() throws Exception {
         // Initialize the database
-        insertedOrganisationUnit = organisationUnitRepository.saveAndFlush(organisationUnit);
+        organisationUnit.setId(UUID.randomUUID().toString());
+        organisationUnitRepository.saveAndFlush(organisationUnit);
 
         // Get all the organisationUnitList
         restOrganisationUnitMockMvc
@@ -292,7 +297,8 @@ class OrganisationUnitResourceIT {
     @Transactional
     void getOrganisationUnit() throws Exception {
         // Initialize the database
-        insertedOrganisationUnit = organisationUnitRepository.saveAndFlush(organisationUnit);
+        organisationUnit.setId(UUID.randomUUID().toString());
+        organisationUnitRepository.saveAndFlush(organisationUnit);
 
         // Get the organisationUnit
         restOrganisationUnitMockMvc
@@ -320,12 +326,13 @@ class OrganisationUnitResourceIT {
     @Transactional
     void putExistingOrganisationUnit() throws Exception {
         // Initialize the database
-        insertedOrganisationUnit = organisationUnitRepository.saveAndFlush(organisationUnit);
+        organisationUnit.setId(UUID.randomUUID().toString());
+        organisationUnitRepository.saveAndFlush(organisationUnit);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = organisationUnitRepository.findAll().size();
 
         // Update the organisationUnit
-        OrganisationUnit updatedOrganisationUnit = organisationUnitRepository.findById(organisationUnit.getId()).orElseThrow();
+        OrganisationUnit updatedOrganisationUnit = organisationUnitRepository.findById(organisationUnit.getId()).get();
         // Disconnect from session so that the updates on updatedOrganisationUnit are not directly saved in db
         em.detach(updatedOrganisationUnit);
         updatedOrganisationUnit
@@ -341,19 +348,27 @@ class OrganisationUnitResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, updatedOrganisationUnit.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedOrganisationUnit))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedOrganisationUnit))
             )
             .andExpect(status().isOk());
 
         // Validate the OrganisationUnit in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedOrganisationUnitToMatchAllProperties(updatedOrganisationUnit);
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeUpdate);
+        OrganisationUnit testOrganisationUnit = organisationUnitList.get(organisationUnitList.size() - 1);
+        assertThat(testOrganisationUnit.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testOrganisationUnit.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testOrganisationUnit.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testOrganisationUnit.getPath()).isEqualTo(UPDATED_PATH);
+        assertThat(testOrganisationUnit.getOpeningDate()).isEqualTo(UPDATED_OPENING_DATE);
+        assertThat(testOrganisationUnit.getLevel()).isEqualTo(UPDATED_LEVEL);
+        assertThat(testOrganisationUnit.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void putNonExistingOrganisationUnit() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = organisationUnitRepository.findAll().size();
         organisationUnit.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -361,18 +376,19 @@ class OrganisationUnitResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, organisationUnit.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(organisationUnit))
+                    .content(TestUtil.convertObjectToJsonBytes(organisationUnit))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the OrganisationUnit in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchOrganisationUnit() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = organisationUnitRepository.findAll().size();
         organisationUnit.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -380,67 +396,77 @@ class OrganisationUnitResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(organisationUnit))
+                    .content(TestUtil.convertObjectToJsonBytes(organisationUnit))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the OrganisationUnit in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamOrganisationUnit() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = organisationUnitRepository.findAll().size();
         organisationUnit.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOrganisationUnitMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(organisationUnit)))
+            .perform(
+                put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(organisationUnit))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the OrganisationUnit in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void partialUpdateOrganisationUnitWithPatch() throws Exception {
         // Initialize the database
-        insertedOrganisationUnit = organisationUnitRepository.saveAndFlush(organisationUnit);
+        organisationUnit.setId(UUID.randomUUID().toString());
+        organisationUnitRepository.saveAndFlush(organisationUnit);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = organisationUnitRepository.findAll().size();
 
         // Update the organisationUnit using partial update
         OrganisationUnit partialUpdatedOrganisationUnit = new OrganisationUnit();
         partialUpdatedOrganisationUnit.setId(organisationUnit.getId());
 
-        partialUpdatedOrganisationUnit.name(UPDATED_NAME).path(UPDATED_PATH).level(UPDATED_LEVEL);
+        partialUpdatedOrganisationUnit.name(UPDATED_NAME).lastUpdated(UPDATED_LAST_UPDATED).level(UPDATED_LEVEL);
 
         restOrganisationUnitMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedOrganisationUnit.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedOrganisationUnit))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedOrganisationUnit))
             )
             .andExpect(status().isOk());
 
         // Validate the OrganisationUnit in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertOrganisationUnitUpdatableFieldsEquals(
-            createUpdateProxyForBean(partialUpdatedOrganisationUnit, organisationUnit),
-            getPersistedOrganisationUnit(organisationUnit)
-        );
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeUpdate);
+        OrganisationUnit testOrganisationUnit = organisationUnitList.get(organisationUnitList.size() - 1);
+        assertThat(testOrganisationUnit.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testOrganisationUnit.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testOrganisationUnit.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testOrganisationUnit.getPath()).isEqualTo(DEFAULT_PATH);
+        assertThat(testOrganisationUnit.getOpeningDate()).isEqualTo(DEFAULT_OPENING_DATE);
+        assertThat(testOrganisationUnit.getLevel()).isEqualTo(UPDATED_LEVEL);
+        assertThat(testOrganisationUnit.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
     @Transactional
     void fullUpdateOrganisationUnitWithPatch() throws Exception {
         // Initialize the database
-        insertedOrganisationUnit = organisationUnitRepository.saveAndFlush(organisationUnit);
+        organisationUnit.setId(UUID.randomUUID().toString());
+        organisationUnitRepository.saveAndFlush(organisationUnit);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = organisationUnitRepository.findAll().size();
 
         // Update the organisationUnit using partial update
         OrganisationUnit partialUpdatedOrganisationUnit = new OrganisationUnit();
@@ -459,23 +485,27 @@ class OrganisationUnitResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedOrganisationUnit.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedOrganisationUnit))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedOrganisationUnit))
             )
             .andExpect(status().isOk());
 
         // Validate the OrganisationUnit in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertOrganisationUnitUpdatableFieldsEquals(
-            partialUpdatedOrganisationUnit,
-            getPersistedOrganisationUnit(partialUpdatedOrganisationUnit)
-        );
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeUpdate);
+        OrganisationUnit testOrganisationUnit = organisationUnitList.get(organisationUnitList.size() - 1);
+        assertThat(testOrganisationUnit.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testOrganisationUnit.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testOrganisationUnit.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testOrganisationUnit.getPath()).isEqualTo(UPDATED_PATH);
+        assertThat(testOrganisationUnit.getOpeningDate()).isEqualTo(UPDATED_OPENING_DATE);
+        assertThat(testOrganisationUnit.getLevel()).isEqualTo(UPDATED_LEVEL);
+        assertThat(testOrganisationUnit.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void patchNonExistingOrganisationUnit() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = organisationUnitRepository.findAll().size();
         organisationUnit.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -483,18 +513,19 @@ class OrganisationUnitResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, organisationUnit.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(organisationUnit))
+                    .content(TestUtil.convertObjectToJsonBytes(organisationUnit))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the OrganisationUnit in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchOrganisationUnit() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = organisationUnitRepository.findAll().size();
         organisationUnit.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -502,36 +533,43 @@ class OrganisationUnitResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(organisationUnit))
+                    .content(TestUtil.convertObjectToJsonBytes(organisationUnit))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the OrganisationUnit in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamOrganisationUnit() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = organisationUnitRepository.findAll().size();
         organisationUnit.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOrganisationUnitMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(organisationUnit)))
+            .perform(
+                patch(ENTITY_API_URL)
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(organisationUnit))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the OrganisationUnit in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void deleteOrganisationUnit() throws Exception {
         // Initialize the database
-        insertedOrganisationUnit = organisationUnitRepository.saveAndFlush(organisationUnit);
+        organisationUnit.setId(UUID.randomUUID().toString());
+        organisationUnitRepository.saveAndFlush(organisationUnit);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = organisationUnitRepository.findAll().size();
 
         // Delete the organisationUnit
         restOrganisationUnitMockMvc
@@ -539,37 +577,7 @@ class OrganisationUnitResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return organisationUnitRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected OrganisationUnit getPersistedOrganisationUnit(OrganisationUnit organisationUnit) {
-        return organisationUnitRepository.findById(organisationUnit.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedOrganisationUnitToMatchAllProperties(OrganisationUnit expectedOrganisationUnit) {
-        assertOrganisationUnitAllPropertiesEquals(expectedOrganisationUnit, getPersistedOrganisationUnit(expectedOrganisationUnit));
-    }
-
-    protected void assertPersistedOrganisationUnitToMatchUpdatableProperties(OrganisationUnit expectedOrganisationUnit) {
-        assertOrganisationUnitAllUpdatablePropertiesEquals(
-            expectedOrganisationUnit,
-            getPersistedOrganisationUnit(expectedOrganisationUnit)
-        );
+        List<OrganisationUnit> organisationUnitList = organisationUnitRepository.findAll();
+        assertThat(organisationUnitList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

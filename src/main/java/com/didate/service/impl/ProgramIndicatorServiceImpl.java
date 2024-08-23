@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.ProgramIndicator}.
+ * Service Implementation for managing {@link ProgramIndicator}.
  */
 @Service
 @Transactional
 public class ProgramIndicatorServiceImpl implements ProgramIndicatorService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProgramIndicatorServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(ProgramIndicatorServiceImpl.class);
 
     private final ProgramIndicatorRepository programIndicatorRepository;
 
@@ -35,6 +35,7 @@ public class ProgramIndicatorServiceImpl implements ProgramIndicatorService {
     @Override
     public ProgramIndicator update(ProgramIndicator programIndicator) {
         log.debug("Request to update ProgramIndicator : {}", programIndicator);
+        programIndicator.setIsPersisted();
         return programIndicatorRepository.save(programIndicator);
     }
 

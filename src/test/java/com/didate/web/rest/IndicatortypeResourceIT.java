@@ -1,7 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.IndicatortypeAsserts.*;
-import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -10,10 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.didate.IntegrationTest;
 import com.didate.domain.Indicatortype;
 import com.didate.repository.IndicatortypeRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
+import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +35,6 @@ class IndicatortypeResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private IndicatortypeRepository indicatortypeRepository;
 
     @Autowired
@@ -50,8 +44,6 @@ class IndicatortypeResourceIT {
     private MockMvc restIndicatortypeMockMvc;
 
     private Indicatortype indicatortype;
-
-    private Indicatortype insertedIndicatortype;
 
     /**
      * Create an entity for this test.
@@ -80,34 +72,20 @@ class IndicatortypeResourceIT {
         indicatortype = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedIndicatortype != null) {
-            indicatortypeRepository.delete(insertedIndicatortype);
-            insertedIndicatortype = null;
-        }
-    }
-
     @Test
     @Transactional
     void createIndicatortype() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = indicatortypeRepository.findAll().size();
         // Create the Indicatortype
-        var returnedIndicatortype = om.readValue(
-            restIndicatortypeMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicatortype)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            Indicatortype.class
-        );
+        restIndicatortypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicatortype)))
+            .andExpect(status().isCreated());
 
         // Validate the Indicatortype in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertIndicatortypeUpdatableFieldsEquals(returnedIndicatortype, getPersistedIndicatortype(returnedIndicatortype));
-
-        insertedIndicatortype = returnedIndicatortype;
+        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        assertThat(indicatortypeList).hasSize(databaseSizeBeforeCreate + 1);
+        Indicatortype testIndicatortype = indicatortypeList.get(indicatortypeList.size() - 1);
+        assertThat(testIndicatortype.getName()).isEqualTo(DEFAULT_NAME);
     }
 
     @Test
@@ -116,22 +94,24 @@ class IndicatortypeResourceIT {
         // Create the Indicatortype with an existing ID
         indicatortype.setId("existing_id");
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = indicatortypeRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restIndicatortypeMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicatortype)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicatortype)))
             .andExpect(status().isBadRequest());
 
         // Validate the Indicatortype in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        assertThat(indicatortypeList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void getAllIndicatortypes() throws Exception {
         // Initialize the database
-        insertedIndicatortype = indicatortypeRepository.saveAndFlush(indicatortype);
+        indicatortype.setId(UUID.randomUUID().toString());
+        indicatortypeRepository.saveAndFlush(indicatortype);
 
         // Get all the indicatortypeList
         restIndicatortypeMockMvc
@@ -146,7 +126,8 @@ class IndicatortypeResourceIT {
     @Transactional
     void getIndicatortype() throws Exception {
         // Initialize the database
-        insertedIndicatortype = indicatortypeRepository.saveAndFlush(indicatortype);
+        indicatortype.setId(UUID.randomUUID().toString());
+        indicatortypeRepository.saveAndFlush(indicatortype);
 
         // Get the indicatortype
         restIndicatortypeMockMvc
@@ -168,12 +149,13 @@ class IndicatortypeResourceIT {
     @Transactional
     void putExistingIndicatortype() throws Exception {
         // Initialize the database
-        insertedIndicatortype = indicatortypeRepository.saveAndFlush(indicatortype);
+        indicatortype.setId(UUID.randomUUID().toString());
+        indicatortypeRepository.saveAndFlush(indicatortype);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatortypeRepository.findAll().size();
 
         // Update the indicatortype
-        Indicatortype updatedIndicatortype = indicatortypeRepository.findById(indicatortype.getId()).orElseThrow();
+        Indicatortype updatedIndicatortype = indicatortypeRepository.findById(indicatortype.getId()).get();
         // Disconnect from session so that the updates on updatedIndicatortype are not directly saved in db
         em.detach(updatedIndicatortype);
         updatedIndicatortype.name(UPDATED_NAME);
@@ -182,19 +164,21 @@ class IndicatortypeResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, updatedIndicatortype.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedIndicatortype))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedIndicatortype))
             )
             .andExpect(status().isOk());
 
         // Validate the Indicatortype in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedIndicatortypeToMatchAllProperties(updatedIndicatortype);
+        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
+        Indicatortype testIndicatortype = indicatortypeList.get(indicatortypeList.size() - 1);
+        assertThat(testIndicatortype.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test
     @Transactional
     void putNonExistingIndicatortype() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatortypeRepository.findAll().size();
         indicatortype.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -202,18 +186,19 @@ class IndicatortypeResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, indicatortype.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(indicatortype))
+                    .content(TestUtil.convertObjectToJsonBytes(indicatortype))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Indicatortype in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchIndicatortype() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatortypeRepository.findAll().size();
         indicatortype.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -221,67 +206,67 @@ class IndicatortypeResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(indicatortype))
+                    .content(TestUtil.convertObjectToJsonBytes(indicatortype))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Indicatortype in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamIndicatortype() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatortypeRepository.findAll().size();
         indicatortype.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restIndicatortypeMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicatortype)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicatortype)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Indicatortype in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void partialUpdateIndicatortypeWithPatch() throws Exception {
         // Initialize the database
-        insertedIndicatortype = indicatortypeRepository.saveAndFlush(indicatortype);
+        indicatortype.setId(UUID.randomUUID().toString());
+        indicatortypeRepository.saveAndFlush(indicatortype);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatortypeRepository.findAll().size();
 
         // Update the indicatortype using partial update
         Indicatortype partialUpdatedIndicatortype = new Indicatortype();
         partialUpdatedIndicatortype.setId(indicatortype.getId());
 
-        partialUpdatedIndicatortype.name(UPDATED_NAME);
-
         restIndicatortypeMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedIndicatortype.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedIndicatortype))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedIndicatortype))
             )
             .andExpect(status().isOk());
 
         // Validate the Indicatortype in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertIndicatortypeUpdatableFieldsEquals(
-            createUpdateProxyForBean(partialUpdatedIndicatortype, indicatortype),
-            getPersistedIndicatortype(indicatortype)
-        );
+        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
+        Indicatortype testIndicatortype = indicatortypeList.get(indicatortypeList.size() - 1);
+        assertThat(testIndicatortype.getName()).isEqualTo(DEFAULT_NAME);
     }
 
     @Test
     @Transactional
     void fullUpdateIndicatortypeWithPatch() throws Exception {
         // Initialize the database
-        insertedIndicatortype = indicatortypeRepository.saveAndFlush(indicatortype);
+        indicatortype.setId(UUID.randomUUID().toString());
+        indicatortypeRepository.saveAndFlush(indicatortype);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatortypeRepository.findAll().size();
 
         // Update the indicatortype using partial update
         Indicatortype partialUpdatedIndicatortype = new Indicatortype();
@@ -293,20 +278,21 @@ class IndicatortypeResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedIndicatortype.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedIndicatortype))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedIndicatortype))
             )
             .andExpect(status().isOk());
 
         // Validate the Indicatortype in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertIndicatortypeUpdatableFieldsEquals(partialUpdatedIndicatortype, getPersistedIndicatortype(partialUpdatedIndicatortype));
+        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
+        Indicatortype testIndicatortype = indicatortypeList.get(indicatortypeList.size() - 1);
+        assertThat(testIndicatortype.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test
     @Transactional
     void patchNonExistingIndicatortype() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatortypeRepository.findAll().size();
         indicatortype.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -314,18 +300,19 @@ class IndicatortypeResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, indicatortype.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(indicatortype))
+                    .content(TestUtil.convertObjectToJsonBytes(indicatortype))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Indicatortype in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchIndicatortype() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatortypeRepository.findAll().size();
         indicatortype.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -333,36 +320,41 @@ class IndicatortypeResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(indicatortype))
+                    .content(TestUtil.convertObjectToJsonBytes(indicatortype))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Indicatortype in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamIndicatortype() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatortypeRepository.findAll().size();
         indicatortype.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restIndicatortypeMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(indicatortype)))
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(indicatortype))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Indicatortype in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void deleteIndicatortype() throws Exception {
         // Initialize the database
-        insertedIndicatortype = indicatortypeRepository.saveAndFlush(indicatortype);
+        indicatortype.setId(UUID.randomUUID().toString());
+        indicatortypeRepository.saveAndFlush(indicatortype);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = indicatortypeRepository.findAll().size();
 
         // Delete the indicatortype
         restIndicatortypeMockMvc
@@ -370,34 +362,7 @@ class IndicatortypeResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return indicatortypeRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected Indicatortype getPersistedIndicatortype(Indicatortype indicatortype) {
-        return indicatortypeRepository.findById(indicatortype.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedIndicatortypeToMatchAllProperties(Indicatortype expectedIndicatortype) {
-        assertIndicatortypeAllPropertiesEquals(expectedIndicatortype, getPersistedIndicatortype(expectedIndicatortype));
-    }
-
-    protected void assertPersistedIndicatortypeToMatchUpdatableProperties(Indicatortype expectedIndicatortype) {
-        assertIndicatortypeAllUpdatablePropertiesEquals(expectedIndicatortype, getPersistedIndicatortype(expectedIndicatortype));
+        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        assertThat(indicatortypeList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

@@ -62,7 +62,7 @@ describe('Dataset Form Service', () => {
             dataSetElements: expect.any(Object),
             indicators: expect.any(Object),
             organisationUnits: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -114,13 +114,14 @@ describe('Dataset Form Service', () => {
             dataSetElements: expect.any(Object),
             indicators: expect.any(Object),
             organisationUnits: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getDataset', () => {
       it('should return NewDataset for default Dataset initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createDatasetFormGroup(sampleWithNewData);
 
         const dataset = service.getDataset(formGroup) as any;

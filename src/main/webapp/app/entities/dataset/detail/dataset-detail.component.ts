@@ -1,18 +1,22 @@
-import { Component, input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import SharedModule from 'app/shared/shared.module';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { IDataset } from '../dataset.model';
 
 @Component({
-  standalone: true,
   selector: 'jhi-dataset-detail',
   templateUrl: './dataset-detail.component.html',
-  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
-export class DatasetDetailComponent {
-  dataset = input<IDataset | null>(null);
+export class DatasetDetailComponent implements OnInit {
+  dataset: IDataset | null = null;
+
+  constructor(protected activatedRoute: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ dataset }) => {
+      this.dataset = dataset;
+    });
+  }
 
   previousState(): void {
     window.history.back();

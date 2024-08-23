@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -14,10 +14,9 @@ export type EntityArrayResponseType = HttpResponse<IIndicatortype[]>;
 
 @Injectable({ providedIn: 'root' })
 export class IndicatortypeService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/indicatortypes');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(indicatortype: NewIndicatortype): Observable<EntityResponseType> {
     return this.http.post<IIndicatortype>(this.resourceUrl, indicatortype, { observe: 'response' });
@@ -62,8 +61,8 @@ export class IndicatortypeService {
   ): Type[] {
     const indicatortypes: Type[] = indicatortypesToCheck.filter(isPresent);
     if (indicatortypes.length > 0) {
-      const indicatortypeCollectionIdentifiers = indicatortypeCollection.map(indicatortypeItem =>
-        this.getIndicatortypeIdentifier(indicatortypeItem),
+      const indicatortypeCollectionIdentifiers = indicatortypeCollection.map(
+        indicatortypeItem => this.getIndicatortypeIdentifier(indicatortypeItem)!
       );
       const indicatortypesToAdd = indicatortypes.filter(indicatortypeItem => {
         const indicatortypeIdentifier = this.getIndicatortypeIdentifier(indicatortypeItem);

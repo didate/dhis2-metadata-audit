@@ -4,19 +4,20 @@ import com.didate.domain.TrackedEntityAttribute;
 import com.didate.repository.TrackedEntityAttributeRepository;
 import com.didate.service.TrackedEntityAttributeService;
 import com.didate.web.rest.errors.BadRequestAlertException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,10 +29,10 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.didate.domain.TrackedEntityAttribute}.
  */
 @RestController
-@RequestMapping("/api/tracked-entity-attributes")
+@RequestMapping("/api")
 public class TrackedEntityAttributeResource {
 
-    private static final Logger log = LoggerFactory.getLogger(TrackedEntityAttributeResource.class);
+    private final Logger log = LoggerFactory.getLogger(TrackedEntityAttributeResource.class);
 
     private static final String ENTITY_NAME = "trackedEntityAttribute";
 
@@ -57,7 +58,7 @@ public class TrackedEntityAttributeResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new trackedEntityAttribute, or with status {@code 400 (Bad Request)} if the trackedEntityAttribute has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/tracked-entity-attributes")
     public ResponseEntity<TrackedEntityAttribute> createTrackedEntityAttribute(
         @Valid @RequestBody TrackedEntityAttribute trackedEntityAttribute
     ) throws URISyntaxException {
@@ -65,10 +66,11 @@ public class TrackedEntityAttributeResource {
         if (trackedEntityAttribute.getId() != null) {
             throw new BadRequestAlertException("A new trackedEntityAttribute cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        trackedEntityAttribute = trackedEntityAttributeService.save(trackedEntityAttribute);
-        return ResponseEntity.created(new URI("/api/tracked-entity-attributes/" + trackedEntityAttribute.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, trackedEntityAttribute.getId()))
-            .body(trackedEntityAttribute);
+        TrackedEntityAttribute result = trackedEntityAttributeService.save(trackedEntityAttribute);
+        return ResponseEntity
+            .created(new URI("/api/tracked-entity-attributes/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
+            .body(result);
     }
 
     /**
@@ -81,7 +83,7 @@ public class TrackedEntityAttributeResource {
      * or with status {@code 500 (Internal Server Error)} if the trackedEntityAttribute couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/tracked-entity-attributes/{id}")
     public ResponseEntity<TrackedEntityAttribute> updateTrackedEntityAttribute(
         @PathVariable(value = "id", required = false) final String id,
         @Valid @RequestBody TrackedEntityAttribute trackedEntityAttribute
@@ -98,10 +100,11 @@ public class TrackedEntityAttributeResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        trackedEntityAttribute = trackedEntityAttributeService.update(trackedEntityAttribute);
-        return ResponseEntity.ok()
+        TrackedEntityAttribute result = trackedEntityAttributeService.update(trackedEntityAttribute);
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, trackedEntityAttribute.getId()))
-            .body(trackedEntityAttribute);
+            .body(result);
     }
 
     /**
@@ -115,7 +118,7 @@ public class TrackedEntityAttributeResource {
      * or with status {@code 500 (Internal Server Error)} if the trackedEntityAttribute couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/tracked-entity-attributes/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TrackedEntityAttribute> partialUpdateTrackedEntityAttribute(
         @PathVariable(value = "id", required = false) final String id,
         @NotNull @RequestBody TrackedEntityAttribute trackedEntityAttribute
@@ -146,9 +149,9 @@ public class TrackedEntityAttributeResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of trackedEntityAttributes in body.
      */
-    @GetMapping("")
+    @GetMapping("/tracked-entity-attributes")
     public ResponseEntity<List<TrackedEntityAttribute>> getAllTrackedEntityAttributes(
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get a page of TrackedEntityAttributes");
         Page<TrackedEntityAttribute> page = trackedEntityAttributeService.findAll(pageable);
@@ -162,8 +165,8 @@ public class TrackedEntityAttributeResource {
      * @param id the id of the trackedEntityAttribute to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the trackedEntityAttribute, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<TrackedEntityAttribute> getTrackedEntityAttribute(@PathVariable("id") String id) {
+    @GetMapping("/tracked-entity-attributes/{id}")
+    public ResponseEntity<TrackedEntityAttribute> getTrackedEntityAttribute(@PathVariable String id) {
         log.debug("REST request to get TrackedEntityAttribute : {}", id);
         Optional<TrackedEntityAttribute> trackedEntityAttribute = trackedEntityAttributeService.findOne(id);
         return ResponseUtil.wrapOrNotFound(trackedEntityAttribute);
@@ -175,8 +178,8 @@ public class TrackedEntityAttributeResource {
      * @param id the id of the trackedEntityAttribute to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTrackedEntityAttribute(@PathVariable("id") String id) {
+    @DeleteMapping("/tracked-entity-attributes/{id}")
+    public ResponseEntity<Void> deleteTrackedEntityAttribute(@PathVariable String id) {
         log.debug("REST request to delete TrackedEntityAttribute : {}", id);
         trackedEntityAttributeService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();

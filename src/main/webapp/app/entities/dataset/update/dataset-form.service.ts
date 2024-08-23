@@ -103,11 +103,11 @@ export class DatasetFormService {
     });
     return new FormGroup<DatasetFormGroupContent>({
       id: new FormControl(
-        { value: datasetRawValue.id, disabled: true },
+        { value: datasetRawValue.id, disabled: datasetRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       name: new FormControl(datasetRawValue.name),
       created: new FormControl(datasetRawValue.created, {
@@ -173,8 +173,8 @@ export class DatasetFormService {
     form.reset(
       {
         ...datasetRawValue,
-        id: { value: datasetRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: datasetRawValue.id, disabled: datasetRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 
@@ -208,7 +208,7 @@ export class DatasetFormService {
   }
 
   private convertDatasetToDatasetRawValue(
-    dataset: IDataset | (Partial<NewDataset> & DatasetFormDefaults),
+    dataset: IDataset | (Partial<NewDataset> & DatasetFormDefaults)
   ): DatasetFormRawValue | PartialWithRequiredKeyOf<NewDatasetFormRawValue> {
     return {
       ...dataset,

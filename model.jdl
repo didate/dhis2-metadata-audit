@@ -372,16 +372,16 @@ relationship ManyToOne {
 }
 
 relationship ManyToMany {
-	Program{programTrackedEntityAttributes} to TrackedEntityAttribute
-	Program{organisationUnits} to OrganisationUnit
-    Program{programIndicators} to ProgramIndicator
-    Program{programStage} to ProgramStage
+	Program{programTrackedEntityAttributes} to TrackedEntityAttribute{programs}
+	Program{organisationUnits} to OrganisationUnit{programs}
+    Program{programIndicators} to ProgramIndicator{programs}
+    Program{programStage} to ProgramStage{programs}
 	
-    Dataset{dataSetElements} to Dataelement
-    Dataset{indicators} to Indicator
-	Dataset{organisationUnits} to OrganisationUnit
+    Dataset{dataSetElements} to Dataelement{dataSets}
+    Dataset{indicators} to Indicator{dataSets}
+	Dataset{organisationUnits} to OrganisationUnit{dataSets}
     
-    ProgramStage{programStageDataElements} to Dataelement
+    ProgramStage{programStageDataElements} to Dataelement{programStages}
 }
 
 paginate * with pagination

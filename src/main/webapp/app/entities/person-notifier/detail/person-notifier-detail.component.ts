@@ -1,18 +1,22 @@
-import { Component, input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import SharedModule from 'app/shared/shared.module';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { IPersonNotifier } from '../person-notifier.model';
 
 @Component({
-  standalone: true,
   selector: 'jhi-person-notifier-detail',
   templateUrl: './person-notifier-detail.component.html',
-  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
-export class PersonNotifierDetailComponent {
-  personNotifier = input<IPersonNotifier | null>(null);
+export class PersonNotifierDetailComponent implements OnInit {
+  personNotifier: IPersonNotifier | null = null;
+
+  constructor(protected activatedRoute: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ personNotifier }) => {
+      this.personNotifier = personNotifier;
+    });
+  }
 
   previousState(): void {
     window.history.back();

@@ -1,7 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.ProjectAsserts.*;
-import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -10,11 +8,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.didate.IntegrationTest;
 import com.didate.domain.Project;
 import com.didate.repository.ProjectRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,10 +51,7 @@ class ProjectResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     private static Random random = new Random();
-    private static AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
-
-    @Autowired
-    private ObjectMapper om;
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
     private ProjectRepository projectRepository;
@@ -69,8 +63,6 @@ class ProjectResourceIT {
     private MockMvc restProjectMockMvc;
 
     private Project project;
-
-    private Project insertedProject;
 
     /**
      * Create an entity for this test.
@@ -111,34 +103,25 @@ class ProjectResourceIT {
         project = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedProject != null) {
-            projectRepository.delete(insertedProject);
-            insertedProject = null;
-        }
-    }
-
     @Test
     @Transactional
     void createProject() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = projectRepository.findAll().size();
         // Create the Project
-        var returnedProject = om.readValue(
-            restProjectMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(project)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            Project.class
-        );
+        restProjectMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(project)))
+            .andExpect(status().isCreated());
 
         // Validate the Project in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertProjectUpdatableFieldsEquals(returnedProject, getPersistedProject(returnedProject));
-
-        insertedProject = returnedProject;
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeCreate + 1);
+        Project testProject = projectList.get(projectList.size() - 1);
+        assertThat(testProject.getProjectName()).isEqualTo(DEFAULT_PROJECT_NAME);
+        assertThat(testProject.getDhis2URL()).isEqualTo(DEFAULT_DHIS_2_URL);
+        assertThat(testProject.getDhis2Version()).isEqualTo(DEFAULT_DHIS_2_VERSION);
+        assertThat(testProject.getToken()).isEqualTo(DEFAULT_TOKEN);
+        assertThat(testProject.getEmailNotification()).isEqualTo(DEFAULT_EMAIL_NOTIFICATION);
+        assertThat(testProject.getNotificationTime()).isEqualTo(DEFAULT_NOTIFICATION_TIME);
     }
 
     @Test
@@ -147,102 +130,108 @@ class ProjectResourceIT {
         // Create the Project with an existing ID
         project.setId(1L);
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = projectRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProjectMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(project)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(project)))
             .andExpect(status().isBadRequest());
 
         // Validate the Project in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void checkProjectNameIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = projectRepository.findAll().size();
         // set the field null
         project.setProjectName(null);
 
         // Create the Project, which fails.
 
         restProjectMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(project)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(project)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkDhis2URLIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = projectRepository.findAll().size();
         // set the field null
         project.setDhis2URL(null);
 
         // Create the Project, which fails.
 
         restProjectMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(project)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(project)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkDhis2VersionIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = projectRepository.findAll().size();
         // set the field null
         project.setDhis2Version(null);
 
         // Create the Project, which fails.
 
         restProjectMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(project)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(project)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkTokenIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = projectRepository.findAll().size();
         // set the field null
         project.setToken(null);
 
         // Create the Project, which fails.
 
         restProjectMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(project)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(project)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkEmailNotificationIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = projectRepository.findAll().size();
         // set the field null
         project.setEmailNotification(null);
 
         // Create the Project, which fails.
 
         restProjectMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(project)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(project)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void getAllProjects() throws Exception {
         // Initialize the database
-        insertedProject = projectRepository.saveAndFlush(project);
+        projectRepository.saveAndFlush(project);
 
         // Get all the projectList
         restProjectMockMvc
@@ -262,7 +251,7 @@ class ProjectResourceIT {
     @Transactional
     void getProject() throws Exception {
         // Initialize the database
-        insertedProject = projectRepository.saveAndFlush(project);
+        projectRepository.saveAndFlush(project);
 
         // Get the project
         restProjectMockMvc
@@ -289,12 +278,12 @@ class ProjectResourceIT {
     @Transactional
     void putExistingProject() throws Exception {
         // Initialize the database
-        insertedProject = projectRepository.saveAndFlush(project);
+        projectRepository.saveAndFlush(project);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = projectRepository.findAll().size();
 
         // Update the project
-        Project updatedProject = projectRepository.findById(project.getId()).orElseThrow();
+        Project updatedProject = projectRepository.findById(project.getId()).get();
         // Disconnect from session so that the updates on updatedProject are not directly saved in db
         em.detach(updatedProject);
         updatedProject
@@ -309,99 +298,119 @@ class ProjectResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, updatedProject.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedProject))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedProject))
             )
             .andExpect(status().isOk());
 
         // Validate the Project in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedProjectToMatchAllProperties(updatedProject);
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeUpdate);
+        Project testProject = projectList.get(projectList.size() - 1);
+        assertThat(testProject.getProjectName()).isEqualTo(UPDATED_PROJECT_NAME);
+        assertThat(testProject.getDhis2URL()).isEqualTo(UPDATED_DHIS_2_URL);
+        assertThat(testProject.getDhis2Version()).isEqualTo(UPDATED_DHIS_2_VERSION);
+        assertThat(testProject.getToken()).isEqualTo(UPDATED_TOKEN);
+        assertThat(testProject.getEmailNotification()).isEqualTo(UPDATED_EMAIL_NOTIFICATION);
+        assertThat(testProject.getNotificationTime()).isEqualTo(UPDATED_NOTIFICATION_TIME);
     }
 
     @Test
     @Transactional
     void putNonExistingProject() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
-        project.setId(longCount.incrementAndGet());
+        int databaseSizeBeforeUpdate = projectRepository.findAll().size();
+        project.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProjectMockMvc
-            .perform(put(ENTITY_API_URL_ID, project.getId()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(project)))
+            .perform(
+                put(ENTITY_API_URL_ID, project.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(project))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Project in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchProject() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
-        project.setId(longCount.incrementAndGet());
+        int databaseSizeBeforeUpdate = projectRepository.findAll().size();
+        project.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProjectMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, longCount.incrementAndGet())
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(project))
+                    .content(TestUtil.convertObjectToJsonBytes(project))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Project in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamProject() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
-        project.setId(longCount.incrementAndGet());
+        int databaseSizeBeforeUpdate = projectRepository.findAll().size();
+        project.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProjectMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(project)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(project)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Project in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void partialUpdateProjectWithPatch() throws Exception {
         // Initialize the database
-        insertedProject = projectRepository.saveAndFlush(project);
+        projectRepository.saveAndFlush(project);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = projectRepository.findAll().size();
 
         // Update the project using partial update
         Project partialUpdatedProject = new Project();
         partialUpdatedProject.setId(project.getId());
 
-        partialUpdatedProject.projectName(UPDATED_PROJECT_NAME).emailNotification(UPDATED_EMAIL_NOTIFICATION);
+        partialUpdatedProject.projectName(UPDATED_PROJECT_NAME).token(UPDATED_TOKEN).emailNotification(UPDATED_EMAIL_NOTIFICATION);
 
         restProjectMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedProject.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedProject))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedProject))
             )
             .andExpect(status().isOk());
 
         // Validate the Project in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertProjectUpdatableFieldsEquals(createUpdateProxyForBean(partialUpdatedProject, project), getPersistedProject(project));
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeUpdate);
+        Project testProject = projectList.get(projectList.size() - 1);
+        assertThat(testProject.getProjectName()).isEqualTo(UPDATED_PROJECT_NAME);
+        assertThat(testProject.getDhis2URL()).isEqualTo(DEFAULT_DHIS_2_URL);
+        assertThat(testProject.getDhis2Version()).isEqualTo(DEFAULT_DHIS_2_VERSION);
+        assertThat(testProject.getToken()).isEqualTo(UPDATED_TOKEN);
+        assertThat(testProject.getEmailNotification()).isEqualTo(UPDATED_EMAIL_NOTIFICATION);
+        assertThat(testProject.getNotificationTime()).isEqualTo(DEFAULT_NOTIFICATION_TIME);
     }
 
     @Test
     @Transactional
     void fullUpdateProjectWithPatch() throws Exception {
         // Initialize the database
-        insertedProject = projectRepository.saveAndFlush(project);
+        projectRepository.saveAndFlush(project);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = projectRepository.findAll().size();
 
         // Update the project using partial update
         Project partialUpdatedProject = new Project();
@@ -419,74 +428,85 @@ class ProjectResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedProject.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedProject))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedProject))
             )
             .andExpect(status().isOk());
 
         // Validate the Project in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertProjectUpdatableFieldsEquals(partialUpdatedProject, getPersistedProject(partialUpdatedProject));
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeUpdate);
+        Project testProject = projectList.get(projectList.size() - 1);
+        assertThat(testProject.getProjectName()).isEqualTo(UPDATED_PROJECT_NAME);
+        assertThat(testProject.getDhis2URL()).isEqualTo(UPDATED_DHIS_2_URL);
+        assertThat(testProject.getDhis2Version()).isEqualTo(UPDATED_DHIS_2_VERSION);
+        assertThat(testProject.getToken()).isEqualTo(UPDATED_TOKEN);
+        assertThat(testProject.getEmailNotification()).isEqualTo(UPDATED_EMAIL_NOTIFICATION);
+        assertThat(testProject.getNotificationTime()).isEqualTo(UPDATED_NOTIFICATION_TIME);
     }
 
     @Test
     @Transactional
     void patchNonExistingProject() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
-        project.setId(longCount.incrementAndGet());
+        int databaseSizeBeforeUpdate = projectRepository.findAll().size();
+        project.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restProjectMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, project.getId()).contentType("application/merge-patch+json").content(om.writeValueAsBytes(project))
+                patch(ENTITY_API_URL_ID, project.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(project))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Project in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchProject() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
-        project.setId(longCount.incrementAndGet());
+        int databaseSizeBeforeUpdate = projectRepository.findAll().size();
+        project.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProjectMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, longCount.incrementAndGet())
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(project))
+                    .content(TestUtil.convertObjectToJsonBytes(project))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Project in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamProject() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
-        project.setId(longCount.incrementAndGet());
+        int databaseSizeBeforeUpdate = projectRepository.findAll().size();
+        project.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restProjectMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(project)))
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(project)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Project in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void deleteProject() throws Exception {
         // Initialize the database
-        insertedProject = projectRepository.saveAndFlush(project);
+        projectRepository.saveAndFlush(project);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = projectRepository.findAll().size();
 
         // Delete the project
         restProjectMockMvc
@@ -494,34 +514,7 @@ class ProjectResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return projectRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected Project getPersistedProject(Project project) {
-        return projectRepository.findById(project.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedProjectToMatchAllProperties(Project expectedProject) {
-        assertProjectAllPropertiesEquals(expectedProject, getPersistedProject(expectedProject));
-    }
-
-    protected void assertPersistedProjectToMatchUpdatableProperties(Project expectedProject) {
-        assertProjectAllUpdatablePropertiesEquals(expectedProject, getPersistedProject(expectedProject));
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

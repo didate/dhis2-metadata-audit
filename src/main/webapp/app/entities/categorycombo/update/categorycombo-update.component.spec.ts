@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
+import { CategorycomboFormService } from './categorycombo-form.service';
 import { CategorycomboService } from '../service/categorycombo.service';
 import { ICategorycombo } from '../categorycombo.model';
-import { CategorycomboFormService } from './categorycombo-form.service';
 
 import { CategorycomboUpdateComponent } from './categorycombo-update.component';
 
@@ -19,9 +21,9 @@ describe('Categorycombo Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CategorycomboUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [CategorycomboUpdateComponent],
       providers: [
-        provideHttpClient(),
         FormBuilder,
         {
           provide: ActivatedRoute,

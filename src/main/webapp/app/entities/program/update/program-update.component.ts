@@ -1,12 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { ProgramFormService, ProgramFormGroup } from './program-form.service';
+import { IProgram } from '../program.model';
+import { ProgramService } from '../service/program.service';
 import { IProject } from 'app/entities/project/project.model';
 import { ProjectService } from 'app/entities/project/service/project.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
@@ -22,15 +22,10 @@ import { ProgramIndicatorService } from 'app/entities/program-indicator/service/
 import { IProgramStage } from 'app/entities/program-stage/program-stage.model';
 import { ProgramStageService } from 'app/entities/program-stage/service/program-stage.service';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
-import { ProgramService } from '../service/program.service';
-import { IProgram } from '../program.model';
-import { ProgramFormService, ProgramFormGroup } from './program-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-program-update',
   templateUrl: './program-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ProgramUpdateComponent implements OnInit {
   isSaving = false;
@@ -45,19 +40,20 @@ export class ProgramUpdateComponent implements OnInit {
   programIndicatorsSharedCollection: IProgramIndicator[] = [];
   programStagesSharedCollection: IProgramStage[] = [];
 
-  protected programService = inject(ProgramService);
-  protected programFormService = inject(ProgramFormService);
-  protected projectService = inject(ProjectService);
-  protected dHISUserService = inject(DHISUserService);
-  protected categorycomboService = inject(CategorycomboService);
-  protected trackedEntityAttributeService = inject(TrackedEntityAttributeService);
-  protected organisationUnitService = inject(OrganisationUnitService);
-  protected programIndicatorService = inject(ProgramIndicatorService);
-  protected programStageService = inject(ProgramStageService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ProgramFormGroup = this.programFormService.createProgramFormGroup();
+
+  constructor(
+    protected programService: ProgramService,
+    protected programFormService: ProgramFormService,
+    protected projectService: ProjectService,
+    protected dHISUserService: DHISUserService,
+    protected categorycomboService: CategorycomboService,
+    protected trackedEntityAttributeService: TrackedEntityAttributeService,
+    protected organisationUnitService: OrganisationUnitService,
+    protected programIndicatorService: ProgramIndicatorService,
+    protected programStageService: ProgramStageService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   compareProject = (o1: IProject | null, o2: IProject | null): boolean => this.projectService.compareProject(o1, o2);
 
@@ -128,33 +124,33 @@ export class ProgramUpdateComponent implements OnInit {
 
     this.projectsSharedCollection = this.projectService.addProjectToCollectionIfMissing<IProject>(
       this.projectsSharedCollection,
-      program.project,
+      program.project
     );
     this.dHISUsersSharedCollection = this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
       this.dHISUsersSharedCollection,
       program.createdBy,
-      program.lastUpdatedBy,
+      program.lastUpdatedBy
     );
     this.categorycombosSharedCollection = this.categorycomboService.addCategorycomboToCollectionIfMissing<ICategorycombo>(
       this.categorycombosSharedCollection,
-      program.categoryCombo,
+      program.categoryCombo
     );
     this.trackedEntityAttributesSharedCollection =
       this.trackedEntityAttributeService.addTrackedEntityAttributeToCollectionIfMissing<ITrackedEntityAttribute>(
         this.trackedEntityAttributesSharedCollection,
-        ...(program.programTrackedEntityAttributes ?? []),
+        ...(program.programTrackedEntityAttributes ?? [])
       );
     this.organisationUnitsSharedCollection = this.organisationUnitService.addOrganisationUnitToCollectionIfMissing<IOrganisationUnit>(
       this.organisationUnitsSharedCollection,
-      ...(program.organisationUnits ?? []),
+      ...(program.organisationUnits ?? [])
     );
     this.programIndicatorsSharedCollection = this.programIndicatorService.addProgramIndicatorToCollectionIfMissing<IProgramIndicator>(
       this.programIndicatorsSharedCollection,
-      ...(program.programIndicators ?? []),
+      ...(program.programIndicators ?? [])
     );
     this.programStagesSharedCollection = this.programStageService.addProgramStageToCollectionIfMissing<IProgramStage>(
       this.programStagesSharedCollection,
-      ...(program.programStages ?? []),
+      ...(program.programStages ?? [])
     );
   }
 
@@ -170,8 +166,8 @@ export class ProgramUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IDHISUser[]>) => res.body ?? []))
       .pipe(
         map((dHISUsers: IDHISUser[]) =>
-          this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(dHISUsers, this.program?.createdBy, this.program?.lastUpdatedBy),
-        ),
+          this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(dHISUsers, this.program?.createdBy, this.program?.lastUpdatedBy)
+        )
       )
       .subscribe((dHISUsers: IDHISUser[]) => (this.dHISUsersSharedCollection = dHISUsers));
 
@@ -180,8 +176,8 @@ export class ProgramUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ICategorycombo[]>) => res.body ?? []))
       .pipe(
         map((categorycombos: ICategorycombo[]) =>
-          this.categorycomboService.addCategorycomboToCollectionIfMissing<ICategorycombo>(categorycombos, this.program?.categoryCombo),
-        ),
+          this.categorycomboService.addCategorycomboToCollectionIfMissing<ICategorycombo>(categorycombos, this.program?.categoryCombo)
+        )
       )
       .subscribe((categorycombos: ICategorycombo[]) => (this.categorycombosSharedCollection = categorycombos));
 
@@ -192,12 +188,12 @@ export class ProgramUpdateComponent implements OnInit {
         map((trackedEntityAttributes: ITrackedEntityAttribute[]) =>
           this.trackedEntityAttributeService.addTrackedEntityAttributeToCollectionIfMissing<ITrackedEntityAttribute>(
             trackedEntityAttributes,
-            ...(this.program?.programTrackedEntityAttributes ?? []),
-          ),
-        ),
+            ...(this.program?.programTrackedEntityAttributes ?? [])
+          )
+        )
       )
       .subscribe(
-        (trackedEntityAttributes: ITrackedEntityAttribute[]) => (this.trackedEntityAttributesSharedCollection = trackedEntityAttributes),
+        (trackedEntityAttributes: ITrackedEntityAttribute[]) => (this.trackedEntityAttributesSharedCollection = trackedEntityAttributes)
       );
 
     this.organisationUnitService
@@ -207,9 +203,9 @@ export class ProgramUpdateComponent implements OnInit {
         map((organisationUnits: IOrganisationUnit[]) =>
           this.organisationUnitService.addOrganisationUnitToCollectionIfMissing<IOrganisationUnit>(
             organisationUnits,
-            ...(this.program?.organisationUnits ?? []),
-          ),
-        ),
+            ...(this.program?.organisationUnits ?? [])
+          )
+        )
       )
       .subscribe((organisationUnits: IOrganisationUnit[]) => (this.organisationUnitsSharedCollection = organisationUnits));
 
@@ -220,9 +216,9 @@ export class ProgramUpdateComponent implements OnInit {
         map((programIndicators: IProgramIndicator[]) =>
           this.programIndicatorService.addProgramIndicatorToCollectionIfMissing<IProgramIndicator>(
             programIndicators,
-            ...(this.program?.programIndicators ?? []),
-          ),
-        ),
+            ...(this.program?.programIndicators ?? [])
+          )
+        )
       )
       .subscribe((programIndicators: IProgramIndicator[]) => (this.programIndicatorsSharedCollection = programIndicators));
 
@@ -233,9 +229,9 @@ export class ProgramUpdateComponent implements OnInit {
         map((programStages: IProgramStage[]) =>
           this.programStageService.addProgramStageToCollectionIfMissing<IProgramStage>(
             programStages,
-            ...(this.program?.programStages ?? []),
-          ),
-        ),
+            ...(this.program?.programStages ?? [])
+          )
+        )
       )
       .subscribe((programStages: IProgramStage[]) => (this.programStagesSharedCollection = programStages));
   }

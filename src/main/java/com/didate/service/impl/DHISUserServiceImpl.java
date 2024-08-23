@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.DHISUser}.
+ * Service Implementation for managing {@link DHISUser}.
  */
 @Service
 @Transactional
 public class DHISUserServiceImpl implements DHISUserService {
 
-    private static final Logger log = LoggerFactory.getLogger(DHISUserServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(DHISUserServiceImpl.class);
 
     private final DHISUserRepository dHISUserRepository;
 
@@ -35,6 +35,7 @@ public class DHISUserServiceImpl implements DHISUserService {
     @Override
     public DHISUser update(DHISUser dHISUser) {
         log.debug("Request to update DHISUser : {}", dHISUser);
+        dHISUser.setIsPersisted();
         return dHISUserRepository.save(dHISUser);
     }
 

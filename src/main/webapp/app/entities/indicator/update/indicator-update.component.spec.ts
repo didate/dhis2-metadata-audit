@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
+import { IndicatorFormService } from './indicator-form.service';
+import { IndicatorService } from '../service/indicator.service';
+import { IIndicator } from '../indicator.model';
 import { IProject } from 'app/entities/project/project.model';
 import { ProjectService } from 'app/entities/project/service/project.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { DHISUserService } from 'app/entities/dhis-user/service/dhis-user.service';
 import { IIndicatortype } from 'app/entities/indicatortype/indicatortype.model';
 import { IndicatortypeService } from 'app/entities/indicatortype/service/indicatortype.service';
-import { IDataset } from 'app/entities/dataset/dataset.model';
-import { DatasetService } from 'app/entities/dataset/service/dataset.service';
-import { IIndicator } from '../indicator.model';
-import { IndicatorService } from '../service/indicator.service';
-import { IndicatorFormService } from './indicator-form.service';
 
 import { IndicatorUpdateComponent } from './indicator-update.component';
 
@@ -27,13 +27,12 @@ describe('Indicator Management Update Component', () => {
   let projectService: ProjectService;
   let dHISUserService: DHISUserService;
   let indicatortypeService: IndicatortypeService;
-  let datasetService: DatasetService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [IndicatorUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [IndicatorUpdateComponent],
       providers: [
-        provideHttpClient(),
         FormBuilder,
         {
           provide: ActivatedRoute,
@@ -53,7 +52,6 @@ describe('Indicator Management Update Component', () => {
     projectService = TestBed.inject(ProjectService);
     dHISUserService = TestBed.inject(DHISUserService);
     indicatortypeService = TestBed.inject(IndicatortypeService);
-    datasetService = TestBed.inject(DatasetService);
 
     comp = fixture.componentInstance;
   });
@@ -61,10 +59,10 @@ describe('Indicator Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Project query and add missing value', () => {
       const indicator: IIndicator = { id: 'CBA' };
-      const project: IProject = { id: 7862 };
+      const project: IProject = { id: 32633 };
       indicator.project = project;
 
-      const projectCollection: IProject[] = [{ id: 4436 }];
+      const projectCollection: IProject[] = [{ id: 43701 }];
       jest.spyOn(projectService, 'query').mockReturnValue(of(new HttpResponse({ body: projectCollection })));
       const additionalProjects = [project];
       const expectedCollection: IProject[] = [...additionalProjects, ...projectCollection];
@@ -76,19 +74,19 @@ describe('Indicator Management Update Component', () => {
       expect(projectService.query).toHaveBeenCalled();
       expect(projectService.addProjectToCollectionIfMissing).toHaveBeenCalledWith(
         projectCollection,
-        ...additionalProjects.map(expect.objectContaining),
+        ...additionalProjects.map(expect.objectContaining)
       );
       expect(comp.projectsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call DHISUser query and add missing value', () => {
       const indicator: IIndicator = { id: 'CBA' };
-      const createdBy: IDHISUser = { id: 'a345cb95-9d4c-4557-b8d4-5f6715531560' };
+      const createdBy: IDHISUser = { id: '36148098-6af5-4a11-89ff-d0714f27c41c' };
       indicator.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: 'b11e6f5d-6cc7-482f-884c-605bbbfe3b38' };
+      const lastUpdatedBy: IDHISUser = { id: '690d5682-6623-4805-b809-cb2c8e3519d9' };
       indicator.lastUpdatedBy = lastUpdatedBy;
 
-      const dHISUserCollection: IDHISUser[] = [{ id: 'd905a250-27d8-4904-97e9-f4bfbe937e0b' }];
+      const dHISUserCollection: IDHISUser[] = [{ id: '0f3b09de-cbe7-44c6-af16-fd4acf1348ff' }];
       jest.spyOn(dHISUserService, 'query').mockReturnValue(of(new HttpResponse({ body: dHISUserCollection })));
       const additionalDHISUsers = [createdBy, lastUpdatedBy];
       const expectedCollection: IDHISUser[] = [...additionalDHISUsers, ...dHISUserCollection];
@@ -100,17 +98,17 @@ describe('Indicator Management Update Component', () => {
       expect(dHISUserService.query).toHaveBeenCalled();
       expect(dHISUserService.addDHISUserToCollectionIfMissing).toHaveBeenCalledWith(
         dHISUserCollection,
-        ...additionalDHISUsers.map(expect.objectContaining),
+        ...additionalDHISUsers.map(expect.objectContaining)
       );
       expect(comp.dHISUsersSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call Indicatortype query and add missing value', () => {
       const indicator: IIndicator = { id: 'CBA' };
-      const indicatorType: IIndicatortype = { id: '863d8e48-de8e-4f0a-844e-2849b93b82e4' };
+      const indicatorType: IIndicatortype = { id: 'f9f70535-c729-47ba-bac9-aaae9c723d96' };
       indicator.indicatorType = indicatorType;
 
-      const indicatortypeCollection: IIndicatortype[] = [{ id: 'ca9ef481-52b0-4f0b-82cd-4825914629cf' }];
+      const indicatortypeCollection: IIndicatortype[] = [{ id: 'd0f261a6-6ce1-405f-a867-af0e89e075e6' }];
       jest.spyOn(indicatortypeService, 'query').mockReturnValue(of(new HttpResponse({ body: indicatortypeCollection })));
       const additionalIndicatortypes = [indicatorType];
       const expectedCollection: IIndicatortype[] = [...additionalIndicatortypes, ...indicatortypeCollection];
@@ -122,45 +120,21 @@ describe('Indicator Management Update Component', () => {
       expect(indicatortypeService.query).toHaveBeenCalled();
       expect(indicatortypeService.addIndicatortypeToCollectionIfMissing).toHaveBeenCalledWith(
         indicatortypeCollection,
-        ...additionalIndicatortypes.map(expect.objectContaining),
+        ...additionalIndicatortypes.map(expect.objectContaining)
       );
       expect(comp.indicatortypesSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Dataset query and add missing value', () => {
-      const indicator: IIndicator = { id: 'CBA' };
-      const datasets: IDataset[] = [{ id: '682aaf02-3740-4889-95fa-676908505f34' }];
-      indicator.datasets = datasets;
-
-      const datasetCollection: IDataset[] = [{ id: '37ebc250-1b4a-4dd8-ad5d-b628517aef94' }];
-      jest.spyOn(datasetService, 'query').mockReturnValue(of(new HttpResponse({ body: datasetCollection })));
-      const additionalDatasets = [...datasets];
-      const expectedCollection: IDataset[] = [...additionalDatasets, ...datasetCollection];
-      jest.spyOn(datasetService, 'addDatasetToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ indicator });
-      comp.ngOnInit();
-
-      expect(datasetService.query).toHaveBeenCalled();
-      expect(datasetService.addDatasetToCollectionIfMissing).toHaveBeenCalledWith(
-        datasetCollection,
-        ...additionalDatasets.map(expect.objectContaining),
-      );
-      expect(comp.datasetsSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const indicator: IIndicator = { id: 'CBA' };
-      const project: IProject = { id: 16258 };
+      const project: IProject = { id: 54894 };
       indicator.project = project;
-      const createdBy: IDHISUser = { id: 'e6bc720c-e57c-497c-ba92-68daf77c0387' };
+      const createdBy: IDHISUser = { id: '248e5155-9526-4b51-be9c-182039062326' };
       indicator.createdBy = createdBy;
-      const lastUpdatedBy: IDHISUser = { id: 'eeeca545-38a6-4efb-b15d-d45c46d8c2a8' };
+      const lastUpdatedBy: IDHISUser = { id: '787f7126-1f9f-4d68-98be-449d22a221a6' };
       indicator.lastUpdatedBy = lastUpdatedBy;
-      const indicatorType: IIndicatortype = { id: '9340c15c-8328-4851-9fa1-1072a2e4e779' };
+      const indicatorType: IIndicatortype = { id: '7539af53-ae58-4bda-9684-70f9928d562d' };
       indicator.indicatorType = indicatorType;
-      const dataset: IDataset = { id: 'f99f1cc4-6779-4dc3-a350-7d95286636ea' };
-      indicator.datasets = [dataset];
 
       activatedRoute.data = of({ indicator });
       comp.ngOnInit();
@@ -169,7 +143,6 @@ describe('Indicator Management Update Component', () => {
       expect(comp.dHISUsersSharedCollection).toContain(createdBy);
       expect(comp.dHISUsersSharedCollection).toContain(lastUpdatedBy);
       expect(comp.indicatortypesSharedCollection).toContain(indicatorType);
-      expect(comp.datasetsSharedCollection).toContain(dataset);
       expect(comp.indicator).toEqual(indicator);
     });
   });
@@ -270,16 +243,6 @@ describe('Indicator Management Update Component', () => {
         jest.spyOn(indicatortypeService, 'compareIndicatortype');
         comp.compareIndicatortype(entity, entity2);
         expect(indicatortypeService.compareIndicatortype).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
-    describe('compareDataset', () => {
-      it('Should forward to datasetService', () => {
-        const entity = { id: 'ABC' };
-        const entity2 = { id: 'CBA' };
-        jest.spyOn(datasetService, 'compareDataset');
-        comp.compareDataset(entity, entity2);
-        expect(datasetService.compareDataset).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

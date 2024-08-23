@@ -26,7 +26,7 @@ describe('Project Form Service', () => {
             token: expect.any(Object),
             emailNotification: expect.any(Object),
             notificationTime: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -42,13 +42,14 @@ describe('Project Form Service', () => {
             token: expect.any(Object),
             emailNotification: expect.any(Object),
             notificationTime: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getProject', () => {
       it('should return NewProject for default Project initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createProjectFormGroup(sampleWithNewData);
 
         const project = service.getProject(formGroup) as any;

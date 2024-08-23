@@ -1,18 +1,22 @@
-import { Component, input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import SharedModule from 'app/shared/shared.module';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { IProgramIndicator } from '../program-indicator.model';
 
 @Component({
-  standalone: true,
   selector: 'jhi-program-indicator-detail',
   templateUrl: './program-indicator-detail.component.html',
-  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
-export class ProgramIndicatorDetailComponent {
-  programIndicator = input<IProgramIndicator | null>(null);
+export class ProgramIndicatorDetailComponent implements OnInit {
+  programIndicator: IProgramIndicator | null = null;
+
+  constructor(protected activatedRoute: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ programIndicator }) => {
+      this.programIndicator = programIndicator;
+    });
+  }
 
   previousState(): void {
     window.history.back();

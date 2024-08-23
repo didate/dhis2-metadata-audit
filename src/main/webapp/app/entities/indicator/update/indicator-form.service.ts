@@ -28,7 +28,7 @@ type IndicatorFormRawValue = FormValueOf<IIndicator>;
 
 type NewIndicatorFormRawValue = FormValueOf<NewIndicator>;
 
-type IndicatorFormDefaults = Pick<NewIndicator, 'id' | 'created' | 'lastUpdated' | 'annualized' | 'datasets'>;
+type IndicatorFormDefaults = Pick<NewIndicator, 'id' | 'created' | 'lastUpdated' | 'annualized' | 'dataSets'>;
 
 type IndicatorFormGroupContent = {
   id: FormControl<IndicatorFormRawValue['id'] | NewIndicator['id']>;
@@ -54,7 +54,7 @@ type IndicatorFormGroupContent = {
   createdBy: FormControl<IndicatorFormRawValue['createdBy']>;
   lastUpdatedBy: FormControl<IndicatorFormRawValue['lastUpdatedBy']>;
   indicatorType: FormControl<IndicatorFormRawValue['indicatorType']>;
-  datasets: FormControl<IndicatorFormRawValue['datasets']>;
+  dataSets: FormControl<IndicatorFormRawValue['dataSets']>;
 };
 
 export type IndicatorFormGroup = FormGroup<IndicatorFormGroupContent>;
@@ -68,11 +68,11 @@ export class IndicatorFormService {
     });
     return new FormGroup<IndicatorFormGroupContent>({
       id: new FormControl(
-        { value: indicatorRawValue.id, disabled: true },
+        { value: indicatorRawValue.id, disabled: indicatorRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       name: new FormControl(indicatorRawValue.name, {
         validators: [Validators.required],
@@ -118,7 +118,7 @@ export class IndicatorFormService {
       indicatorType: new FormControl(indicatorRawValue.indicatorType, {
         validators: [Validators.required],
       }),
-      datasets: new FormControl(indicatorRawValue.datasets ?? []),
+      dataSets: new FormControl(indicatorRawValue.dataSets ?? []),
     });
   }
 
@@ -131,8 +131,8 @@ export class IndicatorFormService {
     form.reset(
       {
         ...indicatorRawValue,
-        id: { value: indicatorRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: indicatorRawValue.id, disabled: indicatorRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 
@@ -144,7 +144,7 @@ export class IndicatorFormService {
       created: currentTime,
       lastUpdated: currentTime,
       annualized: false,
-      datasets: [],
+      dataSets: [],
     };
   }
 
@@ -157,13 +157,13 @@ export class IndicatorFormService {
   }
 
   private convertIndicatorToIndicatorRawValue(
-    indicator: IIndicator | (Partial<NewIndicator> & IndicatorFormDefaults),
+    indicator: IIndicator | (Partial<NewIndicator> & IndicatorFormDefaults)
   ): IndicatorFormRawValue | PartialWithRequiredKeyOf<NewIndicatorFormRawValue> {
     return {
       ...indicator,
       created: indicator.created ? indicator.created.format(DATE_TIME_FORMAT) : undefined,
       lastUpdated: indicator.lastUpdated ? indicator.lastUpdated.format(DATE_TIME_FORMAT) : undefined,
-      datasets: indicator.datasets ?? [],
+      dataSets: indicator.dataSets ?? [],
     };
   }
 }

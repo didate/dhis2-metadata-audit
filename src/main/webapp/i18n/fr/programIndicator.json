@@ -1,5 +1,5 @@
 {
-  "dhis2AuditApp": {
+  "dhis2TrackApp": {
     "programIndicator": {
       "home": {
         "title": "ProgramIndicators",
@@ -34,7 +34,7 @@
       "createdBy": "Created By",
       "lastUpdatedBy": "Last Updated By",
       "program": "Program",
-      "program": "Program"
+      "programs": "Programs"
     }
   }
 }

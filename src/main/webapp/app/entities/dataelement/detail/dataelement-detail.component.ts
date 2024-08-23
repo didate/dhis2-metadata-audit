@@ -1,18 +1,22 @@
-import { Component, input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import SharedModule from 'app/shared/shared.module';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { IDataelement } from '../dataelement.model';
 
 @Component({
-  standalone: true,
   selector: 'jhi-dataelement-detail',
   templateUrl: './dataelement-detail.component.html',
-  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
-export class DataelementDetailComponent {
-  dataelement = input<IDataelement | null>(null);
+export class DataelementDetailComponent implements OnInit {
+  dataelement: IDataelement | null = null;
+
+  constructor(protected activatedRoute: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ dataelement }) => {
+      this.dataelement = dataelement;
+    });
+  }
 
   previousState(): void {
     window.history.back();

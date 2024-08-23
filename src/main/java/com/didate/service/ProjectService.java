@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link com.didate.domain.Project}.
+ * Service Interface for managing {@link Project}.
  */
 public interface ProjectService {
     /**

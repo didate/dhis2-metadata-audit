@@ -1,5 +1,5 @@
 {
-  "dhis2AuditApp": {
+  "dhis2TrackApp": {
     "programStage": {
       "home": {
         "title": "Program Stages",
@@ -48,7 +48,7 @@
       "lastUpdatedBy": "Last Updated By",
       "program": "Program",
       "programStageDataElements": "Program Stage Data Elements",
-      "program": "Program"
+      "programs": "Programs"
     }
   }
 }

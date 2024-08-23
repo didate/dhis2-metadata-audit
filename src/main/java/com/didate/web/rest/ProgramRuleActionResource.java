@@ -4,19 +4,20 @@ import com.didate.domain.ProgramRuleAction;
 import com.didate.repository.ProgramRuleActionRepository;
 import com.didate.service.ProgramRuleActionService;
 import com.didate.web.rest.errors.BadRequestAlertException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,10 +29,10 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.didate.domain.ProgramRuleAction}.
  */
 @RestController
-@RequestMapping("/api/program-rule-actions")
+@RequestMapping("/api")
 public class ProgramRuleActionResource {
 
-    private static final Logger log = LoggerFactory.getLogger(ProgramRuleActionResource.class);
+    private final Logger log = LoggerFactory.getLogger(ProgramRuleActionResource.class);
 
     private static final String ENTITY_NAME = "programRuleAction";
 
@@ -57,17 +58,18 @@ public class ProgramRuleActionResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new programRuleAction, or with status {@code 400 (Bad Request)} if the programRuleAction has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/program-rule-actions")
     public ResponseEntity<ProgramRuleAction> createProgramRuleAction(@Valid @RequestBody ProgramRuleAction programRuleAction)
         throws URISyntaxException {
         log.debug("REST request to save ProgramRuleAction : {}", programRuleAction);
         if (programRuleAction.getId() != null) {
             throw new BadRequestAlertException("A new programRuleAction cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        programRuleAction = programRuleActionService.save(programRuleAction);
-        return ResponseEntity.created(new URI("/api/program-rule-actions/" + programRuleAction.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, programRuleAction.getId()))
-            .body(programRuleAction);
+        ProgramRuleAction result = programRuleActionService.save(programRuleAction);
+        return ResponseEntity
+            .created(new URI("/api/program-rule-actions/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
+            .body(result);
     }
 
     /**
@@ -80,7 +82,7 @@ public class ProgramRuleActionResource {
      * or with status {@code 500 (Internal Server Error)} if the programRuleAction couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/program-rule-actions/{id}")
     public ResponseEntity<ProgramRuleAction> updateProgramRuleAction(
         @PathVariable(value = "id", required = false) final String id,
         @Valid @RequestBody ProgramRuleAction programRuleAction
@@ -97,10 +99,11 @@ public class ProgramRuleActionResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        programRuleAction = programRuleActionService.update(programRuleAction);
-        return ResponseEntity.ok()
+        ProgramRuleAction result = programRuleActionService.update(programRuleAction);
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, programRuleAction.getId()))
-            .body(programRuleAction);
+            .body(result);
     }
 
     /**
@@ -114,7 +117,7 @@ public class ProgramRuleActionResource {
      * or with status {@code 500 (Internal Server Error)} if the programRuleAction couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/program-rule-actions/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ProgramRuleAction> partialUpdateProgramRuleAction(
         @PathVariable(value = "id", required = false) final String id,
         @NotNull @RequestBody ProgramRuleAction programRuleAction
@@ -145,9 +148,9 @@ public class ProgramRuleActionResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of programRuleActions in body.
      */
-    @GetMapping("")
+    @GetMapping("/program-rule-actions")
     public ResponseEntity<List<ProgramRuleAction>> getAllProgramRuleActions(
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get a page of ProgramRuleActions");
         Page<ProgramRuleAction> page = programRuleActionService.findAll(pageable);
@@ -161,8 +164,8 @@ public class ProgramRuleActionResource {
      * @param id the id of the programRuleAction to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the programRuleAction, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<ProgramRuleAction> getProgramRuleAction(@PathVariable("id") String id) {
+    @GetMapping("/program-rule-actions/{id}")
+    public ResponseEntity<ProgramRuleAction> getProgramRuleAction(@PathVariable String id) {
         log.debug("REST request to get ProgramRuleAction : {}", id);
         Optional<ProgramRuleAction> programRuleAction = programRuleActionService.findOne(id);
         return ResponseUtil.wrapOrNotFound(programRuleAction);
@@ -174,8 +177,8 @@ public class ProgramRuleActionResource {
      * @param id the id of the programRuleAction to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProgramRuleAction(@PathVariable("id") String id) {
+    @DeleteMapping("/program-rule-actions/{id}")
+    public ResponseEntity<Void> deleteProgramRuleAction(@PathVariable String id) {
         log.debug("REST request to delete ProgramRuleAction : {}", id);
         programRuleActionService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();

@@ -51,7 +51,7 @@ describe('ProgramStage Form Service', () => {
             program: expect.any(Object),
             programStageDataElements: expect.any(Object),
             programs: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -92,13 +92,14 @@ describe('ProgramStage Form Service', () => {
             program: expect.any(Object),
             programStageDataElements: expect.any(Object),
             programs: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getProgramStage', () => {
       it('should return NewProgramStage for default ProgramStage initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createProgramStageFormGroup(sampleWithNewData);
 
         const programStage = service.getProgramStage(formGroup) as any;

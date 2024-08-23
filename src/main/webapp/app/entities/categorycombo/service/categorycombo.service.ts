@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -14,10 +14,9 @@ export type EntityArrayResponseType = HttpResponse<ICategorycombo[]>;
 
 @Injectable({ providedIn: 'root' })
 export class CategorycomboService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/categorycombos');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(categorycombo: NewCategorycombo): Observable<EntityResponseType> {
     return this.http.post<ICategorycombo>(this.resourceUrl, categorycombo, { observe: 'response' });
@@ -62,8 +61,8 @@ export class CategorycomboService {
   ): Type[] {
     const categorycombos: Type[] = categorycombosToCheck.filter(isPresent);
     if (categorycombos.length > 0) {
-      const categorycomboCollectionIdentifiers = categorycomboCollection.map(categorycomboItem =>
-        this.getCategorycomboIdentifier(categorycomboItem),
+      const categorycomboCollectionIdentifiers = categorycomboCollection.map(
+        categorycomboItem => this.getCategorycomboIdentifier(categorycomboItem)!
       );
       const categorycombosToAdd = categorycombos.filter(categorycomboItem => {
         const categorycomboIdentifier = this.getCategorycomboIdentifier(categorycomboItem);

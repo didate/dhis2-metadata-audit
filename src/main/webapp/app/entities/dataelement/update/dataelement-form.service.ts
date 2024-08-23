@@ -28,7 +28,7 @@ type DataelementFormRawValue = FormValueOf<IDataelement>;
 
 type NewDataelementFormRawValue = FormValueOf<NewDataelement>;
 
-type DataelementFormDefaults = Pick<NewDataelement, 'id' | 'created' | 'lastUpdated' | 'zeroIsSignificant' | 'datasets' | 'programStages'>;
+type DataelementFormDefaults = Pick<NewDataelement, 'id' | 'created' | 'lastUpdated' | 'zeroIsSignificant' | 'dataSets' | 'programStages'>;
 
 type DataelementFormGroupContent = {
   id: FormControl<DataelementFormRawValue['id'] | NewDataelement['id']>;
@@ -55,7 +55,7 @@ type DataelementFormGroupContent = {
   lastUpdatedBy: FormControl<DataelementFormRawValue['lastUpdatedBy']>;
   categoryCombo: FormControl<DataelementFormRawValue['categoryCombo']>;
   optionSet: FormControl<DataelementFormRawValue['optionSet']>;
-  datasets: FormControl<DataelementFormRawValue['datasets']>;
+  dataSets: FormControl<DataelementFormRawValue['dataSets']>;
   programStages: FormControl<DataelementFormRawValue['programStages']>;
 };
 
@@ -70,11 +70,11 @@ export class DataelementFormService {
     });
     return new FormGroup<DataelementFormGroupContent>({
       id: new FormControl(
-        { value: dataelementRawValue.id, disabled: true },
+        { value: dataelementRawValue.id, disabled: dataelementRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       name: new FormControl(dataelementRawValue.name, {
         validators: [Validators.required],
@@ -123,7 +123,7 @@ export class DataelementFormService {
       }),
       categoryCombo: new FormControl(dataelementRawValue.categoryCombo),
       optionSet: new FormControl(dataelementRawValue.optionSet),
-      datasets: new FormControl(dataelementRawValue.datasets ?? []),
+      dataSets: new FormControl(dataelementRawValue.dataSets ?? []),
       programStages: new FormControl(dataelementRawValue.programStages ?? []),
     });
   }
@@ -137,8 +137,8 @@ export class DataelementFormService {
     form.reset(
       {
         ...dataelementRawValue,
-        id: { value: dataelementRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: dataelementRawValue.id, disabled: dataelementRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 
@@ -150,13 +150,13 @@ export class DataelementFormService {
       created: currentTime,
       lastUpdated: currentTime,
       zeroIsSignificant: false,
-      datasets: [],
+      dataSets: [],
       programStages: [],
     };
   }
 
   private convertDataelementRawValueToDataelement(
-    rawDataelement: DataelementFormRawValue | NewDataelementFormRawValue,
+    rawDataelement: DataelementFormRawValue | NewDataelementFormRawValue
   ): IDataelement | NewDataelement {
     return {
       ...rawDataelement,
@@ -166,13 +166,13 @@ export class DataelementFormService {
   }
 
   private convertDataelementToDataelementRawValue(
-    dataelement: IDataelement | (Partial<NewDataelement> & DataelementFormDefaults),
+    dataelement: IDataelement | (Partial<NewDataelement> & DataelementFormDefaults)
   ): DataelementFormRawValue | PartialWithRequiredKeyOf<NewDataelementFormRawValue> {
     return {
       ...dataelement,
       created: dataelement.created ? dataelement.created.format(DATE_TIME_FORMAT) : undefined,
       lastUpdated: dataelement.lastUpdated ? dataelement.lastUpdated.format(DATE_TIME_FORMAT) : undefined,
-      datasets: dataelement.datasets ?? [],
+      dataSets: dataelement.dataSets ?? [],
       programStages: dataelement.programStages ?? [],
     };
   }

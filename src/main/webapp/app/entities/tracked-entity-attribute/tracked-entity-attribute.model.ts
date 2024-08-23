@@ -30,12 +30,12 @@ export interface ITrackedEntityAttribute {
   dimensionItem?: string | null;
   inherit?: boolean | null;
   optionSetValue?: boolean | null;
-  track?: keyof typeof TypeTrack | null;
-  project?: IProject | null;
-  createdBy?: IDHISUser | null;
-  lastUpdatedBy?: IDHISUser | null;
-  optionSet?: IOptionset | null;
-  programs?: IProgram[] | null;
+  track?: TypeTrack | null;
+  project?: Pick<IProject, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'id'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  optionSet?: Pick<IOptionset, 'id'> | null;
+  programs?: Pick<IProgram, 'id'>[] | null;
 }
 
 export type NewTrackedEntityAttribute = Omit<ITrackedEntityAttribute, 'id'> & { id: null };

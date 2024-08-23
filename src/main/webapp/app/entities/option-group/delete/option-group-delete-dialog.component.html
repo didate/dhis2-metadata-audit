@@ -1,28 +1,28 @@
-@if (optionGroup) {
-  <form name="deleteForm" (ngSubmit)="confirmDelete(optionGroup.id!)">
-    <div class="modal-header">
-      <h4 class="modal-title" data-cy="optionGroupDeleteDialogHeading" jhiTranslate="entity.delete.title">Confirmation de suppression</h4>
-    </div>
+<form *ngIf="optionGroup" name="deleteForm" (ngSubmit)="confirmDelete(optionGroup.id!)">
+  <div class="modal-header">
+    <h4 class="modal-title" data-cy="optionGroupDeleteDialogHeading" jhiTranslate="entity.delete.title">Confirmation de suppression</h4>
 
-    <div class="modal-body">
-      <jhi-alert-error></jhi-alert-error>
-      <p
-        id="jhi-delete-optionGroup-heading"
-        jhiTranslate="dhis2AuditApp.optionGroup.delete.question"
-        [translateValues]="{ id: optionGroup.id }"
-      >
-        Êtes-vous certain de vouloir supprimer le Option Group {{ optionGroup.id }} ?
-      </p>
-    </div>
+    <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()">&times;</button>
+  </div>
 
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
-        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
-      </button>
+  <div class="modal-body">
+    <jhi-alert-error></jhi-alert-error>
+    <p
+      id="jhi-delete-optionGroup-heading"
+      jhiTranslate="dhis2TrackApp.optionGroup.delete.question"
+      [translateValues]="{ id: optionGroup.id }"
+    >
+      Êtes-vous certain de vouloir supprimer le Option Group {{ optionGroup.id }} ?
+    </p>
+  </div>
 
-      <button id="jhi-confirm-delete-optionGroup" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
-        <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Supprimer</span>
-      </button>
-    </div>
-  </form>
-}
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+      <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+    </button>
+
+    <button id="jhi-confirm-delete-optionGroup" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+      <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Supprimer</span>
+    </button>
+  </div>
+</form>

@@ -31,12 +31,8 @@ public class ProgramApiService {
         programs.addAll(programResponse.getPrograms());
 
         while (DhisServiceUtil.hasNextPage(programResponse.getPager())) {
-            programResponse = DhisServiceUtil.fetchPage(
-                client,
-                programResponse.getPager().getNextPage(),
-                ProgramResponse.class,
-                objectMapper
-            );
+            programResponse =
+                DhisServiceUtil.fetchPage(client, programResponse.getPager().getNextPage(), ProgramResponse.class, objectMapper);
             programs.addAll(programResponse.getPrograms());
         }
 

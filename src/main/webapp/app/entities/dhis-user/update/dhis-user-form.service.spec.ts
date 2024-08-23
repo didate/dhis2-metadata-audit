@@ -32,7 +32,7 @@ describe('DHISUser Form Service', () => {
             created: expect.any(Object),
             lastUpdated: expect.any(Object),
             track: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -54,13 +54,14 @@ describe('DHISUser Form Service', () => {
             created: expect.any(Object),
             lastUpdated: expect.any(Object),
             track: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getDHISUser', () => {
       it('should return NewDHISUser for default DHISUser initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createDHISUserFormGroup(sampleWithNewData);
 
         const dHISUser = service.getDHISUser(formGroup) as any;

@@ -1,13 +1,12 @@
 {
   "global": {
-    "title": "Dhis2Audit",
+    "title": "Dhis2track",
     "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
     "menu": {
       "home": "Accueil",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entités",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "project": "Project",
         "personNotifier": "Person Notifier",
         "indicatortype": "Indicatortype",
@@ -17,6 +16,7 @@
         "dataelement": "Dataelement",
         "indicator": "Indicator",
         "program": "Program",
+        "programStage": "Program Stage",
         "dataset": "Dataset",
         "programRule": "Program Rule",
         "programRuleAction": "Program Rule Action",
@@ -24,8 +24,8 @@
         "trackedEntityAttribute": "Tracked Entity Attribute",
         "optionGroup": "Option Group",
         "organisationUnit": "Organisation Unit",
-        "programStage": "Program Stage",
-        "programIndicator": "Program Indicator"
+        "programIndicator": "Program Indicator",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
         "main": "Compte",

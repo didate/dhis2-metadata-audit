@@ -1,23 +1,24 @@
 package com.didate.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.envers.Audited;
+import org.springframework.data.domain.Persistable;
 
 /**
  * A ProgramStage.
  */
+@JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "program_stage")
 @Audited
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ProgramStage implements Serializable {
+public class ProgramStage implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -103,6 +104,9 @@ public class ProgramStage implements Serializable {
     @Column(name = "program_stage_data_elements_content")
     private Integer programStageDataElementsContent;
 
+    @Transient
+    private boolean isPersisted;
+
     @ManyToOne(optional = false)
     @NotNull
     private DHISUser createdBy;
@@ -113,7 +117,6 @@ public class ProgramStage implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "programStages")
     @JsonIgnoreProperties(
         value = {
             "project",
@@ -129,21 +132,19 @@ public class ProgramStage implements Serializable {
     )
     private Program program;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
         name = "rel_program_stage__program_stage_data_elements",
         joinColumns = @JoinColumn(name = "program_stage_id"),
         inverseJoinColumns = @JoinColumn(name = "program_stage_data_elements_id")
     )
     @JsonIgnoreProperties(
-        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "datasets", "programStages" },
+        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "dataSets", "programStages" },
         allowSetters = true
     )
     private Set<Dataelement> programStageDataElements = new HashSet<>();
 
-    @ManyToOne(optional = false)
-    @NotNull
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "programStages")
+    @ManyToMany(mappedBy = "programStages")
     @JsonIgnoreProperties(
         value = {
             "project",
@@ -512,6 +513,23 @@ public class ProgramStage implements Serializable {
         this.programStageDataElementsContent = programStageDataElementsContent;
     }
 
+    @Transient
+    @Override
+    public boolean isNew() {
+        return !this.isPersisted;
+    }
+
+    public ProgramStage setIsPersisted() {
+        this.isPersisted = true;
+        return this;
+    }
+
+    @PostLoad
+    @PostPersist
+    public void updateEntityState() {
+        this.setIsPersisted();
+    }
+
     public DHISUser getCreatedBy() {
         return this.createdBy;
     }
@@ -566,11 +584,13 @@ public class ProgramStage implements Serializable {
 
     public ProgramStage addProgramStageDataElements(Dataelement dataelement) {
         this.programStageDataElements.add(dataelement);
+        dataelement.getProgramStages().add(this);
         return this;
     }
 
     public ProgramStage removeProgramStageDataElements(Dataelement dataelement) {
         this.programStageDataElements.remove(dataelement);
+        dataelement.getProgramStages().remove(this);
         return this;
     }
 
@@ -593,13 +613,13 @@ public class ProgramStage implements Serializable {
         return this;
     }
 
-    public ProgramStage addProgram(Program program) {
+    public ProgramStage addPrograms(Program program) {
         this.programs.add(program);
         program.getProgramStages().add(this);
         return this;
     }
 
-    public ProgramStage removeProgram(Program program) {
+    public ProgramStage removePrograms(Program program) {
         this.programs.remove(program);
         program.getProgramStages().remove(this);
         return this;
@@ -615,7 +635,7 @@ public class ProgramStage implements Serializable {
         if (!(o instanceof ProgramStage)) {
             return false;
         }
-        return getId() != null && getId().equals(((ProgramStage) o).getId());
+        return id != null && id.equals(((ProgramStage) o).id);
     }
 
     @Override

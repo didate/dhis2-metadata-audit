@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
@@ -27,10 +27,9 @@ export type EntityArrayResponseType = HttpResponse<IDataset[]>;
 
 @Injectable({ providedIn: 'root' })
 export class DatasetService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/datasets');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(dataset: NewDataset): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(dataset);
@@ -84,7 +83,7 @@ export class DatasetService {
   ): Type[] {
     const datasets: Type[] = datasetsToCheck.filter(isPresent);
     if (datasets.length > 0) {
-      const datasetCollectionIdentifiers = datasetCollection.map(datasetItem => this.getDatasetIdentifier(datasetItem));
+      const datasetCollectionIdentifiers = datasetCollection.map(datasetItem => this.getDatasetIdentifier(datasetItem)!);
       const datasetsToAdd = datasets.filter(datasetItem => {
         const datasetIdentifier = this.getDatasetIdentifier(datasetItem);
         if (datasetCollectionIdentifiers.includes(datasetIdentifier)) {

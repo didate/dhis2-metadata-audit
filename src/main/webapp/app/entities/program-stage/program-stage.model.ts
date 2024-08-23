@@ -31,11 +31,11 @@ export interface IProgramStage {
   repeatable?: boolean | null;
   programStageDataElementsCount?: number | null;
   programStageDataElementsContent?: number | null;
-  createdBy?: IDHISUser | null;
-  lastUpdatedBy?: IDHISUser | null;
-  program?: IProgram | null;
-  programStageDataElements?: IDataelement[] | null;
-  programs?: IProgram[] | null;
+  createdBy?: Pick<IDHISUser, 'id'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  program?: Pick<IProgram, 'id'> | null;
+  programStageDataElements?: Pick<IDataelement, 'id'>[] | null;
+  programs?: Pick<IProgram, 'id'>[] | null;
 }
 
 export type NewProgramStage = Omit<IProgramStage, 'id'> & { id: null };

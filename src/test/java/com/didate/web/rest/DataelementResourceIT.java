@@ -1,7 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.DataelementAsserts.*;
-import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -12,12 +10,11 @@ import com.didate.domain.DHISUser;
 import com.didate.domain.Dataelement;
 import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.DataelementRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,9 +90,6 @@ class DataelementResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private DataelementRepository dataelementRepository;
 
     @Autowired
@@ -105,8 +99,6 @@ class DataelementResourceIT {
     private MockMvc restDataelementMockMvc;
 
     private Dataelement dataelement;
-
-    private Dataelement insertedDataelement;
 
     /**
      * Create an entity for this test.
@@ -195,34 +187,37 @@ class DataelementResourceIT {
         dataelement = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedDataelement != null) {
-            dataelementRepository.delete(insertedDataelement);
-            insertedDataelement = null;
-        }
-    }
-
     @Test
     @Transactional
     void createDataelement() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = dataelementRepository.findAll().size();
         // Create the Dataelement
-        var returnedDataelement = om.readValue(
-            restDataelementMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            Dataelement.class
-        );
+        restDataelementMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
+            .andExpect(status().isCreated());
 
         // Validate the Dataelement in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertDataelementUpdatableFieldsEquals(returnedDataelement, getPersistedDataelement(returnedDataelement));
-
-        insertedDataelement = returnedDataelement;
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeCreate + 1);
+        Dataelement testDataelement = dataelementList.get(dataelementList.size() - 1);
+        assertThat(testDataelement.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testDataelement.getShortName()).isEqualTo(DEFAULT_SHORT_NAME);
+        assertThat(testDataelement.getFormName()).isEqualTo(DEFAULT_FORM_NAME);
+        assertThat(testDataelement.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testDataelement.getDisplayShortName()).isEqualTo(DEFAULT_DISPLAY_SHORT_NAME);
+        assertThat(testDataelement.getDisplayName()).isEqualTo(DEFAULT_DISPLAY_NAME);
+        assertThat(testDataelement.getDisplayFormName()).isEqualTo(DEFAULT_DISPLAY_FORM_NAME);
+        assertThat(testDataelement.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testDataelement.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testDataelement.getPublicAccess()).isEqualTo(DEFAULT_PUBLIC_ACCESS);
+        assertThat(testDataelement.getDimensionItemType()).isEqualTo(DEFAULT_DIMENSION_ITEM_TYPE);
+        assertThat(testDataelement.getAggregationType()).isEqualTo(DEFAULT_AGGREGATION_TYPE);
+        assertThat(testDataelement.getValueType()).isEqualTo(DEFAULT_VALUE_TYPE);
+        assertThat(testDataelement.getDomainType()).isEqualTo(DEFAULT_DOMAIN_TYPE);
+        assertThat(testDataelement.getZeroIsSignificant()).isEqualTo(DEFAULT_ZERO_IS_SIGNIFICANT);
+        assertThat(testDataelement.getOptionSetValue()).isEqualTo(DEFAULT_OPTION_SET_VALUE);
+        assertThat(testDataelement.getDimensionItem()).isEqualTo(DEFAULT_DIMENSION_ITEM);
+        assertThat(testDataelement.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
@@ -231,182 +226,194 @@ class DataelementResourceIT {
         // Create the Dataelement with an existing ID
         dataelement.setId("existing_id");
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = dataelementRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restDataelementMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
         // Validate the Dataelement in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void checkNameIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = dataelementRepository.findAll().size();
         // set the field null
         dataelement.setName(null);
 
         // Create the Dataelement, which fails.
 
         restDataelementMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkShortNameIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = dataelementRepository.findAll().size();
         // set the field null
         dataelement.setShortName(null);
 
         // Create the Dataelement, which fails.
 
         restDataelementMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkCreatedIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = dataelementRepository.findAll().size();
         // set the field null
         dataelement.setCreated(null);
 
         // Create the Dataelement, which fails.
 
         restDataelementMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkLastUpdatedIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = dataelementRepository.findAll().size();
         // set the field null
         dataelement.setLastUpdated(null);
 
         // Create the Dataelement, which fails.
 
         restDataelementMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkPublicAccessIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = dataelementRepository.findAll().size();
         // set the field null
         dataelement.setPublicAccess(null);
 
         // Create the Dataelement, which fails.
 
         restDataelementMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkDimensionItemTypeIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = dataelementRepository.findAll().size();
         // set the field null
         dataelement.setDimensionItemType(null);
 
         // Create the Dataelement, which fails.
 
         restDataelementMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkAggregationTypeIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = dataelementRepository.findAll().size();
         // set the field null
         dataelement.setAggregationType(null);
 
         // Create the Dataelement, which fails.
 
         restDataelementMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkValueTypeIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = dataelementRepository.findAll().size();
         // set the field null
         dataelement.setValueType(null);
 
         // Create the Dataelement, which fails.
 
         restDataelementMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkDomainTypeIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = dataelementRepository.findAll().size();
         // set the field null
         dataelement.setDomainType(null);
 
         // Create the Dataelement, which fails.
 
         restDataelementMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkTrackIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = dataelementRepository.findAll().size();
         // set the field null
         dataelement.setTrack(null);
 
         // Create the Dataelement, which fails.
 
         restDataelementMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void getAllDataelements() throws Exception {
         // Initialize the database
-        insertedDataelement = dataelementRepository.saveAndFlush(dataelement);
+        dataelement.setId(UUID.randomUUID().toString());
+        dataelementRepository.saveAndFlush(dataelement);
 
         // Get all the dataelementList
         restDataelementMockMvc
@@ -438,7 +445,8 @@ class DataelementResourceIT {
     @Transactional
     void getDataelement() throws Exception {
         // Initialize the database
-        insertedDataelement = dataelementRepository.saveAndFlush(dataelement);
+        dataelement.setId(UUID.randomUUID().toString());
+        dataelementRepository.saveAndFlush(dataelement);
 
         // Get the dataelement
         restDataelementMockMvc
@@ -477,12 +485,13 @@ class DataelementResourceIT {
     @Transactional
     void putExistingDataelement() throws Exception {
         // Initialize the database
-        insertedDataelement = dataelementRepository.saveAndFlush(dataelement);
+        dataelement.setId(UUID.randomUUID().toString());
+        dataelementRepository.saveAndFlush(dataelement);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dataelementRepository.findAll().size();
 
         // Update the dataelement
-        Dataelement updatedDataelement = dataelementRepository.findById(dataelement.getId()).orElseThrow();
+        Dataelement updatedDataelement = dataelementRepository.findById(dataelement.getId()).get();
         // Disconnect from session so that the updates on updatedDataelement are not directly saved in db
         em.detach(updatedDataelement);
         updatedDataelement
@@ -509,19 +518,38 @@ class DataelementResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, updatedDataelement.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedDataelement))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedDataelement))
             )
             .andExpect(status().isOk());
 
         // Validate the Dataelement in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedDataelementToMatchAllProperties(updatedDataelement);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
+        Dataelement testDataelement = dataelementList.get(dataelementList.size() - 1);
+        assertThat(testDataelement.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDataelement.getShortName()).isEqualTo(UPDATED_SHORT_NAME);
+        assertThat(testDataelement.getFormName()).isEqualTo(UPDATED_FORM_NAME);
+        assertThat(testDataelement.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testDataelement.getDisplayShortName()).isEqualTo(UPDATED_DISPLAY_SHORT_NAME);
+        assertThat(testDataelement.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testDataelement.getDisplayFormName()).isEqualTo(UPDATED_DISPLAY_FORM_NAME);
+        assertThat(testDataelement.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testDataelement.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testDataelement.getPublicAccess()).isEqualTo(UPDATED_PUBLIC_ACCESS);
+        assertThat(testDataelement.getDimensionItemType()).isEqualTo(UPDATED_DIMENSION_ITEM_TYPE);
+        assertThat(testDataelement.getAggregationType()).isEqualTo(UPDATED_AGGREGATION_TYPE);
+        assertThat(testDataelement.getValueType()).isEqualTo(UPDATED_VALUE_TYPE);
+        assertThat(testDataelement.getDomainType()).isEqualTo(UPDATED_DOMAIN_TYPE);
+        assertThat(testDataelement.getZeroIsSignificant()).isEqualTo(UPDATED_ZERO_IS_SIGNIFICANT);
+        assertThat(testDataelement.getOptionSetValue()).isEqualTo(UPDATED_OPTION_SET_VALUE);
+        assertThat(testDataelement.getDimensionItem()).isEqualTo(UPDATED_DIMENSION_ITEM);
+        assertThat(testDataelement.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void putNonExistingDataelement() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dataelementRepository.findAll().size();
         dataelement.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -529,18 +557,19 @@ class DataelementResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, dataelement.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(dataelement))
+                    .content(TestUtil.convertObjectToJsonBytes(dataelement))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Dataelement in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchDataelement() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dataelementRepository.findAll().size();
         dataelement.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -548,36 +577,39 @@ class DataelementResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(dataelement))
+                    .content(TestUtil.convertObjectToJsonBytes(dataelement))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Dataelement in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamDataelement() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dataelementRepository.findAll().size();
         dataelement.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restDataelementMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dataelement)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Dataelement in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void partialUpdateDataelementWithPatch() throws Exception {
         // Initialize the database
-        insertedDataelement = dataelementRepository.saveAndFlush(dataelement);
+        dataelement.setId(UUID.randomUUID().toString());
+        dataelementRepository.saveAndFlush(dataelement);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dataelementRepository.findAll().size();
 
         // Update the dataelement using partial update
         Dataelement partialUpdatedDataelement = new Dataelement();
@@ -585,37 +617,53 @@ class DataelementResourceIT {
 
         partialUpdatedDataelement
             .name(UPDATED_NAME)
-            .shortName(UPDATED_SHORT_NAME)
-            .formName(UPDATED_FORM_NAME)
-            .displayName(UPDATED_DISPLAY_NAME)
-            .created(UPDATED_CREATED)
-            .publicAccess(UPDATED_PUBLIC_ACCESS)
-            .optionSetValue(UPDATED_OPTION_SET_VALUE);
+            .displayFormName(UPDATED_DISPLAY_FORM_NAME)
+            .dimensionItemType(UPDATED_DIMENSION_ITEM_TYPE)
+            .aggregationType(UPDATED_AGGREGATION_TYPE)
+            .valueType(UPDATED_VALUE_TYPE)
+            .domainType(UPDATED_DOMAIN_TYPE)
+            .zeroIsSignificant(UPDATED_ZERO_IS_SIGNIFICANT);
 
         restDataelementMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDataelement.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedDataelement))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedDataelement))
             )
             .andExpect(status().isOk());
 
         // Validate the Dataelement in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertDataelementUpdatableFieldsEquals(
-            createUpdateProxyForBean(partialUpdatedDataelement, dataelement),
-            getPersistedDataelement(dataelement)
-        );
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
+        Dataelement testDataelement = dataelementList.get(dataelementList.size() - 1);
+        assertThat(testDataelement.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDataelement.getShortName()).isEqualTo(DEFAULT_SHORT_NAME);
+        assertThat(testDataelement.getFormName()).isEqualTo(DEFAULT_FORM_NAME);
+        assertThat(testDataelement.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testDataelement.getDisplayShortName()).isEqualTo(DEFAULT_DISPLAY_SHORT_NAME);
+        assertThat(testDataelement.getDisplayName()).isEqualTo(DEFAULT_DISPLAY_NAME);
+        assertThat(testDataelement.getDisplayFormName()).isEqualTo(UPDATED_DISPLAY_FORM_NAME);
+        assertThat(testDataelement.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testDataelement.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testDataelement.getPublicAccess()).isEqualTo(DEFAULT_PUBLIC_ACCESS);
+        assertThat(testDataelement.getDimensionItemType()).isEqualTo(UPDATED_DIMENSION_ITEM_TYPE);
+        assertThat(testDataelement.getAggregationType()).isEqualTo(UPDATED_AGGREGATION_TYPE);
+        assertThat(testDataelement.getValueType()).isEqualTo(UPDATED_VALUE_TYPE);
+        assertThat(testDataelement.getDomainType()).isEqualTo(UPDATED_DOMAIN_TYPE);
+        assertThat(testDataelement.getZeroIsSignificant()).isEqualTo(UPDATED_ZERO_IS_SIGNIFICANT);
+        assertThat(testDataelement.getOptionSetValue()).isEqualTo(DEFAULT_OPTION_SET_VALUE);
+        assertThat(testDataelement.getDimensionItem()).isEqualTo(DEFAULT_DIMENSION_ITEM);
+        assertThat(testDataelement.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
     @Transactional
     void fullUpdateDataelementWithPatch() throws Exception {
         // Initialize the database
-        insertedDataelement = dataelementRepository.saveAndFlush(dataelement);
+        dataelement.setId(UUID.randomUUID().toString());
+        dataelementRepository.saveAndFlush(dataelement);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dataelementRepository.findAll().size();
 
         // Update the dataelement using partial update
         Dataelement partialUpdatedDataelement = new Dataelement();
@@ -645,20 +693,38 @@ class DataelementResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDataelement.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedDataelement))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedDataelement))
             )
             .andExpect(status().isOk());
 
         // Validate the Dataelement in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertDataelementUpdatableFieldsEquals(partialUpdatedDataelement, getPersistedDataelement(partialUpdatedDataelement));
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
+        Dataelement testDataelement = dataelementList.get(dataelementList.size() - 1);
+        assertThat(testDataelement.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testDataelement.getShortName()).isEqualTo(UPDATED_SHORT_NAME);
+        assertThat(testDataelement.getFormName()).isEqualTo(UPDATED_FORM_NAME);
+        assertThat(testDataelement.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testDataelement.getDisplayShortName()).isEqualTo(UPDATED_DISPLAY_SHORT_NAME);
+        assertThat(testDataelement.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testDataelement.getDisplayFormName()).isEqualTo(UPDATED_DISPLAY_FORM_NAME);
+        assertThat(testDataelement.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testDataelement.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testDataelement.getPublicAccess()).isEqualTo(UPDATED_PUBLIC_ACCESS);
+        assertThat(testDataelement.getDimensionItemType()).isEqualTo(UPDATED_DIMENSION_ITEM_TYPE);
+        assertThat(testDataelement.getAggregationType()).isEqualTo(UPDATED_AGGREGATION_TYPE);
+        assertThat(testDataelement.getValueType()).isEqualTo(UPDATED_VALUE_TYPE);
+        assertThat(testDataelement.getDomainType()).isEqualTo(UPDATED_DOMAIN_TYPE);
+        assertThat(testDataelement.getZeroIsSignificant()).isEqualTo(UPDATED_ZERO_IS_SIGNIFICANT);
+        assertThat(testDataelement.getOptionSetValue()).isEqualTo(UPDATED_OPTION_SET_VALUE);
+        assertThat(testDataelement.getDimensionItem()).isEqualTo(UPDATED_DIMENSION_ITEM);
+        assertThat(testDataelement.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void patchNonExistingDataelement() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dataelementRepository.findAll().size();
         dataelement.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -666,18 +732,19 @@ class DataelementResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, dataelement.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(dataelement))
+                    .content(TestUtil.convertObjectToJsonBytes(dataelement))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Dataelement in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchDataelement() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dataelementRepository.findAll().size();
         dataelement.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -685,36 +752,41 @@ class DataelementResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(dataelement))
+                    .content(TestUtil.convertObjectToJsonBytes(dataelement))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Dataelement in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamDataelement() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = dataelementRepository.findAll().size();
         dataelement.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restDataelementMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(dataelement)))
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(dataelement))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Dataelement in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void deleteDataelement() throws Exception {
         // Initialize the database
-        insertedDataelement = dataelementRepository.saveAndFlush(dataelement);
+        dataelement.setId(UUID.randomUUID().toString());
+        dataelementRepository.saveAndFlush(dataelement);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = dataelementRepository.findAll().size();
 
         // Delete the dataelement
         restDataelementMockMvc
@@ -722,34 +794,7 @@ class DataelementResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return dataelementRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected Dataelement getPersistedDataelement(Dataelement dataelement) {
-        return dataelementRepository.findById(dataelement.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedDataelementToMatchAllProperties(Dataelement expectedDataelement) {
-        assertDataelementAllPropertiesEquals(expectedDataelement, getPersistedDataelement(expectedDataelement));
-    }
-
-    protected void assertPersistedDataelementToMatchUpdatableProperties(Dataelement expectedDataelement) {
-        assertDataelementAllUpdatablePropertiesEquals(expectedDataelement, getPersistedDataelement(expectedDataelement));
+        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        assertThat(dataelementList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

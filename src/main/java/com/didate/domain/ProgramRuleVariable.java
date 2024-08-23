@@ -2,21 +2,23 @@ package com.didate.domain;
 
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.springframework.data.domain.Persistable;
 
 /**
  * A ProgramRuleVariable.
  */
+@JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "program_rule_variable")
 @Audited
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ProgramRuleVariable implements Serializable {
+public class ProgramRuleVariable implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,12 +48,16 @@ public class ProgramRuleVariable implements Serializable {
     @Column(name = "use_code_for_option_set")
     private Boolean useCodeForOptionSet;
 
+    @NotAudited
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "track", nullable = false)
     private TypeTrack track;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Transient
+    private boolean isPersisted;
+
+    @ManyToOne
     private Project project;
 
     @ManyToOne(optional = false)
@@ -79,13 +85,13 @@ public class ProgramRuleVariable implements Serializable {
     )
     private Program program;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "optionSet", "programs" }, allowSetters = true)
     private TrackedEntityAttribute trackedEntityAttribute;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnoreProperties(
-        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "datasets", "programStages" },
+        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "dataSets", "programStages" },
         allowSetters = true
     )
     private Dataelement dataElement;
@@ -196,6 +202,23 @@ public class ProgramRuleVariable implements Serializable {
         this.track = track;
     }
 
+    @Transient
+    @Override
+    public boolean isNew() {
+        return !this.isPersisted;
+    }
+
+    public ProgramRuleVariable setIsPersisted() {
+        this.isPersisted = true;
+        return this;
+    }
+
+    @PostLoad
+    @PostPersist
+    public void updateEntityState() {
+        this.setIsPersisted();
+    }
+
     public Project getProject() {
         return this.project;
     }
@@ -284,7 +307,7 @@ public class ProgramRuleVariable implements Serializable {
         if (!(o instanceof ProgramRuleVariable)) {
             return false;
         }
-        return getId() != null && getId().equals(((ProgramRuleVariable) o).getId());
+        return id != null && id.equals(((ProgramRuleVariable) o).id);
     }
 
     @Override

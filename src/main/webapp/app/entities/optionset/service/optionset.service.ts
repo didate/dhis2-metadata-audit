@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -14,10 +14,9 @@ export type EntityArrayResponseType = HttpResponse<IOptionset[]>;
 
 @Injectable({ providedIn: 'root' })
 export class OptionsetService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/optionsets');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(optionset: NewOptionset): Observable<EntityResponseType> {
     return this.http.post<IOptionset>(this.resourceUrl, optionset, { observe: 'response' });
@@ -58,7 +57,7 @@ export class OptionsetService {
   ): Type[] {
     const optionsets: Type[] = optionsetsToCheck.filter(isPresent);
     if (optionsets.length > 0) {
-      const optionsetCollectionIdentifiers = optionsetCollection.map(optionsetItem => this.getOptionsetIdentifier(optionsetItem));
+      const optionsetCollectionIdentifiers = optionsetCollection.map(optionsetItem => this.getOptionsetIdentifier(optionsetItem)!);
       const optionsetsToAdd = optionsets.filter(optionsetItem => {
         const optionsetIdentifier = this.getOptionsetIdentifier(optionsetItem);
         if (optionsetCollectionIdentifiers.includes(optionsetIdentifier)) {

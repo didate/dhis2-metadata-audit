@@ -1,30 +1,23 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { IndicatorFormService, IndicatorFormGroup } from './indicator-form.service';
+import { IIndicator } from '../indicator.model';
+import { IndicatorService } from '../service/indicator.service';
 import { IProject } from 'app/entities/project/project.model';
 import { ProjectService } from 'app/entities/project/service/project.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { DHISUserService } from 'app/entities/dhis-user/service/dhis-user.service';
 import { IIndicatortype } from 'app/entities/indicatortype/indicatortype.model';
 import { IndicatortypeService } from 'app/entities/indicatortype/service/indicatortype.service';
-import { IDataset } from 'app/entities/dataset/dataset.model';
-import { DatasetService } from 'app/entities/dataset/service/dataset.service';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
-import { IndicatorService } from '../service/indicator.service';
-import { IIndicator } from '../indicator.model';
-import { IndicatorFormService, IndicatorFormGroup } from './indicator-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-indicator-update',
   templateUrl: './indicator-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class IndicatorUpdateComponent implements OnInit {
   isSaving = false;
@@ -34,18 +27,17 @@ export class IndicatorUpdateComponent implements OnInit {
   projectsSharedCollection: IProject[] = [];
   dHISUsersSharedCollection: IDHISUser[] = [];
   indicatortypesSharedCollection: IIndicatortype[] = [];
-  datasetsSharedCollection: IDataset[] = [];
 
-  protected indicatorService = inject(IndicatorService);
-  protected indicatorFormService = inject(IndicatorFormService);
-  protected projectService = inject(ProjectService);
-  protected dHISUserService = inject(DHISUserService);
-  protected indicatortypeService = inject(IndicatortypeService);
-  protected datasetService = inject(DatasetService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: IndicatorFormGroup = this.indicatorFormService.createIndicatorFormGroup();
+
+  constructor(
+    protected indicatorService: IndicatorService,
+    protected indicatorFormService: IndicatorFormService,
+    protected projectService: ProjectService,
+    protected dHISUserService: DHISUserService,
+    protected indicatortypeService: IndicatortypeService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   compareProject = (o1: IProject | null, o2: IProject | null): boolean => this.projectService.compareProject(o1, o2);
 
@@ -53,8 +45,6 @@ export class IndicatorUpdateComponent implements OnInit {
 
   compareIndicatortype = (o1: IIndicatortype | null, o2: IIndicatortype | null): boolean =>
     this.indicatortypeService.compareIndicatortype(o1, o2);
-
-  compareDataset = (o1: IDataset | null, o2: IDataset | null): boolean => this.datasetService.compareDataset(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ indicator }) => {
@@ -106,20 +96,16 @@ export class IndicatorUpdateComponent implements OnInit {
 
     this.projectsSharedCollection = this.projectService.addProjectToCollectionIfMissing<IProject>(
       this.projectsSharedCollection,
-      indicator.project,
+      indicator.project
     );
     this.dHISUsersSharedCollection = this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
       this.dHISUsersSharedCollection,
       indicator.createdBy,
-      indicator.lastUpdatedBy,
+      indicator.lastUpdatedBy
     );
     this.indicatortypesSharedCollection = this.indicatortypeService.addIndicatortypeToCollectionIfMissing<IIndicatortype>(
       this.indicatortypesSharedCollection,
-      indicator.indicatorType,
-    );
-    this.datasetsSharedCollection = this.datasetService.addDatasetToCollectionIfMissing<IDataset>(
-      this.datasetsSharedCollection,
-      ...(indicator.datasets ?? []),
+      indicator.indicatorType
     );
   }
 
@@ -138,9 +124,9 @@ export class IndicatorUpdateComponent implements OnInit {
           this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
             dHISUsers,
             this.indicator?.createdBy,
-            this.indicator?.lastUpdatedBy,
-          ),
-        ),
+            this.indicator?.lastUpdatedBy
+          )
+        )
       )
       .subscribe((dHISUsers: IDHISUser[]) => (this.dHISUsersSharedCollection = dHISUsers));
 
@@ -149,19 +135,9 @@ export class IndicatorUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IIndicatortype[]>) => res.body ?? []))
       .pipe(
         map((indicatortypes: IIndicatortype[]) =>
-          this.indicatortypeService.addIndicatortypeToCollectionIfMissing<IIndicatortype>(indicatortypes, this.indicator?.indicatorType),
-        ),
+          this.indicatortypeService.addIndicatortypeToCollectionIfMissing<IIndicatortype>(indicatortypes, this.indicator?.indicatorType)
+        )
       )
       .subscribe((indicatortypes: IIndicatortype[]) => (this.indicatortypesSharedCollection = indicatortypes));
-
-    this.datasetService
-      .query()
-      .pipe(map((res: HttpResponse<IDataset[]>) => res.body ?? []))
-      .pipe(
-        map((datasets: IDataset[]) =>
-          this.datasetService.addDatasetToCollectionIfMissing<IDataset>(datasets, ...(this.indicator?.datasets ?? [])),
-        ),
-      )
-      .subscribe((datasets: IDataset[]) => (this.datasetsSharedCollection = datasets));
   }
 }

@@ -60,11 +60,11 @@ export class ProgramRuleActionFormService {
     });
     return new FormGroup<ProgramRuleActionFormGroupContent>({
       id: new FormControl(
-        { value: programRuleActionRawValue.id, disabled: true },
+        { value: programRuleActionRawValue.id, disabled: programRuleActionRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       lastUpdated: new FormControl(programRuleActionRawValue.lastUpdated),
       created: new FormControl(programRuleActionRawValue.created),
@@ -95,7 +95,7 @@ export class ProgramRuleActionFormService {
 
   getProgramRuleAction(form: ProgramRuleActionFormGroup): IProgramRuleAction | NewProgramRuleAction {
     return this.convertProgramRuleActionRawValueToProgramRuleAction(
-      form.getRawValue() as ProgramRuleActionFormRawValue | NewProgramRuleActionFormRawValue,
+      form.getRawValue() as ProgramRuleActionFormRawValue | NewProgramRuleActionFormRawValue
     );
   }
 
@@ -107,8 +107,8 @@ export class ProgramRuleActionFormService {
     form.reset(
       {
         ...programRuleActionRawValue,
-        id: { value: programRuleActionRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: programRuleActionRawValue.id, disabled: programRuleActionRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 
@@ -122,7 +122,7 @@ export class ProgramRuleActionFormService {
   }
 
   private convertProgramRuleActionRawValueToProgramRuleAction(
-    rawProgramRuleAction: ProgramRuleActionFormRawValue | NewProgramRuleActionFormRawValue,
+    rawProgramRuleAction: ProgramRuleActionFormRawValue | NewProgramRuleActionFormRawValue
   ): IProgramRuleAction | NewProgramRuleAction {
     return {
       ...rawProgramRuleAction,
@@ -131,7 +131,7 @@ export class ProgramRuleActionFormService {
   }
 
   private convertProgramRuleActionToProgramRuleActionRawValue(
-    programRuleAction: IProgramRuleAction | (Partial<NewProgramRuleAction> & ProgramRuleActionFormDefaults),
+    programRuleAction: IProgramRuleAction | (Partial<NewProgramRuleAction> & ProgramRuleActionFormDefaults)
   ): ProgramRuleActionFormRawValue | PartialWithRequiredKeyOf<NewProgramRuleActionFormRawValue> {
     return {
       ...programRuleAction,

@@ -1,36 +1,38 @@
 import dayjs from 'dayjs/esm';
 
+import { TypeTrack } from 'app/entities/enumerations/type-track.model';
+
 import { IProgramRuleAction, NewProgramRuleAction } from './program-rule-action.model';
 
 export const sampleWithRequiredData: IProgramRuleAction = {
-  id: '62b49497-6af4-40d0-9f80-0d8dc546ecdd',
-  track: 'NONE',
+  id: 'ff38c5aa-d470-4392-947f-7159c3681b59',
+  track: TypeTrack['NEW'],
 };
 
 export const sampleWithPartialData: IProgramRuleAction = {
-  id: 'd2637f3f-6f1f-4a05-8a41-6bee6d415c7b',
-  created: 'rectorat jusqu’à ce que',
-  evaluationTime: 'pressentir super sédentaire',
-  data: 'secouriste vaste là-haut',
-  templateUid: 'durant',
-  track: 'UPDATE',
+  id: 'c2945dbb-ed90-4c0e-b9bf-6ae1e07127d7',
+  programRuleActionType: 'Ghana',
+  data: 'Nicaragua',
+  templateUid: 'Bike infrastructure',
+  content: 'Ukraine Horizontal',
+  track: TypeTrack['NONE'],
 };
 
 export const sampleWithFullData: IProgramRuleAction = {
-  id: '48d4eba4-f99a-4bfc-a0c1-cabe2051c8b1',
-  lastUpdated: dayjs('2024-08-22T10:49'),
-  created: 'pourvu que chef de cuisine fort',
-  programRuleActionType: 'badaboum',
-  evaluationTime: 'quand en outre de',
-  data: 'repérer puisque',
-  templateUid: 'coin-coin après un peu',
-  content: 'en guise de chef autour de',
-  displayContent: 'sans que',
-  track: 'UPDATE',
+  id: 'e0e4d3c2-775a-4403-860b-20d780226034',
+  lastUpdated: dayjs('2024-08-23T11:48'),
+  created: 'Buckinghamshire Open-architected Outdoors',
+  programRuleActionType: 'Palladium',
+  evaluationTime: 'Soap Centre a',
+  data: 'Sum',
+  templateUid: 'b solid',
+  content: 'Directeur',
+  displayContent: 'seamless',
+  track: TypeTrack['NONE'],
 };
 
 export const sampleWithNewData: NewProgramRuleAction = {
-  track: 'NONE',
+  track: TypeTrack['NEW'],
   id: null,
 };
 

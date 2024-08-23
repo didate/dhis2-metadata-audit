@@ -1,284 +1,262 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    @if (program()) {
-      <div>
-        <h2 data-cy="programDetailsHeading"><span jhiTranslate="dhis2AuditApp.program.detail.title">Program</span></h2>
+    <div *ngIf="program">
+      <h2 data-cy="programDetailsHeading"><span jhiTranslate="dhis2TrackApp.program.detail.title">Program</span></h2>
 
-        <hr />
+      <hr />
 
-        <jhi-alert-error></jhi-alert-error>
+      <jhi-alert-error></jhi-alert-error>
 
-        <jhi-alert></jhi-alert>
+      <jhi-alert></jhi-alert>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="dhis2AuditApp.program.id">Id</span></dt>
-          <dd>
-            <span>{{ program()!.id }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.name">Name</span></dt>
-          <dd>
-            <span>{{ program()!.name }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.created">Created</span></dt>
-          <dd>
-            <span>{{ program()!.created }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.lastUpdated">Last Updated</span></dt>
-          <dd>
-            <span>{{ program()!.lastUpdated }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.shortName">Short Name</span></dt>
-          <dd>
-            <span>{{ program()!.shortName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.description">Description</span></dt>
-          <dd>
-            <span>{{ program()!.description }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.version">Version</span></dt>
-          <dd>
-            <span>{{ program()!.version }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.enrollmentDateLabel">Enrollment Date Label</span></dt>
-          <dd>
-            <span>{{ program()!.enrollmentDateLabel }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.incidentDateLabel">Incident Date Label</span></dt>
-          <dd>
-            <span>{{ program()!.incidentDateLabel }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.programType">Program Type</span></dt>
-          <dd>
-            <span>{{ program()!.programType }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.displayIncidentDate">Display Incident Date</span></dt>
-          <dd>
-            <span>{{ program()!.displayIncidentDate }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.ignoreOverdueEvents">Ignore Overdue Events</span></dt>
-          <dd>
-            <span>{{ program()!.ignoreOverdueEvents }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.userRoles">User Roles</span></dt>
-          <dd>
-            <span>{{ program()!.userRoles }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.onlyEnrollOnce">Only Enroll Once</span></dt>
-          <dd>
-            <span>{{ program()!.onlyEnrollOnce }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.notificationTemplates">Notification Templates</span></dt>
-          <dd>
-            <span>{{ program()!.notificationTemplates }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.selectEnrollmentDatesInFuture">Select Enrollment Dates In Future</span></dt>
-          <dd>
-            <span>{{ program()!.selectEnrollmentDatesInFuture }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.selectIncidentDatesInFuture">Select Incident Dates In Future</span></dt>
-          <dd>
-            <span>{{ program()!.selectIncidentDatesInFuture }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.trackedEntityType">Tracked Entity Type</span></dt>
-          <dd>
-            <span>{{ program()!.trackedEntityType }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.style">Style</span></dt>
-          <dd>
-            <span>{{ program()!.style }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.skipOffline">Skip Offline</span></dt>
-          <dd>
-            <span>{{ program()!.skipOffline }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.displayFrontPageList">Display Front Page List</span></dt>
-          <dd>
-            <span>{{ program()!.displayFrontPageList }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.useFirstStageDuringRegistration">Use First Stage During Registration</span></dt>
-          <dd>
-            <span>{{ program()!.useFirstStageDuringRegistration }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.expiryDays">Expiry Days</span></dt>
-          <dd>
-            <span>{{ program()!.expiryDays }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.completeEventsExpiryDays">Complete Events Expiry Days</span></dt>
-          <dd>
-            <span>{{ program()!.completeEventsExpiryDays }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.openDaysAfterCoEndDate">Open Days After Co End Date</span></dt>
-          <dd>
-            <span>{{ program()!.openDaysAfterCoEndDate }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.minAttributesRequiredToSearch">Min Attributes Required To Search</span></dt>
-          <dd>
-            <span>{{ program()!.minAttributesRequiredToSearch }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.maxTeiCountToReturn">Max Tei Count To Return</span></dt>
-          <dd>
-            <span>{{ program()!.maxTeiCountToReturn }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.accessLevel">Access Level</span></dt>
-          <dd>
-            <span>{{ program()!.accessLevel }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.displayEnrollmentDateLabel">Display Enrollment Date Label</span></dt>
-          <dd>
-            <span>{{ program()!.displayEnrollmentDateLabel }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.displayIncidentDateLabel">Display Incident Date Label</span></dt>
-          <dd>
-            <span>{{ program()!.displayIncidentDateLabel }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.registration">Registration</span></dt>
-          <dd>
-            <span>{{ program()!.registration }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.withoutRegistration">Without Registration</span></dt>
-          <dd>
-            <span>{{ program()!.withoutRegistration }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.displayShortName">Display Short Name</span></dt>
-          <dd>
-            <span>{{ program()!.displayShortName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.displayDescription">Display Description</span></dt>
-          <dd>
-            <span>{{ program()!.displayDescription }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.displayFormName">Display Form Name</span></dt>
-          <dd>
-            <span>{{ program()!.displayFormName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.displayName">Display Name</span></dt>
-          <dd>
-            <span>{{ program()!.displayName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.organisationUnitsCount">Organisation Units Count</span></dt>
-          <dd>
-            <span>{{ program()!.organisationUnitsCount }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.programStagesCount">Program Stages Count</span></dt>
-          <dd>
-            <span>{{ program()!.programStagesCount }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.programIndicatorsCount">Program Indicators Count</span></dt>
-          <dd>
-            <span>{{ program()!.programIndicatorsCount }}</span>
-          </dd>
-          <dt>
-            <span jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributesCount">Program Tracked Entity Attributes Count</span>
-          </dt>
-          <dd>
-            <span>{{ program()!.programTrackedEntityAttributesCount }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.organisationUnitsContent">Organisation Units Content</span></dt>
-          <dd>
-            <span>{{ program()!.organisationUnitsContent }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.programStagesContent">Program Stages Content</span></dt>
-          <dd>
-            <span>{{ program()!.programStagesContent }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.programIndicatorsContent">Program Indicators Content</span></dt>
-          <dd>
-            <span>{{ program()!.programIndicatorsContent }}</span>
-          </dd>
-          <dt>
-            <span jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributesContent"
-              >Program Tracked Entity Attributes Content</span
-            >
-          </dt>
-          <dd>
-            <span>{{ program()!.programTrackedEntityAttributesContent }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.track">Track</span></dt>
-          <dd>
-            <span [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (program()!.track ?? 'null')">{{
-              { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[program()!.track ?? 'null']
-            }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.project">Project</span></dt>
-          <dd>
-            @if (program()!.project) {
-              <div>
-                <a [routerLink]="['/project', program()!.project?.id, 'view']">{{ program()!.project?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.createdBy">Created By</span></dt>
-          <dd>
-            @if (program()!.createdBy) {
-              <div>
-                <a [routerLink]="['/dhis-user', program()!.createdBy?.id, 'view']">{{ program()!.createdBy?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.lastUpdatedBy">Last Updated By</span></dt>
-          <dd>
-            @if (program()!.lastUpdatedBy) {
-              <div>
-                <a [routerLink]="['/dhis-user', program()!.lastUpdatedBy?.id, 'view']">{{ program()!.lastUpdatedBy?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.categoryCombo">Category Combo</span></dt>
-          <dd>
-            @if (program()!.categoryCombo) {
-              <div>
-                <a [routerLink]="['/categorycombo', program()!.categoryCombo?.id, 'view']">{{ program()!.categoryCombo?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.programTrackedEntityAttributes">Program Tracked Entity Attributes</span></dt>
-          <dd>
-            @for (programTrackedEntityAttributes of program()!.programTrackedEntityAttributes; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/tracked-entity-attribute', programTrackedEntityAttributes.id, 'view']">{{
-                  programTrackedEntityAttributes?.id
-                }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.organisationUnits">Organisation Units</span></dt>
-          <dd>
-            @for (organisationUnits of program()!.organisationUnits; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/organisation-unit', organisationUnits.id, 'view']">{{ organisationUnits?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.programIndicators">Program Indicators</span></dt>
-          <dd>
-            @for (programIndicators of program()!.programIndicators; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/program-indicator', programIndicators.id, 'view']">{{ programIndicators?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.program.programStage">Program Stage</span></dt>
-          <dd>
-            @for (programStage of program()!.programStages; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/program-stage', programStage.id, 'view']">{{ programStage?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
-          </dd>
-        </dl>
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="dhis2TrackApp.program.id">Id</span></dt>
+        <dd>
+          <span>{{ program.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.name">Name</span></dt>
+        <dd>
+          <span>{{ program.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.created">Created</span></dt>
+        <dd>
+          <span>{{ program.created }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.lastUpdated">Last Updated</span></dt>
+        <dd>
+          <span>{{ program.lastUpdated }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.shortName">Short Name</span></dt>
+        <dd>
+          <span>{{ program.shortName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.description">Description</span></dt>
+        <dd>
+          <span>{{ program.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.version">Version</span></dt>
+        <dd>
+          <span>{{ program.version }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.enrollmentDateLabel">Enrollment Date Label</span></dt>
+        <dd>
+          <span>{{ program.enrollmentDateLabel }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.incidentDateLabel">Incident Date Label</span></dt>
+        <dd>
+          <span>{{ program.incidentDateLabel }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.programType">Program Type</span></dt>
+        <dd>
+          <span>{{ program.programType }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.displayIncidentDate">Display Incident Date</span></dt>
+        <dd>
+          <span>{{ program.displayIncidentDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.ignoreOverdueEvents">Ignore Overdue Events</span></dt>
+        <dd>
+          <span>{{ program.ignoreOverdueEvents }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.userRoles">User Roles</span></dt>
+        <dd>
+          <span>{{ program.userRoles }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.onlyEnrollOnce">Only Enroll Once</span></dt>
+        <dd>
+          <span>{{ program.onlyEnrollOnce }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.notificationTemplates">Notification Templates</span></dt>
+        <dd>
+          <span>{{ program.notificationTemplates }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.selectEnrollmentDatesInFuture">Select Enrollment Dates In Future</span></dt>
+        <dd>
+          <span>{{ program.selectEnrollmentDatesInFuture }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.selectIncidentDatesInFuture">Select Incident Dates In Future</span></dt>
+        <dd>
+          <span>{{ program.selectIncidentDatesInFuture }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.trackedEntityType">Tracked Entity Type</span></dt>
+        <dd>
+          <span>{{ program.trackedEntityType }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.style">Style</span></dt>
+        <dd>
+          <span>{{ program.style }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.skipOffline">Skip Offline</span></dt>
+        <dd>
+          <span>{{ program.skipOffline }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.displayFrontPageList">Display Front Page List</span></dt>
+        <dd>
+          <span>{{ program.displayFrontPageList }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.useFirstStageDuringRegistration">Use First Stage During Registration</span></dt>
+        <dd>
+          <span>{{ program.useFirstStageDuringRegistration }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.expiryDays">Expiry Days</span></dt>
+        <dd>
+          <span>{{ program.expiryDays }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.completeEventsExpiryDays">Complete Events Expiry Days</span></dt>
+        <dd>
+          <span>{{ program.completeEventsExpiryDays }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.openDaysAfterCoEndDate">Open Days After Co End Date</span></dt>
+        <dd>
+          <span>{{ program.openDaysAfterCoEndDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.minAttributesRequiredToSearch">Min Attributes Required To Search</span></dt>
+        <dd>
+          <span>{{ program.minAttributesRequiredToSearch }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.maxTeiCountToReturn">Max Tei Count To Return</span></dt>
+        <dd>
+          <span>{{ program.maxTeiCountToReturn }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.accessLevel">Access Level</span></dt>
+        <dd>
+          <span>{{ program.accessLevel }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.displayEnrollmentDateLabel">Display Enrollment Date Label</span></dt>
+        <dd>
+          <span>{{ program.displayEnrollmentDateLabel }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.displayIncidentDateLabel">Display Incident Date Label</span></dt>
+        <dd>
+          <span>{{ program.displayIncidentDateLabel }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.registration">Registration</span></dt>
+        <dd>
+          <span>{{ program.registration }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.withoutRegistration">Without Registration</span></dt>
+        <dd>
+          <span>{{ program.withoutRegistration }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.displayShortName">Display Short Name</span></dt>
+        <dd>
+          <span>{{ program.displayShortName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.displayDescription">Display Description</span></dt>
+        <dd>
+          <span>{{ program.displayDescription }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.displayFormName">Display Form Name</span></dt>
+        <dd>
+          <span>{{ program.displayFormName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.displayName">Display Name</span></dt>
+        <dd>
+          <span>{{ program.displayName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.organisationUnitsCount">Organisation Units Count</span></dt>
+        <dd>
+          <span>{{ program.organisationUnitsCount }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.programStagesCount">Program Stages Count</span></dt>
+        <dd>
+          <span>{{ program.programStagesCount }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.programIndicatorsCount">Program Indicators Count</span></dt>
+        <dd>
+          <span>{{ program.programIndicatorsCount }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="dhis2TrackApp.program.programTrackedEntityAttributesCount">Program Tracked Entity Attributes Count</span>
+        </dt>
+        <dd>
+          <span>{{ program.programTrackedEntityAttributesCount }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.organisationUnitsContent">Organisation Units Content</span></dt>
+        <dd>
+          <span>{{ program.organisationUnitsContent }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.programStagesContent">Program Stages Content</span></dt>
+        <dd>
+          <span>{{ program.programStagesContent }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.programIndicatorsContent">Program Indicators Content</span></dt>
+        <dd>
+          <span>{{ program.programIndicatorsContent }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="dhis2TrackApp.program.programTrackedEntityAttributesContent">Program Tracked Entity Attributes Content</span>
+        </dt>
+        <dd>
+          <span>{{ program.programTrackedEntityAttributesContent }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.track">Track</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + program.track }}">{{ program.track }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.project">Project</span></dt>
+        <dd>
+          <div *ngIf="program.project">
+            <a [routerLink]="['/project', program.project.id, 'view']">{{ program.project.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.createdBy">Created By</span></dt>
+        <dd>
+          <div *ngIf="program.createdBy">
+            <a [routerLink]="['/dhis-user', program.createdBy.id, 'view']">{{ program.createdBy.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.lastUpdatedBy">Last Updated By</span></dt>
+        <dd>
+          <div *ngIf="program.lastUpdatedBy">
+            <a [routerLink]="['/dhis-user', program.lastUpdatedBy.id, 'view']">{{ program.lastUpdatedBy.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.categoryCombo">Category Combo</span></dt>
+        <dd>
+          <div *ngIf="program.categoryCombo">
+            <a [routerLink]="['/categorycombo', program.categoryCombo.id, 'view']">{{ program.categoryCombo.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.programTrackedEntityAttributes">Program Tracked Entity Attributes</span></dt>
+        <dd>
+          <span *ngFor="let programTrackedEntityAttributes of program.programTrackedEntityAttributes; let last = last">
+            <a [routerLink]="['/tracked-entity-attribute', programTrackedEntityAttributes.id, 'view']">{{
+              programTrackedEntityAttributes.id
+            }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.organisationUnits">Organisation Units</span></dt>
+        <dd>
+          <span *ngFor="let organisationUnits of program.organisationUnits; let last = last">
+            <a [routerLink]="['/organisation-unit', organisationUnits.id, 'view']">{{ organisationUnits.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.programIndicators">Program Indicators</span></dt>
+        <dd>
+          <span *ngFor="let programIndicators of program.programIndicators; let last = last">
+            <a [routerLink]="['/program-indicator', programIndicators.id, 'view']">{{ programIndicators.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.program.programStage">Program Stage</span></dt>
+        <dd>
+          <span *ngFor="let programStage of program.programStages; let last = last">
+            <a [routerLink]="['/program-stage', programStage.id, 'view']">{{ programStage.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+      </dl>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-        </button>
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
 
-        <button type="button" [routerLink]="['/program', program()!.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-        </button>
-      </div>
-    }
+      <button type="button" [routerLink]="['/program', program.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
   </div>
 </div>

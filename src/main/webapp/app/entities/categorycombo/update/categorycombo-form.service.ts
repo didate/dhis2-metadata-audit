@@ -32,11 +32,11 @@ export class CategorycomboFormService {
     };
     return new FormGroup<CategorycomboFormGroupContent>({
       id: new FormControl(
-        { value: categorycomboRawValue.id, disabled: true },
+        { value: categorycomboRawValue.id, disabled: categorycomboRawValue.id !== null },
         {
           nonNullable: true,
           validators: [Validators.required],
-        },
+        }
       ),
       name: new FormControl(categorycomboRawValue.name),
     });
@@ -51,8 +51,8 @@ export class CategorycomboFormService {
     form.reset(
       {
         ...categorycomboRawValue,
-        id: { value: categorycomboRawValue.id, disabled: true },
-      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */,
+        id: { value: categorycomboRawValue.id, disabled: categorycomboRawValue.id !== null },
+      } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
 

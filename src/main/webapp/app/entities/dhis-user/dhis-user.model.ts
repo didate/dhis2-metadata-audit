@@ -14,7 +14,7 @@ export interface IDHISUser {
   passwordLastUpdated?: dayjs.Dayjs | null;
   created?: dayjs.Dayjs | null;
   lastUpdated?: dayjs.Dayjs | null;
-  track?: keyof typeof TypeTrack | null;
+  track?: TypeTrack | null;
 }
 
 export type NewDHISUser = Omit<IDHISUser, 'id'> & { id: null };

@@ -1,7 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.IndicatorAsserts.*;
-import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -13,12 +11,11 @@ import com.didate.domain.Indicator;
 import com.didate.domain.Indicatortype;
 import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.IndicatorRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,9 +91,6 @@ class IndicatorResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private IndicatorRepository indicatorRepository;
 
     @Autowired
@@ -106,8 +100,6 @@ class IndicatorResourceIT {
     private MockMvc restIndicatorMockMvc;
 
     private Indicator indicator;
-
-    private Indicator insertedIndicator;
 
     /**
      * Create an entity for this test.
@@ -216,34 +208,37 @@ class IndicatorResourceIT {
         indicator = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedIndicator != null) {
-            indicatorRepository.delete(insertedIndicator);
-            insertedIndicator = null;
-        }
-    }
-
     @Test
     @Transactional
     void createIndicator() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = indicatorRepository.findAll().size();
         // Create the Indicator
-        var returnedIndicator = om.readValue(
-            restIndicatorMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicator)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            Indicator.class
-        );
+        restIndicatorMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicator)))
+            .andExpect(status().isCreated());
 
         // Validate the Indicator in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertIndicatorUpdatableFieldsEquals(returnedIndicator, getPersistedIndicator(returnedIndicator));
-
-        insertedIndicator = returnedIndicator;
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeCreate + 1);
+        Indicator testIndicator = indicatorList.get(indicatorList.size() - 1);
+        assertThat(testIndicator.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testIndicator.getShortName()).isEqualTo(DEFAULT_SHORT_NAME);
+        assertThat(testIndicator.getDisplayShortName()).isEqualTo(DEFAULT_DISPLAY_SHORT_NAME);
+        assertThat(testIndicator.getDisplayName()).isEqualTo(DEFAULT_DISPLAY_NAME);
+        assertThat(testIndicator.getDisplayFormName()).isEqualTo(DEFAULT_DISPLAY_FORM_NAME);
+        assertThat(testIndicator.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testIndicator.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testIndicator.getPublicAccess()).isEqualTo(DEFAULT_PUBLIC_ACCESS);
+        assertThat(testIndicator.getDimensionItemType()).isEqualTo(DEFAULT_DIMENSION_ITEM_TYPE);
+        assertThat(testIndicator.getAnnualized()).isEqualTo(DEFAULT_ANNUALIZED);
+        assertThat(testIndicator.getNumerator()).isEqualTo(DEFAULT_NUMERATOR);
+        assertThat(testIndicator.getNumeratorDescription()).isEqualTo(DEFAULT_NUMERATOR_DESCRIPTION);
+        assertThat(testIndicator.getDenominator()).isEqualTo(DEFAULT_DENOMINATOR);
+        assertThat(testIndicator.getDenominatorDescription()).isEqualTo(DEFAULT_DENOMINATOR_DESCRIPTION);
+        assertThat(testIndicator.getDisplayNumeratorDescription()).isEqualTo(DEFAULT_DISPLAY_NUMERATOR_DESCRIPTION);
+        assertThat(testIndicator.getDisplayDenominatorDescription()).isEqualTo(DEFAULT_DISPLAY_DENOMINATOR_DESCRIPTION);
+        assertThat(testIndicator.getDimensionItem()).isEqualTo(DEFAULT_DIMENSION_ITEM);
+        assertThat(testIndicator.getTrack()).isEqualTo(DEFAULT_TRACK);
     }
 
     @Test
@@ -252,150 +247,160 @@ class IndicatorResourceIT {
         // Create the Indicator with an existing ID
         indicator.setId("existing_id");
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = indicatorRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicator)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicator)))
             .andExpect(status().isBadRequest());
 
         // Validate the Indicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void checkNameIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = indicatorRepository.findAll().size();
         // set the field null
         indicator.setName(null);
 
         // Create the Indicator, which fails.
 
         restIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicator)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicator)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkShortNameIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = indicatorRepository.findAll().size();
         // set the field null
         indicator.setShortName(null);
 
         // Create the Indicator, which fails.
 
         restIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicator)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicator)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkCreatedIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = indicatorRepository.findAll().size();
         // set the field null
         indicator.setCreated(null);
 
         // Create the Indicator, which fails.
 
         restIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicator)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicator)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkLastUpdatedIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = indicatorRepository.findAll().size();
         // set the field null
         indicator.setLastUpdated(null);
 
         // Create the Indicator, which fails.
 
         restIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicator)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicator)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkPublicAccessIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = indicatorRepository.findAll().size();
         // set the field null
         indicator.setPublicAccess(null);
 
         // Create the Indicator, which fails.
 
         restIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicator)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicator)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkDimensionItemTypeIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = indicatorRepository.findAll().size();
         // set the field null
         indicator.setDimensionItemType(null);
 
         // Create the Indicator, which fails.
 
         restIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicator)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicator)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkAnnualizedIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = indicatorRepository.findAll().size();
         // set the field null
         indicator.setAnnualized(null);
 
         // Create the Indicator, which fails.
 
         restIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicator)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicator)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void checkTrackIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
+        int databaseSizeBeforeTest = indicatorRepository.findAll().size();
         // set the field null
         indicator.setTrack(null);
 
         // Create the Indicator, which fails.
 
         restIndicatorMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicator)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicator)))
             .andExpect(status().isBadRequest());
 
-        assertSameRepositoryCount(databaseSizeBeforeTest);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
     void getAllIndicators() throws Exception {
         // Initialize the database
-        insertedIndicator = indicatorRepository.saveAndFlush(indicator);
+        indicator.setId(UUID.randomUUID().toString());
+        indicatorRepository.saveAndFlush(indicator);
 
         // Get all the indicatorList
         restIndicatorMockMvc
@@ -427,7 +432,8 @@ class IndicatorResourceIT {
     @Transactional
     void getIndicator() throws Exception {
         // Initialize the database
-        insertedIndicator = indicatorRepository.saveAndFlush(indicator);
+        indicator.setId(UUID.randomUUID().toString());
+        indicatorRepository.saveAndFlush(indicator);
 
         // Get the indicator
         restIndicatorMockMvc
@@ -466,12 +472,13 @@ class IndicatorResourceIT {
     @Transactional
     void putExistingIndicator() throws Exception {
         // Initialize the database
-        insertedIndicator = indicatorRepository.saveAndFlush(indicator);
+        indicator.setId(UUID.randomUUID().toString());
+        indicatorRepository.saveAndFlush(indicator);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatorRepository.findAll().size();
 
         // Update the indicator
-        Indicator updatedIndicator = indicatorRepository.findById(indicator.getId()).orElseThrow();
+        Indicator updatedIndicator = indicatorRepository.findById(indicator.getId()).get();
         // Disconnect from session so that the updates on updatedIndicator are not directly saved in db
         em.detach(updatedIndicator);
         updatedIndicator
@@ -498,36 +505,58 @@ class IndicatorResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, updatedIndicator.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedIndicator))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedIndicator))
             )
             .andExpect(status().isOk());
 
         // Validate the Indicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedIndicatorToMatchAllProperties(updatedIndicator);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeUpdate);
+        Indicator testIndicator = indicatorList.get(indicatorList.size() - 1);
+        assertThat(testIndicator.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testIndicator.getShortName()).isEqualTo(UPDATED_SHORT_NAME);
+        assertThat(testIndicator.getDisplayShortName()).isEqualTo(UPDATED_DISPLAY_SHORT_NAME);
+        assertThat(testIndicator.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testIndicator.getDisplayFormName()).isEqualTo(UPDATED_DISPLAY_FORM_NAME);
+        assertThat(testIndicator.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testIndicator.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testIndicator.getPublicAccess()).isEqualTo(UPDATED_PUBLIC_ACCESS);
+        assertThat(testIndicator.getDimensionItemType()).isEqualTo(UPDATED_DIMENSION_ITEM_TYPE);
+        assertThat(testIndicator.getAnnualized()).isEqualTo(UPDATED_ANNUALIZED);
+        assertThat(testIndicator.getNumerator()).isEqualTo(UPDATED_NUMERATOR);
+        assertThat(testIndicator.getNumeratorDescription()).isEqualTo(UPDATED_NUMERATOR_DESCRIPTION);
+        assertThat(testIndicator.getDenominator()).isEqualTo(UPDATED_DENOMINATOR);
+        assertThat(testIndicator.getDenominatorDescription()).isEqualTo(UPDATED_DENOMINATOR_DESCRIPTION);
+        assertThat(testIndicator.getDisplayNumeratorDescription()).isEqualTo(UPDATED_DISPLAY_NUMERATOR_DESCRIPTION);
+        assertThat(testIndicator.getDisplayDenominatorDescription()).isEqualTo(UPDATED_DISPLAY_DENOMINATOR_DESCRIPTION);
+        assertThat(testIndicator.getDimensionItem()).isEqualTo(UPDATED_DIMENSION_ITEM);
+        assertThat(testIndicator.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void putNonExistingIndicator() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatorRepository.findAll().size();
         indicator.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restIndicatorMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, indicator.getId()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicator))
+                put(ENTITY_API_URL_ID, indicator.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(indicator))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Indicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchIndicator() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatorRepository.findAll().size();
         indicator.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -535,36 +564,39 @@ class IndicatorResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(indicator))
+                    .content(TestUtil.convertObjectToJsonBytes(indicator))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Indicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamIndicator() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatorRepository.findAll().size();
         indicator.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restIndicatorMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicator)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(indicator)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Indicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void partialUpdateIndicatorWithPatch() throws Exception {
         // Initialize the database
-        insertedIndicator = indicatorRepository.saveAndFlush(indicator);
+        indicator.setId(UUID.randomUUID().toString());
+        indicatorRepository.saveAndFlush(indicator);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatorRepository.findAll().size();
 
         // Update the indicator using partial update
         Indicator partialUpdatedIndicator = new Indicator();
@@ -572,15 +604,10 @@ class IndicatorResourceIT {
 
         partialUpdatedIndicator
             .name(UPDATED_NAME)
-            .shortName(UPDATED_SHORT_NAME)
-            .displayShortName(UPDATED_DISPLAY_SHORT_NAME)
-            .created(UPDATED_CREATED)
             .publicAccess(UPDATED_PUBLIC_ACCESS)
             .dimensionItemType(UPDATED_DIMENSION_ITEM_TYPE)
-            .numerator(UPDATED_NUMERATOR)
             .numeratorDescription(UPDATED_NUMERATOR_DESCRIPTION)
             .denominator(UPDATED_DENOMINATOR)
-            .denominatorDescription(UPDATED_DENOMINATOR_DESCRIPTION)
             .displayNumeratorDescription(UPDATED_DISPLAY_NUMERATOR_DESCRIPTION)
             .track(UPDATED_TRACK);
 
@@ -588,26 +615,42 @@ class IndicatorResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedIndicator.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedIndicator))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedIndicator))
             )
             .andExpect(status().isOk());
 
         // Validate the Indicator in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertIndicatorUpdatableFieldsEquals(
-            createUpdateProxyForBean(partialUpdatedIndicator, indicator),
-            getPersistedIndicator(indicator)
-        );
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeUpdate);
+        Indicator testIndicator = indicatorList.get(indicatorList.size() - 1);
+        assertThat(testIndicator.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testIndicator.getShortName()).isEqualTo(DEFAULT_SHORT_NAME);
+        assertThat(testIndicator.getDisplayShortName()).isEqualTo(DEFAULT_DISPLAY_SHORT_NAME);
+        assertThat(testIndicator.getDisplayName()).isEqualTo(DEFAULT_DISPLAY_NAME);
+        assertThat(testIndicator.getDisplayFormName()).isEqualTo(DEFAULT_DISPLAY_FORM_NAME);
+        assertThat(testIndicator.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testIndicator.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
+        assertThat(testIndicator.getPublicAccess()).isEqualTo(UPDATED_PUBLIC_ACCESS);
+        assertThat(testIndicator.getDimensionItemType()).isEqualTo(UPDATED_DIMENSION_ITEM_TYPE);
+        assertThat(testIndicator.getAnnualized()).isEqualTo(DEFAULT_ANNUALIZED);
+        assertThat(testIndicator.getNumerator()).isEqualTo(DEFAULT_NUMERATOR);
+        assertThat(testIndicator.getNumeratorDescription()).isEqualTo(UPDATED_NUMERATOR_DESCRIPTION);
+        assertThat(testIndicator.getDenominator()).isEqualTo(UPDATED_DENOMINATOR);
+        assertThat(testIndicator.getDenominatorDescription()).isEqualTo(DEFAULT_DENOMINATOR_DESCRIPTION);
+        assertThat(testIndicator.getDisplayNumeratorDescription()).isEqualTo(UPDATED_DISPLAY_NUMERATOR_DESCRIPTION);
+        assertThat(testIndicator.getDisplayDenominatorDescription()).isEqualTo(DEFAULT_DISPLAY_DENOMINATOR_DESCRIPTION);
+        assertThat(testIndicator.getDimensionItem()).isEqualTo(DEFAULT_DIMENSION_ITEM);
+        assertThat(testIndicator.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void fullUpdateIndicatorWithPatch() throws Exception {
         // Initialize the database
-        insertedIndicator = indicatorRepository.saveAndFlush(indicator);
+        indicator.setId(UUID.randomUUID().toString());
+        indicatorRepository.saveAndFlush(indicator);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatorRepository.findAll().size();
 
         // Update the indicator using partial update
         Indicator partialUpdatedIndicator = new Indicator();
@@ -637,20 +680,38 @@ class IndicatorResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedIndicator.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedIndicator))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedIndicator))
             )
             .andExpect(status().isOk());
 
         // Validate the Indicator in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertIndicatorUpdatableFieldsEquals(partialUpdatedIndicator, getPersistedIndicator(partialUpdatedIndicator));
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeUpdate);
+        Indicator testIndicator = indicatorList.get(indicatorList.size() - 1);
+        assertThat(testIndicator.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testIndicator.getShortName()).isEqualTo(UPDATED_SHORT_NAME);
+        assertThat(testIndicator.getDisplayShortName()).isEqualTo(UPDATED_DISPLAY_SHORT_NAME);
+        assertThat(testIndicator.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
+        assertThat(testIndicator.getDisplayFormName()).isEqualTo(UPDATED_DISPLAY_FORM_NAME);
+        assertThat(testIndicator.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testIndicator.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
+        assertThat(testIndicator.getPublicAccess()).isEqualTo(UPDATED_PUBLIC_ACCESS);
+        assertThat(testIndicator.getDimensionItemType()).isEqualTo(UPDATED_DIMENSION_ITEM_TYPE);
+        assertThat(testIndicator.getAnnualized()).isEqualTo(UPDATED_ANNUALIZED);
+        assertThat(testIndicator.getNumerator()).isEqualTo(UPDATED_NUMERATOR);
+        assertThat(testIndicator.getNumeratorDescription()).isEqualTo(UPDATED_NUMERATOR_DESCRIPTION);
+        assertThat(testIndicator.getDenominator()).isEqualTo(UPDATED_DENOMINATOR);
+        assertThat(testIndicator.getDenominatorDescription()).isEqualTo(UPDATED_DENOMINATOR_DESCRIPTION);
+        assertThat(testIndicator.getDisplayNumeratorDescription()).isEqualTo(UPDATED_DISPLAY_NUMERATOR_DESCRIPTION);
+        assertThat(testIndicator.getDisplayDenominatorDescription()).isEqualTo(UPDATED_DISPLAY_DENOMINATOR_DESCRIPTION);
+        assertThat(testIndicator.getDimensionItem()).isEqualTo(UPDATED_DIMENSION_ITEM);
+        assertThat(testIndicator.getTrack()).isEqualTo(UPDATED_TRACK);
     }
 
     @Test
     @Transactional
     void patchNonExistingIndicator() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatorRepository.findAll().size();
         indicator.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -658,18 +719,19 @@ class IndicatorResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, indicator.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(indicator))
+                    .content(TestUtil.convertObjectToJsonBytes(indicator))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Indicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchIndicator() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatorRepository.findAll().size();
         indicator.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -677,36 +739,41 @@ class IndicatorResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(indicator))
+                    .content(TestUtil.convertObjectToJsonBytes(indicator))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Indicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamIndicator() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = indicatorRepository.findAll().size();
         indicator.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restIndicatorMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(indicator)))
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(indicator))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Indicator in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void deleteIndicator() throws Exception {
         // Initialize the database
-        insertedIndicator = indicatorRepository.saveAndFlush(indicator);
+        indicator.setId(UUID.randomUUID().toString());
+        indicatorRepository.saveAndFlush(indicator);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = indicatorRepository.findAll().size();
 
         // Delete the indicator
         restIndicatorMockMvc
@@ -714,34 +781,7 @@ class IndicatorResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return indicatorRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected Indicator getPersistedIndicator(Indicator indicator) {
-        return indicatorRepository.findById(indicator.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedIndicatorToMatchAllProperties(Indicator expectedIndicator) {
-        assertIndicatorAllPropertiesEquals(expectedIndicator, getPersistedIndicator(expectedIndicator));
-    }
-
-    protected void assertPersistedIndicatorToMatchUpdatableProperties(Indicator expectedIndicator) {
-        assertIndicatorAllUpdatablePropertiesEquals(expectedIndicator, getPersistedIndicator(expectedIndicator));
+        List<Indicator> indicatorList = indicatorRepository.findAll();
+        assertThat(indicatorList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

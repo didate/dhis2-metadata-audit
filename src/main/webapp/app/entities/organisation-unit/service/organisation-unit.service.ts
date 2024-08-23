@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
@@ -28,10 +28,9 @@ export type EntityArrayResponseType = HttpResponse<IOrganisationUnit[]>;
 
 @Injectable({ providedIn: 'root' })
 export class OrganisationUnitService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/organisation-units');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(organisationUnit: NewOrganisationUnit): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(organisationUnit);
@@ -89,8 +88,8 @@ export class OrganisationUnitService {
   ): Type[] {
     const organisationUnits: Type[] = organisationUnitsToCheck.filter(isPresent);
     if (organisationUnits.length > 0) {
-      const organisationUnitCollectionIdentifiers = organisationUnitCollection.map(organisationUnitItem =>
-        this.getOrganisationUnitIdentifier(organisationUnitItem),
+      const organisationUnitCollectionIdentifiers = organisationUnitCollection.map(
+        organisationUnitItem => this.getOrganisationUnitIdentifier(organisationUnitItem)!
       );
       const organisationUnitsToAdd = organisationUnits.filter(organisationUnitItem => {
         const organisationUnitIdentifier = this.getOrganisationUnitIdentifier(organisationUnitItem);
@@ -106,7 +105,7 @@ export class OrganisationUnitService {
   }
 
   protected convertDateFromClient<T extends IOrganisationUnit | NewOrganisationUnit | PartialUpdateOrganisationUnit>(
-    organisationUnit: T,
+    organisationUnit: T
   ): RestOf<T> {
     return {
       ...organisationUnit,

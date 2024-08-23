@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity Program.
+    -->
+    <changeSet id="20240823214447-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="project_id"
+                                 baseTableName="program"
+                                 constraintName="fk_program__project_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="project"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="program"
+                                 constraintName="fk_program__created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dhis_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_updated_by_id"
+                                 baseTableName="program"
+                                 constraintName="fk_program__last_updated_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dhis_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="category_combo_id"
+                                 baseTableName="program"
+                                 constraintName="fk_program__category_combo_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="categorycombo"/>
+
+        <addForeignKeyConstraint baseColumnNames="program_id"
+                                 baseTableName="rel_program__program_tracked_entity_attributes"
+                                 constraintName="fk_rel_program__program_tracked_entity_attributes__program_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="program"/>
+
+        <addForeignKeyConstraint baseColumnNames="program_tracked_entity_attributes_id"
+                                 baseTableName="rel_program__program_tracked_entity_attributes"
+                                 constraintName="fk_rel_program__program_tracked__program_tracked_entity_a_2e_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tracked_entity_attribute"/>
+
+        <addForeignKeyConstraint baseColumnNames="program_id"
+                                 baseTableName="rel_program__organisation_units"
+                                 constraintName="fk_rel_program__organisation_units__program_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="program"/>
+
+        <addForeignKeyConstraint baseColumnNames="organisation_units_id"
+                                 baseTableName="rel_program__organisation_units"
+                                 constraintName="fk_rel_program__organisation_units__organisation_units_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="organisation_unit"/>
+
+        <addForeignKeyConstraint baseColumnNames="program_id"
+                                 baseTableName="rel_program__program_indicators"
+                                 constraintName="fk_rel_program__program_indicators__program_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="program"/>
+
+        <addForeignKeyConstraint baseColumnNames="program_indicators_id"
+                                 baseTableName="rel_program__program_indicators"
+                                 constraintName="fk_rel_program__program_indicators__program_indicators_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="program_indicator"/>
+
+        <addForeignKeyConstraint baseColumnNames="program_id"
+                                 baseTableName="rel_program__program_stage"
+                                 constraintName="fk_rel_program__program_stage__program_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="program"/>
+
+        <addForeignKeyConstraint baseColumnNames="program_stage_id"
+                                 baseTableName="rel_program__program_stage"
+                                 constraintName="fk_rel_program__program_stage__program_stage_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="program_stage"/>
+    </changeSet>
+</databaseChangeLog>

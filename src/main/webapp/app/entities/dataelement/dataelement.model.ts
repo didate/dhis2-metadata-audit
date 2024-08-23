@@ -26,14 +26,14 @@ export interface IDataelement {
   zeroIsSignificant?: boolean | null;
   optionSetValue?: string | null;
   dimensionItem?: string | null;
-  track?: keyof typeof TypeTrack | null;
-  project?: IProject | null;
-  createdBy?: IDHISUser | null;
-  lastUpdatedBy?: IDHISUser | null;
-  categoryCombo?: ICategorycombo | null;
-  optionSet?: IOptionset | null;
-  datasets?: IDataset[] | null;
-  programStages?: IProgramStage[] | null;
+  track?: TypeTrack | null;
+  project?: Pick<IProject, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'id'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  categoryCombo?: Pick<ICategorycombo, 'id'> | null;
+  optionSet?: Pick<IOptionset, 'id'> | null;
+  dataSets?: Pick<IDataset, 'id'>[] | null;
+  programStages?: Pick<IProgramStage, 'id'>[] | null;
 }
 
 export type NewDataelement = Omit<IDataelement, 'id'> & { id: null };

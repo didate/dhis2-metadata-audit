@@ -31,12 +31,8 @@ public class IndicatorApiService {
         indicators.addAll(indicatorResponse.getIndicators());
 
         while (DhisServiceUtil.hasNextPage(indicatorResponse.getPager())) {
-            indicatorResponse = DhisServiceUtil.fetchPage(
-                client,
-                indicatorResponse.getPager().getNextPage(),
-                IndicatorResponse.class,
-                objectMapper
-            );
+            indicatorResponse =
+                DhisServiceUtil.fetchPage(client, indicatorResponse.getPager().getNextPage(), IndicatorResponse.class, objectMapper);
             indicators.addAll(indicatorResponse.getIndicators());
         }
 

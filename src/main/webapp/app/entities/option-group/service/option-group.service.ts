@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -7,18 +7,31 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { createRequestOption } from 'app/core/request/request-util';
 import { IOptionGroup, NewOptionGroup } from '../option-group.model';
 
+export type PartialUpdateOptionGroup = Partial<IOptionGroup> & Pick<IOptionGroup, 'id'>;
+
 export type EntityResponseType = HttpResponse<IOptionGroup>;
 export type EntityArrayResponseType = HttpResponse<IOptionGroup[]>;
 
 @Injectable({ providedIn: 'root' })
 export class OptionGroupService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/option-groups');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(optionGroup: NewOptionGroup): Observable<EntityResponseType> {
     return this.http.post<IOptionGroup>(this.resourceUrl, optionGroup, { observe: 'response' });
+  }
+
+  update(optionGroup: IOptionGroup): Observable<EntityResponseType> {
+    return this.http.put<IOptionGroup>(`${this.resourceUrl}/${this.getOptionGroupIdentifier(optionGroup)}`, optionGroup, {
+      observe: 'response',
+    });
+  }
+
+  partialUpdate(optionGroup: PartialUpdateOptionGroup): Observable<EntityResponseType> {
+    return this.http.patch<IOptionGroup>(`${this.resourceUrl}/${this.getOptionGroupIdentifier(optionGroup)}`, optionGroup, {
+      observe: 'response',
+    });
   }
 
   find(id: string): Observable<EntityResponseType> {
@@ -48,7 +61,9 @@ export class OptionGroupService {
   ): Type[] {
     const optionGroups: Type[] = optionGroupsToCheck.filter(isPresent);
     if (optionGroups.length > 0) {
-      const optionGroupCollectionIdentifiers = optionGroupCollection.map(optionGroupItem => this.getOptionGroupIdentifier(optionGroupItem));
+      const optionGroupCollectionIdentifiers = optionGroupCollection.map(
+        optionGroupItem => this.getOptionGroupIdentifier(optionGroupItem)!
+      );
       const optionGroupsToAdd = optionGroups.filter(optionGroupItem => {
         const optionGroupIdentifier = this.getOptionGroupIdentifier(optionGroupItem);
         if (optionGroupCollectionIdentifiers.includes(optionGroupIdentifier)) {

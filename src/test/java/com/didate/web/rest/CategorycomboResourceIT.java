@@ -1,7 +1,5 @@
 package com.didate.web.rest;
 
-import static com.didate.domain.CategorycomboAsserts.*;
-import static com.didate.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -10,10 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.didate.IntegrationTest;
 import com.didate.domain.Categorycombo;
 import com.didate.repository.CategorycomboRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityManager;
+import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +35,6 @@ class CategorycomboResourceIT {
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private CategorycomboRepository categorycomboRepository;
 
     @Autowired
@@ -50,8 +44,6 @@ class CategorycomboResourceIT {
     private MockMvc restCategorycomboMockMvc;
 
     private Categorycombo categorycombo;
-
-    private Categorycombo insertedCategorycombo;
 
     /**
      * Create an entity for this test.
@@ -80,34 +72,20 @@ class CategorycomboResourceIT {
         categorycombo = createEntity(em);
     }
 
-    @AfterEach
-    public void cleanup() {
-        if (insertedCategorycombo != null) {
-            categorycomboRepository.delete(insertedCategorycombo);
-            insertedCategorycombo = null;
-        }
-    }
-
     @Test
     @Transactional
     void createCategorycombo() throws Exception {
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = categorycomboRepository.findAll().size();
         // Create the Categorycombo
-        var returnedCategorycombo = om.readValue(
-            restCategorycomboMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(categorycombo)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(),
-            Categorycombo.class
-        );
+        restCategorycomboMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(categorycombo)))
+            .andExpect(status().isCreated());
 
         // Validate the Categorycombo in the database
-        assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
-        assertCategorycomboUpdatableFieldsEquals(returnedCategorycombo, getPersistedCategorycombo(returnedCategorycombo));
-
-        insertedCategorycombo = returnedCategorycombo;
+        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        assertThat(categorycomboList).hasSize(databaseSizeBeforeCreate + 1);
+        Categorycombo testCategorycombo = categorycomboList.get(categorycomboList.size() - 1);
+        assertThat(testCategorycombo.getName()).isEqualTo(DEFAULT_NAME);
     }
 
     @Test
@@ -116,22 +94,24 @@ class CategorycomboResourceIT {
         // Create the Categorycombo with an existing ID
         categorycombo.setId("existing_id");
 
-        long databaseSizeBeforeCreate = getRepositoryCount();
+        int databaseSizeBeforeCreate = categorycomboRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCategorycomboMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(categorycombo)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(categorycombo)))
             .andExpect(status().isBadRequest());
 
         // Validate the Categorycombo in the database
-        assertSameRepositoryCount(databaseSizeBeforeCreate);
+        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        assertThat(categorycomboList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
     void getAllCategorycombos() throws Exception {
         // Initialize the database
-        insertedCategorycombo = categorycomboRepository.saveAndFlush(categorycombo);
+        categorycombo.setId(UUID.randomUUID().toString());
+        categorycomboRepository.saveAndFlush(categorycombo);
 
         // Get all the categorycomboList
         restCategorycomboMockMvc
@@ -146,7 +126,8 @@ class CategorycomboResourceIT {
     @Transactional
     void getCategorycombo() throws Exception {
         // Initialize the database
-        insertedCategorycombo = categorycomboRepository.saveAndFlush(categorycombo);
+        categorycombo.setId(UUID.randomUUID().toString());
+        categorycomboRepository.saveAndFlush(categorycombo);
 
         // Get the categorycombo
         restCategorycomboMockMvc
@@ -168,12 +149,13 @@ class CategorycomboResourceIT {
     @Transactional
     void putExistingCategorycombo() throws Exception {
         // Initialize the database
-        insertedCategorycombo = categorycomboRepository.saveAndFlush(categorycombo);
+        categorycombo.setId(UUID.randomUUID().toString());
+        categorycomboRepository.saveAndFlush(categorycombo);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = categorycomboRepository.findAll().size();
 
         // Update the categorycombo
-        Categorycombo updatedCategorycombo = categorycomboRepository.findById(categorycombo.getId()).orElseThrow();
+        Categorycombo updatedCategorycombo = categorycomboRepository.findById(categorycombo.getId()).get();
         // Disconnect from session so that the updates on updatedCategorycombo are not directly saved in db
         em.detach(updatedCategorycombo);
         updatedCategorycombo.name(UPDATED_NAME);
@@ -182,19 +164,21 @@ class CategorycomboResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, updatedCategorycombo.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedCategorycombo))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedCategorycombo))
             )
             .andExpect(status().isOk());
 
         // Validate the Categorycombo in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertPersistedCategorycomboToMatchAllProperties(updatedCategorycombo);
+        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
+        Categorycombo testCategorycombo = categorycomboList.get(categorycomboList.size() - 1);
+        assertThat(testCategorycombo.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test
     @Transactional
     void putNonExistingCategorycombo() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = categorycomboRepository.findAll().size();
         categorycombo.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -202,18 +186,19 @@ class CategorycomboResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, categorycombo.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(categorycombo))
+                    .content(TestUtil.convertObjectToJsonBytes(categorycombo))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Categorycombo in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithIdMismatchCategorycombo() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = categorycomboRepository.findAll().size();
         categorycombo.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -221,36 +206,39 @@ class CategorycomboResourceIT {
             .perform(
                 put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(categorycombo))
+                    .content(TestUtil.convertObjectToJsonBytes(categorycombo))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Categorycombo in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void putWithMissingIdPathParamCategorycombo() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = categorycomboRepository.findAll().size();
         categorycombo.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restCategorycomboMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(categorycombo)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(categorycombo)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Categorycombo in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void partialUpdateCategorycomboWithPatch() throws Exception {
         // Initialize the database
-        insertedCategorycombo = categorycomboRepository.saveAndFlush(categorycombo);
+        categorycombo.setId(UUID.randomUUID().toString());
+        categorycomboRepository.saveAndFlush(categorycombo);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = categorycomboRepository.findAll().size();
 
         // Update the categorycombo using partial update
         Categorycombo partialUpdatedCategorycombo = new Categorycombo();
@@ -262,26 +250,25 @@ class CategorycomboResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedCategorycombo.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedCategorycombo))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedCategorycombo))
             )
             .andExpect(status().isOk());
 
         // Validate the Categorycombo in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertCategorycomboUpdatableFieldsEquals(
-            createUpdateProxyForBean(partialUpdatedCategorycombo, categorycombo),
-            getPersistedCategorycombo(categorycombo)
-        );
+        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
+        Categorycombo testCategorycombo = categorycomboList.get(categorycomboList.size() - 1);
+        assertThat(testCategorycombo.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test
     @Transactional
     void fullUpdateCategorycomboWithPatch() throws Exception {
         // Initialize the database
-        insertedCategorycombo = categorycomboRepository.saveAndFlush(categorycombo);
+        categorycombo.setId(UUID.randomUUID().toString());
+        categorycomboRepository.saveAndFlush(categorycombo);
 
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = categorycomboRepository.findAll().size();
 
         // Update the categorycombo using partial update
         Categorycombo partialUpdatedCategorycombo = new Categorycombo();
@@ -293,20 +280,21 @@ class CategorycomboResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedCategorycombo.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(partialUpdatedCategorycombo))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedCategorycombo))
             )
             .andExpect(status().isOk());
 
         // Validate the Categorycombo in the database
-
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
-        assertCategorycomboUpdatableFieldsEquals(partialUpdatedCategorycombo, getPersistedCategorycombo(partialUpdatedCategorycombo));
+        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
+        Categorycombo testCategorycombo = categorycomboList.get(categorycomboList.size() - 1);
+        assertThat(testCategorycombo.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test
     @Transactional
     void patchNonExistingCategorycombo() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = categorycomboRepository.findAll().size();
         categorycombo.setId(UUID.randomUUID().toString());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
@@ -314,18 +302,19 @@ class CategorycomboResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, categorycombo.getId())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(categorycombo))
+                    .content(TestUtil.convertObjectToJsonBytes(categorycombo))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Categorycombo in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithIdMismatchCategorycombo() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = categorycomboRepository.findAll().size();
         categorycombo.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
@@ -333,36 +322,41 @@ class CategorycomboResourceIT {
             .perform(
                 patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(categorycombo))
+                    .content(TestUtil.convertObjectToJsonBytes(categorycombo))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the Categorycombo in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void patchWithMissingIdPathParamCategorycombo() throws Exception {
-        long databaseSizeBeforeUpdate = getRepositoryCount();
+        int databaseSizeBeforeUpdate = categorycomboRepository.findAll().size();
         categorycombo.setId(UUID.randomUUID().toString());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restCategorycomboMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(categorycombo)))
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(categorycombo))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Categorycombo in the database
-        assertSameRepositoryCount(databaseSizeBeforeUpdate);
+        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
     void deleteCategorycombo() throws Exception {
         // Initialize the database
-        insertedCategorycombo = categorycomboRepository.saveAndFlush(categorycombo);
+        categorycombo.setId(UUID.randomUUID().toString());
+        categorycomboRepository.saveAndFlush(categorycombo);
 
-        long databaseSizeBeforeDelete = getRepositoryCount();
+        int databaseSizeBeforeDelete = categorycomboRepository.findAll().size();
 
         // Delete the categorycombo
         restCategorycomboMockMvc
@@ -370,34 +364,7 @@ class CategorycomboResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        assertDecrementedRepositoryCount(databaseSizeBeforeDelete);
-    }
-
-    protected long getRepositoryCount() {
-        return categorycomboRepository.count();
-    }
-
-    protected void assertIncrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore + 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertDecrementedRepositoryCount(long countBefore) {
-        assertThat(countBefore - 1).isEqualTo(getRepositoryCount());
-    }
-
-    protected void assertSameRepositoryCount(long countBefore) {
-        assertThat(countBefore).isEqualTo(getRepositoryCount());
-    }
-
-    protected Categorycombo getPersistedCategorycombo(Categorycombo categorycombo) {
-        return categorycomboRepository.findById(categorycombo.getId()).orElseThrow();
-    }
-
-    protected void assertPersistedCategorycomboToMatchAllProperties(Categorycombo expectedCategorycombo) {
-        assertCategorycomboAllPropertiesEquals(expectedCategorycombo, getPersistedCategorycombo(expectedCategorycombo));
-    }
-
-    protected void assertPersistedCategorycomboToMatchUpdatableProperties(Categorycombo expectedCategorycombo) {
-        assertCategorycomboAllUpdatablePropertiesEquals(expectedCategorycombo, getPersistedCategorycombo(expectedCategorycombo));
+        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        assertThat(categorycomboList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

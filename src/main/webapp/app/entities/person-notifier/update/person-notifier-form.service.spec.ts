@@ -25,7 +25,7 @@ describe('PersonNotifier Form Service', () => {
             personEmail: expect.any(Object),
             personOrganization: expect.any(Object),
             project: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -40,13 +40,14 @@ describe('PersonNotifier Form Service', () => {
             personEmail: expect.any(Object),
             personOrganization: expect.any(Object),
             project: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getPersonNotifier', () => {
       it('should return NewPersonNotifier for default PersonNotifier initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createPersonNotifierFormGroup(sampleWithNewData);
 
         const personNotifier = service.getPersonNotifier(formGroup) as any;

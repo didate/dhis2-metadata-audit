@@ -1,5 +1,5 @@
 {
-  "dhis2AuditApp": {
+  "dhis2TrackApp": {
     "personNotifier": {
       "home": {
         "title": "Person Notifiers",

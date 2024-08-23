@@ -1,16 +1,17 @@
 import { IOptionset, NewOptionset } from './optionset.model';
 
 export const sampleWithRequiredData: IOptionset = {
-  id: 'e6c11133-c35e-44a7-914a-1d3ac8046617',
+  id: '352e3b80-3f9c-4703-901f-f848053defcc',
 };
 
 export const sampleWithPartialData: IOptionset = {
-  id: '26373244-6c11-4227-8483-fcd4beb272ae',
+  id: '037dfe3d-50c6-4deb-9f2e-5b3eaad76a97',
+  name: 'a Seamless',
 };
 
 export const sampleWithFullData: IOptionset = {
-  id: 'be6cf5c9-d169-4760-ab43-2e252c71617f',
-  name: 'si de par',
+  id: 'f3aeb200-a875-4d20-87e7-78e75c81c395',
+  name: 'Rand transmitter lavender',
 };
 
 export const sampleWithNewData: NewOptionset = {

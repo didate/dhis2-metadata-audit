@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -14,10 +14,9 @@ export type EntityArrayResponseType = HttpResponse<IProject[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/projects');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(project: NewProject): Observable<EntityResponseType> {
     return this.http.post<IProject>(this.resourceUrl, project, { observe: 'response' });
@@ -58,7 +57,7 @@ export class ProjectService {
   ): Type[] {
     const projects: Type[] = projectsToCheck.filter(isPresent);
     if (projects.length > 0) {
-      const projectCollectionIdentifiers = projectCollection.map(projectItem => this.getProjectIdentifier(projectItem));
+      const projectCollectionIdentifiers = projectCollection.map(projectItem => this.getProjectIdentifier(projectItem)!);
       const projectsToAdd = projects.filter(projectItem => {
         const projectIdentifier = this.getProjectIdentifier(projectItem);
         if (projectCollectionIdentifiers.includes(projectIdentifier)) {

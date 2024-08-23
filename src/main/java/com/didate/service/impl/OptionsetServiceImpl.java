@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.Optionset}.
+ * Service Implementation for managing {@link Optionset}.
  */
 @Service
 @Transactional
 public class OptionsetServiceImpl implements OptionsetService {
 
-    private static final Logger log = LoggerFactory.getLogger(OptionsetServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(OptionsetServiceImpl.class);
 
     private final OptionsetRepository optionsetRepository;
 
@@ -35,6 +35,7 @@ public class OptionsetServiceImpl implements OptionsetService {
     @Override
     public Optionset update(Optionset optionset) {
         log.debug("Request to update Optionset : {}", optionset);
+        optionset.setIsPersisted();
         return optionsetRepository.save(optionset);
     }
 

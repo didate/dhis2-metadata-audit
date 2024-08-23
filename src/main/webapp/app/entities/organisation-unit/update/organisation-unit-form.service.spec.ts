@@ -30,8 +30,8 @@ describe('OrganisationUnit Form Service', () => {
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
             programs: expect.any(Object),
-            datasets: expect.any(Object),
-          }),
+            dataSets: expect.any(Object),
+          })
         );
       });
 
@@ -51,14 +51,15 @@ describe('OrganisationUnit Form Service', () => {
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
             programs: expect.any(Object),
-            datasets: expect.any(Object),
-          }),
+            dataSets: expect.any(Object),
+          })
         );
       });
     });
 
     describe('getOrganisationUnit', () => {
       it('should return NewOrganisationUnit for default OrganisationUnit initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createOrganisationUnitFormGroup(sampleWithNewData);
 
         const organisationUnit = service.getOrganisationUnit(formGroup) as any;

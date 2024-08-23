@@ -1,26 +1,21 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { ProgramIndicatorFormService, ProgramIndicatorFormGroup } from './program-indicator-form.service';
+import { IProgramIndicator } from '../program-indicator.model';
+import { ProgramIndicatorService } from '../service/program-indicator.service';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { DHISUserService } from 'app/entities/dhis-user/service/dhis-user.service';
 import { IProgram } from 'app/entities/program/program.model';
 import { ProgramService } from 'app/entities/program/service/program.service';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
-import { ProgramIndicatorService } from '../service/program-indicator.service';
-import { IProgramIndicator } from '../program-indicator.model';
-import { ProgramIndicatorFormService, ProgramIndicatorFormGroup } from './program-indicator-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-program-indicator-update',
   templateUrl: './program-indicator-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ProgramIndicatorUpdateComponent implements OnInit {
   isSaving = false;
@@ -30,14 +25,15 @@ export class ProgramIndicatorUpdateComponent implements OnInit {
   dHISUsersSharedCollection: IDHISUser[] = [];
   programsSharedCollection: IProgram[] = [];
 
-  protected programIndicatorService = inject(ProgramIndicatorService);
-  protected programIndicatorFormService = inject(ProgramIndicatorFormService);
-  protected dHISUserService = inject(DHISUserService);
-  protected programService = inject(ProgramService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ProgramIndicatorFormGroup = this.programIndicatorFormService.createProgramIndicatorFormGroup();
+
+  constructor(
+    protected programIndicatorService: ProgramIndicatorService,
+    protected programIndicatorFormService: ProgramIndicatorFormService,
+    protected dHISUserService: DHISUserService,
+    protected programService: ProgramService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   compareDHISUser = (o1: IDHISUser | null, o2: IDHISUser | null): boolean => this.dHISUserService.compareDHISUser(o1, o2);
 
@@ -94,12 +90,11 @@ export class ProgramIndicatorUpdateComponent implements OnInit {
     this.dHISUsersSharedCollection = this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
       this.dHISUsersSharedCollection,
       programIndicator.createdBy,
-      programIndicator.lastUpdatedBy,
+      programIndicator.lastUpdatedBy
     );
     this.programsSharedCollection = this.programService.addProgramToCollectionIfMissing<IProgram>(
       this.programsSharedCollection,
-      programIndicator.program,
-      ...(programIndicator.programs ?? []),
+      programIndicator.program
     );
   }
 
@@ -112,9 +107,9 @@ export class ProgramIndicatorUpdateComponent implements OnInit {
           this.dHISUserService.addDHISUserToCollectionIfMissing<IDHISUser>(
             dHISUsers,
             this.programIndicator?.createdBy,
-            this.programIndicator?.lastUpdatedBy,
-          ),
-        ),
+            this.programIndicator?.lastUpdatedBy
+          )
+        )
       )
       .subscribe((dHISUsers: IDHISUser[]) => (this.dHISUsersSharedCollection = dHISUsers));
 
@@ -123,12 +118,8 @@ export class ProgramIndicatorUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IProgram[]>) => res.body ?? []))
       .pipe(
         map((programs: IProgram[]) =>
-          this.programService.addProgramToCollectionIfMissing<IProgram>(
-            programs,
-            this.programIndicator?.program,
-            ...(this.programIndicator?.programs ?? []),
-          ),
-        ),
+          this.programService.addProgramToCollectionIfMissing<IProgram>(programs, this.programIndicator?.program)
+        )
       )
       .subscribe((programs: IProgram[]) => (this.programsSharedCollection = programs));
   }

@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.Dataset}.
+ * Service Implementation for managing {@link Dataset}.
  */
 @Service
 @Transactional
 public class DatasetServiceImpl implements DatasetService {
 
-    private static final Logger log = LoggerFactory.getLogger(DatasetServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(DatasetServiceImpl.class);
 
     private final DatasetRepository datasetRepository;
 
@@ -35,6 +35,7 @@ public class DatasetServiceImpl implements DatasetService {
     @Override
     public Dataset update(Dataset dataset) {
         log.debug("Request to update Dataset : {}", dataset);
+        dataset.setIsPersisted();
         return datasetRepository.save(dataset);
     }
 

@@ -2,23 +2,25 @@ package com.didate.domain;
 
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.springframework.data.domain.Persistable;
 
 /**
  * A TrackedEntityAttribute.
  */
+@JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "tracked_entity_attribute")
 @Audited
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class TrackedEntityAttribute implements Serializable {
+public class TrackedEntityAttribute implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -95,12 +97,16 @@ public class TrackedEntityAttribute implements Serializable {
     @Column(name = "option_set_value")
     private Boolean optionSetValue;
 
+    @NotAudited
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "track", nullable = false)
     private TypeTrack track;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Transient
+    private boolean isPersisted;
+
+    @ManyToOne
     private Project project;
 
     @ManyToOne(optional = false)
@@ -111,10 +117,10 @@ public class TrackedEntityAttribute implements Serializable {
     @NotNull
     private DHISUser lastUpdatedBy;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Optionset optionSet;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "programTrackedEntityAttributes")
+    @ManyToMany(mappedBy = "programTrackedEntityAttributes")
     @JsonIgnoreProperties(
         value = {
             "project",
@@ -457,6 +463,23 @@ public class TrackedEntityAttribute implements Serializable {
         this.track = track;
     }
 
+    @Transient
+    @Override
+    public boolean isNew() {
+        return !this.isPersisted;
+    }
+
+    public TrackedEntityAttribute setIsPersisted() {
+        this.isPersisted = true;
+        return this;
+    }
+
+    @PostLoad
+    @PostPersist
+    public void updateEntityState() {
+        this.setIsPersisted();
+    }
+
     public Project getProject() {
         return this.project;
     }
@@ -528,13 +551,13 @@ public class TrackedEntityAttribute implements Serializable {
         return this;
     }
 
-    public TrackedEntityAttribute addProgram(Program program) {
+    public TrackedEntityAttribute addPrograms(Program program) {
         this.programs.add(program);
         program.getProgramTrackedEntityAttributes().add(this);
         return this;
     }
 
-    public TrackedEntityAttribute removeProgram(Program program) {
+    public TrackedEntityAttribute removePrograms(Program program) {
         this.programs.remove(program);
         program.getProgramTrackedEntityAttributes().remove(this);
         return this;
@@ -550,7 +573,7 @@ public class TrackedEntityAttribute implements Serializable {
         if (!(o instanceof TrackedEntityAttribute)) {
             return false;
         }
-        return getId() != null && getId().equals(((TrackedEntityAttribute) o).getId());
+        return id != null && id.equals(((TrackedEntityAttribute) o).id);
     }
 
     @Override

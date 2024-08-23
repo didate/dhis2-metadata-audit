@@ -4,19 +4,20 @@ import com.didate.domain.ProgramStage;
 import com.didate.repository.ProgramStageRepository;
 import com.didate.service.ProgramStageService;
 import com.didate.web.rest.errors.BadRequestAlertException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,10 +29,10 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.didate.domain.ProgramStage}.
  */
 @RestController
-@RequestMapping("/api/program-stages")
+@RequestMapping("/api")
 public class ProgramStageResource {
 
-    private static final Logger log = LoggerFactory.getLogger(ProgramStageResource.class);
+    private final Logger log = LoggerFactory.getLogger(ProgramStageResource.class);
 
     private static final String ENTITY_NAME = "programStage";
 
@@ -54,16 +55,17 @@ public class ProgramStageResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new programStage, or with status {@code 400 (Bad Request)} if the programStage has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
+    @PostMapping("/program-stages")
     public ResponseEntity<ProgramStage> createProgramStage(@Valid @RequestBody ProgramStage programStage) throws URISyntaxException {
         log.debug("REST request to save ProgramStage : {}", programStage);
         if (programStage.getId() != null) {
             throw new BadRequestAlertException("A new programStage cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        programStage = programStageService.save(programStage);
-        return ResponseEntity.created(new URI("/api/program-stages/" + programStage.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, programStage.getId()))
-            .body(programStage);
+        ProgramStage result = programStageService.save(programStage);
+        return ResponseEntity
+            .created(new URI("/api/program-stages/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
+            .body(result);
     }
 
     /**
@@ -76,7 +78,7 @@ public class ProgramStageResource {
      * or with status {@code 500 (Internal Server Error)} if the programStage couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
+    @PutMapping("/program-stages/{id}")
     public ResponseEntity<ProgramStage> updateProgramStage(
         @PathVariable(value = "id", required = false) final String id,
         @Valid @RequestBody ProgramStage programStage
@@ -93,10 +95,11 @@ public class ProgramStageResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        programStage = programStageService.update(programStage);
-        return ResponseEntity.ok()
+        ProgramStage result = programStageService.update(programStage);
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, programStage.getId()))
-            .body(programStage);
+            .body(result);
     }
 
     /**
@@ -110,7 +113,7 @@ public class ProgramStageResource {
      * or with status {@code 500 (Internal Server Error)} if the programStage couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/program-stages/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ProgramStage> partialUpdateProgramStage(
         @PathVariable(value = "id", required = false) final String id,
         @NotNull @RequestBody ProgramStage programStage
@@ -142,10 +145,10 @@ public class ProgramStageResource {
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of programStages in body.
      */
-    @GetMapping("")
+    @GetMapping("/program-stages")
     public ResponseEntity<List<ProgramStage>> getAllProgramStages(
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
-        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
     ) {
         log.debug("REST request to get a page of ProgramStages");
         Page<ProgramStage> page;
@@ -164,8 +167,8 @@ public class ProgramStageResource {
      * @param id the id of the programStage to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the programStage, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<ProgramStage> getProgramStage(@PathVariable("id") String id) {
+    @GetMapping("/program-stages/{id}")
+    public ResponseEntity<ProgramStage> getProgramStage(@PathVariable String id) {
         log.debug("REST request to get ProgramStage : {}", id);
         Optional<ProgramStage> programStage = programStageService.findOne(id);
         return ResponseUtil.wrapOrNotFound(programStage);
@@ -177,8 +180,8 @@ public class ProgramStageResource {
      * @param id the id of the programStage to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProgramStage(@PathVariable("id") String id) {
+    @DeleteMapping("/program-stages/{id}")
+    public ResponseEntity<Void> deleteProgramStage(@PathVariable String id) {
         log.debug("REST request to delete ProgramStage : {}", id);
         programStageService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();

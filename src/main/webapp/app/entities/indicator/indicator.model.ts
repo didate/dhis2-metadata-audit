@@ -24,12 +24,12 @@ export interface IIndicator {
   displayNumeratorDescription?: string | null;
   displayDenominatorDescription?: string | null;
   dimensionItem?: string | null;
-  track?: keyof typeof TypeTrack | null;
-  project?: IProject | null;
-  createdBy?: IDHISUser | null;
-  lastUpdatedBy?: IDHISUser | null;
-  indicatorType?: IIndicatortype | null;
-  datasets?: IDataset[] | null;
+  track?: TypeTrack | null;
+  project?: Pick<IProject, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'id'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  indicatorType?: Pick<IIndicatortype, 'id'> | null;
+  dataSets?: Pick<IDataset, 'id'>[] | null;
 }
 
 export type NewIndicator = Omit<IIndicator, 'id'> & { id: null };

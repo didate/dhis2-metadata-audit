@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.ProgramRuleAction}.
+ * Service Implementation for managing {@link ProgramRuleAction}.
  */
 @Service
 @Transactional
 public class ProgramRuleActionServiceImpl implements ProgramRuleActionService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProgramRuleActionServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(ProgramRuleActionServiceImpl.class);
 
     private final ProgramRuleActionRepository programRuleActionRepository;
 
@@ -35,6 +35,7 @@ public class ProgramRuleActionServiceImpl implements ProgramRuleActionService {
     @Override
     public ProgramRuleAction update(ProgramRuleAction programRuleAction) {
         log.debug("Request to update ProgramRuleAction : {}", programRuleAction);
+        programRuleAction.setIsPersisted();
         return programRuleActionRepository.save(programRuleAction);
     }
 

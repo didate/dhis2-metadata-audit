@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { IOrganisationUnit } from '../organisation-unit.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../organisation-unit.test-samples';
@@ -21,7 +20,7 @@ describe('OrganisationUnit Service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      imports: [HttpClientTestingModule],
     });
     expectedResult = null;
     service = TestBed.inject(OrganisationUnitService);
@@ -41,6 +40,7 @@ describe('OrganisationUnit Service', () => {
     });
 
     it('should create a OrganisationUnit', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const organisationUnit = { ...sampleWithNewData };
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };

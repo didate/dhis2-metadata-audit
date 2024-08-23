@@ -1,145 +1,124 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    @if (indicator()) {
-      <div>
-        <h2 data-cy="indicatorDetailsHeading"><span jhiTranslate="dhis2AuditApp.indicator.detail.title">Indicator</span></h2>
+    <div *ngIf="indicator">
+      <h2 data-cy="indicatorDetailsHeading"><span jhiTranslate="dhis2TrackApp.indicator.detail.title">Indicator</span></h2>
 
-        <hr />
+      <hr />
 
-        <jhi-alert-error></jhi-alert-error>
+      <jhi-alert-error></jhi-alert-error>
 
-        <jhi-alert></jhi-alert>
+      <jhi-alert></jhi-alert>
 
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.id">Id</span></dt>
-          <dd>
-            <span>{{ indicator()!.id }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.name">Name</span></dt>
-          <dd>
-            <span>{{ indicator()!.name }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.shortName">Short Name</span></dt>
-          <dd>
-            <span>{{ indicator()!.shortName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.displayShortName">Display Short Name</span></dt>
-          <dd>
-            <span>{{ indicator()!.displayShortName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.displayName">Display Name</span></dt>
-          <dd>
-            <span>{{ indicator()!.displayName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.displayFormName">Display Form Name</span></dt>
-          <dd>
-            <span>{{ indicator()!.displayFormName }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.created">Created</span></dt>
-          <dd>
-            <span>{{ indicator()!.created | formatMediumDatetime }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.lastUpdated">Last Updated</span></dt>
-          <dd>
-            <span>{{ indicator()!.lastUpdated | formatMediumDatetime }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.publicAccess">Public Access</span></dt>
-          <dd>
-            <span>{{ indicator()!.publicAccess }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.dimensionItemType">Dimension Item Type</span></dt>
-          <dd>
-            <span>{{ indicator()!.dimensionItemType }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.annualized">Annualized</span></dt>
-          <dd>
-            <span>{{ indicator()!.annualized }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.numerator">Numerator</span></dt>
-          <dd>
-            <span>{{ indicator()!.numerator }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.numeratorDescription">Numerator Description</span></dt>
-          <dd>
-            <span>{{ indicator()!.numeratorDescription }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.denominator">Denominator</span></dt>
-          <dd>
-            <span>{{ indicator()!.denominator }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.denominatorDescription">Denominator Description</span></dt>
-          <dd>
-            <span>{{ indicator()!.denominatorDescription }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.displayNumeratorDescription">Display Numerator Description</span></dt>
-          <dd>
-            <span>{{ indicator()!.displayNumeratorDescription }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.displayDenominatorDescription">Display Denominator Description</span></dt>
-          <dd>
-            <span>{{ indicator()!.displayDenominatorDescription }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.dimensionItem">Dimension Item</span></dt>
-          <dd>
-            <span>{{ indicator()!.dimensionItem }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.track">Track</span></dt>
-          <dd>
-            <span [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (indicator()!.track ?? 'null')">{{
-              { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[indicator()!.track ?? 'null']
-            }}</span>
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.project">Project</span></dt>
-          <dd>
-            @if (indicator()!.project) {
-              <div>
-                <a [routerLink]="['/project', indicator()!.project?.id, 'view']">{{ indicator()!.project?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.createdBy">Created By</span></dt>
-          <dd>
-            @if (indicator()!.createdBy) {
-              <div>
-                <a [routerLink]="['/dhis-user', indicator()!.createdBy?.id, 'view']">{{ indicator()!.createdBy?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.lastUpdatedBy">Last Updated By</span></dt>
-          <dd>
-            @if (indicator()!.lastUpdatedBy) {
-              <div>
-                <a [routerLink]="['/dhis-user', indicator()!.lastUpdatedBy?.id, 'view']">{{ indicator()!.lastUpdatedBy?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.indicatorType">Indicator Type</span></dt>
-          <dd>
-            @if (indicator()!.indicatorType) {
-              <div>
-                <a [routerLink]="['/indicatortype', indicator()!.indicatorType?.id, 'view']">{{ indicator()!.indicatorType?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="dhis2AuditApp.indicator.dataset">Dataset</span></dt>
-          <dd>
-            @for (dataset of indicator()!.datasets; track $index; let last = $last) {
-              <span>
-                <a [routerLink]="['/dataset', dataset.id, 'view']">{{ dataset?.id }}</a
-                >{{ last ? '' : ', ' }}
-              </span>
-            }
-          </dd>
-        </dl>
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.id">Id</span></dt>
+        <dd>
+          <span>{{ indicator.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.name">Name</span></dt>
+        <dd>
+          <span>{{ indicator.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.shortName">Short Name</span></dt>
+        <dd>
+          <span>{{ indicator.shortName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.displayShortName">Display Short Name</span></dt>
+        <dd>
+          <span>{{ indicator.displayShortName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.displayName">Display Name</span></dt>
+        <dd>
+          <span>{{ indicator.displayName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.displayFormName">Display Form Name</span></dt>
+        <dd>
+          <span>{{ indicator.displayFormName }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.created">Created</span></dt>
+        <dd>
+          <span>{{ indicator.created | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.lastUpdated">Last Updated</span></dt>
+        <dd>
+          <span>{{ indicator.lastUpdated | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.publicAccess">Public Access</span></dt>
+        <dd>
+          <span>{{ indicator.publicAccess }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.dimensionItemType">Dimension Item Type</span></dt>
+        <dd>
+          <span>{{ indicator.dimensionItemType }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.annualized">Annualized</span></dt>
+        <dd>
+          <span>{{ indicator.annualized }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.numerator">Numerator</span></dt>
+        <dd>
+          <span>{{ indicator.numerator }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.numeratorDescription">Numerator Description</span></dt>
+        <dd>
+          <span>{{ indicator.numeratorDescription }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.denominator">Denominator</span></dt>
+        <dd>
+          <span>{{ indicator.denominator }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.denominatorDescription">Denominator Description</span></dt>
+        <dd>
+          <span>{{ indicator.denominatorDescription }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.displayNumeratorDescription">Display Numerator Description</span></dt>
+        <dd>
+          <span>{{ indicator.displayNumeratorDescription }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.displayDenominatorDescription">Display Denominator Description</span></dt>
+        <dd>
+          <span>{{ indicator.displayDenominatorDescription }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.dimensionItem">Dimension Item</span></dt>
+        <dd>
+          <span>{{ indicator.dimensionItem }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.track">Track</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + indicator.track }}">{{ indicator.track }}</span>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.project">Project</span></dt>
+        <dd>
+          <div *ngIf="indicator.project">
+            <a [routerLink]="['/project', indicator.project.id, 'view']">{{ indicator.project.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span></dt>
+        <dd>
+          <div *ngIf="indicator.createdBy">
+            <a [routerLink]="['/dhis-user', indicator.createdBy.id, 'view']">{{ indicator.createdBy.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.lastUpdatedBy">Last Updated By</span></dt>
+        <dd>
+          <div *ngIf="indicator.lastUpdatedBy">
+            <a [routerLink]="['/dhis-user', indicator.lastUpdatedBy.id, 'view']">{{ indicator.lastUpdatedBy.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="dhis2TrackApp.indicator.indicatorType">Indicator Type</span></dt>
+        <dd>
+          <div *ngIf="indicator.indicatorType">
+            <a [routerLink]="['/indicatortype', indicator.indicatorType.id, 'view']">{{ indicator.indicatorType.id }}</a>
+          </div>
+        </dd>
+      </dl>
 
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-        </button>
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
 
-        <button type="button" [routerLink]="['/indicator', indicator()!.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-        </button>
-      </div>
-    }
+      <button type="button" [routerLink]="['/indicator', indicator.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
   </div>
 </div>

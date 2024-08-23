@@ -1,18 +1,22 @@
-import { Component, input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import SharedModule from 'app/shared/shared.module';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { IOptionset } from '../optionset.model';
 
 @Component({
-  standalone: true,
   selector: 'jhi-optionset-detail',
   templateUrl: './optionset-detail.component.html',
-  imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
-export class OptionsetDetailComponent {
-  optionset = input<IOptionset | null>(null);
+export class OptionsetDetailComponent implements OnInit {
+  optionset: IOptionset | null = null;
+
+  constructor(protected activatedRoute: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ optionset }) => {
+      this.optionset = optionset;
+    });
+  }
 
   previousState(): void {
     window.history.back();

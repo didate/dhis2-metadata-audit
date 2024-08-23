@@ -1,22 +1,17 @@
-import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import SharedModule from 'app/shared/shared.module';
-import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
 import { IProgramIndicator } from '../program-indicator.model';
 import { ProgramIndicatorService } from '../service/program-indicator.service';
+import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
 
 @Component({
-  standalone: true,
   templateUrl: './program-indicator-delete-dialog.component.html',
-  imports: [SharedModule, FormsModule],
 })
 export class ProgramIndicatorDeleteDialogComponent {
   programIndicator?: IProgramIndicator;
 
-  protected programIndicatorService = inject(ProgramIndicatorService);
-  protected activeModal = inject(NgbActiveModal);
+  constructor(protected programIndicatorService: ProgramIndicatorService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

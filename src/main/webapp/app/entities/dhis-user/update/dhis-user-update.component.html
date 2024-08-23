@@ -1,46 +1,48 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-dhis-user-heading" data-cy="DHISUserCreateUpdateHeading" jhiTranslate="dhis2AuditApp.dHISUser.home.createOrEditLabel">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-dhis-user-heading" data-cy="DHISUserCreateUpdateHeading" jhiTranslate="dhis2TrackApp.dHISUser.home.createOrEditLabel">
         Créer ou éditer un DHIS User
       </h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="dhis2AuditApp.dHISUser.id">Id</label>
-            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-            @if (editForm.get('id')!.invalid && (editForm.get('id')!.dirty || editForm.get('id')!.touched)) {
-              <div>
-                @if (editForm.get('id')?.errors?.required) {
-                  <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-                }
-              </div>
-            }
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dHISUser.id" for="field_id">Id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="id"
+            id="field_id"
+            data-cy="id"
+            formControlName="id"
+            [readonly]="editForm.get('id')!.value != null"
+          />
+          <div *ngIf="editForm.get('id')!.invalid && (editForm.get('id')!.dirty || editForm.get('id')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('id')?.errors?.required" jhiTranslate="entity.validation.required">
+              Ce champ est obligatoire.
+            </small>
           </div>
-        }
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_code" jhiTranslate="dhis2AuditApp.dHISUser.code">Code</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dHISUser.code" for="field_code">Code</label>
           <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_name" jhiTranslate="dhis2AuditApp.dHISUser.name">Name</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dHISUser.name" for="field_name">Name</label>
           <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
-          @if (editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)) {
-            <div>
-              @if (editForm.get('name')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+              Ce champ est obligatoire.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayName" jhiTranslate="dhis2AuditApp.dHISUser.displayName">Display Name</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dHISUser.displayName" for="field_displayName">Display Name</label>
           <input
             type="text"
             class="form-control"
@@ -51,20 +53,22 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_username" jhiTranslate="dhis2AuditApp.dHISUser.username">Username</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dHISUser.username" for="field_username">Username</label>
           <input type="text" class="form-control" name="username" id="field_username" data-cy="username" formControlName="username" />
-          @if (editForm.get('username')!.invalid && (editForm.get('username')!.dirty || editForm.get('username')!.touched)) {
-            <div>
-              @if (editForm.get('username')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+          <div *ngIf="editForm.get('username')!.invalid && (editForm.get('username')!.dirty || editForm.get('username')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('username')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_lastLogin" jhiTranslate="dhis2AuditApp.dHISUser.lastLogin">Last Login</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dHISUser.lastLogin" for="field_lastLogin">Last Login</label>
           <div class="d-flex">
             <input
               id="field_lastLogin"
@@ -78,13 +82,13 @@
           </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_email" jhiTranslate="dhis2AuditApp.dHISUser.email">Email</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dHISUser.email" for="field_email">Email</label>
           <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_phoneNumber" jhiTranslate="dhis2AuditApp.dHISUser.phoneNumber">Phone Number</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dHISUser.phoneNumber" for="field_phoneNumber">Phone Number</label>
           <input
             type="text"
             class="form-control"
@@ -95,13 +99,13 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_disabled" jhiTranslate="dhis2AuditApp.dHISUser.disabled">Disabled</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dHISUser.disabled" for="field_disabled">Disabled</label>
           <input type="checkbox" class="form-check" name="disabled" id="field_disabled" data-cy="disabled" formControlName="disabled" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_passwordLastUpdated" jhiTranslate="dhis2AuditApp.dHISUser.passwordLastUpdated"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dHISUser.passwordLastUpdated" for="field_passwordLastUpdated"
             >Password Last Updated</label
           >
           <div class="d-flex">
@@ -117,8 +121,8 @@
           </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_created" jhiTranslate="dhis2AuditApp.dHISUser.created">Created</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dHISUser.created" for="field_created">Created</label>
           <div class="d-flex">
             <input
               id="field_created"
@@ -132,8 +136,8 @@
           </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_lastUpdated" jhiTranslate="dhis2AuditApp.dHISUser.lastUpdated">Last Updated</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dHISUser.lastUpdated" for="field_lastUpdated">Last Updated</label>
           <div class="d-flex">
             <input
               id="field_lastUpdated"
@@ -147,21 +151,19 @@
           </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_track" jhiTranslate="dhis2AuditApp.dHISUser.track">Track</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dHISUser.track" for="field_track">Track</label>
           <select class="form-control" name="track" formControlName="track" id="field_track" data-cy="track">
-            <option [ngValue]="null">{{ 'dhis2AuditApp.TypeTrack.null' | translate }}</option>
-            @for (typeTrack of typeTrackValues; track $index) {
-              <option [value]="typeTrack">{{ 'dhis2AuditApp.TypeTrack.' + typeTrack | translate }}</option>
-            }
+            <option [ngValue]="null">{{ 'dhis2TrackApp.TypeTrack.null' | translate }}</option>
+            <option *ngFor="let typeTrack of typeTrackValues" [value]="typeTrack">
+              {{ 'dhis2TrackApp.TypeTrack.' + typeTrack | translate }}
+            </option>
           </select>
-          @if (editForm.get('track')!.invalid && (editForm.get('track')!.dirty || editForm.get('track')!.touched)) {
-            <div>
-              @if (editForm.get('track')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+          <div *ngIf="editForm.get('track')!.invalid && (editForm.get('track')!.dirty || editForm.get('track')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('track')?.errors?.required" jhiTranslate="entity.validation.required">
+              Ce champ est obligatoire.
+            </small>
+          </div>
         </div>
       </div>
 

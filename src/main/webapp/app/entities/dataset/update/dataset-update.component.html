@@ -1,27 +1,33 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-dataset-heading" data-cy="DatasetCreateUpdateHeading" jhiTranslate="dhis2AuditApp.dataset.home.createOrEditLabel">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-dataset-heading" data-cy="DatasetCreateUpdateHeading" jhiTranslate="dhis2TrackApp.dataset.home.createOrEditLabel">
         Créer ou éditer un Dataset
       </h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="dhis2AuditApp.dataset.id">Id</label>
-            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-          </div>
-        }
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.id" for="field_id">Id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="id"
+            id="field_id"
+            data-cy="id"
+            formControlName="id"
+            [readonly]="editForm.get('id')!.value != null"
+          />
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_name" jhiTranslate="dhis2AuditApp.dataset.name">Name</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.name" for="field_name">Name</label>
           <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_created" jhiTranslate="dhis2AuditApp.dataset.created">Created</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.created" for="field_created">Created</label>
           <div class="d-flex">
             <input
               id="field_created"
@@ -33,23 +39,26 @@
               placeholder="YYYY-MM-DD HH:mm"
             />
           </div>
-          @if (editForm.get('created')!.invalid && (editForm.get('created')!.dirty || editForm.get('created')!.touched)) {
-            <div>
-              @if (editForm.get('created')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('created')?.errors?.datetimelocal"
-                jhiTranslate="entity.validation.datetimelocal"
-                >Ce champ doit être une date et une heure.</small
-              >
-            </div>
-          }
+          <div *ngIf="editForm.get('created')!.invalid && (editForm.get('created')!.dirty || editForm.get('created')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('created')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('created')?.errors?.datetimelocal"
+              jhiTranslate="entity.validation.datetimelocal"
+            >
+              Ce champ doit être une date et une heure.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_lastUpdated" jhiTranslate="dhis2AuditApp.dataset.lastUpdated">Last Updated</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.lastUpdated" for="field_lastUpdated">Last Updated</label>
           <div class="d-flex">
             <input
               id="field_lastUpdated"
@@ -61,28 +70,31 @@
               placeholder="YYYY-MM-DD HH:mm"
             />
           </div>
-          @if (editForm.get('lastUpdated')!.invalid && (editForm.get('lastUpdated')!.dirty || editForm.get('lastUpdated')!.touched)) {
-            <div>
-              @if (editForm.get('lastUpdated')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('lastUpdated')?.errors?.datetimelocal"
-                jhiTranslate="entity.validation.datetimelocal"
-                >Ce champ doit être une date et une heure.</small
-              >
-            </div>
-          }
+          <div *ngIf="editForm.get('lastUpdated')!.invalid && (editForm.get('lastUpdated')!.dirty || editForm.get('lastUpdated')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('lastUpdated')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('lastUpdated')?.errors?.datetimelocal"
+              jhiTranslate="entity.validation.datetimelocal"
+            >
+              Ce champ doit être une date et une heure.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_shortName" jhiTranslate="dhis2AuditApp.dataset.shortName">Short Name</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.shortName" for="field_shortName">Short Name</label>
           <input type="text" class="form-control" name="shortName" id="field_shortName" data-cy="shortName" formControlName="shortName" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_description" jhiTranslate="dhis2AuditApp.dataset.description">Description</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.description" for="field_description">Description</label>
           <input
             type="text"
             class="form-control"
@@ -93,8 +105,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_dimensionItemType" jhiTranslate="dhis2AuditApp.dataset.dimensionItemType"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.dimensionItemType" for="field_dimensionItemType"
             >Dimension Item Type</label
           >
           <input
@@ -107,8 +119,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_periodType" jhiTranslate="dhis2AuditApp.dataset.periodType">Period Type</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.periodType" for="field_periodType">Period Type</label>
           <input
             type="text"
             class="form-control"
@@ -119,18 +131,18 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_mobile" jhiTranslate="dhis2AuditApp.dataset.mobile">Mobile</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.mobile" for="field_mobile">Mobile</label>
           <input type="text" class="form-control" name="mobile" id="field_mobile" data-cy="mobile" formControlName="mobile" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_version" jhiTranslate="dhis2AuditApp.dataset.version">Version</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.version" for="field_version">Version</label>
           <input type="number" class="form-control" name="version" id="field_version" data-cy="version" formControlName="version" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_expiryDays" jhiTranslate="dhis2AuditApp.dataset.expiryDays">Expiry Days</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.expiryDays" for="field_expiryDays">Expiry Days</label>
           <input
             type="number"
             class="form-control"
@@ -141,8 +153,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_timelyDays" jhiTranslate="dhis2AuditApp.dataset.timelyDays">Timely Days</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.timelyDays" for="field_timelyDays">Timely Days</label>
           <input
             type="number"
             class="form-control"
@@ -153,8 +165,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_notifyCompletingUser" jhiTranslate="dhis2AuditApp.dataset.notifyCompletingUser"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.notifyCompletingUser" for="field_notifyCompletingUser"
             >Notify Completing User</label
           >
           <input
@@ -167,8 +179,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_openFuturePeriods" jhiTranslate="dhis2AuditApp.dataset.openFuturePeriods"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.openFuturePeriods" for="field_openFuturePeriods"
             >Open Future Periods</label
           >
           <input
@@ -181,8 +193,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_openPeriodsAfterCoEndDate" jhiTranslate="dhis2AuditApp.dataset.openPeriodsAfterCoEndDate"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.openPeriodsAfterCoEndDate" for="field_openPeriodsAfterCoEndDate"
             >Open Periods After Co End Date</label
           >
           <input
@@ -195,8 +207,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_fieldCombinationRequired" jhiTranslate="dhis2AuditApp.dataset.fieldCombinationRequired"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.fieldCombinationRequired" for="field_fieldCombinationRequired"
             >Field Combination Required</label
           >
           <input
@@ -209,8 +221,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_validCompleteOnly" jhiTranslate="dhis2AuditApp.dataset.validCompleteOnly"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.validCompleteOnly" for="field_validCompleteOnly"
             >Valid Complete Only</label
           >
           <input
@@ -223,8 +235,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_noValueRequiresComment" jhiTranslate="dhis2AuditApp.dataset.noValueRequiresComment"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.noValueRequiresComment" for="field_noValueRequiresComment"
             >No Value Requires Comment</label
           >
           <input
@@ -237,8 +249,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_skipOffline" jhiTranslate="dhis2AuditApp.dataset.skipOffline">Skip Offline</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.skipOffline" for="field_skipOffline">Skip Offline</label>
           <input
             type="checkbox"
             class="form-check"
@@ -249,8 +261,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_dataElementDecoration" jhiTranslate="dhis2AuditApp.dataset.dataElementDecoration"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.dataElementDecoration" for="field_dataElementDecoration"
             >Data Element Decoration</label
           >
           <input
@@ -263,8 +275,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_renderAsTabs" jhiTranslate="dhis2AuditApp.dataset.renderAsTabs">Render As Tabs</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.renderAsTabs" for="field_renderAsTabs">Render As Tabs</label>
           <input
             type="checkbox"
             class="form-check"
@@ -275,8 +287,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_renderHorizontally" jhiTranslate="dhis2AuditApp.dataset.renderHorizontally"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.renderHorizontally" for="field_renderHorizontally"
             >Render Horizontally</label
           >
           <input
@@ -289,11 +301,11 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
           <label
             class="form-label"
+            jhiTranslate="dhis2TrackApp.dataset.compulsoryFieldsCompleteOnly"
             for="field_compulsoryFieldsCompleteOnly"
-            jhiTranslate="dhis2AuditApp.dataset.compulsoryFieldsCompleteOnly"
             >Compulsory Fields Complete Only</label
           >
           <input
@@ -306,13 +318,13 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_formType" jhiTranslate="dhis2AuditApp.dataset.formType">Form Type</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.formType" for="field_formType">Form Type</label>
           <input type="text" class="form-control" name="formType" id="field_formType" data-cy="formType" formControlName="formType" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayName" jhiTranslate="dhis2AuditApp.dataset.displayName">Display Name</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.displayName" for="field_displayName">Display Name</label>
           <input
             type="text"
             class="form-control"
@@ -323,8 +335,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_dimensionItem" jhiTranslate="dhis2AuditApp.dataset.dimensionItem">Dimension Item</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.dimensionItem" for="field_dimensionItem">Dimension Item</label>
           <input
             type="text"
             class="form-control"
@@ -335,8 +347,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayShortName" jhiTranslate="dhis2AuditApp.dataset.displayShortName"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.displayShortName" for="field_displayShortName"
             >Display Short Name</label
           >
           <input
@@ -349,8 +361,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayDescription" jhiTranslate="dhis2AuditApp.dataset.displayDescription"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.displayDescription" for="field_displayDescription"
             >Display Description</label
           >
           <input
@@ -363,8 +375,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_displayFormName" jhiTranslate="dhis2AuditApp.dataset.displayFormName"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.displayFormName" for="field_displayFormName"
             >Display Form Name</label
           >
           <input
@@ -377,8 +389,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_dataSetElementsCount" jhiTranslate="dhis2AuditApp.dataset.dataSetElementsCount"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.dataSetElementsCount" for="field_dataSetElementsCount"
             >Data Set Elements Count</label
           >
           <input
@@ -391,8 +403,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_indicatorsCount" jhiTranslate="dhis2AuditApp.dataset.indicatorsCount"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.indicatorsCount" for="field_indicatorsCount"
             >Indicators Count</label
           >
           <input
@@ -405,8 +417,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_organisationUnitsCount" jhiTranslate="dhis2AuditApp.dataset.organisationUnitsCount"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.organisationUnitsCount" for="field_organisationUnitsCount"
             >Organisation Units Count</label
           >
           <input
@@ -419,8 +431,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_dataSetElementsContent" jhiTranslate="dhis2AuditApp.dataset.dataSetElementsContent"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.dataSetElementsContent" for="field_dataSetElementsContent"
             >Data Set Elements Content</label
           >
           <input
@@ -433,8 +445,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_indicatorsContent" jhiTranslate="dhis2AuditApp.dataset.indicatorsContent"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.indicatorsContent" for="field_indicatorsContent"
             >Indicators Content</label
           >
           <input
@@ -447,8 +459,8 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_organisationUnitsContent" jhiTranslate="dhis2AuditApp.dataset.organisationUnitsContent"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.organisationUnitsContent" for="field_organisationUnitsContent"
             >Organisation Units Content</label
           >
           <input
@@ -461,25 +473,23 @@
           />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_track" jhiTranslate="dhis2AuditApp.dataset.track">Track</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.track" for="field_track">Track</label>
           <select class="form-control" name="track" formControlName="track" id="field_track" data-cy="track">
-            <option [ngValue]="null">{{ 'dhis2AuditApp.TypeTrack.null' | translate }}</option>
-            @for (typeTrack of typeTrackValues; track $index) {
-              <option [value]="typeTrack">{{ 'dhis2AuditApp.TypeTrack.' + typeTrack | translate }}</option>
-            }
+            <option [ngValue]="null">{{ 'dhis2TrackApp.TypeTrack.null' | translate }}</option>
+            <option *ngFor="let typeTrack of typeTrackValues" [value]="typeTrack">
+              {{ 'dhis2TrackApp.TypeTrack.' + typeTrack | translate }}
+            </option>
           </select>
-          @if (editForm.get('track')!.invalid && (editForm.get('track')!.dirty || editForm.get('track')!.touched)) {
-            <div>
-              @if (editForm.get('track')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+          <div *ngIf="editForm.get('track')!.invalid && (editForm.get('track')!.dirty || editForm.get('track')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('track')?.errors?.required" jhiTranslate="entity.validation.required">
+              Ce champ est obligatoire.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_project" jhiTranslate="dhis2AuditApp.dataset.project">Project</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.project" for="field_project">Project</label>
           <select
             class="form-control"
             id="field_project"
@@ -489,14 +499,12 @@
             [compareWith]="compareProject"
           >
             <option [ngValue]="null"></option>
-            @for (projectOption of projectsSharedCollection; track $index) {
-              <option [ngValue]="projectOption">{{ projectOption.id }}</option>
-            }
+            <option [ngValue]="projectOption" *ngFor="let projectOption of projectsSharedCollection">{{ projectOption.id }}</option>
           </select>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_createdBy" jhiTranslate="dhis2AuditApp.dataset.createdBy">Created By</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.createdBy" for="field_createdBy">Created By</label>
           <select
             class="form-control"
             id="field_createdBy"
@@ -505,24 +513,22 @@
             formControlName="createdBy"
             [compareWith]="compareDHISUser"
           >
-            @if (!editForm.get('createdBy')!.value) {
-              <option [ngValue]="null" selected></option>
-            }
-            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
-              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
-            }
+            <option *ngIf="!editForm.get('createdBy')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="dHISUserOption" *ngFor="let dHISUserOption of dHISUsersSharedCollection">{{ dHISUserOption.id }}</option>
           </select>
         </div>
-        @if (editForm.get(['createdBy'])!.invalid && (editForm.get(['createdBy'])!.dirty || editForm.get(['createdBy'])!.touched)) {
-          <div>
-            @if (editForm.get(['createdBy'])?.errors?.required) {
-              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-            }
-          </div>
-        }
+        <div *ngIf="editForm.get(['createdBy'])!.invalid && (editForm.get(['createdBy'])!.dirty || editForm.get(['createdBy'])!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['createdBy'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Ce champ est obligatoire.
+          </small>
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_lastUpdatedBy" jhiTranslate="dhis2AuditApp.dataset.lastUpdatedBy">Last Updated By</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.lastUpdatedBy" for="field_lastUpdatedBy">Last Updated By</label>
           <select
             class="form-control"
             id="field_lastUpdatedBy"
@@ -531,26 +537,26 @@
             formControlName="lastUpdatedBy"
             [compareWith]="compareDHISUser"
           >
-            @if (!editForm.get('lastUpdatedBy')!.value) {
-              <option [ngValue]="null" selected></option>
-            }
-            @for (dHISUserOption of dHISUsersSharedCollection; track $index) {
-              <option [ngValue]="dHISUserOption">{{ dHISUserOption.id }}</option>
-            }
+            <option *ngIf="!editForm.get('lastUpdatedBy')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="dHISUserOption" *ngFor="let dHISUserOption of dHISUsersSharedCollection">{{ dHISUserOption.id }}</option>
           </select>
         </div>
-        @if (
-          editForm.get(['lastUpdatedBy'])!.invalid && (editForm.get(['lastUpdatedBy'])!.dirty || editForm.get(['lastUpdatedBy'])!.touched)
-        ) {
-          <div>
-            @if (editForm.get(['lastUpdatedBy'])?.errors?.required) {
-              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-            }
-          </div>
-        }
+        <div
+          *ngIf="
+            editForm.get(['lastUpdatedBy'])!.invalid && (editForm.get(['lastUpdatedBy'])!.dirty || editForm.get(['lastUpdatedBy'])!.touched)
+          "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['lastUpdatedBy'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Ce champ est obligatoire.
+          </small>
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_categoryCombo" jhiTranslate="dhis2AuditApp.dataset.categoryCombo">Category Combo</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.dataset.categoryCombo" for="field_categoryCombo">Category Combo</label>
           <select
             class="form-control"
             id="field_categoryCombo"
@@ -560,14 +566,14 @@
             [compareWith]="compareCategorycombo"
           >
             <option [ngValue]="null"></option>
-            @for (categorycomboOption of categorycombosSharedCollection; track $index) {
-              <option [ngValue]="categorycomboOption">{{ categorycomboOption.id }}</option>
-            }
+            <option [ngValue]="categorycomboOption" *ngFor="let categorycomboOption of categorycombosSharedCollection">
+              {{ categorycomboOption.id }}
+            </option>
           </select>
         </div>
 
-        <div class="mb-3">
-          <label for="field_dataSetElements" jhiTranslate="dhis2AuditApp.dataset.dataSetElements">Data Set Elements</label>
+        <div class="row mb-3">
+          <label jhiTranslate="dhis2TrackApp.dataset.dataSetElements" for="field_dataSetElements">Data Set Elements</label>
           <select
             class="form-control"
             id="field_dataSetElements"
@@ -577,14 +583,14 @@
             formControlName="dataSetElements"
             [compareWith]="compareDataelement"
           >
-            @for (dataelementOption of dataelementsSharedCollection; track $index) {
-              <option [ngValue]="dataelementOption">{{ dataelementOption.id }}</option>
-            }
+            <option [ngValue]="dataelementOption" *ngFor="let dataelementOption of dataelementsSharedCollection">
+              {{ dataelementOption.id }}
+            </option>
           </select>
         </div>
 
-        <div class="mb-3">
-          <label for="field_indicators" jhiTranslate="dhis2AuditApp.dataset.indicators">Indicators</label>
+        <div class="row mb-3">
+          <label jhiTranslate="dhis2TrackApp.dataset.indicators" for="field_indicators">Indicators</label>
           <select
             class="form-control"
             id="field_indicators"
@@ -594,14 +600,12 @@
             formControlName="indicators"
             [compareWith]="compareIndicator"
           >
-            @for (indicatorOption of indicatorsSharedCollection; track $index) {
-              <option [ngValue]="indicatorOption">{{ indicatorOption.id }}</option>
-            }
+            <option [ngValue]="indicatorOption" *ngFor="let indicatorOption of indicatorsSharedCollection">{{ indicatorOption.id }}</option>
           </select>
         </div>
 
-        <div class="mb-3">
-          <label for="field_organisationUnits" jhiTranslate="dhis2AuditApp.dataset.organisationUnits">Organisation Units</label>
+        <div class="row mb-3">
+          <label jhiTranslate="dhis2TrackApp.dataset.organisationUnits" for="field_organisationUnits">Organisation Units</label>
           <select
             class="form-control"
             id="field_organisationUnits"
@@ -611,9 +615,9 @@
             formControlName="organisationUnits"
             [compareWith]="compareOrganisationUnit"
           >
-            @for (organisationUnitOption of organisationUnitsSharedCollection; track $index) {
-              <option [ngValue]="organisationUnitOption">{{ organisationUnitOption.id }}</option>
-            }
+            <option [ngValue]="organisationUnitOption" *ngFor="let organisationUnitOption of organisationUnitsSharedCollection">
+              {{ organisationUnitOption.id }}
+            </option>
           </select>
         </div>
       </div>

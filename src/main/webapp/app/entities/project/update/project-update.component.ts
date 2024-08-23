@@ -1,32 +1,28 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { ProjectFormService, ProjectFormGroup } from './project-form.service';
 import { IProject } from '../project.model';
 import { ProjectService } from '../service/project.service';
-import { ProjectFormService, ProjectFormGroup } from './project-form.service';
 
 @Component({
-  standalone: true,
   selector: 'jhi-project-update',
   templateUrl: './project-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ProjectUpdateComponent implements OnInit {
   isSaving = false;
   project: IProject | null = null;
 
-  protected projectService = inject(ProjectService);
-  protected projectFormService = inject(ProjectFormService);
-  protected activatedRoute = inject(ActivatedRoute);
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: ProjectFormGroup = this.projectFormService.createProjectFormGroup();
+
+  constructor(
+    protected projectService: ProjectService,
+    protected projectFormService: ProjectFormService,
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ project }) => {

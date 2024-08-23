@@ -1,10 +1,10 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2
         id="jhi-person-notifier-heading"
         data-cy="PersonNotifierCreateUpdateHeading"
-        jhiTranslate="dhis2AuditApp.personNotifier.home.createOrEditLabel"
+        jhiTranslate="dhis2TrackApp.personNotifier.home.createOrEditLabel"
       >
         Créer ou éditer un Person Notifier
       </h2>
@@ -12,15 +12,13 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="dhis2AuditApp.personNotifier.id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-          </div>
-        }
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_personName" jhiTranslate="dhis2AuditApp.personNotifier.personName">Person Name</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.personNotifier.personName" for="field_personName">Person Name</label>
           <input
             type="text"
             class="form-control"
@@ -29,17 +27,19 @@
             data-cy="personName"
             formControlName="personName"
           />
-          @if (editForm.get('personName')!.invalid && (editForm.get('personName')!.dirty || editForm.get('personName')!.touched)) {
-            <div>
-              @if (editForm.get('personName')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+          <div *ngIf="editForm.get('personName')!.invalid && (editForm.get('personName')!.dirty || editForm.get('personName')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('personName')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_personPhone" jhiTranslate="dhis2AuditApp.personNotifier.personPhone">Person Phone</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.personNotifier.personPhone" for="field_personPhone">Person Phone</label>
           <input
             type="text"
             class="form-control"
@@ -48,17 +48,19 @@
             data-cy="personPhone"
             formControlName="personPhone"
           />
-          @if (editForm.get('personPhone')!.invalid && (editForm.get('personPhone')!.dirty || editForm.get('personPhone')!.touched)) {
-            <div>
-              @if (editForm.get('personPhone')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+          <div *ngIf="editForm.get('personPhone')!.invalid && (editForm.get('personPhone')!.dirty || editForm.get('personPhone')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('personPhone')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_personEmail" jhiTranslate="dhis2AuditApp.personNotifier.personEmail">Person Email</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.personNotifier.personEmail" for="field_personEmail">Person Email</label>
           <input
             type="text"
             class="form-control"
@@ -67,25 +69,27 @@
             data-cy="personEmail"
             formControlName="personEmail"
           />
-          @if (editForm.get('personEmail')!.invalid && (editForm.get('personEmail')!.dirty || editForm.get('personEmail')!.touched)) {
-            <div>
-              @if (editForm.get('personEmail')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-              @if (editForm.get('personEmail')?.errors?.pattern) {
-                <small
-                  class="form-text text-danger"
-                  jhiTranslate="entity.validation.pattern"
-                  [translateValues]="{ pattern: 'Person Email' }"
-                  >Ce champ doit suivre l&apos;expression régulière Person Email.</small
-                >
-              }
-            </div>
-          }
+          <div *ngIf="editForm.get('personEmail')!.invalid && (editForm.get('personEmail')!.dirty || editForm.get('personEmail')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('personEmail')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('personEmail')?.errors?.pattern"
+              jhiTranslate="entity.validation.pattern"
+              [translateValues]="{ pattern: 'Person Email' }"
+            >
+              Ce champ doit suivre l'expression régulière Person Email.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_personOrganization" jhiTranslate="dhis2AuditApp.personNotifier.personOrganization"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.personNotifier.personOrganization" for="field_personOrganization"
             >Person Organization</label
           >
           <input
@@ -96,20 +100,24 @@
             data-cy="personOrganization"
             formControlName="personOrganization"
           />
-          @if (
-            editForm.get('personOrganization')!.invalid &&
-            (editForm.get('personOrganization')!.dirty || editForm.get('personOrganization')!.touched)
-          ) {
-            <div>
-              @if (editForm.get('personOrganization')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+          <div
+            *ngIf="
+              editForm.get('personOrganization')!.invalid &&
+              (editForm.get('personOrganization')!.dirty || editForm.get('personOrganization')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('personOrganization')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_project" jhiTranslate="dhis2AuditApp.personNotifier.project">Project</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.personNotifier.project" for="field_project">Project</label>
           <select
             class="form-control"
             id="field_project"
@@ -119,9 +127,7 @@
             [compareWith]="compareProject"
           >
             <option [ngValue]="null"></option>
-            @for (projectOption of projectsSharedCollection; track $index) {
-              <option [ngValue]="projectOption">{{ projectOption.id }}</option>
-            }
+            <option [ngValue]="projectOption" *ngFor="let projectOption of projectsSharedCollection">{{ projectOption.id }}</option>
           </select>
         </div>
       </div>

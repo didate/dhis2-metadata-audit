@@ -1,22 +1,20 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-project-heading" data-cy="ProjectCreateUpdateHeading" jhiTranslate="dhis2AuditApp.project.home.createOrEditLabel">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-project-heading" data-cy="ProjectCreateUpdateHeading" jhiTranslate="dhis2TrackApp.project.home.createOrEditLabel">
         Créer ou éditer un Project
       </h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="dhis2AuditApp.project.id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-          </div>
-        }
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_projectName" jhiTranslate="dhis2AuditApp.project.projectName">Project Name</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.project.projectName" for="field_projectName">Project Name</label>
           <input
             type="text"
             class="form-control"
@@ -25,29 +23,33 @@
             data-cy="projectName"
             formControlName="projectName"
           />
-          @if (editForm.get('projectName')!.invalid && (editForm.get('projectName')!.dirty || editForm.get('projectName')!.touched)) {
-            <div>
-              @if (editForm.get('projectName')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+          <div *ngIf="editForm.get('projectName')!.invalid && (editForm.get('projectName')!.dirty || editForm.get('projectName')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('projectName')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_dhis2URL" jhiTranslate="dhis2AuditApp.project.dhis2URL">Dhis 2 URL</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.project.dhis2URL" for="field_dhis2URL">Dhis 2 URL</label>
           <input type="text" class="form-control" name="dhis2URL" id="field_dhis2URL" data-cy="dhis2URL" formControlName="dhis2URL" />
-          @if (editForm.get('dhis2URL')!.invalid && (editForm.get('dhis2URL')!.dirty || editForm.get('dhis2URL')!.touched)) {
-            <div>
-              @if (editForm.get('dhis2URL')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+          <div *ngIf="editForm.get('dhis2URL')!.invalid && (editForm.get('dhis2URL')!.dirty || editForm.get('dhis2URL')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('dhis2URL')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_dhis2Version" jhiTranslate="dhis2AuditApp.project.dhis2Version">Dhis 2 Version</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.project.dhis2Version" for="field_dhis2Version">Dhis 2 Version</label>
           <input
             type="number"
             class="form-control"
@@ -56,35 +58,38 @@
             data-cy="dhis2Version"
             formControlName="dhis2Version"
           />
-          @if (editForm.get('dhis2Version')!.invalid && (editForm.get('dhis2Version')!.dirty || editForm.get('dhis2Version')!.touched)) {
-            <div>
-              @if (editForm.get('dhis2Version')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('dhis2Version')?.errors?.number"
-                jhiTranslate="entity.validation.number"
-                >Ce champ doit être un nombre.</small
-              >
-            </div>
-          }
+          <div
+            *ngIf="editForm.get('dhis2Version')!.invalid && (editForm.get('dhis2Version')!.dirty || editForm.get('dhis2Version')!.touched)"
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('dhis2Version')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('dhis2Version')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              Ce champ doit être un nombre.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_token" jhiTranslate="dhis2AuditApp.project.token">Token</label>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.project.token" for="field_token">Token</label>
           <input type="text" class="form-control" name="token" id="field_token" data-cy="token" formControlName="token" />
-          @if (editForm.get('token')!.invalid && (editForm.get('token')!.dirty || editForm.get('token')!.touched)) {
-            <div>
-              @if (editForm.get('token')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+          <div *ngIf="editForm.get('token')!.invalid && (editForm.get('token')!.dirty || editForm.get('token')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('token')?.errors?.required" jhiTranslate="entity.validation.required">
+              Ce champ est obligatoire.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_emailNotification" jhiTranslate="dhis2AuditApp.project.emailNotification"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.project.emailNotification" for="field_emailNotification"
             >Email Notification</label
           >
           <input
@@ -95,20 +100,24 @@
             data-cy="emailNotification"
             formControlName="emailNotification"
           />
-          @if (
-            editForm.get('emailNotification')!.invalid &&
-            (editForm.get('emailNotification')!.dirty || editForm.get('emailNotification')!.touched)
-          ) {
-            <div>
-              @if (editForm.get('emailNotification')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
-              }
-            </div>
-          }
+          <div
+            *ngIf="
+              editForm.get('emailNotification')!.invalid &&
+              (editForm.get('emailNotification')!.dirty || editForm.get('emailNotification')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('emailNotification')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_notificationTime" jhiTranslate="dhis2AuditApp.project.notificationTime"
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="dhis2TrackApp.project.notificationTime" for="field_notificationTime"
             >Notification Time</label
           >
           <input

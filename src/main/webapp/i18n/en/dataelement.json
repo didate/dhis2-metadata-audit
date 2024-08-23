@@ -1,5 +1,5 @@
 {
-  "dhis2AuditApp": {
+  "dhis2TrackApp": {
     "dataelement": {
       "home": {
         "title": "Dataelements",
@@ -41,8 +41,8 @@
       "lastUpdatedBy": "Last Updated By",
       "categoryCombo": "Category Combo",
       "optionSet": "Option Set",
-      "dataset": "Dataset",
-      "programStage": "Program Stage"
+      "dataSets": "Data Sets",
+      "programStages": "Program Stages"
     }
   }
 }

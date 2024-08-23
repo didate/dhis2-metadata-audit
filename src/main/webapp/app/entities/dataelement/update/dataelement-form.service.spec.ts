@@ -43,9 +43,9 @@ describe('Dataelement Form Service', () => {
             lastUpdatedBy: expect.any(Object),
             categoryCombo: expect.any(Object),
             optionSet: expect.any(Object),
-            datasets: expect.any(Object),
+            dataSets: expect.any(Object),
             programStages: expect.any(Object),
-          }),
+          })
         );
       });
 
@@ -78,15 +78,16 @@ describe('Dataelement Form Service', () => {
             lastUpdatedBy: expect.any(Object),
             categoryCombo: expect.any(Object),
             optionSet: expect.any(Object),
-            datasets: expect.any(Object),
+            dataSets: expect.any(Object),
             programStages: expect.any(Object),
-          }),
+          })
         );
       });
     });
 
     describe('getDataelement', () => {
       it('should return NewDataelement for default Dataelement initial value', () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createDataelementFormGroup(sampleWithNewData);
 
         const dataelement = service.getDataelement(formGroup) as any;

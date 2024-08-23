@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.didate.domain.TrackedEntityAttribute}.
+ * Service Implementation for managing {@link TrackedEntityAttribute}.
  */
 @Service
 @Transactional
 public class TrackedEntityAttributeServiceImpl implements TrackedEntityAttributeService {
 
-    private static final Logger log = LoggerFactory.getLogger(TrackedEntityAttributeServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(TrackedEntityAttributeServiceImpl.class);
 
     private final TrackedEntityAttributeRepository trackedEntityAttributeRepository;
 
@@ -35,6 +35,7 @@ public class TrackedEntityAttributeServiceImpl implements TrackedEntityAttribute
     @Override
     public TrackedEntityAttribute update(TrackedEntityAttribute trackedEntityAttribute) {
         log.debug("Request to update TrackedEntityAttribute : {}", trackedEntityAttribute);
+        trackedEntityAttribute.setIsPersisted();
         return trackedEntityAttributeRepository.save(trackedEntityAttribute);
     }
 

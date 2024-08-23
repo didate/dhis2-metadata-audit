@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
@@ -27,10 +27,9 @@ export type EntityArrayResponseType = HttpResponse<IDataelement[]>;
 
 @Injectable({ providedIn: 'root' })
 export class DataelementService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/dataelements');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(dataelement: NewDataelement): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(dataelement);
@@ -84,7 +83,9 @@ export class DataelementService {
   ): Type[] {
     const dataelements: Type[] = dataelementsToCheck.filter(isPresent);
     if (dataelements.length > 0) {
-      const dataelementCollectionIdentifiers = dataelementCollection.map(dataelementItem => this.getDataelementIdentifier(dataelementItem));
+      const dataelementCollectionIdentifiers = dataelementCollection.map(
+        dataelementItem => this.getDataelementIdentifier(dataelementItem)!
+      );
       const dataelementsToAdd = dataelements.filter(dataelementItem => {
         const dataelementIdentifier = this.getDataelementIdentifier(dataelementItem);
         if (dataelementCollectionIdentifiers.includes(dataelementIdentifier)) {

@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
@@ -26,10 +26,9 @@ export type EntityArrayResponseType = HttpResponse<IProgramRuleAction[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ProgramRuleActionService {
-  protected http = inject(HttpClient);
-  protected applicationConfigService = inject(ApplicationConfigService);
-
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/program-rule-actions');
+
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(programRuleAction: NewProgramRuleAction): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(programRuleAction);
@@ -87,8 +86,8 @@ export class ProgramRuleActionService {
   ): Type[] {
     const programRuleActions: Type[] = programRuleActionsToCheck.filter(isPresent);
     if (programRuleActions.length > 0) {
-      const programRuleActionCollectionIdentifiers = programRuleActionCollection.map(programRuleActionItem =>
-        this.getProgramRuleActionIdentifier(programRuleActionItem),
+      const programRuleActionCollectionIdentifiers = programRuleActionCollection.map(
+        programRuleActionItem => this.getProgramRuleActionIdentifier(programRuleActionItem)!
       );
       const programRuleActionsToAdd = programRuleActions.filter(programRuleActionItem => {
         const programRuleActionIdentifier = this.getProgramRuleActionIdentifier(programRuleActionItem);
@@ -104,7 +103,7 @@ export class ProgramRuleActionService {
   }
 
   protected convertDateFromClient<T extends IProgramRuleAction | NewProgramRuleAction | PartialUpdateProgramRuleAction>(
-    programRuleAction: T,
+    programRuleAction: T
   ): RestOf<T> {
     return {
       ...programRuleAction,

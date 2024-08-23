@@ -1,8 +1,7 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormGroup, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
-import SharedModule from 'app/shared/shared.module';
 import { LANGUAGES } from 'app/config/language.constants';
 import { IUser } from '../user-management.model';
 import { UserManagementService } from '../service/user-management.service';
@@ -15,15 +14,13 @@ const newUser: IUser = {
 } as IUser;
 
 @Component({
-  standalone: true,
   selector: 'jhi-user-mgmt-update',
   templateUrl: './user-management-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
-export default class UserManagementUpdateComponent implements OnInit {
+export class UserManagementUpdateComponent implements OnInit {
   languages = LANGUAGES;
-  authorities = signal<string[]>([]);
-  isSaving = signal(false);
+  authorities: string[] = [];
+  isSaving = false;
 
   editForm = new FormGroup({
     id: new FormControl(userTemplate.id),
@@ -47,8 +44,7 @@ export default class UserManagementUpdateComponent implements OnInit {
     authorities: new FormControl(userTemplate.authorities, { nonNullable: true }),
   });
 
-  private userService = inject(UserManagementService);
-  private route = inject(ActivatedRoute);
+  constructor(private userService: UserManagementService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ user }) => {
@@ -58,7 +54,7 @@ export default class UserManagementUpdateComponent implements OnInit {
         this.editForm.reset(newUser);
       }
     });
-    this.userService.authorities().subscribe(authorities => this.authorities.set(authorities));
+    this.userService.authorities().subscribe(authorities => (this.authorities = authorities));
   }
 
   previousState(): void {
@@ -66,7 +62,7 @@ export default class UserManagementUpdateComponent implements OnInit {
   }
 
   save(): void {
-    this.isSaving.set(true);
+    this.isSaving = true;
     const user = this.editForm.getRawValue();
     if (user.id !== null) {
       this.userService.update(user).subscribe({
@@ -82,11 +78,11 @@ export default class UserManagementUpdateComponent implements OnInit {
   }
 
   private onSaveSuccess(): void {
-    this.isSaving.set(false);
+    this.isSaving = false;
     this.previousState();
   }
 
   private onSaveError(): void {
-    this.isSaving.set(false);
+    this.isSaving = false;
   }
 }
