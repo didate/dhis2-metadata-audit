@@ -61,6 +61,9 @@ public class ProjectServiceImpl implements ProjectService {
                 if (project.getEmailNotification() != null) {
                     existingProject.setEmailNotification(project.getEmailNotification());
                 }
+                if (project.getNotificationTime() != null) {
+                    existingProject.setNotificationTime(project.getNotificationTime());
+                }
 
                 return existingProject;
             })

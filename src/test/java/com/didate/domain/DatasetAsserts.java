@@ -54,7 +54,6 @@ public class DatasetAsserts {
             .satisfies(e -> assertThat(e.getDescription()).as("check description").isEqualTo(actual.getDescription()))
             .satisfies(e -> assertThat(e.getDimensionItemType()).as("check dimensionItemType").isEqualTo(actual.getDimensionItemType()))
             .satisfies(e -> assertThat(e.getPeriodType()).as("check periodType").isEqualTo(actual.getPeriodType()))
-            .satisfies(e -> assertThat(e.getCategoryCombo()).as("check categoryCombo").isEqualTo(actual.getCategoryCombo()))
             .satisfies(e -> assertThat(e.getMobile()).as("check mobile").isEqualTo(actual.getMobile()))
             .satisfies(e -> assertThat(e.getVersion()).as("check version").isEqualTo(actual.getVersion()))
             .satisfies(e -> assertThat(e.getExpiryDays()).as("check expiryDays").isEqualTo(actual.getExpiryDays()))
@@ -99,7 +98,8 @@ public class DatasetAsserts {
             .satisfies(e -> assertThat(e.getDimensionItem()).as("check dimensionItem").isEqualTo(actual.getDimensionItem()))
             .satisfies(e -> assertThat(e.getDisplayShortName()).as("check displayShortName").isEqualTo(actual.getDisplayShortName()))
             .satisfies(e -> assertThat(e.getDisplayDescription()).as("check displayDescription").isEqualTo(actual.getDisplayDescription()))
-            .satisfies(e -> assertThat(e.getDisplayFormName()).as("check displayFormName").isEqualTo(actual.getDisplayFormName()));
+            .satisfies(e -> assertThat(e.getDisplayFormName()).as("check displayFormName").isEqualTo(actual.getDisplayFormName()))
+            .satisfies(e -> assertThat(e.getTrack()).as("check track").isEqualTo(actual.getTrack()));
     }
 
     /**
@@ -113,6 +113,9 @@ public class DatasetAsserts {
             .as("Verify Dataset relationships")
             .satisfies(e -> assertThat(e.getProject()).as("check project").isEqualTo(actual.getProject()))
             .satisfies(e -> assertThat(e.getCreatedBy()).as("check createdBy").isEqualTo(actual.getCreatedBy()))
-            .satisfies(e -> assertThat(e.getLastUpdatedBy()).as("check lastUpdatedBy").isEqualTo(actual.getLastUpdatedBy()));
+            .satisfies(e -> assertThat(e.getLastUpdatedBy()).as("check lastUpdatedBy").isEqualTo(actual.getLastUpdatedBy()))
+            .satisfies(e -> assertThat(e.getCategoryCombo()).as("check categoryCombo").isEqualTo(actual.getCategoryCombo()))
+            .satisfies(e -> assertThat(e.getDataElements()).as("check dataElements").isEqualTo(actual.getDataElements()))
+            .satisfies(e -> assertThat(e.getOrganisationUnits()).as("check organisationUnits").isEqualTo(actual.getOrganisationUnits()));
     }
 }

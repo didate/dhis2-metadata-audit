@@ -22,7 +22,8 @@
       "dhis2URL": "Dhis 2 URL",
       "dhis2Version": "Dhis 2 Version",
       "token": "Token",
-      "emailNotification": "Email Notification"
+      "emailNotification": "Email Notification",
+      "notificationTime": "Notification Time"
     }
   }
 }

@@ -1,5 +1,9 @@
 import { IProject } from 'app/entities/project/project.model';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
+import { ICategorycombo } from 'app/entities/categorycombo/categorycombo.model';
+import { IDataelement } from 'app/entities/dataelement/dataelement.model';
+import { IOrganisationUnit } from 'app/entities/organisation-unit/organisation-unit.model';
+import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface IProgram {
   id: string;
@@ -23,7 +27,6 @@ export interface IProgram {
   selectIncidentDatesInFuture?: boolean | null;
   trackedEntityType?: string | null;
   style?: string | null;
-  categoryCombo?: string | null;
   skipOffline?: boolean | null;
   displayFrontPageList?: boolean | null;
   useFirstStageDuringRegistration?: boolean | null;
@@ -46,9 +49,13 @@ export interface IProgram {
   programStagesCount?: number | null;
   programSectionsCount?: number | null;
   programTrackedEntityAttributesCount?: number | null;
+  track?: keyof typeof TypeTrack | null;
   project?: IProject | null;
   createdBy?: IDHISUser | null;
   lastUpdatedBy?: IDHISUser | null;
+  categoryCombo?: ICategorycombo | null;
+  dataElements?: IDataelement[] | null;
+  organisationUnits?: IOrganisationUnit[] | null;
 }
 
 export type NewProgram = Omit<IProgram, 'id'> & { id: null };

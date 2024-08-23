@@ -1,0 +1,170 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (trackedEntityAttribute()) {
+      <div>
+        <h2 data-cy="trackedEntityAttributeDetailsHeading">
+          <span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.detail.title">Tracked Entity Attribute</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.id">Id</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.lastUpdated">Last Updated</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.lastUpdated | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.created">Created</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.name">Name</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.shortName">Short Name</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.shortName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.generated">Generated</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.generated }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.valueType">Value Type</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.valueType }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.confidential">Confidential</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.confidential }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.displayFormName">Display Form Name</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.displayFormName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.uniquee">Uniquee</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.uniquee }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.dimensionItemType">Dimension Item Type</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.dimensionItemType }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.aggregationType">Aggregation Type</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.aggregationType }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.displayInListNoProgram">Display In List No Program</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.displayInListNoProgram }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.displayName">Display Name</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.displayName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.patterne">Patterne</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.patterne }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.skipSynchronization">Skip Synchronization</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.skipSynchronization }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.displayShortName">Display Short Name</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.displayShortName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.periodOffset">Period Offset</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.periodOffset }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.displayOnVisitSchedule">Display On Visit Schedule</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.displayOnVisitSchedule }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.formName">Form Name</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.formName }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.orgunitScope">Orgunit Scope</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.orgunitScope }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.dimensionItem">Dimension Item</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.dimensionItem }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.inherit">Inherit</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.inherit }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.optionSetValue">Option Set Value</span></dt>
+          <dd>
+            <span>{{ trackedEntityAttribute()!.optionSetValue }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.track">Track</span></dt>
+          <dd>
+            <span [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (trackedEntityAttribute()!.track ?? 'null')">{{
+              { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[trackedEntityAttribute()!.track ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.project">Project</span></dt>
+          <dd>
+            @if (trackedEntityAttribute()!.project) {
+              <div>
+                <a [routerLink]="['/project', trackedEntityAttribute()!.project?.id, 'view']">{{
+                  trackedEntityAttribute()!.project?.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.createdBy">Created By</span></dt>
+          <dd>
+            @if (trackedEntityAttribute()!.createdBy) {
+              <div>
+                <a [routerLink]="['/dhis-user', trackedEntityAttribute()!.createdBy?.id, 'view']">{{
+                  trackedEntityAttribute()!.createdBy?.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.lastUpdatedBy">Last Updated By</span></dt>
+          <dd>
+            @if (trackedEntityAttribute()!.lastUpdatedBy) {
+              <div>
+                <a [routerLink]="['/dhis-user', trackedEntityAttribute()!.lastUpdatedBy?.id, 'view']">{{
+                  trackedEntityAttribute()!.lastUpdatedBy?.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.trackedEntityAttribute.optionSet">Option Set</span></dt>
+          <dd>
+            @if (trackedEntityAttribute()!.optionSet) {
+              <div>
+                <a [routerLink]="['/optionset', trackedEntityAttribute()!.optionSet?.id, 'view']">{{
+                  trackedEntityAttribute()!.optionSet?.id
+                }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+        </button>
+
+        <button type="button" [routerLink]="['/tracked-entity-attribute', trackedEntityAttribute()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

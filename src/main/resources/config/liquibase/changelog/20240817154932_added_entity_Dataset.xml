@@ -35,9 +35,6 @@
             <column name="period_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="category_combo" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="mobile" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -101,6 +98,9 @@
             <column name="display_form_name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="track" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="project_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -110,10 +110,38 @@
             <column name="last_updated_by_id" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="category_combo_id" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="dataset" columnName="created" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="dataset" columnName="last_updated" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <changeSet id="20240817154932-1-relations" author="jhipster">
+
+        <createTable tableName="rel_dataset__data_elements">
+            <column name="data_elements_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dataset_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="dataset_id, data_elements_id" tableName="rel_dataset__data_elements"/>
+
+        <createTable tableName="rel_dataset__organisation_units">
+            <column name="organisation_units_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dataset_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="dataset_id, organisation_units_id" tableName="rel_dataset__organisation_units"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -140,7 +168,6 @@
             <column name="description" type="string"/>
             <column name="dimension_item_type" type="string"/>
             <column name="period_type" type="string"/>
-            <column name="category_combo" type="string"/>
             <column name="mobile" type="string"/>
             <column name="version" type="numeric"/>
             <column name="expiry_days" type="numeric"/>
@@ -162,6 +189,7 @@
             <column name="display_short_name" type="string"/>
             <column name="display_description" type="string"/>
             <column name="display_form_name" type="string"/>
+            <column name="track" type="string"/>
             <column name="created_by_id" type="string"/>
             <column name="last_updated_by_id" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->

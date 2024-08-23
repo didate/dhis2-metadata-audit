@@ -83,6 +83,12 @@
           <dd>
             <span>{{ indicator()!.dimensionItem }}</span>
           </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.indicator.track">Track</span></dt>
+          <dd>
+            <span [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (indicator()!.track ?? 'null')">{{
+              { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[indicator()!.track ?? 'null']
+            }}</span>
+          </dd>
           <dt><span jhiTranslate="dhis2AuditApp.indicator.project">Project</span></dt>
           <dd>
             @if (indicator()!.project) {

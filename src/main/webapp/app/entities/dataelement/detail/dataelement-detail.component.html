@@ -83,6 +83,12 @@
           <dd>
             <span>{{ dataelement()!.dimensionItem }}</span>
           </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataelement.track">Track</span></dt>
+          <dd>
+            <span [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (dataelement()!.track ?? 'null')">{{
+              { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[dataelement()!.track ?? 'null']
+            }}</span>
+          </dd>
           <dt><span jhiTranslate="dhis2AuditApp.dataelement.project">Project</span></dt>
           <dd>
             @if (dataelement()!.project) {
@@ -121,6 +127,24 @@
               <div>
                 <a [routerLink]="['/optionset', dataelement()!.optionSet?.id, 'view']">{{ dataelement()!.optionSet?.id }}</a>
               </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataelement.program">Program</span></dt>
+          <dd>
+            @for (program of dataelement()!.programs; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/program', program.id, 'view']">{{ program?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dataelement.dataset">Dataset</span></dt>
+          <dd>
+            @for (dataset of dataelement()!.datasets; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/dataset', dataset.id, 'view']">{{ dataset?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
             }
           </dd>
         </dl>

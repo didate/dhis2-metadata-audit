@@ -1,34 +1,34 @@
 import { IPersonNotifier, NewPersonNotifier } from './person-notifier.model';
 
 export const sampleWithRequiredData: IPersonNotifier = {
-  id: 20269,
-  personName: 'zzzz horrible exécuter',
-  personPhone: 'touchant bénéficier',
-  personEmail: 'B)"@xSpdW.?0WV-',
-  personOrganization: 'coac coac',
+  id: 6206,
+  personName: 'groin groin boum',
+  personPhone: 'trop aimable',
+  personEmail: 'V@c[c{0m.%OP',
+  personOrganization: 'quitte à porte-parole',
 };
 
 export const sampleWithPartialData: IPersonNotifier = {
-  id: 16295,
-  personName: 'bien que décharger',
-  personPhone: 'animer trop',
-  personEmail: 'm<:Nnh@76.IE/q',
-  personOrganization: 'plic au-dedans de membre titulaire',
+  id: 24273,
+  personName: 'ouch dynamique guide',
+  personPhone: 'patientèle oh communauté étudiante',
+  personEmail: '~~@xgqly.:D',
+  personOrganization: 'désormais',
 };
 
 export const sampleWithFullData: IPersonNotifier = {
-  id: 22890,
-  personName: 'au lieu de tchou tchouu',
-  personPhone: 'lunatique diététiste',
-  personEmail: "4fU@3(_~'.hn3|",
-  personOrganization: 'procéder céans',
+  id: 6578,
+  personName: 'sale avant',
+  personPhone: 'puisque chauffer',
+  personEmail: '(tq]@Y-V^aI.5D',
+  personOrganization: 'fabriquer altruiste',
 };
 
 export const sampleWithNewData: NewPersonNotifier = {
-  personName: 'cacher dedans demeurer',
-  personPhone: 'résumer collègue',
-  personEmail: 'px@MQ).?,-',
-  personOrganization: 'dense commissionnaire reprendre',
+  personName: 'administration aïe areu areu',
+  personPhone: 'prendre mordre',
+  personEmail: 'I#-s@"M\\FLc.SC>a\'',
+  personOrganization: 'afin que préciser',
   id: null,
 };
 

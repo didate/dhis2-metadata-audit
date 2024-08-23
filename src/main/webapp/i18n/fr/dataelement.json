@@ -35,11 +35,14 @@
       "zeroIsSignificant": "Zero Is Significant",
       "optionSetValue": "Option Set Value",
       "dimensionItem": "Dimension Item",
+      "track": "Track",
       "project": "Project",
       "createdBy": "Created By",
       "lastUpdatedBy": "Last Updated By",
       "categoryCombo": "Category Combo",
-      "optionSet": "Option Set"
+      "optionSet": "Option Set",
+      "program": "Program",
+      "dataset": "Dataset"
     }
   }
 }

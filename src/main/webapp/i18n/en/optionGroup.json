@@ -1,0 +1,23 @@
+{
+  "dhis2AuditApp": {
+    "optionGroup": {
+      "home": {
+        "title": "Option Groups",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Option Group",
+        "createOrEditLabel": "Create or edit a Option Group",
+        "notFound": "No Option Groups found"
+      },
+      "created": "A new Option Group is created with identifier {{ param }}",
+      "updated": "A Option Group is updated with identifier {{ param }}",
+      "deleted": "A Option Group is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Option Group {{ id }}?"
+      },
+      "detail": {
+        "title": "Option Group"
+      },
+      "id": "Id"
+    }
+  }
+}

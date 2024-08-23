@@ -47,6 +47,9 @@ class ProjectResourceIT {
     private static final Boolean DEFAULT_EMAIL_NOTIFICATION = false;
     private static final Boolean UPDATED_EMAIL_NOTIFICATION = true;
 
+    private static final String DEFAULT_NOTIFICATION_TIME = "AAAAAAAAAA";
+    private static final String UPDATED_NOTIFICATION_TIME = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/projects";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -81,7 +84,8 @@ class ProjectResourceIT {
             .dhis2URL(DEFAULT_DHIS_2_URL)
             .dhis2Version(DEFAULT_DHIS_2_VERSION)
             .token(DEFAULT_TOKEN)
-            .emailNotification(DEFAULT_EMAIL_NOTIFICATION);
+            .emailNotification(DEFAULT_EMAIL_NOTIFICATION)
+            .notificationTime(DEFAULT_NOTIFICATION_TIME);
         return project;
     }
 
@@ -97,7 +101,8 @@ class ProjectResourceIT {
             .dhis2URL(UPDATED_DHIS_2_URL)
             .dhis2Version(UPDATED_DHIS_2_VERSION)
             .token(UPDATED_TOKEN)
-            .emailNotification(UPDATED_EMAIL_NOTIFICATION);
+            .emailNotification(UPDATED_EMAIL_NOTIFICATION)
+            .notificationTime(UPDATED_NOTIFICATION_TIME);
         return project;
     }
 
@@ -249,7 +254,8 @@ class ProjectResourceIT {
             .andExpect(jsonPath("$.[*].dhis2URL").value(hasItem(DEFAULT_DHIS_2_URL)))
             .andExpect(jsonPath("$.[*].dhis2Version").value(hasItem(DEFAULT_DHIS_2_VERSION.doubleValue())))
             .andExpect(jsonPath("$.[*].token").value(hasItem(DEFAULT_TOKEN)))
-            .andExpect(jsonPath("$.[*].emailNotification").value(hasItem(DEFAULT_EMAIL_NOTIFICATION.booleanValue())));
+            .andExpect(jsonPath("$.[*].emailNotification").value(hasItem(DEFAULT_EMAIL_NOTIFICATION.booleanValue())))
+            .andExpect(jsonPath("$.[*].notificationTime").value(hasItem(DEFAULT_NOTIFICATION_TIME)));
     }
 
     @Test
@@ -268,7 +274,8 @@ class ProjectResourceIT {
             .andExpect(jsonPath("$.dhis2URL").value(DEFAULT_DHIS_2_URL))
             .andExpect(jsonPath("$.dhis2Version").value(DEFAULT_DHIS_2_VERSION.doubleValue()))
             .andExpect(jsonPath("$.token").value(DEFAULT_TOKEN))
-            .andExpect(jsonPath("$.emailNotification").value(DEFAULT_EMAIL_NOTIFICATION.booleanValue()));
+            .andExpect(jsonPath("$.emailNotification").value(DEFAULT_EMAIL_NOTIFICATION.booleanValue()))
+            .andExpect(jsonPath("$.notificationTime").value(DEFAULT_NOTIFICATION_TIME));
     }
 
     @Test
@@ -295,7 +302,8 @@ class ProjectResourceIT {
             .dhis2URL(UPDATED_DHIS_2_URL)
             .dhis2Version(UPDATED_DHIS_2_VERSION)
             .token(UPDATED_TOKEN)
-            .emailNotification(UPDATED_EMAIL_NOTIFICATION);
+            .emailNotification(UPDATED_EMAIL_NOTIFICATION)
+            .notificationTime(UPDATED_NOTIFICATION_TIME);
 
         restProjectMockMvc
             .perform(
@@ -371,7 +379,7 @@ class ProjectResourceIT {
         Project partialUpdatedProject = new Project();
         partialUpdatedProject.setId(project.getId());
 
-        partialUpdatedProject.projectName(UPDATED_PROJECT_NAME).dhis2URL(UPDATED_DHIS_2_URL).dhis2Version(UPDATED_DHIS_2_VERSION);
+        partialUpdatedProject.projectName(UPDATED_PROJECT_NAME).dhis2URL(UPDATED_DHIS_2_URL).emailNotification(UPDATED_EMAIL_NOTIFICATION);
 
         restProjectMockMvc
             .perform(
@@ -404,7 +412,8 @@ class ProjectResourceIT {
             .dhis2URL(UPDATED_DHIS_2_URL)
             .dhis2Version(UPDATED_DHIS_2_VERSION)
             .token(UPDATED_TOKEN)
-            .emailNotification(UPDATED_EMAIL_NOTIFICATION);
+            .emailNotification(UPDATED_EMAIL_NOTIFICATION)
+            .notificationTime(UPDATED_NOTIFICATION_TIME);
 
         restProjectMockMvc
             .perform(

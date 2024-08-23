@@ -1,37 +1,39 @@
 import { IProject, NewProject } from './project.model';
 
 export const sampleWithRequiredData: IProject = {
-  id: 28294,
-  projectName: 'fade près de rectorat',
-  dhis2URL: 'pour que écraser vroum',
-  dhis2Version: 19541.56,
-  token: 'avare',
+  id: 31349,
+  projectName: 'annoncer afin de ça',
+  dhis2URL: 'derrière grâce à équipe',
+  dhis2Version: 3275.89,
+  token: 'coordonner aimable pacifique',
   emailNotification: true,
 };
 
 export const sampleWithPartialData: IProject = {
-  id: 19648,
-  projectName: 'tic-tac ouf vivace',
-  dhis2URL: 'd’autant que personnel professionnel',
-  dhis2Version: 22536.14,
-  token: 'calme',
-  emailNotification: true,
+  id: 5666,
+  projectName: 'novice',
+  dhis2URL: "d'entre",
+  dhis2Version: 20464.22,
+  token: 'rudement assurément exiger',
+  emailNotification: false,
+  notificationTime: 'trancher population du Québec tremper',
 };
 
 export const sampleWithFullData: IProject = {
-  id: 4745,
-  projectName: 'euh',
-  dhis2URL: 'ouch puisque rentrer',
-  dhis2Version: 22064.13,
-  token: 'au-delà communauté étudiante résumer',
-  emailNotification: true,
+  id: 9752,
+  projectName: 'arrière',
+  dhis2URL: 'prestataire de services',
+  dhis2Version: 378.34,
+  token: 'jusqu’à ce que',
+  emailNotification: false,
+  notificationTime: 'amorphe groin groin',
 };
 
 export const sampleWithNewData: NewProject = {
-  projectName: 'suivant',
-  dhis2URL: 'admirablement raide envers',
-  dhis2Version: 5381.96,
-  token: 'divinement',
+  projectName: 'aïe malgré',
+  dhis2URL: 'immense ouille prononcer',
+  dhis2Version: 10896.26,
+  token: 'séculaire tromper peut-être',
   emailNotification: false,
   id: null,
 };

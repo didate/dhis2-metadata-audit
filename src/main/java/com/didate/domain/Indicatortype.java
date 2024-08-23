@@ -10,8 +10,9 @@ import org.hibernate.envers.Audited;
  * A Indicatortype.
  */
 @Entity
-@Audited
 @Table(name = "indicatortype")
+@Audited
+@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Indicatortype implements Serializable {
 

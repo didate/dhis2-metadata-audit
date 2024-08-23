@@ -49,6 +49,7 @@ type IndicatorFormGroupContent = {
   displayNumeratorDescription: FormControl<IndicatorFormRawValue['displayNumeratorDescription']>;
   displayDenominatorDescription: FormControl<IndicatorFormRawValue['displayDenominatorDescription']>;
   dimensionItem: FormControl<IndicatorFormRawValue['dimensionItem']>;
+  track: FormControl<IndicatorFormRawValue['track']>;
   project: FormControl<IndicatorFormRawValue['project']>;
   createdBy: FormControl<IndicatorFormRawValue['createdBy']>;
   lastUpdatedBy: FormControl<IndicatorFormRawValue['lastUpdatedBy']>;
@@ -103,6 +104,9 @@ export class IndicatorFormService {
       displayNumeratorDescription: new FormControl(indicatorRawValue.displayNumeratorDescription),
       displayDenominatorDescription: new FormControl(indicatorRawValue.displayDenominatorDescription),
       dimensionItem: new FormControl(indicatorRawValue.dimensionItem),
+      track: new FormControl(indicatorRawValue.track, {
+        validators: [Validators.required],
+      }),
       project: new FormControl(indicatorRawValue.project),
       createdBy: new FormControl(indicatorRawValue.createdBy, {
         validators: [Validators.required],

@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 import { IDHISUser } from '../dhis-user.model';
 import { DHISUserService } from '../service/dhis-user.service';
 import { DHISUserFormService, DHISUserFormGroup } from './dhis-user-form.service';
@@ -20,6 +21,7 @@ import { DHISUserFormService, DHISUserFormGroup } from './dhis-user-form.service
 export class DHISUserUpdateComponent implements OnInit {
   isSaving = false;
   dHISUser: IDHISUser | null = null;
+  typeTrackValues = Object.keys(TypeTrack);
 
   protected dHISUserService = inject(DHISUserService);
   protected dHISUserFormService = inject(DHISUserFormService);

@@ -27,7 +27,6 @@ describe('Dataset Form Service', () => {
             description: expect.any(Object),
             dimensionItemType: expect.any(Object),
             periodType: expect.any(Object),
-            categoryCombo: expect.any(Object),
             mobile: expect.any(Object),
             version: expect.any(Object),
             expiryDays: expect.any(Object),
@@ -49,9 +48,13 @@ describe('Dataset Form Service', () => {
             displayShortName: expect.any(Object),
             displayDescription: expect.any(Object),
             displayFormName: expect.any(Object),
+            track: expect.any(Object),
             project: expect.any(Object),
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
+            categoryCombo: expect.any(Object),
+            dataElements: expect.any(Object),
+            organisationUnits: expect.any(Object),
           }),
         );
       });
@@ -69,7 +72,6 @@ describe('Dataset Form Service', () => {
             description: expect.any(Object),
             dimensionItemType: expect.any(Object),
             periodType: expect.any(Object),
-            categoryCombo: expect.any(Object),
             mobile: expect.any(Object),
             version: expect.any(Object),
             expiryDays: expect.any(Object),
@@ -91,9 +93,13 @@ describe('Dataset Form Service', () => {
             displayShortName: expect.any(Object),
             displayDescription: expect.any(Object),
             displayFormName: expect.any(Object),
+            track: expect.any(Object),
             project: expect.any(Object),
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
+            categoryCombo: expect.any(Object),
+            dataElements: expect.any(Object),
+            organisationUnits: expect.any(Object),
           }),
         );
       });

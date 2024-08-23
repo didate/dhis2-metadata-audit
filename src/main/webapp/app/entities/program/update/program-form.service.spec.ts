@@ -40,7 +40,6 @@ describe('Program Form Service', () => {
             selectIncidentDatesInFuture: expect.any(Object),
             trackedEntityType: expect.any(Object),
             style: expect.any(Object),
-            categoryCombo: expect.any(Object),
             skipOffline: expect.any(Object),
             displayFrontPageList: expect.any(Object),
             useFirstStageDuringRegistration: expect.any(Object),
@@ -63,9 +62,13 @@ describe('Program Form Service', () => {
             programStagesCount: expect.any(Object),
             programSectionsCount: expect.any(Object),
             programTrackedEntityAttributesCount: expect.any(Object),
+            track: expect.any(Object),
             project: expect.any(Object),
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
+            categoryCombo: expect.any(Object),
+            dataElements: expect.any(Object),
+            organisationUnits: expect.any(Object),
           }),
         );
       });
@@ -96,7 +99,6 @@ describe('Program Form Service', () => {
             selectIncidentDatesInFuture: expect.any(Object),
             trackedEntityType: expect.any(Object),
             style: expect.any(Object),
-            categoryCombo: expect.any(Object),
             skipOffline: expect.any(Object),
             displayFrontPageList: expect.any(Object),
             useFirstStageDuringRegistration: expect.any(Object),
@@ -119,9 +121,13 @@ describe('Program Form Service', () => {
             programStagesCount: expect.any(Object),
             programSectionsCount: expect.any(Object),
             programTrackedEntityAttributesCount: expect.any(Object),
+            track: expect.any(Object),
             project: expect.any(Object),
             createdBy: expect.any(Object),
             lastUpdatedBy: expect.any(Object),
+            categoryCombo: expect.any(Object),
+            dataElements: expect.any(Object),
+            organisationUnits: expect.any(Object),
           }),
         );
       });

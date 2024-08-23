@@ -31,6 +31,40 @@
           <dd>
             <span>{{ dHISUser()!.username }}</span>
           </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.lastLogin">Last Login</span></dt>
+          <dd>
+            <span>{{ dHISUser()!.lastLogin | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.email">Email</span></dt>
+          <dd>
+            <span>{{ dHISUser()!.email }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.phoneNumber">Phone Number</span></dt>
+          <dd>
+            <span>{{ dHISUser()!.phoneNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.disabled">Disabled</span></dt>
+          <dd>
+            <span>{{ dHISUser()!.disabled }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.passwordLastUpdated">Password Last Updated</span></dt>
+          <dd>
+            <span>{{ dHISUser()!.passwordLastUpdated | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.created">Created</span></dt>
+          <dd>
+            <span>{{ dHISUser()!.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.lastUpdated">Last Updated</span></dt>
+          <dd>
+            <span>{{ dHISUser()!.lastUpdated | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="dhis2AuditApp.dHISUser.track">Track</span></dt>
+          <dd>
+            <span [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (dHISUser()!.track ?? 'null')">{{
+              { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[dHISUser()!.track ?? 'null']
+            }}</span>
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

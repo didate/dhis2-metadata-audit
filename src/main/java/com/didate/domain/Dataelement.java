@@ -1,20 +1,23 @@
 package com.didate.domain;
 
+import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.envers.Audited;
 
 /**
  * A Dataelement.
  */
 @Entity
-@Audited
 @Table(name = "dataelement")
-@SuppressWarnings("common-java:DuplicatedBlocks")
+@Audited
 @JsonIgnoreProperties(ignoreUnknown = true)
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class Dataelement implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -84,6 +87,11 @@ public class Dataelement implements Serializable {
     @Column(name = "dimension_item")
     private String dimensionItem;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "track", nullable = false)
+    private TypeTrack track;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
@@ -100,6 +108,20 @@ public class Dataelement implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Optionset optionSet;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dataElements")
+    @JsonIgnoreProperties(
+        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataElements", "organisationUnits" },
+        allowSetters = true
+    )
+    private Set<Program> programs = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dataElements")
+    @JsonIgnoreProperties(
+        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataElements", "organisationUnits" },
+        allowSetters = true
+    )
+    private Set<Dataset> datasets = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -337,6 +359,19 @@ public class Dataelement implements Serializable {
         this.dimensionItem = dimensionItem;
     }
 
+    public TypeTrack getTrack() {
+        return this.track;
+    }
+
+    public Dataelement track(TypeTrack track) {
+        this.setTrack(track);
+        return this;
+    }
+
+    public void setTrack(TypeTrack track) {
+        this.track = track;
+    }
+
     public Project getProject() {
         return this.project;
     }
@@ -402,6 +437,68 @@ public class Dataelement implements Serializable {
         return this;
     }
 
+    public Set<Program> getPrograms() {
+        return this.programs;
+    }
+
+    public void setPrograms(Set<Program> programs) {
+        if (this.programs != null) {
+            this.programs.forEach(i -> i.removeDataElements(this));
+        }
+        if (programs != null) {
+            programs.forEach(i -> i.addDataElements(this));
+        }
+        this.programs = programs;
+    }
+
+    public Dataelement programs(Set<Program> programs) {
+        this.setPrograms(programs);
+        return this;
+    }
+
+    public Dataelement addProgram(Program program) {
+        this.programs.add(program);
+        program.getDataElements().add(this);
+        return this;
+    }
+
+    public Dataelement removeProgram(Program program) {
+        this.programs.remove(program);
+        program.getDataElements().remove(this);
+        return this;
+    }
+
+    public Set<Dataset> getDatasets() {
+        return this.datasets;
+    }
+
+    public void setDatasets(Set<Dataset> datasets) {
+        if (this.datasets != null) {
+            this.datasets.forEach(i -> i.removeDataElements(this));
+        }
+        if (datasets != null) {
+            datasets.forEach(i -> i.addDataElements(this));
+        }
+        this.datasets = datasets;
+    }
+
+    public Dataelement datasets(Set<Dataset> datasets) {
+        this.setDatasets(datasets);
+        return this;
+    }
+
+    public Dataelement addDataset(Dataset dataset) {
+        this.datasets.add(dataset);
+        dataset.getDataElements().add(this);
+        return this;
+    }
+
+    public Dataelement removeDataset(Dataset dataset) {
+        this.datasets.remove(dataset);
+        dataset.getDataElements().remove(this);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -443,6 +540,7 @@ public class Dataelement implements Serializable {
             ", zeroIsSignificant='" + getZeroIsSignificant() + "'" +
             ", optionSetValue='" + getOptionSetValue() + "'" +
             ", dimensionItem='" + getDimensionItem() + "'" +
+            ", track='" + getTrack() + "'" +
             "}";
     }
 }

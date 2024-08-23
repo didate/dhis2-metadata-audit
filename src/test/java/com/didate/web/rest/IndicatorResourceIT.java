@@ -11,6 +11,7 @@ import com.didate.IntegrationTest;
 import com.didate.domain.DHISUser;
 import com.didate.domain.Indicator;
 import com.didate.domain.Indicatortype;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.IndicatorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
@@ -86,6 +87,9 @@ class IndicatorResourceIT {
     private static final String DEFAULT_DIMENSION_ITEM = "AAAAAAAAAA";
     private static final String UPDATED_DIMENSION_ITEM = "BBBBBBBBBB";
 
+    private static final TypeTrack DEFAULT_TRACK = TypeTrack.NEW;
+    private static final TypeTrack UPDATED_TRACK = TypeTrack.UPDATE;
+
     private static final String ENTITY_API_URL = "/api/indicators";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -129,7 +133,8 @@ class IndicatorResourceIT {
             .denominatorDescription(DEFAULT_DENOMINATOR_DESCRIPTION)
             .displayNumeratorDescription(DEFAULT_DISPLAY_NUMERATOR_DESCRIPTION)
             .displayDenominatorDescription(DEFAULT_DISPLAY_DENOMINATOR_DESCRIPTION)
-            .dimensionItem(DEFAULT_DIMENSION_ITEM);
+            .dimensionItem(DEFAULT_DIMENSION_ITEM)
+            .track(DEFAULT_TRACK);
         // Add required entity
         DHISUser dHISUser;
         if (TestUtil.findAll(em, DHISUser.class).isEmpty()) {
@@ -179,7 +184,8 @@ class IndicatorResourceIT {
             .denominatorDescription(UPDATED_DENOMINATOR_DESCRIPTION)
             .displayNumeratorDescription(UPDATED_DISPLAY_NUMERATOR_DESCRIPTION)
             .displayDenominatorDescription(UPDATED_DISPLAY_DENOMINATOR_DESCRIPTION)
-            .dimensionItem(UPDATED_DIMENSION_ITEM);
+            .dimensionItem(UPDATED_DIMENSION_ITEM)
+            .track(UPDATED_TRACK);
         // Add required entity
         DHISUser dHISUser;
         if (TestUtil.findAll(em, DHISUser.class).isEmpty()) {
@@ -371,6 +377,22 @@ class IndicatorResourceIT {
 
     @Test
     @Transactional
+    void checkTrackIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        indicator.setTrack(null);
+
+        // Create the Indicator, which fails.
+
+        restIndicatorMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(indicator)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllIndicators() throws Exception {
         // Initialize the database
         insertedIndicator = indicatorRepository.saveAndFlush(indicator);
@@ -397,7 +419,8 @@ class IndicatorResourceIT {
             .andExpect(jsonPath("$.[*].denominatorDescription").value(hasItem(DEFAULT_DENOMINATOR_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].displayNumeratorDescription").value(hasItem(DEFAULT_DISPLAY_NUMERATOR_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].displayDenominatorDescription").value(hasItem(DEFAULT_DISPLAY_DENOMINATOR_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].dimensionItem").value(hasItem(DEFAULT_DIMENSION_ITEM)));
+            .andExpect(jsonPath("$.[*].dimensionItem").value(hasItem(DEFAULT_DIMENSION_ITEM)))
+            .andExpect(jsonPath("$.[*].track").value(hasItem(DEFAULT_TRACK.toString())));
     }
 
     @Test
@@ -428,7 +451,8 @@ class IndicatorResourceIT {
             .andExpect(jsonPath("$.denominatorDescription").value(DEFAULT_DENOMINATOR_DESCRIPTION))
             .andExpect(jsonPath("$.displayNumeratorDescription").value(DEFAULT_DISPLAY_NUMERATOR_DESCRIPTION))
             .andExpect(jsonPath("$.displayDenominatorDescription").value(DEFAULT_DISPLAY_DENOMINATOR_DESCRIPTION))
-            .andExpect(jsonPath("$.dimensionItem").value(DEFAULT_DIMENSION_ITEM));
+            .andExpect(jsonPath("$.dimensionItem").value(DEFAULT_DIMENSION_ITEM))
+            .andExpect(jsonPath("$.track").value(DEFAULT_TRACK.toString()));
     }
 
     @Test
@@ -467,7 +491,8 @@ class IndicatorResourceIT {
             .denominatorDescription(UPDATED_DENOMINATOR_DESCRIPTION)
             .displayNumeratorDescription(UPDATED_DISPLAY_NUMERATOR_DESCRIPTION)
             .displayDenominatorDescription(UPDATED_DISPLAY_DENOMINATOR_DESCRIPTION)
-            .dimensionItem(UPDATED_DIMENSION_ITEM);
+            .dimensionItem(UPDATED_DIMENSION_ITEM)
+            .track(UPDATED_TRACK);
 
         restIndicatorMockMvc
             .perform(
@@ -546,11 +571,13 @@ class IndicatorResourceIT {
         partialUpdatedIndicator.setId(indicator.getId());
 
         partialUpdatedIndicator
-            .name(UPDATED_NAME)
             .displayName(UPDATED_DISPLAY_NAME)
+            .created(UPDATED_CREATED)
+            .lastUpdated(UPDATED_LAST_UPDATED)
             .publicAccess(UPDATED_PUBLIC_ACCESS)
-            .numerator(UPDATED_NUMERATOR)
-            .numeratorDescription(UPDATED_NUMERATOR_DESCRIPTION)
+            .dimensionItemType(UPDATED_DIMENSION_ITEM_TYPE)
+            .annualized(UPDATED_ANNUALIZED)
+            .denominator(UPDATED_DENOMINATOR)
             .denominatorDescription(UPDATED_DENOMINATOR_DESCRIPTION)
             .displayNumeratorDescription(UPDATED_DISPLAY_NUMERATOR_DESCRIPTION)
             .displayDenominatorDescription(UPDATED_DISPLAY_DENOMINATOR_DESCRIPTION);
@@ -601,7 +628,8 @@ class IndicatorResourceIT {
             .denominatorDescription(UPDATED_DENOMINATOR_DESCRIPTION)
             .displayNumeratorDescription(UPDATED_DISPLAY_NUMERATOR_DESCRIPTION)
             .displayDenominatorDescription(UPDATED_DISPLAY_DENOMINATOR_DESCRIPTION)
-            .dimensionItem(UPDATED_DIMENSION_ITEM);
+            .dimensionItem(UPDATED_DIMENSION_ITEM)
+            .track(UPDATED_TRACK);
 
         restIndicatorMockMvc
             .perform(

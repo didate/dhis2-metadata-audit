@@ -237,18 +237,6 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_categoryCombo" jhiTranslate="dhis2AuditApp.program.categoryCombo">Category Combo</label>
-          <input
-            type="text"
-            class="form-control"
-            name="categoryCombo"
-            id="field_categoryCombo"
-            data-cy="categoryCombo"
-            formControlName="categoryCombo"
-          />
-        </div>
-
-        <div class="mb-3">
           <label class="form-label" for="field_skipOffline" jhiTranslate="dhis2AuditApp.program.skipOffline">Skip Offline</label>
           <input
             type="checkbox"
@@ -556,6 +544,23 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="field_track" jhiTranslate="dhis2AuditApp.program.track">Track</label>
+          <select class="form-control" name="track" formControlName="track" id="field_track" data-cy="track">
+            <option [ngValue]="null">{{ 'dhis2AuditApp.TypeTrack.null' | translate }}</option>
+            @for (typeTrack of typeTrackValues; track $index) {
+              <option [value]="typeTrack">{{ 'dhis2AuditApp.TypeTrack.' + typeTrack | translate }}</option>
+            }
+          </select>
+          @if (editForm.get('track')!.invalid && (editForm.get('track')!.dirty || editForm.get('track')!.touched)) {
+            <div>
+              @if (editForm.get('track')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Ce champ est obligatoire.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_project" jhiTranslate="dhis2AuditApp.program.project">Project</label>
           <select
             class="form-control"
@@ -625,6 +630,57 @@
             }
           </div>
         }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_categoryCombo" jhiTranslate="dhis2AuditApp.program.categoryCombo">Category Combo</label>
+          <select
+            class="form-control"
+            id="field_categoryCombo"
+            data-cy="categoryCombo"
+            name="categoryCombo"
+            formControlName="categoryCombo"
+            [compareWith]="compareCategorycombo"
+          >
+            <option [ngValue]="null"></option>
+            @for (categorycomboOption of categorycombosSharedCollection; track $index) {
+              <option [ngValue]="categorycomboOption">{{ categorycomboOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_dataElements" jhiTranslate="dhis2AuditApp.program.dataElements">Data Elements</label>
+          <select
+            class="form-control"
+            id="field_dataElements"
+            data-cy="dataElements"
+            multiple
+            name="dataElements"
+            formControlName="dataElements"
+            [compareWith]="compareDataelement"
+          >
+            @for (dataelementOption of dataelementsSharedCollection; track $index) {
+              <option [ngValue]="dataelementOption">{{ dataelementOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_organisationUnits" jhiTranslate="dhis2AuditApp.program.organisationUnits">Organisation Units</label>
+          <select
+            class="form-control"
+            id="field_organisationUnits"
+            data-cy="organisationUnits"
+            multiple
+            name="organisationUnits"
+            formControlName="organisationUnits"
+            [compareWith]="compareOrganisationUnit"
+          >
+            @for (organisationUnitOption of organisationUnitsSharedCollection; track $index) {
+              <option [ngValue]="organisationUnitOption">{{ organisationUnitOption.id }}</option>
+            }
+          </select>
+        </div>
       </div>
 
       <div>

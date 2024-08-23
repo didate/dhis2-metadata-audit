@@ -28,6 +28,10 @@
       "fieldName": "emailNotification",
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "notificationTime",
+      "fieldType": "String"
     }
   ],
   "name": "Project",

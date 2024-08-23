@@ -80,7 +80,8 @@ public class IndicatorAsserts {
                         .as("check displayDenominatorDescription")
                         .isEqualTo(actual.getDisplayDenominatorDescription())
             )
-            .satisfies(e -> assertThat(e.getDimensionItem()).as("check dimensionItem").isEqualTo(actual.getDimensionItem()));
+            .satisfies(e -> assertThat(e.getDimensionItem()).as("check dimensionItem").isEqualTo(actual.getDimensionItem()))
+            .satisfies(e -> assertThat(e.getTrack()).as("check track").isEqualTo(actual.getTrack()));
     }
 
     /**

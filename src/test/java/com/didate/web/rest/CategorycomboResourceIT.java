@@ -256,6 +256,8 @@ class CategorycomboResourceIT {
         Categorycombo partialUpdatedCategorycombo = new Categorycombo();
         partialUpdatedCategorycombo.setId(categorycombo.getId());
 
+        partialUpdatedCategorycombo.name(UPDATED_NAME);
+
         restCategorycomboMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedCategorycombo.getId())

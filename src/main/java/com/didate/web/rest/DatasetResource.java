@@ -136,12 +136,21 @@ public class DatasetResource {
      * {@code GET  /datasets} : get all the datasets.
      *
      * @param pageable the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of datasets in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<Dataset>> getAllDatasets(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<Dataset>> getAllDatasets(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
+        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+    ) {
         log.debug("REST request to get a page of Datasets");
-        Page<Dataset> page = datasetService.findAll(pageable);
+        Page<Dataset> page;
+        if (eagerload) {
+            page = datasetService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = datasetService.findAll(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

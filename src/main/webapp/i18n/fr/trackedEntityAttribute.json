@@ -1,0 +1,51 @@
+{
+  "dhis2AuditApp": {
+    "trackedEntityAttribute": {
+      "home": {
+        "title": "TrackedEntityAttributes",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Tracked Entity Attribute",
+        "createOrEditLabel": "Créer ou éditer un Tracked Entity Attribute",
+        "notFound": "Aucun Tracked Entity Attribute trouvé"
+      },
+      "created": "Un nouveau Tracked Entity Attribute a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Tracked Entity Attribute avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Tracked Entity Attribute avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Tracked Entity Attribute {{ id }} ?"
+      },
+      "detail": {
+        "title": "Tracked Entity Attribute"
+      },
+      "id": "Id",
+      "lastUpdated": "Last Updated",
+      "created": "Created",
+      "name": "Name",
+      "shortName": "Short Name",
+      "generated": "Generated",
+      "valueType": "Value Type",
+      "confidential": "Confidential",
+      "displayFormName": "Display Form Name",
+      "uniquee": "Uniquee",
+      "dimensionItemType": "Dimension Item Type",
+      "aggregationType": "Aggregation Type",
+      "displayInListNoProgram": "Display In List No Program",
+      "displayName": "Display Name",
+      "patterne": "Patterne",
+      "skipSynchronization": "Skip Synchronization",
+      "displayShortName": "Display Short Name",
+      "periodOffset": "Period Offset",
+      "displayOnVisitSchedule": "Display On Visit Schedule",
+      "formName": "Form Name",
+      "orgunitScope": "Orgunit Scope",
+      "dimensionItem": "Dimension Item",
+      "inherit": "Inherit",
+      "optionSetValue": "Option Set Value",
+      "track": "Track",
+      "project": "Project",
+      "createdBy": "Created By",
+      "lastUpdatedBy": "Last Updated By",
+      "optionSet": "Option Set"
+    }
+  }
+}

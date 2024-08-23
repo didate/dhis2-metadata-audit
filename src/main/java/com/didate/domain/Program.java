@@ -1,19 +1,22 @@
 package com.didate.domain;
 
+import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.envers.Audited;
 
 /**
  * A Program.
  */
 @Entity
-@Audited
 @Table(name = "program")
-@SuppressWarnings("common-java:DuplicatedBlocks")
+@Audited
 @JsonIgnoreProperties(ignoreUnknown = true)
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class Program implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -82,9 +85,6 @@ public class Program implements Serializable {
     @Column(name = "style")
     private String style;
 
-    @Column(name = "category_combo")
-    private String categoryCombo;
-
     @Column(name = "skip_offline")
     private Boolean skipOffline;
 
@@ -151,6 +151,11 @@ public class Program implements Serializable {
     @Column(name = "program_tracked_entity_attributes_count")
     private Integer programTrackedEntityAttributesCount;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "track", nullable = false)
+    private TypeTrack track;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
@@ -161,6 +166,30 @@ public class Program implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     private DHISUser lastUpdatedBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Categorycombo categoryCombo;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_program__data_elements",
+        joinColumns = @JoinColumn(name = "program_id"),
+        inverseJoinColumns = @JoinColumn(name = "data_elements_id")
+    )
+    @JsonIgnoreProperties(
+        value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "programs", "datasets" },
+        allowSetters = true
+    )
+    private Set<Dataelement> dataElements = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_program__organisation_units",
+        joinColumns = @JoinColumn(name = "program_id"),
+        inverseJoinColumns = @JoinColumn(name = "organisation_units_id")
+    )
+    @JsonIgnoreProperties(value = { "createdBy", "lastUpdatedBy", "programs", "datasets" }, allowSetters = true)
+    private Set<OrganisationUnit> organisationUnits = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -435,19 +464,6 @@ public class Program implements Serializable {
 
     public void setStyle(String style) {
         this.style = style;
-    }
-
-    public String getCategoryCombo() {
-        return this.categoryCombo;
-    }
-
-    public Program categoryCombo(String categoryCombo) {
-        this.setCategoryCombo(categoryCombo);
-        return this;
-    }
-
-    public void setCategoryCombo(String categoryCombo) {
-        this.categoryCombo = categoryCombo;
     }
 
     public Boolean getSkipOffline() {
@@ -736,6 +752,19 @@ public class Program implements Serializable {
         this.programTrackedEntityAttributesCount = programTrackedEntityAttributesCount;
     }
 
+    public TypeTrack getTrack() {
+        return this.track;
+    }
+
+    public Program track(TypeTrack track) {
+        this.setTrack(track);
+        return this;
+    }
+
+    public void setTrack(TypeTrack track) {
+        this.track = track;
+    }
+
     public Project getProject() {
         return this.project;
     }
@@ -772,6 +801,65 @@ public class Program implements Serializable {
 
     public Program lastUpdatedBy(DHISUser dHISUser) {
         this.setLastUpdatedBy(dHISUser);
+        return this;
+    }
+
+    public Categorycombo getCategoryCombo() {
+        return this.categoryCombo;
+    }
+
+    public void setCategoryCombo(Categorycombo categorycombo) {
+        this.categoryCombo = categorycombo;
+    }
+
+    public Program categoryCombo(Categorycombo categorycombo) {
+        this.setCategoryCombo(categorycombo);
+        return this;
+    }
+
+    public Set<Dataelement> getDataElements() {
+        return this.dataElements;
+    }
+
+    public void setDataElements(Set<Dataelement> dataelements) {
+        this.dataElements = dataelements;
+    }
+
+    public Program dataElements(Set<Dataelement> dataelements) {
+        this.setDataElements(dataelements);
+        return this;
+    }
+
+    public Program addDataElements(Dataelement dataelement) {
+        this.dataElements.add(dataelement);
+        return this;
+    }
+
+    public Program removeDataElements(Dataelement dataelement) {
+        this.dataElements.remove(dataelement);
+        return this;
+    }
+
+    public Set<OrganisationUnit> getOrganisationUnits() {
+        return this.organisationUnits;
+    }
+
+    public void setOrganisationUnits(Set<OrganisationUnit> organisationUnits) {
+        this.organisationUnits = organisationUnits;
+    }
+
+    public Program organisationUnits(Set<OrganisationUnit> organisationUnits) {
+        this.setOrganisationUnits(organisationUnits);
+        return this;
+    }
+
+    public Program addOrganisationUnits(OrganisationUnit organisationUnit) {
+        this.organisationUnits.add(organisationUnit);
+        return this;
+    }
+
+    public Program removeOrganisationUnits(OrganisationUnit organisationUnit) {
+        this.organisationUnits.remove(organisationUnit);
         return this;
     }
 
@@ -819,7 +907,6 @@ public class Program implements Serializable {
             ", selectIncidentDatesInFuture='" + getSelectIncidentDatesInFuture() + "'" +
             ", trackedEntityType='" + getTrackedEntityType() + "'" +
             ", style='" + getStyle() + "'" +
-            ", categoryCombo='" + getCategoryCombo() + "'" +
             ", skipOffline='" + getSkipOffline() + "'" +
             ", displayFrontPageList='" + getDisplayFrontPageList() + "'" +
             ", useFirstStageDuringRegistration='" + getUseFirstStageDuringRegistration() + "'" +
@@ -842,6 +929,7 @@ public class Program implements Serializable {
             ", programStagesCount=" + getProgramStagesCount() +
             ", programSectionsCount=" + getProgramSectionsCount() +
             ", programTrackedEntityAttributesCount=" + getProgramTrackedEntityAttributesCount() +
+            ", track='" + getTrack() + "'" +
             "}";
     }
 }

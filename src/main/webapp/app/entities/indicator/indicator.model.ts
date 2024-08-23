@@ -2,6 +2,7 @@ import dayjs from 'dayjs/esm';
 import { IProject } from 'app/entities/project/project.model';
 import { IDHISUser } from 'app/entities/dhis-user/dhis-user.model';
 import { IIndicatortype } from 'app/entities/indicatortype/indicatortype.model';
+import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface IIndicator {
   id: string;
@@ -22,6 +23,7 @@ export interface IIndicator {
   displayNumeratorDescription?: string | null;
   displayDenominatorDescription?: string | null;
   dimensionItem?: string | null;
+  track?: keyof typeof TypeTrack | null;
   project?: IProject | null;
   createdBy?: IDHISUser | null;
   lastUpdatedBy?: IDHISUser | null;

@@ -9,9 +9,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.didate.IntegrationTest;
 import com.didate.domain.DHISUser;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.DHISUserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +46,30 @@ class DHISUserResourceIT {
     private static final String DEFAULT_USERNAME = "AAAAAAAAAA";
     private static final String UPDATED_USERNAME = "BBBBBBBBBB";
 
+    private static final Instant DEFAULT_LAST_LOGIN = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_LAST_LOGIN = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PHONE_NUMBER = "AAAAAAAAAA";
+    private static final String UPDATED_PHONE_NUMBER = "BBBBBBBBBB";
+
+    private static final Boolean DEFAULT_DISABLED = false;
+    private static final Boolean UPDATED_DISABLED = true;
+
+    private static final Instant DEFAULT_PASSWORD_LAST_UPDATED = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_PASSWORD_LAST_UPDATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_CREATED = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_CREATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_LAST_UPDATED = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_LAST_UPDATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final TypeTrack DEFAULT_TRACK = TypeTrack.NEW;
+    private static final TypeTrack UPDATED_TRACK = TypeTrack.UPDATE;
+
     private static final String ENTITY_API_URL = "/api/dhis-users";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -73,7 +100,15 @@ class DHISUserResourceIT {
             .code(DEFAULT_CODE)
             .name(DEFAULT_NAME)
             .displayName(DEFAULT_DISPLAY_NAME)
-            .username(DEFAULT_USERNAME);
+            .username(DEFAULT_USERNAME)
+            .lastLogin(DEFAULT_LAST_LOGIN)
+            .email(DEFAULT_EMAIL)
+            .phoneNumber(DEFAULT_PHONE_NUMBER)
+            .disabled(DEFAULT_DISABLED)
+            .passwordLastUpdated(DEFAULT_PASSWORD_LAST_UPDATED)
+            .created(DEFAULT_CREATED)
+            .lastUpdated(DEFAULT_LAST_UPDATED)
+            .track(DEFAULT_TRACK);
         return dHISUser;
     }
 
@@ -88,7 +123,15 @@ class DHISUserResourceIT {
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
             .displayName(UPDATED_DISPLAY_NAME)
-            .username(UPDATED_USERNAME);
+            .username(UPDATED_USERNAME)
+            .lastLogin(UPDATED_LAST_LOGIN)
+            .email(UPDATED_EMAIL)
+            .phoneNumber(UPDATED_PHONE_NUMBER)
+            .disabled(UPDATED_DISABLED)
+            .passwordLastUpdated(UPDATED_PASSWORD_LAST_UPDATED)
+            .created(UPDATED_CREATED)
+            .lastUpdated(UPDATED_LAST_UPDATED)
+            .track(UPDATED_TRACK);
         return dHISUser;
     }
 
@@ -178,6 +221,22 @@ class DHISUserResourceIT {
 
     @Test
     @Transactional
+    void checkTrackIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        dHISUser.setTrack(null);
+
+        // Create the DHISUser, which fails.
+
+        restDHISUserMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(dHISUser)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllDHISUsers() throws Exception {
         // Initialize the database
         insertedDHISUser = dHISUserRepository.saveAndFlush(dHISUser);
@@ -191,7 +250,15 @@ class DHISUserResourceIT {
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].displayName").value(hasItem(DEFAULT_DISPLAY_NAME)))
-            .andExpect(jsonPath("$.[*].username").value(hasItem(DEFAULT_USERNAME)));
+            .andExpect(jsonPath("$.[*].username").value(hasItem(DEFAULT_USERNAME)))
+            .andExpect(jsonPath("$.[*].lastLogin").value(hasItem(DEFAULT_LAST_LOGIN.toString())))
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
+            .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)))
+            .andExpect(jsonPath("$.[*].disabled").value(hasItem(DEFAULT_DISABLED.booleanValue())))
+            .andExpect(jsonPath("$.[*].passwordLastUpdated").value(hasItem(DEFAULT_PASSWORD_LAST_UPDATED.toString())))
+            .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED.toString())))
+            .andExpect(jsonPath("$.[*].lastUpdated").value(hasItem(DEFAULT_LAST_UPDATED.toString())))
+            .andExpect(jsonPath("$.[*].track").value(hasItem(DEFAULT_TRACK.toString())));
     }
 
     @Test
@@ -209,7 +276,15 @@ class DHISUserResourceIT {
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.displayName").value(DEFAULT_DISPLAY_NAME))
-            .andExpect(jsonPath("$.username").value(DEFAULT_USERNAME));
+            .andExpect(jsonPath("$.username").value(DEFAULT_USERNAME))
+            .andExpect(jsonPath("$.lastLogin").value(DEFAULT_LAST_LOGIN.toString()))
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
+            .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER))
+            .andExpect(jsonPath("$.disabled").value(DEFAULT_DISABLED.booleanValue()))
+            .andExpect(jsonPath("$.passwordLastUpdated").value(DEFAULT_PASSWORD_LAST_UPDATED.toString()))
+            .andExpect(jsonPath("$.created").value(DEFAULT_CREATED.toString()))
+            .andExpect(jsonPath("$.lastUpdated").value(DEFAULT_LAST_UPDATED.toString()))
+            .andExpect(jsonPath("$.track").value(DEFAULT_TRACK.toString()));
     }
 
     @Test
@@ -231,7 +306,19 @@ class DHISUserResourceIT {
         DHISUser updatedDHISUser = dHISUserRepository.findById(dHISUser.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedDHISUser are not directly saved in db
         em.detach(updatedDHISUser);
-        updatedDHISUser.code(UPDATED_CODE).name(UPDATED_NAME).displayName(UPDATED_DISPLAY_NAME).username(UPDATED_USERNAME);
+        updatedDHISUser
+            .code(UPDATED_CODE)
+            .name(UPDATED_NAME)
+            .displayName(UPDATED_DISPLAY_NAME)
+            .username(UPDATED_USERNAME)
+            .lastLogin(UPDATED_LAST_LOGIN)
+            .email(UPDATED_EMAIL)
+            .phoneNumber(UPDATED_PHONE_NUMBER)
+            .disabled(UPDATED_DISABLED)
+            .passwordLastUpdated(UPDATED_PASSWORD_LAST_UPDATED)
+            .created(UPDATED_CREATED)
+            .lastUpdated(UPDATED_LAST_UPDATED)
+            .track(UPDATED_TRACK);
 
         restDHISUserMockMvc
             .perform(
@@ -309,7 +396,13 @@ class DHISUserResourceIT {
         DHISUser partialUpdatedDHISUser = new DHISUser();
         partialUpdatedDHISUser.setId(dHISUser.getId());
 
-        partialUpdatedDHISUser.code(UPDATED_CODE).name(UPDATED_NAME).displayName(UPDATED_DISPLAY_NAME).username(UPDATED_USERNAME);
+        partialUpdatedDHISUser
+            .displayName(UPDATED_DISPLAY_NAME)
+            .lastLogin(UPDATED_LAST_LOGIN)
+            .email(UPDATED_EMAIL)
+            .disabled(UPDATED_DISABLED)
+            .passwordLastUpdated(UPDATED_PASSWORD_LAST_UPDATED)
+            .track(UPDATED_TRACK);
 
         restDHISUserMockMvc
             .perform(
@@ -337,7 +430,19 @@ class DHISUserResourceIT {
         DHISUser partialUpdatedDHISUser = new DHISUser();
         partialUpdatedDHISUser.setId(dHISUser.getId());
 
-        partialUpdatedDHISUser.code(UPDATED_CODE).name(UPDATED_NAME).displayName(UPDATED_DISPLAY_NAME).username(UPDATED_USERNAME);
+        partialUpdatedDHISUser
+            .code(UPDATED_CODE)
+            .name(UPDATED_NAME)
+            .displayName(UPDATED_DISPLAY_NAME)
+            .username(UPDATED_USERNAME)
+            .lastLogin(UPDATED_LAST_LOGIN)
+            .email(UPDATED_EMAIL)
+            .phoneNumber(UPDATED_PHONE_NUMBER)
+            .disabled(UPDATED_DISABLED)
+            .passwordLastUpdated(UPDATED_PASSWORD_LAST_UPDATED)
+            .created(UPDATED_CREATED)
+            .lastUpdated(UPDATED_LAST_UPDATED)
+            .track(UPDATED_TRACK);
 
         restDHISUserMockMvc
             .perform(

@@ -96,6 +96,9 @@ public class DataelementServiceImpl implements DataelementService {
                 if (dataelement.getDimensionItem() != null) {
                     existingDataelement.setDimensionItem(dataelement.getDimensionItem());
                 }
+                if (dataelement.getTrack() != null) {
+                    existingDataelement.setTrack(dataelement.getTrack());
+                }
 
                 return existingDataelement;
             })

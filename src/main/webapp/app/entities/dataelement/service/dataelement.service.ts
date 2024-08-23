@@ -109,8 +109,8 @@ export class DataelementService {
   protected convertDateFromServer(restDataelement: RestDataelement): IDataelement {
     return {
       ...restDataelement,
-      created: restDataelement.created ? dayjs.unix(Number(restDataelement.created)) : undefined,
-      lastUpdated: restDataelement.lastUpdated ? dayjs.unix(Number(restDataelement.lastUpdated)) : undefined,
+      created: restDataelement.created ? dayjs(restDataelement.created) : undefined,
+      lastUpdated: restDataelement.lastUpdated ? dayjs(restDataelement.lastUpdated) : undefined,
     };
   }
 

@@ -1,0 +1,36 @@
+{
+  "dhis2AuditApp": {
+    "programRuleVariable": {
+      "home": {
+        "title": "ProgramRuleVariables",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Program Rule Variable",
+        "createOrEditLabel": "Créer ou éditer un Program Rule Variable",
+        "notFound": "Aucun Program Rule Variable trouvé"
+      },
+      "created": "Un nouveau Program Rule Variable a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Program Rule Variable avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Program Rule Variable avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Program Rule Variable {{ id }} ?"
+      },
+      "detail": {
+        "title": "Program Rule Variable"
+      },
+      "id": "Id",
+      "lastUpdated": "Last Updated",
+      "created": "Created",
+      "name": "Name",
+      "displayName": "Display Name",
+      "programRuleVariableSourceType": "Program Rule Variable Source Type",
+      "useCodeForOptionSet": "Use Code For Option Set",
+      "track": "Track",
+      "project": "Project",
+      "createdBy": "Created By",
+      "lastUpdatedBy": "Last Updated By",
+      "program": "Program",
+      "trackedEntityAttribute": "Tracked Entity Attribute",
+      "dataElement": "Data Element"
+    }
+  }
+}

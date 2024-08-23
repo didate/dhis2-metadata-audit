@@ -1,16 +1,20 @@
 package com.didate.domain;
 
+import com.didate.domain.enumeration.TypeTrack;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import org.hibernate.envers.Audited;
 
 /**
  * A DHISUser.
  */
 @Entity
-@Audited
 @Table(name = "dhis_user")
+@Audited
+@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class DHISUser implements Serializable {
 
@@ -34,6 +38,32 @@ public class DHISUser implements Serializable {
     @NotNull
     @Column(name = "username", nullable = false)
     private String username;
+
+    @Column(name = "last_login")
+    private Instant lastLogin;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "disabled")
+    private Boolean disabled;
+
+    @Column(name = "password_last_updated")
+    private Instant passwordLastUpdated;
+
+    @Column(name = "created")
+    private Instant created;
+
+    @Column(name = "last_updated")
+    private Instant lastUpdated;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "track", nullable = false)
+    private TypeTrack track;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -102,6 +132,110 @@ public class DHISUser implements Serializable {
         this.username = username;
     }
 
+    public Instant getLastLogin() {
+        return this.lastLogin;
+    }
+
+    public DHISUser lastLogin(Instant lastLogin) {
+        this.setLastLogin(lastLogin);
+        return this;
+    }
+
+    public void setLastLogin(Instant lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public DHISUser email(String email) {
+        this.setEmail(email);
+        return this;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return this.phoneNumber;
+    }
+
+    public DHISUser phoneNumber(String phoneNumber) {
+        this.setPhoneNumber(phoneNumber);
+        return this;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Boolean getDisabled() {
+        return this.disabled;
+    }
+
+    public DHISUser disabled(Boolean disabled) {
+        this.setDisabled(disabled);
+        return this;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public Instant getPasswordLastUpdated() {
+        return this.passwordLastUpdated;
+    }
+
+    public DHISUser passwordLastUpdated(Instant passwordLastUpdated) {
+        this.setPasswordLastUpdated(passwordLastUpdated);
+        return this;
+    }
+
+    public void setPasswordLastUpdated(Instant passwordLastUpdated) {
+        this.passwordLastUpdated = passwordLastUpdated;
+    }
+
+    public Instant getCreated() {
+        return this.created;
+    }
+
+    public DHISUser created(Instant created) {
+        this.setCreated(created);
+        return this;
+    }
+
+    public void setCreated(Instant created) {
+        this.created = created;
+    }
+
+    public Instant getLastUpdated() {
+        return this.lastUpdated;
+    }
+
+    public DHISUser lastUpdated(Instant lastUpdated) {
+        this.setLastUpdated(lastUpdated);
+        return this;
+    }
+
+    public void setLastUpdated(Instant lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public TypeTrack getTrack() {
+        return this.track;
+    }
+
+    public DHISUser track(TypeTrack track) {
+        this.setTrack(track);
+        return this;
+    }
+
+    public void setTrack(TypeTrack track) {
+        this.track = track;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -130,6 +264,14 @@ public class DHISUser implements Serializable {
             ", name='" + getName() + "'" +
             ", displayName='" + getDisplayName() + "'" +
             ", username='" + getUsername() + "'" +
+            ", lastLogin='" + getLastLogin() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", phoneNumber='" + getPhoneNumber() + "'" +
+            ", disabled='" + getDisabled() + "'" +
+            ", passwordLastUpdated='" + getPasswordLastUpdated() + "'" +
+            ", created='" + getCreated() + "'" +
+            ", lastUpdated='" + getLastUpdated() + "'" +
+            ", track='" + getTrack() + "'" +
             "}";
     }
 }

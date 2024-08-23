@@ -161,6 +161,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="track">
+              <div class="d-flex">
+                <span jhiTranslate="dhis2AuditApp.dataelement.track">Track</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="project.id">
               <div class="d-flex">
                 <span jhiTranslate="dhis2AuditApp.dataelement.project">Project</span>
@@ -217,6 +224,9 @@
               <td>{{ dataelement.zeroIsSignificant }}</td>
               <td>{{ dataelement.optionSetValue }}</td>
               <td>{{ dataelement.dimensionItem }}</td>
+              <td [jhiTranslate]="'dhis2AuditApp.TypeTrack.' + (dataelement.track ?? 'null')">
+                {{ { null: '', NEW: 'NEW', UPDATE: 'UPDATE', NONE: 'NONE' }[dataelement.track ?? 'null'] }}
+              </td>
               <td>
                 @if (dataelement.project) {
                   <div>

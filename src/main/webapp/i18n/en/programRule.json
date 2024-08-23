@@ -1,0 +1,34 @@
+{
+  "dhis2AuditApp": {
+    "programRule": {
+      "home": {
+        "title": "Program Rules",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Program Rule",
+        "createOrEditLabel": "Create or edit a Program Rule",
+        "notFound": "No Program Rules found"
+      },
+      "created": "A new Program Rule is created with identifier {{ param }}",
+      "updated": "A Program Rule is updated with identifier {{ param }}",
+      "deleted": "A Program Rule is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Program Rule {{ id }}?"
+      },
+      "detail": {
+        "title": "Program Rule"
+      },
+      "id": "Id",
+      "lastUpdated": "Last Updated",
+      "created": "Created",
+      "name": "Name",
+      "displayName": "Display Name",
+      "priority": "Priority",
+      "condition": "Condition",
+      "track": "Track",
+      "project": "Project",
+      "createdBy": "Created By",
+      "lastUpdatedBy": "Last Updated By",
+      "program": "Program"
+    }
+  }
+}

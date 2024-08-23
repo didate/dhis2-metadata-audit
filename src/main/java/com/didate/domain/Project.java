@@ -1,5 +1,6 @@
 package com.didate.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -9,8 +10,9 @@ import org.hibernate.envers.Audited;
  * A Project.
  */
 @Entity
-@Audited
 @Table(name = "project")
+@Audited
+@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Project implements Serializable {
 
@@ -41,6 +43,9 @@ public class Project implements Serializable {
     @NotNull
     @Column(name = "email_notification", nullable = false)
     private Boolean emailNotification;
+
+    @Column(name = "notification_time")
+    private String notificationTime;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -122,6 +127,19 @@ public class Project implements Serializable {
         this.emailNotification = emailNotification;
     }
 
+    public String getNotificationTime() {
+        return this.notificationTime;
+    }
+
+    public Project notificationTime(String notificationTime) {
+        this.setNotificationTime(notificationTime);
+        return this;
+    }
+
+    public void setNotificationTime(String notificationTime) {
+        this.notificationTime = notificationTime;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -151,6 +169,7 @@ public class Project implements Serializable {
             ", dhis2Version=" + getDhis2Version() +
             ", token='" + getToken() + "'" +
             ", emailNotification='" + getEmailNotification() + "'" +
+            ", notificationTime='" + getNotificationTime() + "'" +
             "}";
     }
 }

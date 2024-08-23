@@ -51,7 +51,8 @@ public class ProjectAsserts {
             .satisfies(e -> assertThat(e.getDhis2URL()).as("check dhis2URL").isEqualTo(actual.getDhis2URL()))
             .satisfies(e -> assertThat(e.getDhis2Version()).as("check dhis2Version").isEqualTo(actual.getDhis2Version()))
             .satisfies(e -> assertThat(e.getToken()).as("check token").isEqualTo(actual.getToken()))
-            .satisfies(e -> assertThat(e.getEmailNotification()).as("check emailNotification").isEqualTo(actual.getEmailNotification()));
+            .satisfies(e -> assertThat(e.getEmailNotification()).as("check emailNotification").isEqualTo(actual.getEmailNotification()))
+            .satisfies(e -> assertThat(e.getNotificationTime()).as("check notificationTime").isEqualTo(actual.getNotificationTime()));
     }
 
     /**

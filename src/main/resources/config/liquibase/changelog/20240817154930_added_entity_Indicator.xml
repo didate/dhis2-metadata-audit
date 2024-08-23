@@ -65,6 +65,9 @@
             <column name="dimension_item" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="track" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="project_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -117,6 +120,7 @@
             <column name="display_numerator_description" type="string"/>
             <column name="display_denominator_description" type="string"/>
             <column name="dimension_item" type="string"/>
+            <column name="track" type="string"/>
             <column name="created_by_id" type="string"/>
             <column name="last_updated_by_id" type="string"/>
             <column name="indicator_type_id" type="string"/>

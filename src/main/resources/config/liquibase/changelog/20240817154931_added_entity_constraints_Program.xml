@@ -30,5 +30,40 @@
                                  referencedColumnNames="id"
                                  referencedTableName="dhis_user"
                                  />
+
+        <addForeignKeyConstraint baseColumnNames="category_combo_id"
+                                 baseTableName="program"
+                                 constraintName="fk_program__category_combo_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="categorycombo"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="program_id"
+                                 baseTableName="rel_program__data_elements"
+                                 constraintName="fk_rel_program__data_elements__program_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="program"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="data_elements_id"
+                                 baseTableName="rel_program__data_elements"
+                                 constraintName="fk_rel_program__data_elements__data_elements_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dataelement"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="program_id"
+                                 baseTableName="rel_program__organisation_units"
+                                 constraintName="fk_rel_program__organisation_units__program_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="program"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="organisation_units_id"
+                                 baseTableName="rel_program__organisation_units"
+                                 constraintName="fk_rel_program__organisation_units__organisation_units_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="organisation_unit"
+                                 />
     </changeSet>
 </databaseChangeLog>

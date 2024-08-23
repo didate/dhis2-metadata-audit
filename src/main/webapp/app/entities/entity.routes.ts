@@ -56,6 +56,36 @@ const routes: Routes = [
     data: { pageTitle: 'dhis2AuditApp.dataset.home.title' },
     loadChildren: () => import('./dataset/dataset.routes'),
   },
+  {
+    path: 'program-rule',
+    data: { pageTitle: 'dhis2AuditApp.programRule.home.title' },
+    loadChildren: () => import('./program-rule/program-rule.routes'),
+  },
+  {
+    path: 'program-rule-action',
+    data: { pageTitle: 'dhis2AuditApp.programRuleAction.home.title' },
+    loadChildren: () => import('./program-rule-action/program-rule-action.routes'),
+  },
+  {
+    path: 'program-rule-variable',
+    data: { pageTitle: 'dhis2AuditApp.programRuleVariable.home.title' },
+    loadChildren: () => import('./program-rule-variable/program-rule-variable.routes'),
+  },
+  {
+    path: 'tracked-entity-attribute',
+    data: { pageTitle: 'dhis2AuditApp.trackedEntityAttribute.home.title' },
+    loadChildren: () => import('./tracked-entity-attribute/tracked-entity-attribute.routes'),
+  },
+  {
+    path: 'option-group',
+    data: { pageTitle: 'dhis2AuditApp.optionGroup.home.title' },
+    loadChildren: () => import('./option-group/option-group.routes'),
+  },
+  {
+    path: 'organisation-unit',
+    data: { pageTitle: 'dhis2AuditApp.organisationUnit.home.title' },
+    loadChildren: () => import('./organisation-unit/organisation-unit.routes'),
+  },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];
 

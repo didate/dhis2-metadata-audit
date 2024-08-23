@@ -10,11 +10,11 @@ public class ProjectTestSamples {
     private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     public static Project getProjectSample1() {
-        return new Project().id(1L).projectName("projectName1").dhis2URL("dhis2URL1").token("token1");
+        return new Project().id(1L).projectName("projectName1").dhis2URL("dhis2URL1").token("token1").notificationTime("notificationTime1");
     }
 
     public static Project getProjectSample2() {
-        return new Project().id(2L).projectName("projectName2").dhis2URL("dhis2URL2").token("token2");
+        return new Project().id(2L).projectName("projectName2").dhis2URL("dhis2URL2").token("token2").notificationTime("notificationTime2");
     }
 
     public static Project getProjectRandomSampleGenerator() {
@@ -22,6 +22,7 @@ public class ProjectTestSamples {
             .id(longCount.incrementAndGet())
             .projectName(UUID.randomUUID().toString())
             .dhis2URL(UUID.randomUUID().toString())
-            .token(UUID.randomUUID().toString());
+            .token(UUID.randomUUID().toString())
+            .notificationTime(UUID.randomUUID().toString());
     }
 }

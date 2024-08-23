@@ -25,6 +25,7 @@ describe('Project Form Service', () => {
             dhis2Version: expect.any(Object),
             token: expect.any(Object),
             emailNotification: expect.any(Object),
+            notificationTime: expect.any(Object),
           }),
         );
       });
@@ -40,6 +41,7 @@ describe('Project Form Service', () => {
             dhis2Version: expect.any(Object),
             token: expect.any(Object),
             emailNotification: expect.any(Object),
+            notificationTime: expect.any(Object),
           }),
         );
       });

@@ -1,17 +1,17 @@
 import { IOptionset, NewOptionset } from './optionset.model';
 
 export const sampleWithRequiredData: IOptionset = {
-  id: '93f33ecf-c17b-422e-b069-1f72fd440bab',
+  id: '97b2e501-c8e0-43f0-90fb-3a5bb32106cf',
 };
 
 export const sampleWithPartialData: IOptionset = {
-  id: '840c13f6-6c7b-4b2d-a545-97c22d996685',
-  name: 'jusqu’à ce que',
+  id: '734e78c5-1d7a-48a6-83d3-c4f3902a917c',
+  name: 'abuser',
 };
 
 export const sampleWithFullData: IOptionset = {
-  id: '94b1c842-0256-48f1-80a5-226500a57286',
-  name: 'près de dans',
+  id: '4ccff7ab-7cfa-46d8-85c8-77927dc275e1',
+  name: 'juriste tromper via',
 };
 
 export const sampleWithNewData: NewOptionset = {

@@ -28,7 +28,7 @@ type DataelementFormRawValue = FormValueOf<IDataelement>;
 
 type NewDataelementFormRawValue = FormValueOf<NewDataelement>;
 
-type DataelementFormDefaults = Pick<NewDataelement, 'id' | 'created' | 'lastUpdated' | 'zeroIsSignificant'>;
+type DataelementFormDefaults = Pick<NewDataelement, 'id' | 'created' | 'lastUpdated' | 'zeroIsSignificant' | 'programs' | 'datasets'>;
 
 type DataelementFormGroupContent = {
   id: FormControl<DataelementFormRawValue['id'] | NewDataelement['id']>;
@@ -49,11 +49,14 @@ type DataelementFormGroupContent = {
   zeroIsSignificant: FormControl<DataelementFormRawValue['zeroIsSignificant']>;
   optionSetValue: FormControl<DataelementFormRawValue['optionSetValue']>;
   dimensionItem: FormControl<DataelementFormRawValue['dimensionItem']>;
+  track: FormControl<DataelementFormRawValue['track']>;
   project: FormControl<DataelementFormRawValue['project']>;
   createdBy: FormControl<DataelementFormRawValue['createdBy']>;
   lastUpdatedBy: FormControl<DataelementFormRawValue['lastUpdatedBy']>;
   categoryCombo: FormControl<DataelementFormRawValue['categoryCombo']>;
   optionSet: FormControl<DataelementFormRawValue['optionSet']>;
+  programs: FormControl<DataelementFormRawValue['programs']>;
+  datasets: FormControl<DataelementFormRawValue['datasets']>;
 };
 
 export type DataelementFormGroup = FormGroup<DataelementFormGroupContent>;
@@ -108,6 +111,9 @@ export class DataelementFormService {
       zeroIsSignificant: new FormControl(dataelementRawValue.zeroIsSignificant),
       optionSetValue: new FormControl(dataelementRawValue.optionSetValue),
       dimensionItem: new FormControl(dataelementRawValue.dimensionItem),
+      track: new FormControl(dataelementRawValue.track, {
+        validators: [Validators.required],
+      }),
       project: new FormControl(dataelementRawValue.project),
       createdBy: new FormControl(dataelementRawValue.createdBy, {
         validators: [Validators.required],
@@ -117,6 +123,8 @@ export class DataelementFormService {
       }),
       categoryCombo: new FormControl(dataelementRawValue.categoryCombo),
       optionSet: new FormControl(dataelementRawValue.optionSet),
+      programs: new FormControl(dataelementRawValue.programs ?? []),
+      datasets: new FormControl(dataelementRawValue.datasets ?? []),
     });
   }
 
@@ -142,6 +150,8 @@ export class DataelementFormService {
       created: currentTime,
       lastUpdated: currentTime,
       zeroIsSignificant: false,
+      programs: [],
+      datasets: [],
     };
   }
 
@@ -162,6 +172,8 @@ export class DataelementFormService {
       ...dataelement,
       created: dataelement.created ? dataelement.created.format(DATE_TIME_FORMAT) : undefined,
       lastUpdated: dataelement.lastUpdated ? dataelement.lastUpdated.format(DATE_TIME_FORMAT) : undefined,
+      programs: dataelement.programs ?? [],
+      datasets: dataelement.datasets ?? [],
     };
   }
 }

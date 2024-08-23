@@ -23,6 +23,7 @@ type ProjectFormGroupContent = {
   dhis2Version: FormControl<IProject['dhis2Version']>;
   token: FormControl<IProject['token']>;
   emailNotification: FormControl<IProject['emailNotification']>;
+  notificationTime: FormControl<IProject['notificationTime']>;
 };
 
 export type ProjectFormGroup = FormGroup<ProjectFormGroupContent>;
@@ -57,6 +58,7 @@ export class ProjectFormService {
       emailNotification: new FormControl(projectRawValue.emailNotification, {
         validators: [Validators.required],
       }),
+      notificationTime: new FormControl(projectRawValue.notificationTime),
     });
   }
 

@@ -39,10 +39,6 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "categoryCombo",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "mobile",
       "fieldType": "String"
     },
@@ -125,6 +121,12 @@
     {
       "fieldName": "displayFormName",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "track",
+      "fieldType": "TypeTrack",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "NEW,UPDATE,NONE"
     }
   ],
   "name": "Dataset",
@@ -149,6 +151,24 @@
       "relationshipSide": "left",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "categorycombo",
+      "relationshipName": "categoryCombo",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "dataelement",
+      "relationshipName": "dataElements",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "organisationUnit",
+      "relationshipName": "organisationUnits",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
     }
   ],
   "searchEngine": "no",

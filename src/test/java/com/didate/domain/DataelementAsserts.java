@@ -63,7 +63,8 @@ public class DataelementAsserts {
             .satisfies(e -> assertThat(e.getDomainType()).as("check domainType").isEqualTo(actual.getDomainType()))
             .satisfies(e -> assertThat(e.getZeroIsSignificant()).as("check zeroIsSignificant").isEqualTo(actual.getZeroIsSignificant()))
             .satisfies(e -> assertThat(e.getOptionSetValue()).as("check optionSetValue").isEqualTo(actual.getOptionSetValue()))
-            .satisfies(e -> assertThat(e.getDimensionItem()).as("check dimensionItem").isEqualTo(actual.getDimensionItem()));
+            .satisfies(e -> assertThat(e.getDimensionItem()).as("check dimensionItem").isEqualTo(actual.getDimensionItem()))
+            .satisfies(e -> assertThat(e.getTrack()).as("check track").isEqualTo(actual.getTrack()));
     }
 
     /**
@@ -79,6 +80,8 @@ public class DataelementAsserts {
             .satisfies(e -> assertThat(e.getCreatedBy()).as("check createdBy").isEqualTo(actual.getCreatedBy()))
             .satisfies(e -> assertThat(e.getLastUpdatedBy()).as("check lastUpdatedBy").isEqualTo(actual.getLastUpdatedBy()))
             .satisfies(e -> assertThat(e.getCategoryCombo()).as("check categoryCombo").isEqualTo(actual.getCategoryCombo()))
-            .satisfies(e -> assertThat(e.getOptionSet()).as("check optionSet").isEqualTo(actual.getOptionSet()));
+            .satisfies(e -> assertThat(e.getOptionSet()).as("check optionSet").isEqualTo(actual.getOptionSet()))
+            .satisfies(e -> assertThat(e.getPrograms()).as("check programs").isEqualTo(actual.getPrograms()))
+            .satisfies(e -> assertThat(e.getDatasets()).as("check datasets").isEqualTo(actual.getDatasets()));
     }
 }
