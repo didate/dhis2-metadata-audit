@@ -10,7 +10,7 @@ import { OptionsetService } from '../service/optionset.service';
 import { OptionsetComponent } from './optionset.component';
 import SpyInstance = jest.SpyInstance;
 
-describe('Optionset Management Component', () => {
+describe('OptionSet Management Component', () => {
   let comp: OptionsetComponent;
   let fixture: ComponentFixture<OptionsetComponent>;
   let service: OptionsetService;

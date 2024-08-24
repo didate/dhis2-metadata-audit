@@ -10,7 +10,7 @@ import { DatasetService } from '../service/dataset.service';
 
 import { DatasetDeleteDialogComponent } from './dataset-delete-dialog.component';
 
-describe('Dataset Management Delete Component', () => {
+describe('DataSet Management Delete Component', () => {
   let comp: DatasetDeleteDialogComponent;
   let fixture: ComponentFixture<DatasetDeleteDialogComponent>;
   let service: DatasetService;

@@ -1,6 +1,6 @@
 package com.didate.service.impl;
 
-import com.didate.domain.Dataset;
+import com.didate.domain.DataSet;
 import com.didate.repository.DatasetRepository;
 import com.didate.service.DatasetService;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link Dataset}.
+ * Service Implementation for managing {@link DataSet}.
  */
 @Service
 @Transactional
@@ -27,21 +27,21 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     @Override
-    public Dataset save(Dataset dataset) {
-        log.debug("Request to save Dataset : {}", dataset);
+    public DataSet save(DataSet dataset) {
+        log.debug("Request to save DataSet : {}", dataset);
         return datasetRepository.save(dataset);
     }
 
     @Override
-    public Dataset update(Dataset dataset) {
-        log.debug("Request to update Dataset : {}", dataset);
+    public DataSet update(DataSet dataset) {
+        log.debug("Request to update DataSet : {}", dataset);
         dataset.setIsPersisted();
         return datasetRepository.save(dataset);
     }
 
     @Override
-    public Optional<Dataset> partialUpdate(Dataset dataset) {
-        log.debug("Request to partially update Dataset : {}", dataset);
+    public Optional<DataSet> partialUpdate(DataSet dataset) {
+        log.debug("Request to partially update DataSet : {}", dataset);
 
         return datasetRepository
             .findById(dataset.getId())
@@ -159,25 +159,25 @@ public class DatasetServiceImpl implements DatasetService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Dataset> findAll(Pageable pageable) {
+    public Page<DataSet> findAll(Pageable pageable) {
         log.debug("Request to get all Datasets");
         return datasetRepository.findAll(pageable);
     }
 
-    public Page<Dataset> findAllWithEagerRelationships(Pageable pageable) {
+    public Page<DataSet> findAllWithEagerRelationships(Pageable pageable) {
         return datasetRepository.findAllWithEagerRelationships(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Dataset> findOne(String id) {
-        log.debug("Request to get Dataset : {}", id);
+    public Optional<DataSet> findOne(String id) {
+        log.debug("Request to get DataSet : {}", id);
         return datasetRepository.findOneWithEagerRelationships(id);
     }
 
     @Override
     public void delete(String id) {
-        log.debug("Request to delete Dataset : {}", id);
+        log.debug("Request to delete DataSet : {}", id);
         datasetRepository.deleteById(id);
     }
 

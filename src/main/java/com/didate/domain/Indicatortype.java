@@ -15,7 +15,7 @@ import org.springframework.data.domain.Persistable;
 @Table(name = "indicatortype")
 @Audited
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Indicatortype implements Serializable, Persistable<String> {
+public class IndicatorType implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class Indicatortype implements Serializable, Persistable<String> {
         return this.id;
     }
 
-    public Indicatortype id(String id) {
+    public IndicatorType id(String id) {
         this.setId(id);
         return this;
     }
@@ -49,7 +49,7 @@ public class Indicatortype implements Serializable, Persistable<String> {
         return this.name;
     }
 
-    public Indicatortype name(String name) {
+    public IndicatorType name(String name) {
         this.setName(name);
         return this;
     }
@@ -64,7 +64,7 @@ public class Indicatortype implements Serializable, Persistable<String> {
         return !this.isPersisted;
     }
 
-    public Indicatortype setIsPersisted() {
+    public IndicatorType setIsPersisted() {
         this.isPersisted = true;
         return this;
     }
@@ -82,10 +82,10 @@ public class Indicatortype implements Serializable, Persistable<String> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Indicatortype)) {
+        if (!(o instanceof IndicatorType)) {
             return false;
         }
-        return id != null && id.equals(((Indicatortype) o).id);
+        return id != null && id.equals(((IndicatorType) o).id);
     }
 
     @Override

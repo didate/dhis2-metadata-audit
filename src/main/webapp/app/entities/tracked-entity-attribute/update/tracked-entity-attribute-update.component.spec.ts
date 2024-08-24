@@ -103,7 +103,7 @@ describe('TrackedEntityAttribute Management Update Component', () => {
       expect(comp.dHISUsersSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Optionset query and add missing value', () => {
+    it('Should call OptionSet query and add missing value', () => {
       const trackedEntityAttribute: ITrackedEntityAttribute = { id: 'CBA' };
       const optionSet: IOptionset = { id: '81982c8a-d658-445f-931f-b82409fe7154' };
       trackedEntityAttribute.optionSet = optionSet;

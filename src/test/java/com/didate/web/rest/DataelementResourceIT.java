@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.didate.IntegrationTest;
 import com.didate.domain.DHISUser;
-import com.didate.domain.Dataelement;
+import com.didate.domain.DataElement;
 import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.DataelementRepository;
 import java.time.Instant;
@@ -98,7 +98,7 @@ class DataelementResourceIT {
     @Autowired
     private MockMvc restDataelementMockMvc;
 
-    private Dataelement dataelement;
+    private DataElement dataelement;
 
     /**
      * Create an entity for this test.
@@ -106,8 +106,8 @@ class DataelementResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Dataelement createEntity(EntityManager em) {
-        Dataelement dataelement = new Dataelement()
+    public static DataElement createEntity(EntityManager em) {
+        DataElement dataelement = new DataElement()
             .name(DEFAULT_NAME)
             .shortName(DEFAULT_SHORT_NAME)
             .formName(DEFAULT_FORM_NAME)
@@ -147,8 +147,8 @@ class DataelementResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Dataelement createUpdatedEntity(EntityManager em) {
-        Dataelement dataelement = new Dataelement()
+    public static DataElement createUpdatedEntity(EntityManager em) {
+        DataElement dataelement = new DataElement()
             .name(UPDATED_NAME)
             .shortName(UPDATED_SHORT_NAME)
             .formName(UPDATED_FORM_NAME)
@@ -197,9 +197,9 @@ class DataelementResourceIT {
             .andExpect(status().isCreated());
 
         // Validate the Dataelement in the database
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeCreate + 1);
-        Dataelement testDataelement = dataelementList.get(dataelementList.size() - 1);
+        DataElement testDataelement = dataelementList.get(dataelementList.size() - 1);
         assertThat(testDataelement.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testDataelement.getShortName()).isEqualTo(DEFAULT_SHORT_NAME);
         assertThat(testDataelement.getFormName()).isEqualTo(DEFAULT_FORM_NAME);
@@ -234,7 +234,7 @@ class DataelementResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Dataelement in the database
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -251,7 +251,7 @@ class DataelementResourceIT {
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -268,7 +268,7 @@ class DataelementResourceIT {
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -285,7 +285,7 @@ class DataelementResourceIT {
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -302,7 +302,7 @@ class DataelementResourceIT {
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -319,7 +319,7 @@ class DataelementResourceIT {
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -336,7 +336,7 @@ class DataelementResourceIT {
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -353,7 +353,7 @@ class DataelementResourceIT {
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -370,7 +370,7 @@ class DataelementResourceIT {
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -387,7 +387,7 @@ class DataelementResourceIT {
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -404,7 +404,7 @@ class DataelementResourceIT {
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataelement)))
             .andExpect(status().isBadRequest());
 
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -491,7 +491,7 @@ class DataelementResourceIT {
         int databaseSizeBeforeUpdate = dataelementRepository.findAll().size();
 
         // Update the dataelement
-        Dataelement updatedDataelement = dataelementRepository.findById(dataelement.getId()).get();
+        DataElement updatedDataelement = dataelementRepository.findById(dataelement.getId()).get();
         // Disconnect from session so that the updates on updatedDataelement are not directly saved in db
         em.detach(updatedDataelement);
         updatedDataelement
@@ -523,9 +523,9 @@ class DataelementResourceIT {
             .andExpect(status().isOk());
 
         // Validate the Dataelement in the database
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
-        Dataelement testDataelement = dataelementList.get(dataelementList.size() - 1);
+        DataElement testDataelement = dataelementList.get(dataelementList.size() - 1);
         assertThat(testDataelement.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testDataelement.getShortName()).isEqualTo(UPDATED_SHORT_NAME);
         assertThat(testDataelement.getFormName()).isEqualTo(UPDATED_FORM_NAME);
@@ -562,7 +562,7 @@ class DataelementResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Dataelement in the database
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -582,7 +582,7 @@ class DataelementResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Dataelement in the database
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -598,7 +598,7 @@ class DataelementResourceIT {
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Dataelement in the database
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -612,7 +612,7 @@ class DataelementResourceIT {
         int databaseSizeBeforeUpdate = dataelementRepository.findAll().size();
 
         // Update the dataelement using partial update
-        Dataelement partialUpdatedDataelement = new Dataelement();
+        DataElement partialUpdatedDataelement = new DataElement();
         partialUpdatedDataelement.setId(dataelement.getId());
 
         partialUpdatedDataelement
@@ -633,9 +633,9 @@ class DataelementResourceIT {
             .andExpect(status().isOk());
 
         // Validate the Dataelement in the database
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
-        Dataelement testDataelement = dataelementList.get(dataelementList.size() - 1);
+        DataElement testDataelement = dataelementList.get(dataelementList.size() - 1);
         assertThat(testDataelement.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testDataelement.getShortName()).isEqualTo(DEFAULT_SHORT_NAME);
         assertThat(testDataelement.getFormName()).isEqualTo(DEFAULT_FORM_NAME);
@@ -666,7 +666,7 @@ class DataelementResourceIT {
         int databaseSizeBeforeUpdate = dataelementRepository.findAll().size();
 
         // Update the dataelement using partial update
-        Dataelement partialUpdatedDataelement = new Dataelement();
+        DataElement partialUpdatedDataelement = new DataElement();
         partialUpdatedDataelement.setId(dataelement.getId());
 
         partialUpdatedDataelement
@@ -698,9 +698,9 @@ class DataelementResourceIT {
             .andExpect(status().isOk());
 
         // Validate the Dataelement in the database
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
-        Dataelement testDataelement = dataelementList.get(dataelementList.size() - 1);
+        DataElement testDataelement = dataelementList.get(dataelementList.size() - 1);
         assertThat(testDataelement.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testDataelement.getShortName()).isEqualTo(UPDATED_SHORT_NAME);
         assertThat(testDataelement.getFormName()).isEqualTo(UPDATED_FORM_NAME);
@@ -737,7 +737,7 @@ class DataelementResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Dataelement in the database
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -757,7 +757,7 @@ class DataelementResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Dataelement in the database
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -775,7 +775,7 @@ class DataelementResourceIT {
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Dataelement in the database
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -794,7 +794,7 @@ class DataelementResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        List<Dataelement> dataelementList = dataelementRepository.findAll();
+        List<DataElement> dataelementList = dataelementRepository.findAll();
         assertThat(dataelementList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

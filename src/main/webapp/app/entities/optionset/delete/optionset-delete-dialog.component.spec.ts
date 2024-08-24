@@ -10,7 +10,7 @@ import { OptionsetService } from '../service/optionset.service';
 
 import { OptionsetDeleteDialogComponent } from './optionset-delete-dialog.component';
 
-describe('Optionset Management Delete Component', () => {
+describe('OptionSet Management Delete Component', () => {
   let comp: OptionsetDeleteDialogComponent;
   let fixture: ComponentFixture<OptionsetDeleteDialogComponent>;
   let service: OptionsetService;

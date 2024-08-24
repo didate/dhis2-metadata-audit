@@ -1,12 +1,12 @@
 package com.didate.service;
 
-import com.didate.domain.Categorycombo;
+import com.didate.domain.CategoryCombo;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link Categorycombo}.
+ * Service Interface for managing {@link CategoryCombo}.
  */
 public interface CategorycomboService {
     /**
@@ -15,7 +15,7 @@ public interface CategorycomboService {
      * @param categorycombo the entity to save.
      * @return the persisted entity.
      */
-    Categorycombo save(Categorycombo categorycombo);
+    CategoryCombo save(CategoryCombo categorycombo);
 
     /**
      * Updates a categorycombo.
@@ -23,7 +23,7 @@ public interface CategorycomboService {
      * @param categorycombo the entity to update.
      * @return the persisted entity.
      */
-    Categorycombo update(Categorycombo categorycombo);
+    CategoryCombo update(CategoryCombo categorycombo);
 
     /**
      * Partially updates a categorycombo.
@@ -31,7 +31,7 @@ public interface CategorycomboService {
      * @param categorycombo the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<Categorycombo> partialUpdate(Categorycombo categorycombo);
+    Optional<CategoryCombo> partialUpdate(CategoryCombo categorycombo);
 
     /**
      * Get all the categorycombos.
@@ -39,7 +39,7 @@ public interface CategorycomboService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<Categorycombo> findAll(Pageable pageable);
+    Page<CategoryCombo> findAll(Pageable pageable);
 
     /**
      * Get the "id" categorycombo.
@@ -47,7 +47,7 @@ public interface CategorycomboService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Categorycombo> findOne(String id);
+    Optional<CategoryCombo> findOne(String id);
 
     /**
      * Delete the "id" categorycombo.

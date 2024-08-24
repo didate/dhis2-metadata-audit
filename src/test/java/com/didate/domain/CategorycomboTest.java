@@ -9,10 +9,10 @@ class CategorycomboTest {
 
     @Test
     void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Categorycombo.class);
-        Categorycombo categorycombo1 = new Categorycombo();
+        TestUtil.equalsVerifier(CategoryCombo.class);
+        CategoryCombo categorycombo1 = new CategoryCombo();
         categorycombo1.setId("id1");
-        Categorycombo categorycombo2 = new Categorycombo();
+        CategoryCombo categorycombo2 = new CategoryCombo();
         categorycombo2.setId(categorycombo1.getId());
         assertThat(categorycombo1).isEqualTo(categorycombo2);
         categorycombo2.setId("id2");

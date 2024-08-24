@@ -1,12 +1,12 @@
 package com.didate.service;
 
-import com.didate.domain.Dataelement;
+import com.didate.domain.DataElement;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link Dataelement}.
+ * Service Interface for managing {@link DataElement}.
  */
 public interface DataelementService {
     /**
@@ -15,7 +15,7 @@ public interface DataelementService {
      * @param dataelement the entity to save.
      * @return the persisted entity.
      */
-    Dataelement save(Dataelement dataelement);
+    DataElement save(DataElement dataelement);
 
     /**
      * Updates a dataelement.
@@ -23,7 +23,7 @@ public interface DataelementService {
      * @param dataelement the entity to update.
      * @return the persisted entity.
      */
-    Dataelement update(Dataelement dataelement);
+    DataElement update(DataElement dataelement);
 
     /**
      * Partially updates a dataelement.
@@ -31,7 +31,7 @@ public interface DataelementService {
      * @param dataelement the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<Dataelement> partialUpdate(Dataelement dataelement);
+    Optional<DataElement> partialUpdate(DataElement dataelement);
 
     /**
      * Get all the dataelements.
@@ -39,7 +39,7 @@ public interface DataelementService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<Dataelement> findAll(Pageable pageable);
+    Page<DataElement> findAll(Pageable pageable);
 
     /**
      * Get the "id" dataelement.
@@ -47,7 +47,7 @@ public interface DataelementService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Dataelement> findOne(String id);
+    Optional<DataElement> findOne(String id);
 
     /**
      * Delete the "id" dataelement.

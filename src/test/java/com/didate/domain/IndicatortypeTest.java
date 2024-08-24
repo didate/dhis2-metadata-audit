@@ -9,10 +9,10 @@ class IndicatortypeTest {
 
     @Test
     void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Indicatortype.class);
-        Indicatortype indicatortype1 = new Indicatortype();
+        TestUtil.equalsVerifier(IndicatorType.class);
+        IndicatorType indicatortype1 = new IndicatorType();
         indicatortype1.setId("id1");
-        Indicatortype indicatortype2 = new Indicatortype();
+        IndicatorType indicatortype2 = new IndicatorType();
         indicatortype2.setId(indicatortype1.getId());
         assertThat(indicatortype1).isEqualTo(indicatortype2);
         indicatortype2.setId("id2");

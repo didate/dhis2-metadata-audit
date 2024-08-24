@@ -1,13 +1,13 @@
 package com.didate.web.script;
 
-import com.didate.domain.Categorycombo;
+import com.didate.domain.CategoryCombo;
 import com.didate.domain.DHISUser;
-import com.didate.domain.Dataelement;
-import com.didate.domain.Dataset;
+import com.didate.domain.DataElement;
+import com.didate.domain.DataSet;
 import com.didate.domain.Indicator;
-import com.didate.domain.Indicatortype;
+import com.didate.domain.IndicatorType;
 import com.didate.domain.OptionGroup;
-import com.didate.domain.Optionset;
+import com.didate.domain.OptionSet;
 import com.didate.domain.OrganisationUnit;
 import com.didate.domain.Program;
 import com.didate.domain.ProgramIndicator;
@@ -51,13 +51,13 @@ public class DHISScript {
 
     private static final Logger log = LoggerFactory.getLogger(DHISScript.class);
 
-    private final DhisApiService<Dataelement> dataElementApiService;
+    private final DhisApiService<DataElement> dataElementApiService;
     private final DhisApiService<Indicator> indicatorApiService;
 
-    private final DhisApiService<Categorycombo> categoryComboApiService;
+    private final DhisApiService<CategoryCombo> categoryComboApiService;
     private final DhisApiService<OptionGroup> optionGroupApiService;
-    private final DhisApiService<Optionset> optionSetApiService;
-    private final DhisApiService<Indicatortype> indicatorTypeApiService;
+    private final DhisApiService<OptionSet> optionSetApiService;
+    private final DhisApiService<IndicatorType> indicatorTypeApiService;
     private final DhisApiService<Program> programApiService;
     private final DhisApiService<TrackedEntityAttribute> trackedEntityAttributeApiService;
     private final DhisApiService<ProgramStage> programStageApiService;
@@ -65,7 +65,7 @@ public class DHISScript {
     private final DhisApiService<ProgramRule> programRuleApiService;
     private final DhisApiService<ProgramRuleVariable> programRuleVariableApiService;
     private final DhisApiService<ProgramRuleAction> programRuleActionApiService;
-    private final DhisApiService<Dataset> dataSetApiService;
+    private final DhisApiService<DataSet> dataSetApiService;
     private final DhisApiService<OrganisationUnit> organisationUnitApiService;
     private final DhisApiService<DHISUser> dhisUserApiService;
 
@@ -89,12 +89,12 @@ public class DHISScript {
     private final OrganisationUnitService organisationUnitService;
 
     public DHISScript(
-        DhisApiService<Dataelement> dataElementApiService,
+        DhisApiService<DataElement> dataElementApiService,
         DhisApiService<Indicator> indicatorApiService,
-        DhisApiService<Categorycombo> categoryComboApiService,
+        DhisApiService<CategoryCombo> categoryComboApiService,
         DhisApiService<OptionGroup> optionGroupApiService,
-        DhisApiService<Optionset> optionSetApiService,
-        DhisApiService<Indicatortype> indicatorTypeApiService,
+        DhisApiService<OptionSet> optionSetApiService,
+        DhisApiService<IndicatorType> indicatorTypeApiService,
         DhisApiService<Program> programApiService,
         DhisApiService<TrackedEntityAttribute> trackedEntityAttributeApiService,
         DhisApiService<ProgramStage> programStageApiService,
@@ -102,7 +102,7 @@ public class DHISScript {
         DhisApiService<ProgramRule> programRuleApiService,
         DhisApiService<ProgramRuleVariable> programRuleVariableApiService,
         DhisApiService<ProgramRuleAction> programRuleActionApiService,
-        DhisApiService<Dataset> dataSetApiService,
+        DhisApiService<DataSet> dataSetApiService,
         DhisApiService<OrganisationUnit> organisationUnitApiService,
         DhisApiService<DHISUser> dhisUserApiService,
         ProjectService projectService,
@@ -171,7 +171,7 @@ public class DHISScript {
             performUsers(dhisUserApiService.getData(project, "users", new TypeReference<Dhis2ApiResponse<DHISUser>>() {}), project);
 
             performDataElements(
-                dataElementApiService.getData(project, "dataElements", new TypeReference<Dhis2ApiResponse<Dataelement>>() {}),
+                dataElementApiService.getData(project, "dataElements", new TypeReference<Dhis2ApiResponse<DataElement>>() {}),
                 project
             );
 
@@ -237,7 +237,7 @@ public class DHISScript {
 
     private void performUsers(List<DHISUser> dhisUsers, Project project) {}
 
-    private void performDataElements(List<Dataelement> dataelements, Project project) {
+    private void performDataElements(List<DataElement> dataelements, Project project) {
         log.info("Fetched data elements: {}", dataelements.size());
         log.info(dataelements.getClass().getName());
 
@@ -304,7 +304,7 @@ public class DHISScript {
         log.info("Fetched programs: {}", programs.size());
     }
 
-    private void performDataSets(List<Dataset> datasets) {
+    private void performDataSets(List<DataSet> datasets) {
         datasets
             .stream()
             .filter(e -> !datasetService.exist(e.getId()))

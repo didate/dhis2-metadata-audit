@@ -14,7 +14,7 @@
       "fieldType": "String"
     }
   ],
-  "name": "Optionset",
+  "name": "OptionSet",
   "pagination": "pagination",
   "relationships": [],
   "searchEngine": "no",

@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.didate.IntegrationTest;
-import com.didate.domain.Indicatortype;
+import com.didate.domain.IndicatorType;
 import com.didate.repository.IndicatortypeRepository;
 import java.util.List;
 import java.util.UUID;
@@ -43,7 +43,7 @@ class IndicatortypeResourceIT {
     @Autowired
     private MockMvc restIndicatortypeMockMvc;
 
-    private Indicatortype indicatortype;
+    private IndicatorType indicatortype;
 
     /**
      * Create an entity for this test.
@@ -51,8 +51,8 @@ class IndicatortypeResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Indicatortype createEntity(EntityManager em) {
-        Indicatortype indicatortype = new Indicatortype().name(DEFAULT_NAME);
+    public static IndicatorType createEntity(EntityManager em) {
+        IndicatorType indicatortype = new IndicatorType().name(DEFAULT_NAME);
         return indicatortype;
     }
 
@@ -62,8 +62,8 @@ class IndicatortypeResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Indicatortype createUpdatedEntity(EntityManager em) {
-        Indicatortype indicatortype = new Indicatortype().name(UPDATED_NAME);
+    public static IndicatorType createUpdatedEntity(EntityManager em) {
+        IndicatorType indicatortype = new IndicatorType().name(UPDATED_NAME);
         return indicatortype;
     }
 
@@ -82,9 +82,9 @@ class IndicatortypeResourceIT {
             .andExpect(status().isCreated());
 
         // Validate the Indicatortype in the database
-        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        List<IndicatorType> indicatortypeList = indicatortypeRepository.findAll();
         assertThat(indicatortypeList).hasSize(databaseSizeBeforeCreate + 1);
-        Indicatortype testIndicatortype = indicatortypeList.get(indicatortypeList.size() - 1);
+        IndicatorType testIndicatortype = indicatortypeList.get(indicatortypeList.size() - 1);
         assertThat(testIndicatortype.getName()).isEqualTo(DEFAULT_NAME);
     }
 
@@ -102,7 +102,7 @@ class IndicatortypeResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Indicatortype in the database
-        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        List<IndicatorType> indicatortypeList = indicatortypeRepository.findAll();
         assertThat(indicatortypeList).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -155,7 +155,7 @@ class IndicatortypeResourceIT {
         int databaseSizeBeforeUpdate = indicatortypeRepository.findAll().size();
 
         // Update the indicatortype
-        Indicatortype updatedIndicatortype = indicatortypeRepository.findById(indicatortype.getId()).get();
+        IndicatorType updatedIndicatortype = indicatortypeRepository.findById(indicatortype.getId()).get();
         // Disconnect from session so that the updates on updatedIndicatortype are not directly saved in db
         em.detach(updatedIndicatortype);
         updatedIndicatortype.name(UPDATED_NAME);
@@ -169,9 +169,9 @@ class IndicatortypeResourceIT {
             .andExpect(status().isOk());
 
         // Validate the Indicatortype in the database
-        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        List<IndicatorType> indicatortypeList = indicatortypeRepository.findAll();
         assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
-        Indicatortype testIndicatortype = indicatortypeList.get(indicatortypeList.size() - 1);
+        IndicatorType testIndicatortype = indicatortypeList.get(indicatortypeList.size() - 1);
         assertThat(testIndicatortype.getName()).isEqualTo(UPDATED_NAME);
     }
 
@@ -191,7 +191,7 @@ class IndicatortypeResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Indicatortype in the database
-        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        List<IndicatorType> indicatortypeList = indicatortypeRepository.findAll();
         assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -211,7 +211,7 @@ class IndicatortypeResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Indicatortype in the database
-        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        List<IndicatorType> indicatortypeList = indicatortypeRepository.findAll();
         assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -227,7 +227,7 @@ class IndicatortypeResourceIT {
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Indicatortype in the database
-        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        List<IndicatorType> indicatortypeList = indicatortypeRepository.findAll();
         assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -241,7 +241,7 @@ class IndicatortypeResourceIT {
         int databaseSizeBeforeUpdate = indicatortypeRepository.findAll().size();
 
         // Update the indicatortype using partial update
-        Indicatortype partialUpdatedIndicatortype = new Indicatortype();
+        IndicatorType partialUpdatedIndicatortype = new IndicatorType();
         partialUpdatedIndicatortype.setId(indicatortype.getId());
 
         restIndicatortypeMockMvc
@@ -253,9 +253,9 @@ class IndicatortypeResourceIT {
             .andExpect(status().isOk());
 
         // Validate the Indicatortype in the database
-        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        List<IndicatorType> indicatortypeList = indicatortypeRepository.findAll();
         assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
-        Indicatortype testIndicatortype = indicatortypeList.get(indicatortypeList.size() - 1);
+        IndicatorType testIndicatortype = indicatortypeList.get(indicatortypeList.size() - 1);
         assertThat(testIndicatortype.getName()).isEqualTo(DEFAULT_NAME);
     }
 
@@ -269,7 +269,7 @@ class IndicatortypeResourceIT {
         int databaseSizeBeforeUpdate = indicatortypeRepository.findAll().size();
 
         // Update the indicatortype using partial update
-        Indicatortype partialUpdatedIndicatortype = new Indicatortype();
+        IndicatorType partialUpdatedIndicatortype = new IndicatorType();
         partialUpdatedIndicatortype.setId(indicatortype.getId());
 
         partialUpdatedIndicatortype.name(UPDATED_NAME);
@@ -283,9 +283,9 @@ class IndicatortypeResourceIT {
             .andExpect(status().isOk());
 
         // Validate the Indicatortype in the database
-        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        List<IndicatorType> indicatortypeList = indicatortypeRepository.findAll();
         assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
-        Indicatortype testIndicatortype = indicatortypeList.get(indicatortypeList.size() - 1);
+        IndicatorType testIndicatortype = indicatortypeList.get(indicatortypeList.size() - 1);
         assertThat(testIndicatortype.getName()).isEqualTo(UPDATED_NAME);
     }
 
@@ -305,7 +305,7 @@ class IndicatortypeResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Indicatortype in the database
-        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        List<IndicatorType> indicatortypeList = indicatortypeRepository.findAll();
         assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -325,7 +325,7 @@ class IndicatortypeResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Indicatortype in the database
-        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        List<IndicatorType> indicatortypeList = indicatortypeRepository.findAll();
         assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -343,7 +343,7 @@ class IndicatortypeResourceIT {
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Indicatortype in the database
-        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        List<IndicatorType> indicatortypeList = indicatortypeRepository.findAll();
         assertThat(indicatortypeList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -362,7 +362,7 @@ class IndicatortypeResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        List<Indicatortype> indicatortypeList = indicatortypeRepository.findAll();
+        List<IndicatorType> indicatortypeList = indicatortypeRepository.findAll();
         assertThat(indicatortypeList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

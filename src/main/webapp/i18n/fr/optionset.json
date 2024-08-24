@@ -4,18 +4,18 @@
       "home": {
         "title": "Optionsets",
         "refreshListLabel": "Actualiser la liste",
-        "createLabel": "Créer un nouveau Optionset",
-        "createOrEditLabel": "Créer ou éditer un Optionset",
-        "notFound": "Aucun Optionset trouvé"
+        "createLabel": "Créer un nouveau OptionSet",
+        "createOrEditLabel": "Créer ou éditer un OptionSet",
+        "notFound": "Aucun OptionSet trouvé"
       },
-      "created": "Un nouveau Optionset a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Optionset avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Optionset avec l'identifiant {{ param }} a été supprimé",
+      "created": "Un nouveau OptionSet a été créé avec l'identifiant {{ param }}",
+      "updated": "Le OptionSet avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le OptionSet avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Êtes-vous certain de vouloir supprimer le Optionset {{ id }} ?"
+        "question": "Êtes-vous certain de vouloir supprimer le OptionSet {{ id }} ?"
       },
       "detail": {
-        "title": "Optionset"
+        "title": "OptionSet"
       },
       "id": "Id",
       "name": "Name"

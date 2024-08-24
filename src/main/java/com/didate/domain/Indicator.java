@@ -109,14 +109,14 @@ public class Indicator implements Serializable, Persistable<String> {
 
     @ManyToOne(optional = false)
     @NotNull
-    private Indicatortype indicatorType;
+    private IndicatorType indicatorType;
 
     @ManyToMany(mappedBy = "indicators")
     @JsonIgnoreProperties(
         value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataSetElements", "indicators", "organisationUnits" },
         allowSetters = true
     )
-    private Set<Dataset> dataSets = new HashSet<>();
+    private Set<DataSet> dataSets = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -423,24 +423,24 @@ public class Indicator implements Serializable, Persistable<String> {
         return this;
     }
 
-    public Indicatortype getIndicatorType() {
+    public IndicatorType getIndicatorType() {
         return this.indicatorType;
     }
 
-    public void setIndicatorType(Indicatortype indicatortype) {
+    public void setIndicatorType(IndicatorType indicatortype) {
         this.indicatorType = indicatortype;
     }
 
-    public Indicator indicatorType(Indicatortype indicatortype) {
+    public Indicator indicatorType(IndicatorType indicatortype) {
         this.setIndicatorType(indicatortype);
         return this;
     }
 
-    public Set<Dataset> getDataSets() {
+    public Set<DataSet> getDataSets() {
         return this.dataSets;
     }
 
-    public void setDataSets(Set<Dataset> datasets) {
+    public void setDataSets(Set<DataSet> datasets) {
         if (this.dataSets != null) {
             this.dataSets.forEach(i -> i.removeIndicators(this));
         }
@@ -450,18 +450,18 @@ public class Indicator implements Serializable, Persistable<String> {
         this.dataSets = datasets;
     }
 
-    public Indicator dataSets(Set<Dataset> datasets) {
+    public Indicator dataSets(Set<DataSet> datasets) {
         this.setDataSets(datasets);
         return this;
     }
 
-    public Indicator addDataSets(Dataset dataset) {
+    public Indicator addDataSets(DataSet dataset) {
         this.dataSets.add(dataset);
         dataset.getIndicators().add(this);
         return this;
     }
 
-    public Indicator removeDataSets(Dataset dataset) {
+    public Indicator removeDataSets(DataSet dataset) {
         this.dataSets.remove(dataset);
         dataset.getIndicators().remove(this);
         return this;

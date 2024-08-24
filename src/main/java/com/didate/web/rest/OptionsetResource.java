@@ -1,6 +1,6 @@
 package com.didate.web.rest;
 
-import com.didate.domain.Optionset;
+import com.didate.domain.OptionSet;
 import com.didate.repository.OptionsetRepository;
 import com.didate.service.OptionsetService;
 import com.didate.web.rest.errors.BadRequestAlertException;
@@ -26,7 +26,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link com.didate.domain.Optionset}.
+ * REST controller for managing {@link com.didate.domain.OptionSet}.
  */
 @RestController
 @RequestMapping("/api")
@@ -56,12 +56,12 @@ public class OptionsetResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/optionsets")
-    public ResponseEntity<Optionset> createOptionset(@Valid @RequestBody Optionset optionset) throws URISyntaxException {
-        log.debug("REST request to save Optionset : {}", optionset);
+    public ResponseEntity<OptionSet> createOptionset(@Valid @RequestBody OptionSet optionset) throws URISyntaxException {
+        log.debug("REST request to save OptionSet : {}", optionset);
         if (optionset.getId() != null) {
             throw new BadRequestAlertException("A new optionset cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Optionset result = optionsetService.save(optionset);
+        OptionSet result = optionsetService.save(optionset);
         return ResponseEntity
             .created(new URI("/api/optionsets/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -79,11 +79,11 @@ public class OptionsetResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/optionsets/{id}")
-    public ResponseEntity<Optionset> updateOptionset(
+    public ResponseEntity<OptionSet> updateOptionset(
         @PathVariable(value = "id", required = false) final String id,
-        @Valid @RequestBody Optionset optionset
+        @Valid @RequestBody OptionSet optionset
     ) throws URISyntaxException {
-        log.debug("REST request to update Optionset : {}, {}", id, optionset);
+        log.debug("REST request to update OptionSet : {}, {}", id, optionset);
         if (optionset.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -95,7 +95,7 @@ public class OptionsetResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optionset result = optionsetService.update(optionset);
+        OptionSet result = optionsetService.update(optionset);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, optionset.getId()))
@@ -114,11 +114,11 @@ public class OptionsetResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/optionsets/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<Optionset> partialUpdateOptionset(
+    public ResponseEntity<OptionSet> partialUpdateOptionset(
         @PathVariable(value = "id", required = false) final String id,
-        @NotNull @RequestBody Optionset optionset
+        @NotNull @RequestBody OptionSet optionset
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Optionset partially : {}, {}", id, optionset);
+        log.debug("REST request to partial update OptionSet partially : {}, {}", id, optionset);
         if (optionset.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -130,7 +130,7 @@ public class OptionsetResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Optionset> result = optionsetService.partialUpdate(optionset);
+        Optional<OptionSet> result = optionsetService.partialUpdate(optionset);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -145,9 +145,9 @@ public class OptionsetResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of optionsets in body.
      */
     @GetMapping("/optionsets")
-    public ResponseEntity<List<Optionset>> getAllOptionsets(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<OptionSet>> getAllOptionsets(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Optionsets");
-        Page<Optionset> page = optionsetService.findAll(pageable);
+        Page<OptionSet> page = optionsetService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -159,9 +159,9 @@ public class OptionsetResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the optionset, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/optionsets/{id}")
-    public ResponseEntity<Optionset> getOptionset(@PathVariable String id) {
-        log.debug("REST request to get Optionset : {}", id);
-        Optional<Optionset> optionset = optionsetService.findOne(id);
+    public ResponseEntity<OptionSet> getOptionset(@PathVariable String id) {
+        log.debug("REST request to get OptionSet : {}", id);
+        Optional<OptionSet> optionset = optionsetService.findOne(id);
         return ResponseUtil.wrapOrNotFound(optionset);
     }
 
@@ -173,7 +173,7 @@ public class OptionsetResource {
      */
     @DeleteMapping("/optionsets/{id}")
     public ResponseEntity<Void> deleteOptionset(@PathVariable String id) {
-        log.debug("REST request to delete Optionset : {}", id);
+        log.debug("REST request to delete OptionSet : {}", id);
         optionsetService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }

@@ -1,6 +1,6 @@
 package com.didate.repository;
 
-import com.didate.domain.Dataset;
+import com.didate.domain.DataSet;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -10,22 +10,22 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
- * Spring Data JPA repository for the Dataset entity.
+ * Spring Data JPA repository for the DataSet entity.
  *
  * When extending this class, extend DatasetRepositoryWithBagRelationships too.
  * For more information refer to https://github.com/jhipster/generator-jhipster/issues/17990.
  */
 @Repository
-public interface DatasetRepository extends DatasetRepositoryWithBagRelationships, JpaRepository<Dataset, String> {
-    default Optional<Dataset> findOneWithEagerRelationships(String id) {
+public interface DatasetRepository extends DatasetRepositoryWithBagRelationships, JpaRepository<DataSet, String> {
+    default Optional<DataSet> findOneWithEagerRelationships(String id) {
         return this.fetchBagRelationships(this.findById(id));
     }
 
-    default List<Dataset> findAllWithEagerRelationships() {
+    default List<DataSet> findAllWithEagerRelationships() {
         return this.fetchBagRelationships(this.findAll());
     }
 
-    default Page<Dataset> findAllWithEagerRelationships(Pageable pageable) {
+    default Page<DataSet> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
 }

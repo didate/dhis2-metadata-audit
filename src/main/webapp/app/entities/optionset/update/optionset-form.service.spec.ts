@@ -4,7 +4,7 @@ import { sampleWithRequiredData, sampleWithNewData } from '../optionset.test-sam
 
 import { OptionsetFormService } from './optionset-form.service';
 
-describe('Optionset Form Service', () => {
+describe('OptionSet Form Service', () => {
   let service: OptionsetFormService;
 
   beforeEach(() => {
@@ -38,7 +38,7 @@ describe('Optionset Form Service', () => {
     });
 
     describe('getOptionset', () => {
-      it('should return NewOptionset for default Optionset initial value', () => {
+      it('should return NewOptionset for default OptionSet initial value', () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createOptionsetFormGroup(sampleWithNewData);
 
@@ -47,7 +47,7 @@ describe('Optionset Form Service', () => {
         expect(optionset).toMatchObject(sampleWithNewData);
       });
 
-      it('should return NewOptionset for empty Optionset initial value', () => {
+      it('should return NewOptionset for empty OptionSet initial value', () => {
         const formGroup = service.createOptionsetFormGroup();
 
         const optionset = service.getOptionset(formGroup) as any;

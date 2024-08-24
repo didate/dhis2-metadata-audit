@@ -24,7 +24,7 @@ import { OrganisationUnitService } from 'app/entities/organisation-unit/service/
 
 import { DatasetUpdateComponent } from './dataset-update.component';
 
-describe('Dataset Management Update Component', () => {
+describe('DataSet Management Update Component', () => {
   let comp: DatasetUpdateComponent;
   let fixture: ComponentFixture<DatasetUpdateComponent>;
   let activatedRoute: ActivatedRoute;

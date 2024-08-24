@@ -4,7 +4,7 @@ import { sampleWithRequiredData, sampleWithNewData } from '../dataset.test-sampl
 
 import { DatasetFormService } from './dataset-form.service';
 
-describe('Dataset Form Service', () => {
+describe('DataSet Form Service', () => {
   let service: DatasetFormService;
 
   beforeEach(() => {
@@ -120,7 +120,7 @@ describe('Dataset Form Service', () => {
     });
 
     describe('getDataset', () => {
-      it('should return NewDataset for default Dataset initial value', () => {
+      it('should return NewDataset for default DataSet initial value', () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const formGroup = service.createDatasetFormGroup(sampleWithNewData);
 
@@ -129,7 +129,7 @@ describe('Dataset Form Service', () => {
         expect(dataset).toMatchObject(sampleWithNewData);
       });
 
-      it('should return NewDataset for empty Dataset initial value', () => {
+      it('should return NewDataset for empty DataSet initial value', () => {
         const formGroup = service.createDatasetFormGroup();
 
         const dataset = service.getDataset(formGroup) as any;

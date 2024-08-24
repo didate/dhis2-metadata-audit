@@ -1,6 +1,6 @@
 package com.didate.web.rest;
 
-import com.didate.domain.Dataset;
+import com.didate.domain.DataSet;
 import com.didate.repository.DatasetRepository;
 import com.didate.service.DatasetService;
 import com.didate.web.rest.errors.BadRequestAlertException;
@@ -26,7 +26,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link com.didate.domain.Dataset}.
+ * REST controller for managing {@link com.didate.domain.DataSet}.
  */
 @RestController
 @RequestMapping("/api")
@@ -56,12 +56,12 @@ public class DatasetResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/datasets")
-    public ResponseEntity<Dataset> createDataset(@Valid @RequestBody Dataset dataset) throws URISyntaxException {
-        log.debug("REST request to save Dataset : {}", dataset);
+    public ResponseEntity<DataSet> createDataset(@Valid @RequestBody DataSet dataset) throws URISyntaxException {
+        log.debug("REST request to save DataSet : {}", dataset);
         if (dataset.getId() != null) {
             throw new BadRequestAlertException("A new dataset cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Dataset result = datasetService.save(dataset);
+        DataSet result = datasetService.save(dataset);
         return ResponseEntity
             .created(new URI("/api/datasets/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -79,11 +79,11 @@ public class DatasetResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/datasets/{id}")
-    public ResponseEntity<Dataset> updateDataset(
+    public ResponseEntity<DataSet> updateDataset(
         @PathVariable(value = "id", required = false) final String id,
-        @Valid @RequestBody Dataset dataset
+        @Valid @RequestBody DataSet dataset
     ) throws URISyntaxException {
-        log.debug("REST request to update Dataset : {}, {}", id, dataset);
+        log.debug("REST request to update DataSet : {}, {}", id, dataset);
         if (dataset.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -95,7 +95,7 @@ public class DatasetResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Dataset result = datasetService.update(dataset);
+        DataSet result = datasetService.update(dataset);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, dataset.getId()))
@@ -114,11 +114,11 @@ public class DatasetResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/datasets/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<Dataset> partialUpdateDataset(
+    public ResponseEntity<DataSet> partialUpdateDataset(
         @PathVariable(value = "id", required = false) final String id,
-        @NotNull @RequestBody Dataset dataset
+        @NotNull @RequestBody DataSet dataset
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Dataset partially : {}, {}", id, dataset);
+        log.debug("REST request to partial update DataSet partially : {}, {}", id, dataset);
         if (dataset.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -130,7 +130,7 @@ public class DatasetResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Dataset> result = datasetService.partialUpdate(dataset);
+        Optional<DataSet> result = datasetService.partialUpdate(dataset);
 
         return ResponseUtil.wrapOrNotFound(result, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, dataset.getId()));
     }
@@ -143,12 +143,12 @@ public class DatasetResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of datasets in body.
      */
     @GetMapping("/datasets")
-    public ResponseEntity<List<Dataset>> getAllDatasets(
+    public ResponseEntity<List<DataSet>> getAllDatasets(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         @RequestParam(required = false, defaultValue = "false") boolean eagerload
     ) {
         log.debug("REST request to get a page of Datasets");
-        Page<Dataset> page;
+        Page<DataSet> page;
         if (eagerload) {
             page = datasetService.findAllWithEagerRelationships(pageable);
         } else {
@@ -165,9 +165,9 @@ public class DatasetResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the dataset, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/datasets/{id}")
-    public ResponseEntity<Dataset> getDataset(@PathVariable String id) {
-        log.debug("REST request to get Dataset : {}", id);
-        Optional<Dataset> dataset = datasetService.findOne(id);
+    public ResponseEntity<DataSet> getDataset(@PathVariable String id) {
+        log.debug("REST request to get DataSet : {}", id);
+        Optional<DataSet> dataset = datasetService.findOne(id);
         return ResponseUtil.wrapOrNotFound(dataset);
     }
 
@@ -179,7 +179,7 @@ public class DatasetResource {
      */
     @DeleteMapping("/datasets/{id}")
     public ResponseEntity<Void> deleteDataset(@PathVariable String id) {
-        log.debug("REST request to delete Dataset : {}", id);
+        log.debug("REST request to delete DataSet : {}", id);
         datasetService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }

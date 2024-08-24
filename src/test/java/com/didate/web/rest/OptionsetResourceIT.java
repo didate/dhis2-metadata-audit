@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.didate.IntegrationTest;
-import com.didate.domain.Optionset;
+import com.didate.domain.OptionSet;
 import com.didate.repository.OptionsetRepository;
 import java.util.List;
 import java.util.UUID;
@@ -43,7 +43,7 @@ class OptionsetResourceIT {
     @Autowired
     private MockMvc restOptionsetMockMvc;
 
-    private Optionset optionset;
+    private OptionSet optionset;
 
     /**
      * Create an entity for this test.
@@ -51,8 +51,8 @@ class OptionsetResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Optionset createEntity(EntityManager em) {
-        Optionset optionset = new Optionset().name(DEFAULT_NAME);
+    public static OptionSet createEntity(EntityManager em) {
+        OptionSet optionset = new OptionSet().name(DEFAULT_NAME);
         return optionset;
     }
 
@@ -62,8 +62,8 @@ class OptionsetResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Optionset createUpdatedEntity(EntityManager em) {
-        Optionset optionset = new Optionset().name(UPDATED_NAME);
+    public static OptionSet createUpdatedEntity(EntityManager em) {
+        OptionSet optionset = new OptionSet().name(UPDATED_NAME);
         return optionset;
     }
 
@@ -76,22 +76,22 @@ class OptionsetResourceIT {
     @Transactional
     void createOptionset() throws Exception {
         int databaseSizeBeforeCreate = optionsetRepository.findAll().size();
-        // Create the Optionset
+        // Create the OptionSet
         restOptionsetMockMvc
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(optionset)))
             .andExpect(status().isCreated());
 
-        // Validate the Optionset in the database
-        List<Optionset> optionsetList = optionsetRepository.findAll();
+        // Validate the OptionSet in the database
+        List<OptionSet> optionsetList = optionsetRepository.findAll();
         assertThat(optionsetList).hasSize(databaseSizeBeforeCreate + 1);
-        Optionset testOptionset = optionsetList.get(optionsetList.size() - 1);
+        OptionSet testOptionset = optionsetList.get(optionsetList.size() - 1);
         assertThat(testOptionset.getName()).isEqualTo(DEFAULT_NAME);
     }
 
     @Test
     @Transactional
     void createOptionsetWithExistingId() throws Exception {
-        // Create the Optionset with an existing ID
+        // Create the OptionSet with an existing ID
         optionset.setId("existing_id");
 
         int databaseSizeBeforeCreate = optionsetRepository.findAll().size();
@@ -101,8 +101,8 @@ class OptionsetResourceIT {
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(optionset)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Optionset in the database
-        List<Optionset> optionsetList = optionsetRepository.findAll();
+        // Validate the OptionSet in the database
+        List<OptionSet> optionsetList = optionsetRepository.findAll();
         assertThat(optionsetList).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -155,7 +155,7 @@ class OptionsetResourceIT {
         int databaseSizeBeforeUpdate = optionsetRepository.findAll().size();
 
         // Update the optionset
-        Optionset updatedOptionset = optionsetRepository.findById(optionset.getId()).get();
+        OptionSet updatedOptionset = optionsetRepository.findById(optionset.getId()).get();
         // Disconnect from session so that the updates on updatedOptionset are not directly saved in db
         em.detach(updatedOptionset);
         updatedOptionset.name(UPDATED_NAME);
@@ -168,10 +168,10 @@ class OptionsetResourceIT {
             )
             .andExpect(status().isOk());
 
-        // Validate the Optionset in the database
-        List<Optionset> optionsetList = optionsetRepository.findAll();
+        // Validate the OptionSet in the database
+        List<OptionSet> optionsetList = optionsetRepository.findAll();
         assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
-        Optionset testOptionset = optionsetList.get(optionsetList.size() - 1);
+        OptionSet testOptionset = optionsetList.get(optionsetList.size() - 1);
         assertThat(testOptionset.getName()).isEqualTo(UPDATED_NAME);
     }
 
@@ -190,8 +190,8 @@ class OptionsetResourceIT {
             )
             .andExpect(status().isBadRequest());
 
-        // Validate the Optionset in the database
-        List<Optionset> optionsetList = optionsetRepository.findAll();
+        // Validate the OptionSet in the database
+        List<OptionSet> optionsetList = optionsetRepository.findAll();
         assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -210,8 +210,8 @@ class OptionsetResourceIT {
             )
             .andExpect(status().isBadRequest());
 
-        // Validate the Optionset in the database
-        List<Optionset> optionsetList = optionsetRepository.findAll();
+        // Validate the OptionSet in the database
+        List<OptionSet> optionsetList = optionsetRepository.findAll();
         assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -226,8 +226,8 @@ class OptionsetResourceIT {
             .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(optionset)))
             .andExpect(status().isMethodNotAllowed());
 
-        // Validate the Optionset in the database
-        List<Optionset> optionsetList = optionsetRepository.findAll();
+        // Validate the OptionSet in the database
+        List<OptionSet> optionsetList = optionsetRepository.findAll();
         assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -241,7 +241,7 @@ class OptionsetResourceIT {
         int databaseSizeBeforeUpdate = optionsetRepository.findAll().size();
 
         // Update the optionset using partial update
-        Optionset partialUpdatedOptionset = new Optionset();
+        OptionSet partialUpdatedOptionset = new OptionSet();
         partialUpdatedOptionset.setId(optionset.getId());
 
         partialUpdatedOptionset.name(UPDATED_NAME);
@@ -254,10 +254,10 @@ class OptionsetResourceIT {
             )
             .andExpect(status().isOk());
 
-        // Validate the Optionset in the database
-        List<Optionset> optionsetList = optionsetRepository.findAll();
+        // Validate the OptionSet in the database
+        List<OptionSet> optionsetList = optionsetRepository.findAll();
         assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
-        Optionset testOptionset = optionsetList.get(optionsetList.size() - 1);
+        OptionSet testOptionset = optionsetList.get(optionsetList.size() - 1);
         assertThat(testOptionset.getName()).isEqualTo(UPDATED_NAME);
     }
 
@@ -271,7 +271,7 @@ class OptionsetResourceIT {
         int databaseSizeBeforeUpdate = optionsetRepository.findAll().size();
 
         // Update the optionset using partial update
-        Optionset partialUpdatedOptionset = new Optionset();
+        OptionSet partialUpdatedOptionset = new OptionSet();
         partialUpdatedOptionset.setId(optionset.getId());
 
         partialUpdatedOptionset.name(UPDATED_NAME);
@@ -284,10 +284,10 @@ class OptionsetResourceIT {
             )
             .andExpect(status().isOk());
 
-        // Validate the Optionset in the database
-        List<Optionset> optionsetList = optionsetRepository.findAll();
+        // Validate the OptionSet in the database
+        List<OptionSet> optionsetList = optionsetRepository.findAll();
         assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
-        Optionset testOptionset = optionsetList.get(optionsetList.size() - 1);
+        OptionSet testOptionset = optionsetList.get(optionsetList.size() - 1);
         assertThat(testOptionset.getName()).isEqualTo(UPDATED_NAME);
     }
 
@@ -306,8 +306,8 @@ class OptionsetResourceIT {
             )
             .andExpect(status().isBadRequest());
 
-        // Validate the Optionset in the database
-        List<Optionset> optionsetList = optionsetRepository.findAll();
+        // Validate the OptionSet in the database
+        List<OptionSet> optionsetList = optionsetRepository.findAll();
         assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -326,8 +326,8 @@ class OptionsetResourceIT {
             )
             .andExpect(status().isBadRequest());
 
-        // Validate the Optionset in the database
-        List<Optionset> optionsetList = optionsetRepository.findAll();
+        // Validate the OptionSet in the database
+        List<OptionSet> optionsetList = optionsetRepository.findAll();
         assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -344,8 +344,8 @@ class OptionsetResourceIT {
             )
             .andExpect(status().isMethodNotAllowed());
 
-        // Validate the Optionset in the database
-        List<Optionset> optionsetList = optionsetRepository.findAll();
+        // Validate the OptionSet in the database
+        List<OptionSet> optionsetList = optionsetRepository.findAll();
         assertThat(optionsetList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -364,7 +364,7 @@ class OptionsetResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        List<Optionset> optionsetList = optionsetRepository.findAll();
+        List<OptionSet> optionsetList = optionsetRepository.findAll();
         assertThat(optionsetList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

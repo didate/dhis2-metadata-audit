@@ -1,12 +1,12 @@
 package com.didate.service;
 
-import com.didate.domain.Indicatortype;
+import com.didate.domain.IndicatorType;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link Indicatortype}.
+ * Service Interface for managing {@link IndicatorType}.
  */
 public interface IndicatortypeService {
     /**
@@ -15,7 +15,7 @@ public interface IndicatortypeService {
      * @param indicatortype the entity to save.
      * @return the persisted entity.
      */
-    Indicatortype save(Indicatortype indicatortype);
+    IndicatorType save(IndicatorType indicatortype);
 
     /**
      * Updates a indicatortype.
@@ -23,7 +23,7 @@ public interface IndicatortypeService {
      * @param indicatortype the entity to update.
      * @return the persisted entity.
      */
-    Indicatortype update(Indicatortype indicatortype);
+    IndicatorType update(IndicatorType indicatortype);
 
     /**
      * Partially updates a indicatortype.
@@ -31,7 +31,7 @@ public interface IndicatortypeService {
      * @param indicatortype the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<Indicatortype> partialUpdate(Indicatortype indicatortype);
+    Optional<IndicatorType> partialUpdate(IndicatorType indicatortype);
 
     /**
      * Get all the indicatortypes.
@@ -39,7 +39,7 @@ public interface IndicatortypeService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<Indicatortype> findAll(Pageable pageable);
+    Page<IndicatorType> findAll(Pageable pageable);
 
     /**
      * Get the "id" indicatortype.
@@ -47,7 +47,7 @@ public interface IndicatortypeService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Indicatortype> findOne(String id);
+    Optional<IndicatorType> findOne(String id);
 
     /**
      * Delete the "id" indicatortype.

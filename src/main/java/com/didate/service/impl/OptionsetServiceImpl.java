@@ -1,6 +1,6 @@
 package com.didate.service.impl;
 
-import com.didate.domain.Optionset;
+import com.didate.domain.OptionSet;
 import com.didate.repository.OptionsetRepository;
 import com.didate.service.OptionsetService;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link Optionset}.
+ * Service Implementation for managing {@link OptionSet}.
  */
 @Service
 @Transactional
@@ -27,21 +27,21 @@ public class OptionsetServiceImpl implements OptionsetService {
     }
 
     @Override
-    public Optionset save(Optionset optionset) {
-        log.debug("Request to save Optionset : {}", optionset);
+    public OptionSet save(OptionSet optionset) {
+        log.debug("Request to save OptionSet : {}", optionset);
         return optionsetRepository.save(optionset);
     }
 
     @Override
-    public Optionset update(Optionset optionset) {
-        log.debug("Request to update Optionset : {}", optionset);
+    public OptionSet update(OptionSet optionset) {
+        log.debug("Request to update OptionSet : {}", optionset);
         optionset.setIsPersisted();
         return optionsetRepository.save(optionset);
     }
 
     @Override
-    public Optional<Optionset> partialUpdate(Optionset optionset) {
-        log.debug("Request to partially update Optionset : {}", optionset);
+    public Optional<OptionSet> partialUpdate(OptionSet optionset) {
+        log.debug("Request to partially update OptionSet : {}", optionset);
 
         return optionsetRepository
             .findById(optionset.getId())
@@ -57,21 +57,21 @@ public class OptionsetServiceImpl implements OptionsetService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Optionset> findAll(Pageable pageable) {
+    public Page<OptionSet> findAll(Pageable pageable) {
         log.debug("Request to get all Optionsets");
         return optionsetRepository.findAll(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Optionset> findOne(String id) {
-        log.debug("Request to get Optionset : {}", id);
+    public Optional<OptionSet> findOne(String id) {
+        log.debug("Request to get OptionSet : {}", id);
         return optionsetRepository.findById(id);
     }
 
     @Override
     public void delete(String id) {
-        log.debug("Request to delete Optionset : {}", id);
+        log.debug("Request to delete OptionSet : {}", id);
         optionsetRepository.deleteById(id);
     }
 

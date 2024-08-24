@@ -7,7 +7,7 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!--
-        Added the entity Dataset.
+        Added the entity DataSet.
     -->
     <changeSet id="20240823214449-1" author="jhipster">
         <createTable tableName="dataset">

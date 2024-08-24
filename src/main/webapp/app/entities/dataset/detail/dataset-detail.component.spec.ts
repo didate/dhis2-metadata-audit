@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 
 import { DatasetDetailComponent } from './dataset-detail.component';
 
-describe('Dataset Management Detail Component', () => {
+describe('DataSet Management Detail Component', () => {
   let comp: DatasetDetailComponent;
   let fixture: ComponentFixture<DatasetDetailComponent>;
 

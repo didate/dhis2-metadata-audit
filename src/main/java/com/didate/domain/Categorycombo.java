@@ -15,7 +15,7 @@ import org.springframework.data.domain.Persistable;
 @Table(name = "categorycombo")
 @Audited
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Categorycombo implements Serializable, Persistable<String> {
+public class CategoryCombo implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class Categorycombo implements Serializable, Persistable<String> {
         return this.id;
     }
 
-    public Categorycombo id(String id) {
+    public CategoryCombo id(String id) {
         this.setId(id);
         return this;
     }
@@ -49,7 +49,7 @@ public class Categorycombo implements Serializable, Persistable<String> {
         return this.name;
     }
 
-    public Categorycombo name(String name) {
+    public CategoryCombo name(String name) {
         this.setName(name);
         return this;
     }
@@ -64,7 +64,7 @@ public class Categorycombo implements Serializable, Persistable<String> {
         return !this.isPersisted;
     }
 
-    public Categorycombo setIsPersisted() {
+    public CategoryCombo setIsPersisted() {
         this.isPersisted = true;
         return this;
     }
@@ -82,10 +82,10 @@ public class Categorycombo implements Serializable, Persistable<String> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Categorycombo)) {
+        if (!(o instanceof CategoryCombo)) {
             return false;
         }
-        return id != null && id.equals(((Categorycombo) o).id);
+        return id != null && id.equals(((CategoryCombo) o).id);
     }
 
     @Override

@@ -12,7 +12,7 @@ const requireRestSample: RestDataset = {
   lastUpdated: sampleWithRequiredData.lastUpdated?.toJSON(),
 };
 
-describe('Dataset Service', () => {
+describe('DataSet Service', () => {
   let service: DatasetService;
   let httpMock: HttpTestingController;
   let expectedResult: IDataset | IDataset[] | boolean | null;
@@ -38,7 +38,7 @@ describe('Dataset Service', () => {
       expect(expectedResult).toMatchObject(expected);
     });
 
-    it('should create a Dataset', () => {
+    it('should create a DataSet', () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const dataset = { ...sampleWithNewData };
       const returnedFromService = { ...requireRestSample };
@@ -51,7 +51,7 @@ describe('Dataset Service', () => {
       expect(expectedResult).toMatchObject(expected);
     });
 
-    it('should update a Dataset', () => {
+    it('should update a DataSet', () => {
       const dataset = { ...sampleWithRequiredData };
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
@@ -63,7 +63,7 @@ describe('Dataset Service', () => {
       expect(expectedResult).toMatchObject(expected);
     });
 
-    it('should partial update a Dataset', () => {
+    it('should partial update a DataSet', () => {
       const patchObject = { ...sampleWithPartialData };
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
@@ -75,7 +75,7 @@ describe('Dataset Service', () => {
       expect(expectedResult).toMatchObject(expected);
     });
 
-    it('should return a list of Dataset', () => {
+    it('should return a list of DataSet', () => {
       const returnedFromService = { ...requireRestSample };
 
       const expected = { ...sampleWithRequiredData };
@@ -88,7 +88,7 @@ describe('Dataset Service', () => {
       expect(expectedResult).toMatchObject([expected]);
     });
 
-    it('should delete a Dataset', () => {
+    it('should delete a DataSet', () => {
       const expected = true;
 
       service.delete('ABC').subscribe(resp => (expectedResult = resp.ok));
@@ -99,14 +99,14 @@ describe('Dataset Service', () => {
     });
 
     describe('addDatasetToCollectionIfMissing', () => {
-      it('should add a Dataset to an empty array', () => {
+      it('should add a DataSet to an empty array', () => {
         const dataset: IDataset = sampleWithRequiredData;
         expectedResult = service.addDatasetToCollectionIfMissing([], dataset);
         expect(expectedResult).toHaveLength(1);
         expect(expectedResult).toContain(dataset);
       });
 
-      it('should not add a Dataset to an array that contains it', () => {
+      it('should not add a DataSet to an array that contains it', () => {
         const dataset: IDataset = sampleWithRequiredData;
         const datasetCollection: IDataset[] = [
           {
@@ -118,7 +118,7 @@ describe('Dataset Service', () => {
         expect(expectedResult).toHaveLength(2);
       });
 
-      it("should add a Dataset to an array that doesn't contain it", () => {
+      it("should add a DataSet to an array that doesn't contain it", () => {
         const dataset: IDataset = sampleWithRequiredData;
         const datasetCollection: IDataset[] = [sampleWithPartialData];
         expectedResult = service.addDatasetToCollectionIfMissing(datasetCollection, dataset);
@@ -126,7 +126,7 @@ describe('Dataset Service', () => {
         expect(expectedResult).toContain(dataset);
       });
 
-      it('should add only unique Dataset to an array', () => {
+      it('should add only unique DataSet to an array', () => {
         const datasetArray: IDataset[] = [sampleWithRequiredData, sampleWithPartialData, sampleWithFullData];
         const datasetCollection: IDataset[] = [sampleWithRequiredData];
         expectedResult = service.addDatasetToCollectionIfMissing(datasetCollection, ...datasetArray);
@@ -149,7 +149,7 @@ describe('Dataset Service', () => {
         expect(expectedResult).toContain(dataset);
       });
 
-      it('should return initial array if no Dataset is added', () => {
+      it('should return initial array if no DataSet is added', () => {
         const datasetCollection: IDataset[] = [sampleWithRequiredData];
         expectedResult = service.addDatasetToCollectionIfMissing(datasetCollection, undefined, null);
         expect(expectedResult).toEqual(datasetCollection);

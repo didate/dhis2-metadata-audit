@@ -10,7 +10,7 @@ import { OptionsetService } from '../service/optionset.service';
 
 import { OptionsetRoutingResolveService } from './optionset-routing-resolve.service';
 
-describe('Optionset routing resolve service', () => {
+describe('OptionSet routing resolve service', () => {
   let mockRouter: Router;
   let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
   let routingResolveService: OptionsetRoutingResolveService;

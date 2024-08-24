@@ -12,7 +12,26 @@ public class Dhis2ApiResponse<T> {
     @JsonProperty("pager")
     private Pager pager;
 
-    @JsonAlias({ "dataElements", "indicators", "programs", "dataSets" })
+    @JsonAlias(
+        {
+            "dataElements",
+            "indicators",
+            "programs",
+            "dataSets",
+            "optionGroups",
+            "trackedEntityAttributes",
+            "programStages",
+            "programIndicators",
+            "programRules",
+            "programRuleVariables",
+            "programRuleActions",
+            "organisationUnits",
+            "categoryCombos",
+            "optionSets",
+            "indicatorTypes",
+            "users",
+        }
+    )
     private List<T> items;
 
     public Pager getPager() {

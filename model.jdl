@@ -28,7 +28,7 @@ entity Categorycombo{
 	id	String required
     name String
 }
-entity Optionset{
+entity OptionSet{
 	id	String required
     name String
 }
@@ -170,7 +170,7 @@ entity ProgramStage {
   programStageDataElementsContent Integer
 }
 
-entity Dataset {
+entity DataSet {
 	id		 String
     name	 String 
     created	Instant required
@@ -311,7 +311,7 @@ relationship ManyToOne {
 	PersonNotifier{project} to Project 
 	Dataelement{project} to Project 
 	Indicator{project} to Project 
-	Dataset{project} to Project 
+	DataSet{project} to Project 
 	Program{project} to Project 
 	ProgramRule{project} to Project 
 	ProgramRuleAction{project} to Project 
@@ -321,15 +321,15 @@ relationship ManyToOne {
     Dataelement{createdBy required} to DHISUser 
     Dataelement{lastUpdatedBy required} to DHISUser 
 	Dataelement{categoryCombo } to Categorycombo 
-	Dataelement{optionSet } to Optionset 
+	Dataelement{optionSet } to OptionSet 
     
     Indicator{createdBy required} to DHISUser 
     Indicator{lastUpdatedBy required} to DHISUser 
     Indicator{indicatorType required} to Indicatortype 
     
-    Dataset{createdBy required} to DHISUser 
-    Dataset{lastUpdatedBy required} to DHISUser 
-	Dataset{categoryCombo } to Categorycombo 
+    DataSet{createdBy required} to DHISUser 
+    DataSet{lastUpdatedBy required} to DHISUser 
+	DataSet{categoryCombo } to Categorycombo 
     
     
     Program{createdBy required} to DHISUser 
@@ -360,7 +360,7 @@ relationship ManyToOne {
     
     TrackedEntityAttribute{createdBy required} to DHISUser 
     TrackedEntityAttribute{lastUpdatedBy required} to DHISUser
-    TrackedEntityAttribute{optionSet } to Optionset 
+    TrackedEntityAttribute{optionSet } to OptionSet 
     
     OrganisationUnit{createdBy required} to DHISUser 
     OrganisationUnit{lastUpdatedBy required} to DHISUser
@@ -377,9 +377,9 @@ relationship ManyToMany {
     Program{programIndicators} to ProgramIndicator{programs}
     Program{programStage} to ProgramStage{programs}
 	
-    Dataset{dataSetElements} to Dataelement{dataSets}
-    Dataset{indicators} to Indicator{dataSets}
-	Dataset{organisationUnits} to OrganisationUnit{dataSets}
+    DataSet{dataSetElements} to Dataelement{dataSets}
+    DataSet{indicators} to Indicator{dataSets}
+	DataSet{organisationUnits} to OrganisationUnit{dataSets}
     
     ProgramStage{programStageDataElements} to Dataelement{programStages}
 }

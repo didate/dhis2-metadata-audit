@@ -15,7 +15,7 @@
         [routerLink]="['/dataset/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2TrackApp.dataset.home.createLabel"> Créer un nouveau Dataset </span>
+        <span jhiTranslate="dhis2TrackApp.dataset.home.createLabel"> Créer un nouveau DataSet </span>
       </button>
     </div>
   </h2>
@@ -25,7 +25,7 @@
   <jhi-alert></jhi-alert>
 
   <div class="alert alert-warning" id="no-result" *ngIf="datasets?.length === 0">
-    <span jhiTranslate="dhis2TrackApp.dataset.home.notFound">Aucun Dataset trouvé</span>
+    <span jhiTranslate="dhis2TrackApp.dataset.home.notFound">Aucun DataSet trouvé</span>
   </div>
 
   <div class="table-responsive table-entities" id="entities" *ngIf="datasets && datasets.length > 0">

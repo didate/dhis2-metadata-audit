@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 
 import { OptionsetDetailComponent } from './optionset-detail.component';
 
-describe('Optionset Management Detail Component', () => {
+describe('OptionSet Management Detail Component', () => {
   let comp: OptionsetDetailComponent;
   let fixture: ComponentFixture<OptionsetDetailComponent>;
 
