@@ -112,4 +112,9 @@ public class DHISUserServiceImpl implements DHISUserService {
     public Boolean exist(String id) {
         return dHISUserRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return dHISUserRepository.count();
+    }
 }

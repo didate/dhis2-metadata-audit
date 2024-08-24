@@ -2,6 +2,7 @@ package com.didate.domain;
 
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
@@ -39,6 +40,7 @@ public class DHISUser implements Serializable, Persistable<String> {
 
     @NotNull
     @Column(name = "username", nullable = false)
+    @JsonProperty("username")
     private String username;
 
     @Column(name = "last_login")
@@ -54,6 +56,7 @@ public class DHISUser implements Serializable, Persistable<String> {
     private Boolean disabled;
 
     @Column(name = "password_last_updated")
+    @JsonProperty("passwordLastUpdated")
     private Instant passwordLastUpdated;
 
     @Column(name = "created")
