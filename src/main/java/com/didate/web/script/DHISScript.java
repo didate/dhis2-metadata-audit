@@ -1,6 +1,7 @@
 package com.didate.web.script;
 
 import com.didate.domain.Categorycombo;
+import com.didate.domain.DHISUser;
 import com.didate.domain.Dataelement;
 import com.didate.domain.Dataset;
 import com.didate.domain.Indicator;
@@ -66,6 +67,7 @@ public class DHISScript {
     private final DhisApiService<ProgramRuleAction> programRuleActionApiService;
     private final DhisApiService<Dataset> dataSetApiService;
     private final DhisApiService<OrganisationUnit> organisationUnitApiService;
+    private final DhisApiService<DHISUser> dhisUserApiService;
 
     private final ProjectService projectService;
     private final DataelementService dataelementService;
@@ -102,6 +104,7 @@ public class DHISScript {
         DhisApiService<ProgramRuleAction> programRuleActionApiService,
         DhisApiService<Dataset> dataSetApiService,
         DhisApiService<OrganisationUnit> organisationUnitApiService,
+        DhisApiService<DHISUser> dhisUserApiService,
         ProjectService projectService,
         DataelementService dataelementService,
         IndicatorService indicatorService,
@@ -136,6 +139,7 @@ public class DHISScript {
         this.programRuleActionApiService = programRuleActionApiService;
         this.dataSetApiService = dataSetApiService;
         this.organisationUnitApiService = organisationUnitApiService;
+        this.dhisUserApiService = dhisUserApiService;
 
         this.projectService = projectService;
         this.dataelementService = dataelementService;
@@ -164,6 +168,8 @@ public class DHISScript {
         List<Project> projects = projectService.findAll();
 
         for (Project project : projects) {
+            performUsers(dhisUserApiService.getData(project, "users", new TypeReference<Dhis2ApiResponse<DHISUser>>() {}), project);
+
             performDataElements(
                 dataElementApiService.getData(project, "dataElements", new TypeReference<Dhis2ApiResponse<Dataelement>>() {}),
                 project
@@ -173,12 +179,63 @@ public class DHISScript {
                 indicatorApiService.getData(project, "indicators", new TypeReference<Dhis2ApiResponse<Indicator>>() {}),
                 project
             );
-            // performIndicators(dataElementApiService.getDataElements(project));
-            // performIndicators(indicatorApiService.getIndicators(project));
-            // performDataSets(datasetApiService.getDataSets(project));
-            // performPrograms(programApiService.getPrograms(project));
+
+            performOptionGroups(
+                optionGroupApiService.getData(project, "optionGroups", new TypeReference<Dhis2ApiResponse<OptionGroup>>() {}),
+                project
+            );
+            performTrackedEntityAttributes(
+                trackedEntityAttributeApiService.getData(
+                    project,
+                    "trackedEntityAttributes",
+                    new TypeReference<Dhis2ApiResponse<TrackedEntityAttribute>>() {}
+                ),
+                project
+            );
+            performProgramStages(
+                programStageApiService.getData(project, "programStages", new TypeReference<Dhis2ApiResponse<ProgramStage>>() {}),
+                project
+            );
+            performProgramIndicators(
+                programIndicatorApiService.getData(
+                    project,
+                    "programIndicators",
+                    new TypeReference<Dhis2ApiResponse<ProgramIndicator>>() {}
+                ),
+                project
+            );
+            performProgramRules(
+                programRuleApiService.getData(project, "programRules", new TypeReference<Dhis2ApiResponse<ProgramRule>>() {}),
+                project
+            );
+            performProgramRuleVariables(
+                programRuleVariableApiService.getData(
+                    project,
+                    "programRuleVariables",
+                    new TypeReference<Dhis2ApiResponse<ProgramRuleVariable>>() {}
+                ),
+                project
+            );
+            performProgramRuleActions(
+                programRuleActionApiService.getData(
+                    project,
+                    "programRuleActions",
+                    new TypeReference<Dhis2ApiResponse<ProgramRuleAction>>() {}
+                ),
+                project
+            );
+            performOrganisationUnits(
+                organisationUnitApiService.getData(
+                    project,
+                    "organisationUnits",
+                    new TypeReference<Dhis2ApiResponse<OrganisationUnit>>() {}
+                ),
+                project
+            );
         }
     }
+
+    private void performUsers(List<DHISUser> dhisUsers, Project project) {}
 
     private void performDataElements(List<Dataelement> dataelements, Project project) {
         log.info("Fetched data elements: {}", dataelements.size());
@@ -263,4 +320,20 @@ public class DHISScript {
 
         log.info("Fetched datasets: {}", datasets.size());
     }
+
+    private void performOptionGroups(List<OptionGroup> optionGroups, Project project) {}
+
+    private void performTrackedEntityAttributes(List<TrackedEntityAttribute> trackedEntityAttributes, Project project) {}
+
+    private void performProgramStages(List<ProgramStage> programStages, Project project) {}
+
+    private void performProgramIndicators(List<ProgramIndicator> programIndicators, Project project) {}
+
+    private void performProgramRules(List<ProgramRule> programRules, Project project) {}
+
+    private void performProgramRuleVariables(List<ProgramRuleVariable> programRuleVariables, Project project) {}
+
+    private void performProgramRuleActions(List<ProgramRuleAction> programRuleActions, Project project) {}
+
+    private void performOrganisationUnits(List<OrganisationUnit> organisationUnits, Project project) {}
 }
