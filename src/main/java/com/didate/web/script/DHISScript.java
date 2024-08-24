@@ -1,23 +1,42 @@
 package com.didate.web.script;
 
+import com.didate.domain.Categorycombo;
 import com.didate.domain.Dataelement;
 import com.didate.domain.Dataset;
 import com.didate.domain.Indicator;
+import com.didate.domain.Indicatortype;
+import com.didate.domain.OptionGroup;
+import com.didate.domain.Optionset;
+import com.didate.domain.OrganisationUnit;
 import com.didate.domain.Program;
+import com.didate.domain.ProgramIndicator;
+import com.didate.domain.ProgramRule;
+import com.didate.domain.ProgramRuleAction;
+import com.didate.domain.ProgramRuleVariable;
+import com.didate.domain.ProgramStage;
 import com.didate.domain.Project;
+import com.didate.domain.TrackedEntityAttribute;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.CategorycomboService;
 import com.didate.service.DHISUserService;
 import com.didate.service.DataelementService;
 import com.didate.service.DatasetService;
 import com.didate.service.IndicatorService;
 import com.didate.service.IndicatortypeService;
+import com.didate.service.OptionGroupService;
 import com.didate.service.OptionsetService;
+import com.didate.service.OrganisationUnitService;
+import com.didate.service.ProgramIndicatorService;
+import com.didate.service.ProgramRuleActionService;
+import com.didate.service.ProgramRuleService;
+import com.didate.service.ProgramRuleVariableService;
 import com.didate.service.ProgramService;
+import com.didate.service.ProgramStageService;
 import com.didate.service.ProjectService;
-import com.didate.service.dhis2.request.DataElementApiService;
-import com.didate.service.dhis2.request.DatasetApiService;
-import com.didate.service.dhis2.request.IndicatorApiService;
-import com.didate.service.dhis2.request.ProgramApiService;
+import com.didate.service.TrackedEntityAttributeService;
+import com.didate.service.dhis2.DhisApiService;
+import com.didate.service.dhis2.response.Dhis2ApiResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -30,10 +49,23 @@ import org.springframework.stereotype.Component;
 public class DHISScript {
 
     private static final Logger log = LoggerFactory.getLogger(DHISScript.class);
-    private final DataElementApiService dataElementApiService;
-    private final IndicatorApiService indicatorApiService;
-    private final ProgramApiService programApiService;
-    private final DatasetApiService datasetApiService;
+
+    private final DhisApiService<Dataelement> dataElementApiService;
+    private final DhisApiService<Indicator> indicatorApiService;
+
+    private final DhisApiService<Categorycombo> categoryComboApiService;
+    private final DhisApiService<OptionGroup> optionGroupApiService;
+    private final DhisApiService<Optionset> optionSetApiService;
+    private final DhisApiService<Indicatortype> indicatorTypeApiService;
+    private final DhisApiService<Program> programApiService;
+    private final DhisApiService<TrackedEntityAttribute> trackedEntityAttributeApiService;
+    private final DhisApiService<ProgramStage> programStageApiService;
+    private final DhisApiService<ProgramIndicator> programIndicatorApiService;
+    private final DhisApiService<ProgramRule> programRuleApiService;
+    private final DhisApiService<ProgramRuleVariable> programRuleVariableApiService;
+    private final DhisApiService<ProgramRuleAction> programRuleActionApiService;
+    private final DhisApiService<Dataset> dataSetApiService;
+    private final DhisApiService<OrganisationUnit> organisationUnitApiService;
 
     private final ProjectService projectService;
     private final DataelementService dataelementService;
@@ -45,11 +77,31 @@ public class DHISScript {
     private final OptionsetService optionsetService;
     private final CategorycomboService categorycomboService;
 
+    private final OptionGroupService optionGroupService;
+    private final TrackedEntityAttributeService trackedEntityAttributeService;
+    private final ProgramStageService programStageService;
+    private final ProgramIndicatorService programIndicatorService;
+    private final ProgramRuleService programRuleService;
+    private final ProgramRuleVariableService programRuleVariableService;
+    private final ProgramRuleActionService programRuleActionService;
+    private final OrganisationUnitService organisationUnitService;
+
     public DHISScript(
-        DataElementApiService dataElementApiService,
-        IndicatorApiService indicatorApiService,
-        ProgramApiService programApiService,
-        DatasetApiService datasetApiService,
+        DhisApiService<Dataelement> dataElementApiService,
+        DhisApiService<Indicator> indicatorApiService,
+        DhisApiService<Categorycombo> categoryComboApiService,
+        DhisApiService<OptionGroup> optionGroupApiService,
+        DhisApiService<Optionset> optionSetApiService,
+        DhisApiService<Indicatortype> indicatorTypeApiService,
+        DhisApiService<Program> programApiService,
+        DhisApiService<TrackedEntityAttribute> trackedEntityAttributeApiService,
+        DhisApiService<ProgramStage> programStageApiService,
+        DhisApiService<ProgramIndicator> programIndicatorApiService,
+        DhisApiService<ProgramRule> programRuleApiService,
+        DhisApiService<ProgramRuleVariable> programRuleVariableApiService,
+        DhisApiService<ProgramRuleAction> programRuleActionApiService,
+        DhisApiService<Dataset> dataSetApiService,
+        DhisApiService<OrganisationUnit> organisationUnitApiService,
         ProjectService projectService,
         DataelementService dataelementService,
         IndicatorService indicatorService,
@@ -58,12 +110,33 @@ public class DHISScript {
         OptionsetService optionsetService,
         CategorycomboService categorycomboService,
         DatasetService datasetService,
-        ProgramService programService
+        ProgramService programService,
+        OptionGroupService optionGroupService,
+        TrackedEntityAttributeService trackedEntityAttributeService,
+        ProgramStageService programStageService,
+        ProgramIndicatorService programIndicatorService,
+        ProgramRuleService programRuleService,
+        ProgramRuleVariableService programRuleVariableService,
+        ProgramRuleActionService programRuleActionService,
+        OrganisationUnitService organisationUnitService
     ) {
         this.dataElementApiService = dataElementApiService;
         this.indicatorApiService = indicatorApiService;
+
+        this.categoryComboApiService = categoryComboApiService;
+        this.optionGroupApiService = optionGroupApiService;
+        this.optionSetApiService = optionSetApiService;
+        this.indicatorTypeApiService = indicatorTypeApiService;
         this.programApiService = programApiService;
-        this.datasetApiService = datasetApiService;
+        this.trackedEntityAttributeApiService = trackedEntityAttributeApiService;
+        this.programStageApiService = programStageApiService;
+        this.programIndicatorApiService = programIndicatorApiService;
+        this.programRuleApiService = programRuleApiService;
+        this.programRuleVariableApiService = programRuleVariableApiService;
+        this.programRuleActionApiService = programRuleActionApiService;
+        this.dataSetApiService = dataSetApiService;
+        this.organisationUnitApiService = organisationUnitApiService;
+
         this.projectService = projectService;
         this.dataelementService = dataelementService;
         this.indicatorService = indicatorService;
@@ -73,6 +146,15 @@ public class DHISScript {
         this.dhisUserService = dhisUserService;
         this.datasetService = datasetService;
         this.programService = programService;
+
+        this.optionGroupService = optionGroupService;
+        this.trackedEntityAttributeService = trackedEntityAttributeService;
+        this.programStageService = programStageService;
+        this.programIndicatorService = programIndicatorService;
+        this.programRuleService = programRuleService;
+        this.programRuleVariableService = programRuleVariableService;
+        this.programRuleActionService = programRuleActionService;
+        this.organisationUnitService = organisationUnitService;
     }
 
     @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
@@ -82,23 +164,35 @@ public class DHISScript {
         List<Project> projects = projectService.findAll();
 
         for (Project project : projects) {
-            performDataElements(dataElementApiService.getDataElements(project));
-            performIndicators(indicatorApiService.getIndicators(project));
-            //performDataSets(datasetApiService.getDataSets(project));
-            performPrograms(programApiService.getPrograms(project));
+            performDataElements(
+                dataElementApiService.getData(project, "dataElements", new TypeReference<Dhis2ApiResponse<Dataelement>>() {}),
+                project
+            );
+
+            performIndicators(
+                indicatorApiService.getData(project, "indicators", new TypeReference<Dhis2ApiResponse<Indicator>>() {}),
+                project
+            );
+            // performIndicators(dataElementApiService.getDataElements(project));
+            // performIndicators(indicatorApiService.getIndicators(project));
+            // performDataSets(datasetApiService.getDataSets(project));
+            // performPrograms(programApiService.getPrograms(project));
         }
     }
 
-    private void performDataElements(List<Dataelement> dataelements) {
+    private void performDataElements(List<Dataelement> dataelements, Project project) {
+        log.info("Fetched data elements: {}", dataelements.size());
+        log.info(dataelements.getClass().getName());
+
         dataelements
             .stream()
             .filter(e -> !dataelementService.exist(e.getId()))
             .forEach(e -> {
                 if (Boolean.FALSE.equals(dhisUserService.exist(e.getCreatedBy().getId()))) {
-                    dhisUserService.save(e.getCreatedBy());
+                    dhisUserService.save(e.getCreatedBy().track(TypeTrack.NONE));
                 }
                 if (Boolean.FALSE.equals(dhisUserService.exist(e.getLastUpdatedBy().getId()))) {
-                    dhisUserService.save(e.getLastUpdatedBy());
+                    dhisUserService.save(e.getLastUpdatedBy().track(TypeTrack.NONE));
                 }
 
                 if (e.getOptionSet() != null && Boolean.FALSE.equals(optionsetService.exist(e.getOptionSet().getId()))) {
@@ -108,12 +202,13 @@ public class DHISScript {
                     categorycomboService.save(e.getCategoryCombo());
                 }
 
-                dataelementService.save(e);
+                dataelementService.save(e.track(TypeTrack.NONE));
             });
+
         log.info("Fetched data elements: {}", dataelements.size());
     }
 
-    private void performIndicators(List<Indicator> indicators) {
+    private void performIndicators(List<Indicator> indicators, Project project) {
         indicators
             .stream()
             .filter(e -> !indicatorService.exist(e.getId()))

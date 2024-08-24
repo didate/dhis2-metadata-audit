@@ -1,5 +1,7 @@
 package com.didate.service.dhis2;
 
+import com.didate.service.dhis2.response.Dhis2ApiResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import okhttp3.OkHttpClient;
@@ -14,19 +16,21 @@ public class DhisServiceUtil {
 
     private DhisServiceUtil() {}
 
-    public static <T> T fetchPage(OkHttpClient client, String url, Class<T> responseType, ObjectMapper objectMapper) throws IOException {
+    public static <T> Dhis2ApiResponse<T> fetchPage(
+        OkHttpClient client,
+        String url,
+        TypeReference<Dhis2ApiResponse<T>> typeReference,
+        ObjectMapper objectMapper
+    ) throws IOException {
         Request request = new Request.Builder().url(url).build();
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                log.error("Failed to fetch page: HTTP {}", response.code());
                 throw new IOException("Unexpected code " + response);
             }
-            String jsonResponse = response.body().string();
-            return objectMapper.readValue(jsonResponse, responseType);
-        } catch (IOException e) {
-            log.error("Error during API call to {}", url, e);
-            throw e;
+
+            String responseBody = response.body().string();
+            return objectMapper.readValue(responseBody, typeReference);
         }
     }
 
