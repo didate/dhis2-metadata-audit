@@ -9,10 +9,10 @@ class DataelementTest {
 
     @Test
     void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Dataelement.class);
-        Dataelement dataelement1 = new Dataelement();
+        TestUtil.equalsVerifier(DataElement.class);
+        DataElement dataelement1 = new DataElement();
         dataelement1.setId("id1");
-        Dataelement dataelement2 = new Dataelement();
+        DataElement dataelement2 = new DataElement();
         dataelement2.setId(dataelement1.getId());
         assertThat(dataelement1).isEqualTo(dataelement2);
         dataelement2.setId("id2");

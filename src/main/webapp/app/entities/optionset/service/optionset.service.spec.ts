@@ -10,7 +10,7 @@ const requireRestSample: IOptionset = {
   ...sampleWithRequiredData,
 };
 
-describe('Optionset Service', () => {
+describe('OptionSet Service', () => {
   let service: OptionsetService;
   let httpMock: HttpTestingController;
   let expectedResult: IOptionset | IOptionset[] | boolean | null;
@@ -36,7 +36,7 @@ describe('Optionset Service', () => {
       expect(expectedResult).toMatchObject(expected);
     });
 
-    it('should create a Optionset', () => {
+    it('should create a OptionSet', () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const optionset = { ...sampleWithNewData };
       const returnedFromService = { ...requireRestSample };
@@ -49,7 +49,7 @@ describe('Optionset Service', () => {
       expect(expectedResult).toMatchObject(expected);
     });
 
-    it('should update a Optionset', () => {
+    it('should update a OptionSet', () => {
       const optionset = { ...sampleWithRequiredData };
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
@@ -61,7 +61,7 @@ describe('Optionset Service', () => {
       expect(expectedResult).toMatchObject(expected);
     });
 
-    it('should partial update a Optionset', () => {
+    it('should partial update a OptionSet', () => {
       const patchObject = { ...sampleWithPartialData };
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
@@ -73,7 +73,7 @@ describe('Optionset Service', () => {
       expect(expectedResult).toMatchObject(expected);
     });
 
-    it('should return a list of Optionset', () => {
+    it('should return a list of OptionSet', () => {
       const returnedFromService = { ...requireRestSample };
 
       const expected = { ...sampleWithRequiredData };
@@ -86,7 +86,7 @@ describe('Optionset Service', () => {
       expect(expectedResult).toMatchObject([expected]);
     });
 
-    it('should delete a Optionset', () => {
+    it('should delete a OptionSet', () => {
       const expected = true;
 
       service.delete('ABC').subscribe(resp => (expectedResult = resp.ok));
@@ -97,14 +97,14 @@ describe('Optionset Service', () => {
     });
 
     describe('addOptionsetToCollectionIfMissing', () => {
-      it('should add a Optionset to an empty array', () => {
+      it('should add a OptionSet to an empty array', () => {
         const optionset: IOptionset = sampleWithRequiredData;
         expectedResult = service.addOptionsetToCollectionIfMissing([], optionset);
         expect(expectedResult).toHaveLength(1);
         expect(expectedResult).toContain(optionset);
       });
 
-      it('should not add a Optionset to an array that contains it', () => {
+      it('should not add a OptionSet to an array that contains it', () => {
         const optionset: IOptionset = sampleWithRequiredData;
         const optionsetCollection: IOptionset[] = [
           {
@@ -116,7 +116,7 @@ describe('Optionset Service', () => {
         expect(expectedResult).toHaveLength(2);
       });
 
-      it("should add a Optionset to an array that doesn't contain it", () => {
+      it("should add a OptionSet to an array that doesn't contain it", () => {
         const optionset: IOptionset = sampleWithRequiredData;
         const optionsetCollection: IOptionset[] = [sampleWithPartialData];
         expectedResult = service.addOptionsetToCollectionIfMissing(optionsetCollection, optionset);
@@ -124,7 +124,7 @@ describe('Optionset Service', () => {
         expect(expectedResult).toContain(optionset);
       });
 
-      it('should add only unique Optionset to an array', () => {
+      it('should add only unique OptionSet to an array', () => {
         const optionsetArray: IOptionset[] = [sampleWithRequiredData, sampleWithPartialData, sampleWithFullData];
         const optionsetCollection: IOptionset[] = [sampleWithRequiredData];
         expectedResult = service.addOptionsetToCollectionIfMissing(optionsetCollection, ...optionsetArray);
@@ -147,7 +147,7 @@ describe('Optionset Service', () => {
         expect(expectedResult).toContain(optionset);
       });
 
-      it('should return initial array if no Optionset is added', () => {
+      it('should return initial array if no OptionSet is added', () => {
         const optionsetCollection: IOptionset[] = [sampleWithRequiredData];
         expectedResult = service.addOptionsetToCollectionIfMissing(optionsetCollection, undefined, null);
         expect(expectedResult).toEqual(optionsetCollection);

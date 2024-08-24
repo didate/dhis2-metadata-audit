@@ -9,10 +9,10 @@ class DatasetTest {
 
     @Test
     void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Dataset.class);
-        Dataset dataset1 = new Dataset();
+        TestUtil.equalsVerifier(DataSet.class);
+        DataSet dataset1 = new DataSet();
         dataset1.setId("id1");
-        Dataset dataset2 = new Dataset();
+        DataSet dataset2 = new DataSet();
         dataset2.setId(dataset1.getId());
         assertThat(dataset1).isEqualTo(dataset2);
         dataset2.setId("id2");

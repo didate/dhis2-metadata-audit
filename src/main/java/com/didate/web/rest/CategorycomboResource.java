@@ -1,6 +1,6 @@
 package com.didate.web.rest;
 
-import com.didate.domain.Categorycombo;
+import com.didate.domain.CategoryCombo;
 import com.didate.repository.CategorycomboRepository;
 import com.didate.service.CategorycomboService;
 import com.didate.web.rest.errors.BadRequestAlertException;
@@ -26,7 +26,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link com.didate.domain.Categorycombo}.
+ * REST controller for managing {@link com.didate.domain.CategoryCombo}.
  */
 @RestController
 @RequestMapping("/api")
@@ -56,12 +56,12 @@ public class CategorycomboResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/categorycombos")
-    public ResponseEntity<Categorycombo> createCategorycombo(@Valid @RequestBody Categorycombo categorycombo) throws URISyntaxException {
+    public ResponseEntity<CategoryCombo> createCategorycombo(@Valid @RequestBody CategoryCombo categorycombo) throws URISyntaxException {
         log.debug("REST request to save Categorycombo : {}", categorycombo);
         if (categorycombo.getId() != null) {
             throw new BadRequestAlertException("A new categorycombo cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Categorycombo result = categorycomboService.save(categorycombo);
+        CategoryCombo result = categorycomboService.save(categorycombo);
         return ResponseEntity
             .created(new URI("/api/categorycombos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -79,9 +79,9 @@ public class CategorycomboResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/categorycombos/{id}")
-    public ResponseEntity<Categorycombo> updateCategorycombo(
+    public ResponseEntity<CategoryCombo> updateCategorycombo(
         @PathVariable(value = "id", required = false) final String id,
-        @Valid @RequestBody Categorycombo categorycombo
+        @Valid @RequestBody CategoryCombo categorycombo
     ) throws URISyntaxException {
         log.debug("REST request to update Categorycombo : {}, {}", id, categorycombo);
         if (categorycombo.getId() == null) {
@@ -95,7 +95,7 @@ public class CategorycomboResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Categorycombo result = categorycomboService.update(categorycombo);
+        CategoryCombo result = categorycomboService.update(categorycombo);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, categorycombo.getId()))
@@ -114,9 +114,9 @@ public class CategorycomboResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/categorycombos/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<Categorycombo> partialUpdateCategorycombo(
+    public ResponseEntity<CategoryCombo> partialUpdateCategorycombo(
         @PathVariable(value = "id", required = false) final String id,
-        @NotNull @RequestBody Categorycombo categorycombo
+        @NotNull @RequestBody CategoryCombo categorycombo
     ) throws URISyntaxException {
         log.debug("REST request to partial update Categorycombo partially : {}, {}", id, categorycombo);
         if (categorycombo.getId() == null) {
@@ -130,7 +130,7 @@ public class CategorycomboResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Categorycombo> result = categorycomboService.partialUpdate(categorycombo);
+        Optional<CategoryCombo> result = categorycomboService.partialUpdate(categorycombo);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -145,9 +145,9 @@ public class CategorycomboResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of categorycombos in body.
      */
     @GetMapping("/categorycombos")
-    public ResponseEntity<List<Categorycombo>> getAllCategorycombos(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<CategoryCombo>> getAllCategorycombos(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Categorycombos");
-        Page<Categorycombo> page = categorycomboService.findAll(pageable);
+        Page<CategoryCombo> page = categorycomboService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -159,9 +159,9 @@ public class CategorycomboResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the categorycombo, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/categorycombos/{id}")
-    public ResponseEntity<Categorycombo> getCategorycombo(@PathVariable String id) {
+    public ResponseEntity<CategoryCombo> getCategorycombo(@PathVariable String id) {
         log.debug("REST request to get Categorycombo : {}", id);
-        Optional<Categorycombo> categorycombo = categorycomboService.findOne(id);
+        Optional<CategoryCombo> categorycombo = categorycomboService.findOne(id);
         return ResponseUtil.wrapOrNotFound(categorycombo);
     }
 

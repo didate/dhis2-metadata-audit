@@ -118,7 +118,7 @@ public class TrackedEntityAttribute implements Serializable, Persistable<String>
     private DHISUser lastUpdatedBy;
 
     @ManyToOne
-    private Optionset optionSet;
+    private OptionSet optionSet;
 
     @ManyToMany(mappedBy = "programTrackedEntityAttributes")
     @JsonIgnoreProperties(
@@ -519,15 +519,15 @@ public class TrackedEntityAttribute implements Serializable, Persistable<String>
         return this;
     }
 
-    public Optionset getOptionSet() {
+    public OptionSet getOptionSet() {
         return this.optionSet;
     }
 
-    public void setOptionSet(Optionset optionset) {
+    public void setOptionSet(OptionSet optionset) {
         this.optionSet = optionset;
     }
 
-    public TrackedEntityAttribute optionSet(Optionset optionset) {
+    public TrackedEntityAttribute optionSet(OptionSet optionset) {
         this.setOptionSet(optionset);
         return this;
     }

@@ -8,14 +8,14 @@ import org.hibernate.envers.Audited;
 import org.springframework.data.domain.Persistable;
 
 /**
- * A Optionset.
+ * A OptionSet.
  */
 @JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "optionset")
 @Audited
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Optionset implements Serializable, Persistable<String> {
+public class OptionSet implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class Optionset implements Serializable, Persistable<String> {
         return this.id;
     }
 
-    public Optionset id(String id) {
+    public OptionSet id(String id) {
         this.setId(id);
         return this;
     }
@@ -49,7 +49,7 @@ public class Optionset implements Serializable, Persistable<String> {
         return this.name;
     }
 
-    public Optionset name(String name) {
+    public OptionSet name(String name) {
         this.setName(name);
         return this;
     }
@@ -64,7 +64,7 @@ public class Optionset implements Serializable, Persistable<String> {
         return !this.isPersisted;
     }
 
-    public Optionset setIsPersisted() {
+    public OptionSet setIsPersisted() {
         this.isPersisted = true;
         return this;
     }
@@ -82,10 +82,10 @@ public class Optionset implements Serializable, Persistable<String> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Optionset)) {
+        if (!(o instanceof OptionSet)) {
             return false;
         }
-        return id != null && id.equals(((Optionset) o).id);
+        return id != null && id.equals(((OptionSet) o).id);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class Optionset implements Serializable, Persistable<String> {
     // prettier-ignore
     @Override
     public String toString() {
-        return "Optionset{" +
+        return "OptionSet{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
             "}";

@@ -1,12 +1,12 @@
 package com.didate.service;
 
-import com.didate.domain.Dataset;
+import com.didate.domain.DataSet;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link Dataset}.
+ * Service Interface for managing {@link DataSet}.
  */
 public interface DatasetService {
     /**
@@ -15,7 +15,7 @@ public interface DatasetService {
      * @param dataset the entity to save.
      * @return the persisted entity.
      */
-    Dataset save(Dataset dataset);
+    DataSet save(DataSet dataset);
 
     /**
      * Updates a dataset.
@@ -23,7 +23,7 @@ public interface DatasetService {
      * @param dataset the entity to update.
      * @return the persisted entity.
      */
-    Dataset update(Dataset dataset);
+    DataSet update(DataSet dataset);
 
     /**
      * Partially updates a dataset.
@@ -31,7 +31,7 @@ public interface DatasetService {
      * @param dataset the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<Dataset> partialUpdate(Dataset dataset);
+    Optional<DataSet> partialUpdate(DataSet dataset);
 
     /**
      * Get all the datasets.
@@ -39,7 +39,7 @@ public interface DatasetService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<Dataset> findAll(Pageable pageable);
+    Page<DataSet> findAll(Pageable pageable);
 
     /**
      * Get all the datasets with eager load of many-to-many relationships.
@@ -47,7 +47,7 @@ public interface DatasetService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<Dataset> findAllWithEagerRelationships(Pageable pageable);
+    Page<DataSet> findAllWithEagerRelationships(Pageable pageable);
 
     /**
      * Get the "id" dataset.
@@ -55,7 +55,7 @@ public interface DatasetService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<Dataset> findOne(String id);
+    Optional<DataSet> findOne(String id);
 
     /**
      * Delete the "id" dataset.

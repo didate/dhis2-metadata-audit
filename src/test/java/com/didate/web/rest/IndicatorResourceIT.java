@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.didate.IntegrationTest;
 import com.didate.domain.DHISUser;
 import com.didate.domain.Indicator;
-import com.didate.domain.Indicatortype;
+import com.didate.domain.IndicatorType;
 import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.IndicatorRepository;
 import java.time.Instant;
@@ -140,13 +140,13 @@ class IndicatorResourceIT {
         // Add required entity
         indicator.setLastUpdatedBy(dHISUser);
         // Add required entity
-        Indicatortype indicatortype;
-        if (TestUtil.findAll(em, Indicatortype.class).isEmpty()) {
+        IndicatorType indicatortype;
+        if (TestUtil.findAll(em, IndicatorType.class).isEmpty()) {
             indicatortype = IndicatortypeResourceIT.createEntity(em);
             em.persist(indicatortype);
             em.flush();
         } else {
-            indicatortype = TestUtil.findAll(em, Indicatortype.class).get(0);
+            indicatortype = TestUtil.findAll(em, IndicatorType.class).get(0);
         }
         indicator.setIndicatorType(indicatortype);
         return indicator;
@@ -191,13 +191,13 @@ class IndicatorResourceIT {
         // Add required entity
         indicator.setLastUpdatedBy(dHISUser);
         // Add required entity
-        Indicatortype indicatortype;
-        if (TestUtil.findAll(em, Indicatortype.class).isEmpty()) {
+        IndicatorType indicatortype;
+        if (TestUtil.findAll(em, IndicatorType.class).isEmpty()) {
             indicatortype = IndicatortypeResourceIT.createUpdatedEntity(em);
             em.persist(indicatortype);
             em.flush();
         } else {
-            indicatortype = TestUtil.findAll(em, Indicatortype.class).get(0);
+            indicatortype = TestUtil.findAll(em, IndicatorType.class).get(0);
         }
         indicator.setIndicatorType(indicatortype);
         return indicator;

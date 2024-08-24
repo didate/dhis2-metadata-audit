@@ -94,7 +94,7 @@ public class ProgramRuleVariable implements Serializable, Persistable<String> {
         value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "dataSets", "programStages" },
         allowSetters = true
     )
-    private Dataelement dataElement;
+    private DataElement dataElement;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -284,15 +284,15 @@ public class ProgramRuleVariable implements Serializable, Persistable<String> {
         return this;
     }
 
-    public Dataelement getDataElement() {
+    public DataElement getDataElement() {
         return this.dataElement;
     }
 
-    public void setDataElement(Dataelement dataelement) {
+    public void setDataElement(DataElement dataelement) {
         this.dataElement = dataelement;
     }
 
-    public ProgramRuleVariable dataElement(Dataelement dataelement) {
+    public ProgramRuleVariable dataElement(DataElement dataelement) {
         this.setDataElement(dataelement);
         return this;
     }

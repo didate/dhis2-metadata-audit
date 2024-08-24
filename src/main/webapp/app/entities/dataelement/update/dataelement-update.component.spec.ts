@@ -129,7 +129,7 @@ describe('Dataelement Management Update Component', () => {
       expect(comp.categorycombosSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Optionset query and add missing value', () => {
+    it('Should call OptionSet query and add missing value', () => {
       const dataelement: IDataelement = { id: 'CBA' };
       const optionSet: IOptionset = { id: 'a418c6bb-1a54-4b96-88c8-4c9fe85ead03' };
       dataelement.optionSet = optionSet;

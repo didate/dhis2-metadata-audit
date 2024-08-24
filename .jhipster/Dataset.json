@@ -153,7 +153,7 @@
       "fieldValues": "NEW,UPDATE,NONE"
     }
   ],
-  "name": "Dataset",
+  "name": "DataSet",
   "pagination": "pagination",
   "relationships": [
     {

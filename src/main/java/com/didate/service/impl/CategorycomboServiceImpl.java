@@ -1,6 +1,6 @@
 package com.didate.service.impl;
 
-import com.didate.domain.Categorycombo;
+import com.didate.domain.CategoryCombo;
 import com.didate.repository.CategorycomboRepository;
 import com.didate.service.CategorycomboService;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link Categorycombo}.
+ * Service Implementation for managing {@link CategoryCombo}.
  */
 @Service
 @Transactional
@@ -27,20 +27,20 @@ public class CategorycomboServiceImpl implements CategorycomboService {
     }
 
     @Override
-    public Categorycombo save(Categorycombo categorycombo) {
+    public CategoryCombo save(CategoryCombo categorycombo) {
         log.debug("Request to save Categorycombo : {}", categorycombo);
         return categorycomboRepository.save(categorycombo);
     }
 
     @Override
-    public Categorycombo update(Categorycombo categorycombo) {
+    public CategoryCombo update(CategoryCombo categorycombo) {
         log.debug("Request to update Categorycombo : {}", categorycombo);
         categorycombo.setIsPersisted();
         return categorycomboRepository.save(categorycombo);
     }
 
     @Override
-    public Optional<Categorycombo> partialUpdate(Categorycombo categorycombo) {
+    public Optional<CategoryCombo> partialUpdate(CategoryCombo categorycombo) {
         log.debug("Request to partially update Categorycombo : {}", categorycombo);
 
         return categorycomboRepository
@@ -57,14 +57,14 @@ public class CategorycomboServiceImpl implements CategorycomboService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Categorycombo> findAll(Pageable pageable) {
+    public Page<CategoryCombo> findAll(Pageable pageable) {
         log.debug("Request to get all Categorycombos");
         return categorycomboRepository.findAll(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Categorycombo> findOne(String id) {
+    public Optional<CategoryCombo> findOne(String id) {
         log.debug("Request to get Categorycombo : {}", id);
         return categorycomboRepository.findById(id);
     }

@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.didate.IntegrationTest;
-import com.didate.domain.Categorycombo;
+import com.didate.domain.CategoryCombo;
 import com.didate.repository.CategorycomboRepository;
 import java.util.List;
 import java.util.UUID;
@@ -43,7 +43,7 @@ class CategorycomboResourceIT {
     @Autowired
     private MockMvc restCategorycomboMockMvc;
 
-    private Categorycombo categorycombo;
+    private CategoryCombo categorycombo;
 
     /**
      * Create an entity for this test.
@@ -51,8 +51,8 @@ class CategorycomboResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Categorycombo createEntity(EntityManager em) {
-        Categorycombo categorycombo = new Categorycombo().name(DEFAULT_NAME);
+    public static CategoryCombo createEntity(EntityManager em) {
+        CategoryCombo categorycombo = new CategoryCombo().name(DEFAULT_NAME);
         return categorycombo;
     }
 
@@ -62,8 +62,8 @@ class CategorycomboResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Categorycombo createUpdatedEntity(EntityManager em) {
-        Categorycombo categorycombo = new Categorycombo().name(UPDATED_NAME);
+    public static CategoryCombo createUpdatedEntity(EntityManager em) {
+        CategoryCombo categorycombo = new CategoryCombo().name(UPDATED_NAME);
         return categorycombo;
     }
 
@@ -82,9 +82,9 @@ class CategorycomboResourceIT {
             .andExpect(status().isCreated());
 
         // Validate the Categorycombo in the database
-        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        List<CategoryCombo> categorycomboList = categorycomboRepository.findAll();
         assertThat(categorycomboList).hasSize(databaseSizeBeforeCreate + 1);
-        Categorycombo testCategorycombo = categorycomboList.get(categorycomboList.size() - 1);
+        CategoryCombo testCategorycombo = categorycomboList.get(categorycomboList.size() - 1);
         assertThat(testCategorycombo.getName()).isEqualTo(DEFAULT_NAME);
     }
 
@@ -102,7 +102,7 @@ class CategorycomboResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Categorycombo in the database
-        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        List<CategoryCombo> categorycomboList = categorycomboRepository.findAll();
         assertThat(categorycomboList).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -155,7 +155,7 @@ class CategorycomboResourceIT {
         int databaseSizeBeforeUpdate = categorycomboRepository.findAll().size();
 
         // Update the categorycombo
-        Categorycombo updatedCategorycombo = categorycomboRepository.findById(categorycombo.getId()).get();
+        CategoryCombo updatedCategorycombo = categorycomboRepository.findById(categorycombo.getId()).get();
         // Disconnect from session so that the updates on updatedCategorycombo are not directly saved in db
         em.detach(updatedCategorycombo);
         updatedCategorycombo.name(UPDATED_NAME);
@@ -169,9 +169,9 @@ class CategorycomboResourceIT {
             .andExpect(status().isOk());
 
         // Validate the Categorycombo in the database
-        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        List<CategoryCombo> categorycomboList = categorycomboRepository.findAll();
         assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
-        Categorycombo testCategorycombo = categorycomboList.get(categorycomboList.size() - 1);
+        CategoryCombo testCategorycombo = categorycomboList.get(categorycomboList.size() - 1);
         assertThat(testCategorycombo.getName()).isEqualTo(UPDATED_NAME);
     }
 
@@ -191,7 +191,7 @@ class CategorycomboResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Categorycombo in the database
-        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        List<CategoryCombo> categorycomboList = categorycomboRepository.findAll();
         assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -211,7 +211,7 @@ class CategorycomboResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Categorycombo in the database
-        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        List<CategoryCombo> categorycomboList = categorycomboRepository.findAll();
         assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -227,7 +227,7 @@ class CategorycomboResourceIT {
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Categorycombo in the database
-        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        List<CategoryCombo> categorycomboList = categorycomboRepository.findAll();
         assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -241,7 +241,7 @@ class CategorycomboResourceIT {
         int databaseSizeBeforeUpdate = categorycomboRepository.findAll().size();
 
         // Update the categorycombo using partial update
-        Categorycombo partialUpdatedCategorycombo = new Categorycombo();
+        CategoryCombo partialUpdatedCategorycombo = new CategoryCombo();
         partialUpdatedCategorycombo.setId(categorycombo.getId());
 
         partialUpdatedCategorycombo.name(UPDATED_NAME);
@@ -255,9 +255,9 @@ class CategorycomboResourceIT {
             .andExpect(status().isOk());
 
         // Validate the Categorycombo in the database
-        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        List<CategoryCombo> categorycomboList = categorycomboRepository.findAll();
         assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
-        Categorycombo testCategorycombo = categorycomboList.get(categorycomboList.size() - 1);
+        CategoryCombo testCategorycombo = categorycomboList.get(categorycomboList.size() - 1);
         assertThat(testCategorycombo.getName()).isEqualTo(UPDATED_NAME);
     }
 
@@ -271,7 +271,7 @@ class CategorycomboResourceIT {
         int databaseSizeBeforeUpdate = categorycomboRepository.findAll().size();
 
         // Update the categorycombo using partial update
-        Categorycombo partialUpdatedCategorycombo = new Categorycombo();
+        CategoryCombo partialUpdatedCategorycombo = new CategoryCombo();
         partialUpdatedCategorycombo.setId(categorycombo.getId());
 
         partialUpdatedCategorycombo.name(UPDATED_NAME);
@@ -285,9 +285,9 @@ class CategorycomboResourceIT {
             .andExpect(status().isOk());
 
         // Validate the Categorycombo in the database
-        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        List<CategoryCombo> categorycomboList = categorycomboRepository.findAll();
         assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
-        Categorycombo testCategorycombo = categorycomboList.get(categorycomboList.size() - 1);
+        CategoryCombo testCategorycombo = categorycomboList.get(categorycomboList.size() - 1);
         assertThat(testCategorycombo.getName()).isEqualTo(UPDATED_NAME);
     }
 
@@ -307,7 +307,7 @@ class CategorycomboResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Categorycombo in the database
-        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        List<CategoryCombo> categorycomboList = categorycomboRepository.findAll();
         assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -327,7 +327,7 @@ class CategorycomboResourceIT {
             .andExpect(status().isBadRequest());
 
         // Validate the Categorycombo in the database
-        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        List<CategoryCombo> categorycomboList = categorycomboRepository.findAll();
         assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -345,7 +345,7 @@ class CategorycomboResourceIT {
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Categorycombo in the database
-        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        List<CategoryCombo> categorycomboList = categorycomboRepository.findAll();
         assertThat(categorycomboList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -364,7 +364,7 @@ class CategorycomboResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        List<Categorycombo> categorycomboList = categorycomboRepository.findAll();
+        List<CategoryCombo> categorycomboList = categorycomboRepository.findAll();
         assertThat(categorycomboList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

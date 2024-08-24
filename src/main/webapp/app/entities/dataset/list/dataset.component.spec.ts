@@ -10,7 +10,7 @@ import { DatasetService } from '../service/dataset.service';
 import { DatasetComponent } from './dataset.component';
 import SpyInstance = jest.SpyInstance;
 
-describe('Dataset Management Component', () => {
+describe('DataSet Management Component', () => {
   let comp: DatasetComponent;
   let fixture: ComponentFixture<DatasetComponent>;
   let service: DatasetService;

@@ -4,18 +4,18 @@
       "home": {
         "title": "Optionsets",
         "refreshListLabel": "Refresh list",
-        "createLabel": "Create a new Optionset",
-        "createOrEditLabel": "Create or edit a Optionset",
+        "createLabel": "Create a new OptionSet",
+        "createOrEditLabel": "Create or edit a OptionSet",
         "notFound": "No Optionsets found"
       },
-      "created": "A new Optionset is created with identifier {{ param }}",
-      "updated": "A Optionset is updated with identifier {{ param }}",
-      "deleted": "A Optionset is deleted with identifier {{ param }}",
+      "created": "A new OptionSet is created with identifier {{ param }}",
+      "updated": "A OptionSet is updated with identifier {{ param }}",
+      "deleted": "A OptionSet is deleted with identifier {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Optionset {{ id }}?"
+        "question": "Are you sure you want to delete OptionSet {{ id }}?"
       },
       "detail": {
-        "title": "Optionset"
+        "title": "OptionSet"
       },
       "id": "Id",
       "name": "Name"

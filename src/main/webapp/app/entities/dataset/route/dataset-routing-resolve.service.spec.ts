@@ -10,7 +10,7 @@ import { DatasetService } from '../service/dataset.service';
 
 import { DatasetRoutingResolveService } from './dataset-routing-resolve.service';
 
-describe('Dataset routing resolve service', () => {
+describe('DataSet routing resolve service', () => {
   let mockRouter: Router;
   let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
   let routingResolveService: DatasetRoutingResolveService;

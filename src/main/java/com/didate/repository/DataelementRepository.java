@@ -1,6 +1,6 @@
 package com.didate.repository;
 
-import com.didate.domain.Dataelement;
+import com.didate.domain.DataElement;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface DataelementRepository extends JpaRepository<Dataelement, String> {}
+public interface DataelementRepository extends JpaRepository<DataElement, String> {}

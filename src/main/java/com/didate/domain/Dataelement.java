@@ -20,7 +20,7 @@ import org.springframework.data.domain.Persistable;
 @Table(name = "dataelement")
 @Audited
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Dataelement implements Serializable, Persistable<String> {
+public class DataElement implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -110,17 +110,17 @@ public class Dataelement implements Serializable, Persistable<String> {
     private DHISUser lastUpdatedBy;
 
     @ManyToOne
-    private Categorycombo categoryCombo;
+    private CategoryCombo categoryCombo;
 
     @ManyToOne
-    private Optionset optionSet;
+    private OptionSet optionSet;
 
     @ManyToMany(mappedBy = "dataSetElements")
     @JsonIgnoreProperties(
         value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataSetElements", "indicators", "organisationUnits" },
         allowSetters = true
     )
-    private Set<Dataset> dataSets = new HashSet<>();
+    private Set<DataSet> dataSets = new HashSet<>();
 
     @ManyToMany(mappedBy = "programStageDataElements")
     @JsonIgnoreProperties(value = { "createdBy", "lastUpdatedBy", "program", "programStageDataElements", "programs" }, allowSetters = true)
@@ -132,7 +132,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.id;
     }
 
-    public Dataelement id(String id) {
+    public DataElement id(String id) {
         this.setId(id);
         return this;
     }
@@ -145,7 +145,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.name;
     }
 
-    public Dataelement name(String name) {
+    public DataElement name(String name) {
         this.setName(name);
         return this;
     }
@@ -158,7 +158,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.shortName;
     }
 
-    public Dataelement shortName(String shortName) {
+    public DataElement shortName(String shortName) {
         this.setShortName(shortName);
         return this;
     }
@@ -171,7 +171,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.formName;
     }
 
-    public Dataelement formName(String formName) {
+    public DataElement formName(String formName) {
         this.setFormName(formName);
         return this;
     }
@@ -184,7 +184,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.description;
     }
 
-    public Dataelement description(String description) {
+    public DataElement description(String description) {
         this.setDescription(description);
         return this;
     }
@@ -197,7 +197,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.displayShortName;
     }
 
-    public Dataelement displayShortName(String displayShortName) {
+    public DataElement displayShortName(String displayShortName) {
         this.setDisplayShortName(displayShortName);
         return this;
     }
@@ -210,7 +210,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.displayName;
     }
 
-    public Dataelement displayName(String displayName) {
+    public DataElement displayName(String displayName) {
         this.setDisplayName(displayName);
         return this;
     }
@@ -223,7 +223,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.displayFormName;
     }
 
-    public Dataelement displayFormName(String displayFormName) {
+    public DataElement displayFormName(String displayFormName) {
         this.setDisplayFormName(displayFormName);
         return this;
     }
@@ -236,7 +236,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.created;
     }
 
-    public Dataelement created(Instant created) {
+    public DataElement created(Instant created) {
         this.setCreated(created);
         return this;
     }
@@ -249,7 +249,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.lastUpdated;
     }
 
-    public Dataelement lastUpdated(Instant lastUpdated) {
+    public DataElement lastUpdated(Instant lastUpdated) {
         this.setLastUpdated(lastUpdated);
         return this;
     }
@@ -262,7 +262,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.publicAccess;
     }
 
-    public Dataelement publicAccess(String publicAccess) {
+    public DataElement publicAccess(String publicAccess) {
         this.setPublicAccess(publicAccess);
         return this;
     }
@@ -275,7 +275,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.dimensionItemType;
     }
 
-    public Dataelement dimensionItemType(String dimensionItemType) {
+    public DataElement dimensionItemType(String dimensionItemType) {
         this.setDimensionItemType(dimensionItemType);
         return this;
     }
@@ -288,7 +288,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.aggregationType;
     }
 
-    public Dataelement aggregationType(String aggregationType) {
+    public DataElement aggregationType(String aggregationType) {
         this.setAggregationType(aggregationType);
         return this;
     }
@@ -301,7 +301,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.valueType;
     }
 
-    public Dataelement valueType(String valueType) {
+    public DataElement valueType(String valueType) {
         this.setValueType(valueType);
         return this;
     }
@@ -314,7 +314,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.domainType;
     }
 
-    public Dataelement domainType(String domainType) {
+    public DataElement domainType(String domainType) {
         this.setDomainType(domainType);
         return this;
     }
@@ -327,7 +327,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.zeroIsSignificant;
     }
 
-    public Dataelement zeroIsSignificant(Boolean zeroIsSignificant) {
+    public DataElement zeroIsSignificant(Boolean zeroIsSignificant) {
         this.setZeroIsSignificant(zeroIsSignificant);
         return this;
     }
@@ -340,7 +340,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.optionSetValue;
     }
 
-    public Dataelement optionSetValue(String optionSetValue) {
+    public DataElement optionSetValue(String optionSetValue) {
         this.setOptionSetValue(optionSetValue);
         return this;
     }
@@ -353,7 +353,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.dimensionItem;
     }
 
-    public Dataelement dimensionItem(String dimensionItem) {
+    public DataElement dimensionItem(String dimensionItem) {
         this.setDimensionItem(dimensionItem);
         return this;
     }
@@ -366,7 +366,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return this.track;
     }
 
-    public Dataelement track(TypeTrack track) {
+    public DataElement track(TypeTrack track) {
         this.setTrack(track);
         return this;
     }
@@ -381,7 +381,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         return !this.isPersisted;
     }
 
-    public Dataelement setIsPersisted() {
+    public DataElement setIsPersisted() {
         this.isPersisted = true;
         return this;
     }
@@ -400,7 +400,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         this.project = project;
     }
 
-    public Dataelement project(Project project) {
+    public DataElement project(Project project) {
         this.setProject(project);
         return this;
     }
@@ -413,7 +413,7 @@ public class Dataelement implements Serializable, Persistable<String> {
         this.createdBy = dHISUser;
     }
 
-    public Dataelement createdBy(DHISUser dHISUser) {
+    public DataElement createdBy(DHISUser dHISUser) {
         this.setCreatedBy(dHISUser);
         return this;
     }
@@ -426,42 +426,42 @@ public class Dataelement implements Serializable, Persistable<String> {
         this.lastUpdatedBy = dHISUser;
     }
 
-    public Dataelement lastUpdatedBy(DHISUser dHISUser) {
+    public DataElement lastUpdatedBy(DHISUser dHISUser) {
         this.setLastUpdatedBy(dHISUser);
         return this;
     }
 
-    public Categorycombo getCategoryCombo() {
+    public CategoryCombo getCategoryCombo() {
         return this.categoryCombo;
     }
 
-    public void setCategoryCombo(Categorycombo categorycombo) {
+    public void setCategoryCombo(CategoryCombo categorycombo) {
         this.categoryCombo = categorycombo;
     }
 
-    public Dataelement categoryCombo(Categorycombo categorycombo) {
+    public DataElement categoryCombo(CategoryCombo categorycombo) {
         this.setCategoryCombo(categorycombo);
         return this;
     }
 
-    public Optionset getOptionSet() {
+    public OptionSet getOptionSet() {
         return this.optionSet;
     }
 
-    public void setOptionSet(Optionset optionset) {
+    public void setOptionSet(OptionSet optionset) {
         this.optionSet = optionset;
     }
 
-    public Dataelement optionSet(Optionset optionset) {
+    public DataElement optionSet(OptionSet optionset) {
         this.setOptionSet(optionset);
         return this;
     }
 
-    public Set<Dataset> getDataSets() {
+    public Set<DataSet> getDataSets() {
         return this.dataSets;
     }
 
-    public void setDataSets(Set<Dataset> datasets) {
+    public void setDataSets(Set<DataSet> datasets) {
         if (this.dataSets != null) {
             this.dataSets.forEach(i -> i.removeDataSetElements(this));
         }
@@ -471,18 +471,18 @@ public class Dataelement implements Serializable, Persistable<String> {
         this.dataSets = datasets;
     }
 
-    public Dataelement dataSets(Set<Dataset> datasets) {
+    public DataElement dataSets(Set<DataSet> datasets) {
         this.setDataSets(datasets);
         return this;
     }
 
-    public Dataelement addDataSets(Dataset dataset) {
+    public DataElement addDataSets(DataSet dataset) {
         this.dataSets.add(dataset);
         dataset.getDataSetElements().add(this);
         return this;
     }
 
-    public Dataelement removeDataSets(Dataset dataset) {
+    public DataElement removeDataSets(DataSet dataset) {
         this.dataSets.remove(dataset);
         dataset.getDataSetElements().remove(this);
         return this;
@@ -502,18 +502,18 @@ public class Dataelement implements Serializable, Persistable<String> {
         this.programStages = programStages;
     }
 
-    public Dataelement programStages(Set<ProgramStage> programStages) {
+    public DataElement programStages(Set<ProgramStage> programStages) {
         this.setProgramStages(programStages);
         return this;
     }
 
-    public Dataelement addProgramStages(ProgramStage programStage) {
+    public DataElement addProgramStages(ProgramStage programStage) {
         this.programStages.add(programStage);
         programStage.getProgramStageDataElements().add(this);
         return this;
     }
 
-    public Dataelement removeProgramStages(ProgramStage programStage) {
+    public DataElement removeProgramStages(ProgramStage programStage) {
         this.programStages.remove(programStage);
         programStage.getProgramStageDataElements().remove(this);
         return this;
@@ -526,10 +526,10 @@ public class Dataelement implements Serializable, Persistable<String> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Dataelement)) {
+        if (!(o instanceof DataElement)) {
             return false;
         }
-        return id != null && id.equals(((Dataelement) o).id);
+        return id != null && id.equals(((DataElement) o).id);
     }
 
     @Override

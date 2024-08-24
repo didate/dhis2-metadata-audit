@@ -1,7 +1,7 @@
 package com.didate.service.dhis2.response;
 
-import com.didate.domain.Dataelement;
-import com.didate.domain.Dataset;
+import com.didate.domain.DataElement;
+import com.didate.domain.DataSet;
 import com.didate.service.dhis2.Pager;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -12,7 +12,7 @@ public class DataSetResponse {
     private Pager pager;
 
     @JsonProperty("dataSets")
-    private List<Dataset> dataSets;
+    private List<DataSet> dataSets;
 
     public Pager getPager() {
         return pager;
@@ -22,11 +22,11 @@ public class DataSetResponse {
         this.pager = pager;
     }
 
-    public List<Dataset> getDataSets() {
+    public List<DataSet> getDataSets() {
         return dataSets;
     }
 
-    public void setDataSets(List<Dataset> dataSets) {
+    public void setDataSets(List<DataSet> dataSets) {
         this.dataSets = dataSets;
     }
 }

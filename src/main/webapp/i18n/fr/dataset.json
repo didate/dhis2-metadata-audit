@@ -4,18 +4,18 @@
       "home": {
         "title": "Datasets",
         "refreshListLabel": "Actualiser la liste",
-        "createLabel": "Créer un nouveau Dataset",
-        "createOrEditLabel": "Créer ou éditer un Dataset",
-        "notFound": "Aucun Dataset trouvé"
+        "createLabel": "Créer un nouveau DataSet",
+        "createOrEditLabel": "Créer ou éditer un DataSet",
+        "notFound": "Aucun DataSet trouvé"
       },
-      "created": "Un nouveau Dataset a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Dataset avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Dataset avec l'identifiant {{ param }} a été supprimé",
+      "created": "Un nouveau DataSet a été créé avec l'identifiant {{ param }}",
+      "updated": "Le DataSet avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le DataSet avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Êtes-vous certain de vouloir supprimer le Dataset {{ id }} ?"
+        "question": "Êtes-vous certain de vouloir supprimer le DataSet {{ id }} ?"
       },
       "detail": {
-        "title": "Dataset"
+        "title": "DataSet"
       },
       "id": "Id",
       "name": "Name",

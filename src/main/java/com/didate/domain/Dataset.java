@@ -13,14 +13,14 @@ import org.hibernate.envers.NotAudited;
 import org.springframework.data.domain.Persistable;
 
 /**
- * A Dataset.
+ * A DataSet.
  */
 @JsonIgnoreProperties(value = { "new" }, ignoreUnknown = true)
 @Entity
 @Table(name = "dataset")
 @Audited
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Dataset implements Serializable, Persistable<String> {
+public class DataSet implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;
 
@@ -153,7 +153,7 @@ public class Dataset implements Serializable, Persistable<String> {
     private DHISUser lastUpdatedBy;
 
     @ManyToOne
-    private Categorycombo categoryCombo;
+    private CategoryCombo categoryCombo;
 
     @ManyToMany
     @JoinTable(
@@ -165,7 +165,7 @@ public class Dataset implements Serializable, Persistable<String> {
         value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "dataSets", "programStages" },
         allowSetters = true
     )
-    private Set<Dataelement> dataSetElements = new HashSet<>();
+    private Set<DataElement> dataSetElements = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -191,7 +191,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.id;
     }
 
-    public Dataset id(String id) {
+    public DataSet id(String id) {
         this.setId(id);
         return this;
     }
@@ -204,7 +204,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.name;
     }
 
-    public Dataset name(String name) {
+    public DataSet name(String name) {
         this.setName(name);
         return this;
     }
@@ -217,7 +217,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.created;
     }
 
-    public Dataset created(Instant created) {
+    public DataSet created(Instant created) {
         this.setCreated(created);
         return this;
     }
@@ -230,7 +230,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.lastUpdated;
     }
 
-    public Dataset lastUpdated(Instant lastUpdated) {
+    public DataSet lastUpdated(Instant lastUpdated) {
         this.setLastUpdated(lastUpdated);
         return this;
     }
@@ -243,7 +243,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.shortName;
     }
 
-    public Dataset shortName(String shortName) {
+    public DataSet shortName(String shortName) {
         this.setShortName(shortName);
         return this;
     }
@@ -256,7 +256,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.description;
     }
 
-    public Dataset description(String description) {
+    public DataSet description(String description) {
         this.setDescription(description);
         return this;
     }
@@ -269,7 +269,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.dimensionItemType;
     }
 
-    public Dataset dimensionItemType(String dimensionItemType) {
+    public DataSet dimensionItemType(String dimensionItemType) {
         this.setDimensionItemType(dimensionItemType);
         return this;
     }
@@ -282,7 +282,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.periodType;
     }
 
-    public Dataset periodType(String periodType) {
+    public DataSet periodType(String periodType) {
         this.setPeriodType(periodType);
         return this;
     }
@@ -295,7 +295,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.mobile;
     }
 
-    public Dataset mobile(String mobile) {
+    public DataSet mobile(String mobile) {
         this.setMobile(mobile);
         return this;
     }
@@ -308,7 +308,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.version;
     }
 
-    public Dataset version(Double version) {
+    public DataSet version(Double version) {
         this.setVersion(version);
         return this;
     }
@@ -321,7 +321,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.expiryDays;
     }
 
-    public Dataset expiryDays(Double expiryDays) {
+    public DataSet expiryDays(Double expiryDays) {
         this.setExpiryDays(expiryDays);
         return this;
     }
@@ -334,7 +334,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.timelyDays;
     }
 
-    public Dataset timelyDays(Double timelyDays) {
+    public DataSet timelyDays(Double timelyDays) {
         this.setTimelyDays(timelyDays);
         return this;
     }
@@ -347,7 +347,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.notifyCompletingUser;
     }
 
-    public Dataset notifyCompletingUser(String notifyCompletingUser) {
+    public DataSet notifyCompletingUser(String notifyCompletingUser) {
         this.setNotifyCompletingUser(notifyCompletingUser);
         return this;
     }
@@ -360,7 +360,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.openFuturePeriods;
     }
 
-    public Dataset openFuturePeriods(Double openFuturePeriods) {
+    public DataSet openFuturePeriods(Double openFuturePeriods) {
         this.setOpenFuturePeriods(openFuturePeriods);
         return this;
     }
@@ -373,7 +373,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.openPeriodsAfterCoEndDate;
     }
 
-    public Dataset openPeriodsAfterCoEndDate(Double openPeriodsAfterCoEndDate) {
+    public DataSet openPeriodsAfterCoEndDate(Double openPeriodsAfterCoEndDate) {
         this.setOpenPeriodsAfterCoEndDate(openPeriodsAfterCoEndDate);
         return this;
     }
@@ -386,7 +386,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.fieldCombinationRequired;
     }
 
-    public Dataset fieldCombinationRequired(Boolean fieldCombinationRequired) {
+    public DataSet fieldCombinationRequired(Boolean fieldCombinationRequired) {
         this.setFieldCombinationRequired(fieldCombinationRequired);
         return this;
     }
@@ -399,7 +399,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.validCompleteOnly;
     }
 
-    public Dataset validCompleteOnly(Boolean validCompleteOnly) {
+    public DataSet validCompleteOnly(Boolean validCompleteOnly) {
         this.setValidCompleteOnly(validCompleteOnly);
         return this;
     }
@@ -412,7 +412,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.noValueRequiresComment;
     }
 
-    public Dataset noValueRequiresComment(Boolean noValueRequiresComment) {
+    public DataSet noValueRequiresComment(Boolean noValueRequiresComment) {
         this.setNoValueRequiresComment(noValueRequiresComment);
         return this;
     }
@@ -425,7 +425,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.skipOffline;
     }
 
-    public Dataset skipOffline(Boolean skipOffline) {
+    public DataSet skipOffline(Boolean skipOffline) {
         this.setSkipOffline(skipOffline);
         return this;
     }
@@ -438,7 +438,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.dataElementDecoration;
     }
 
-    public Dataset dataElementDecoration(Boolean dataElementDecoration) {
+    public DataSet dataElementDecoration(Boolean dataElementDecoration) {
         this.setDataElementDecoration(dataElementDecoration);
         return this;
     }
@@ -451,7 +451,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.renderAsTabs;
     }
 
-    public Dataset renderAsTabs(Boolean renderAsTabs) {
+    public DataSet renderAsTabs(Boolean renderAsTabs) {
         this.setRenderAsTabs(renderAsTabs);
         return this;
     }
@@ -464,7 +464,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.renderHorizontally;
     }
 
-    public Dataset renderHorizontally(Boolean renderHorizontally) {
+    public DataSet renderHorizontally(Boolean renderHorizontally) {
         this.setRenderHorizontally(renderHorizontally);
         return this;
     }
@@ -477,7 +477,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.compulsoryFieldsCompleteOnly;
     }
 
-    public Dataset compulsoryFieldsCompleteOnly(Boolean compulsoryFieldsCompleteOnly) {
+    public DataSet compulsoryFieldsCompleteOnly(Boolean compulsoryFieldsCompleteOnly) {
         this.setCompulsoryFieldsCompleteOnly(compulsoryFieldsCompleteOnly);
         return this;
     }
@@ -490,7 +490,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.formType;
     }
 
-    public Dataset formType(String formType) {
+    public DataSet formType(String formType) {
         this.setFormType(formType);
         return this;
     }
@@ -503,7 +503,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.displayName;
     }
 
-    public Dataset displayName(String displayName) {
+    public DataSet displayName(String displayName) {
         this.setDisplayName(displayName);
         return this;
     }
@@ -516,7 +516,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.dimensionItem;
     }
 
-    public Dataset dimensionItem(String dimensionItem) {
+    public DataSet dimensionItem(String dimensionItem) {
         this.setDimensionItem(dimensionItem);
         return this;
     }
@@ -529,7 +529,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.displayShortName;
     }
 
-    public Dataset displayShortName(String displayShortName) {
+    public DataSet displayShortName(String displayShortName) {
         this.setDisplayShortName(displayShortName);
         return this;
     }
@@ -542,7 +542,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.displayDescription;
     }
 
-    public Dataset displayDescription(String displayDescription) {
+    public DataSet displayDescription(String displayDescription) {
         this.setDisplayDescription(displayDescription);
         return this;
     }
@@ -555,7 +555,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.displayFormName;
     }
 
-    public Dataset displayFormName(String displayFormName) {
+    public DataSet displayFormName(String displayFormName) {
         this.setDisplayFormName(displayFormName);
         return this;
     }
@@ -568,7 +568,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.dataSetElementsCount;
     }
 
-    public Dataset dataSetElementsCount(Integer dataSetElementsCount) {
+    public DataSet dataSetElementsCount(Integer dataSetElementsCount) {
         this.setDataSetElementsCount(dataSetElementsCount);
         return this;
     }
@@ -581,7 +581,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.indicatorsCount;
     }
 
-    public Dataset indicatorsCount(Integer indicatorsCount) {
+    public DataSet indicatorsCount(Integer indicatorsCount) {
         this.setIndicatorsCount(indicatorsCount);
         return this;
     }
@@ -594,7 +594,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.organisationUnitsCount;
     }
 
-    public Dataset organisationUnitsCount(Integer organisationUnitsCount) {
+    public DataSet organisationUnitsCount(Integer organisationUnitsCount) {
         this.setOrganisationUnitsCount(organisationUnitsCount);
         return this;
     }
@@ -607,7 +607,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.dataSetElementsContent;
     }
 
-    public Dataset dataSetElementsContent(String dataSetElementsContent) {
+    public DataSet dataSetElementsContent(String dataSetElementsContent) {
         this.setDataSetElementsContent(dataSetElementsContent);
         return this;
     }
@@ -620,7 +620,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.indicatorsContent;
     }
 
-    public Dataset indicatorsContent(String indicatorsContent) {
+    public DataSet indicatorsContent(String indicatorsContent) {
         this.setIndicatorsContent(indicatorsContent);
         return this;
     }
@@ -633,7 +633,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.organisationUnitsContent;
     }
 
-    public Dataset organisationUnitsContent(String organisationUnitsContent) {
+    public DataSet organisationUnitsContent(String organisationUnitsContent) {
         this.setOrganisationUnitsContent(organisationUnitsContent);
         return this;
     }
@@ -646,7 +646,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return this.track;
     }
 
-    public Dataset track(TypeTrack track) {
+    public DataSet track(TypeTrack track) {
         this.setTrack(track);
         return this;
     }
@@ -661,7 +661,7 @@ public class Dataset implements Serializable, Persistable<String> {
         return !this.isPersisted;
     }
 
-    public Dataset setIsPersisted() {
+    public DataSet setIsPersisted() {
         this.isPersisted = true;
         return this;
     }
@@ -680,7 +680,7 @@ public class Dataset implements Serializable, Persistable<String> {
         this.project = project;
     }
 
-    public Dataset project(Project project) {
+    public DataSet project(Project project) {
         this.setProject(project);
         return this;
     }
@@ -693,7 +693,7 @@ public class Dataset implements Serializable, Persistable<String> {
         this.createdBy = dHISUser;
     }
 
-    public Dataset createdBy(DHISUser dHISUser) {
+    public DataSet createdBy(DHISUser dHISUser) {
         this.setCreatedBy(dHISUser);
         return this;
     }
@@ -706,44 +706,44 @@ public class Dataset implements Serializable, Persistable<String> {
         this.lastUpdatedBy = dHISUser;
     }
 
-    public Dataset lastUpdatedBy(DHISUser dHISUser) {
+    public DataSet lastUpdatedBy(DHISUser dHISUser) {
         this.setLastUpdatedBy(dHISUser);
         return this;
     }
 
-    public Categorycombo getCategoryCombo() {
+    public CategoryCombo getCategoryCombo() {
         return this.categoryCombo;
     }
 
-    public void setCategoryCombo(Categorycombo categorycombo) {
+    public void setCategoryCombo(CategoryCombo categorycombo) {
         this.categoryCombo = categorycombo;
     }
 
-    public Dataset categoryCombo(Categorycombo categorycombo) {
+    public DataSet categoryCombo(CategoryCombo categorycombo) {
         this.setCategoryCombo(categorycombo);
         return this;
     }
 
-    public Set<Dataelement> getDataSetElements() {
+    public Set<DataElement> getDataSetElements() {
         return this.dataSetElements;
     }
 
-    public void setDataSetElements(Set<Dataelement> dataelements) {
+    public void setDataSetElements(Set<DataElement> dataelements) {
         this.dataSetElements = dataelements;
     }
 
-    public Dataset dataSetElements(Set<Dataelement> dataelements) {
+    public DataSet dataSetElements(Set<DataElement> dataelements) {
         this.setDataSetElements(dataelements);
         return this;
     }
 
-    public Dataset addDataSetElements(Dataelement dataelement) {
+    public DataSet addDataSetElements(DataElement dataelement) {
         this.dataSetElements.add(dataelement);
         dataelement.getDataSets().add(this);
         return this;
     }
 
-    public Dataset removeDataSetElements(Dataelement dataelement) {
+    public DataSet removeDataSetElements(DataElement dataelement) {
         this.dataSetElements.remove(dataelement);
         dataelement.getDataSets().remove(this);
         return this;
@@ -757,18 +757,18 @@ public class Dataset implements Serializable, Persistable<String> {
         this.indicators = indicators;
     }
 
-    public Dataset indicators(Set<Indicator> indicators) {
+    public DataSet indicators(Set<Indicator> indicators) {
         this.setIndicators(indicators);
         return this;
     }
 
-    public Dataset addIndicators(Indicator indicator) {
+    public DataSet addIndicators(Indicator indicator) {
         this.indicators.add(indicator);
         indicator.getDataSets().add(this);
         return this;
     }
 
-    public Dataset removeIndicators(Indicator indicator) {
+    public DataSet removeIndicators(Indicator indicator) {
         this.indicators.remove(indicator);
         indicator.getDataSets().remove(this);
         return this;
@@ -782,18 +782,18 @@ public class Dataset implements Serializable, Persistable<String> {
         this.organisationUnits = organisationUnits;
     }
 
-    public Dataset organisationUnits(Set<OrganisationUnit> organisationUnits) {
+    public DataSet organisationUnits(Set<OrganisationUnit> organisationUnits) {
         this.setOrganisationUnits(organisationUnits);
         return this;
     }
 
-    public Dataset addOrganisationUnits(OrganisationUnit organisationUnit) {
+    public DataSet addOrganisationUnits(OrganisationUnit organisationUnit) {
         this.organisationUnits.add(organisationUnit);
         organisationUnit.getDataSets().add(this);
         return this;
     }
 
-    public Dataset removeOrganisationUnits(OrganisationUnit organisationUnit) {
+    public DataSet removeOrganisationUnits(OrganisationUnit organisationUnit) {
         this.organisationUnits.remove(organisationUnit);
         organisationUnit.getDataSets().remove(this);
         return this;
@@ -806,10 +806,10 @@ public class Dataset implements Serializable, Persistable<String> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Dataset)) {
+        if (!(o instanceof DataSet)) {
             return false;
         }
-        return id != null && id.equals(((Dataset) o).id);
+        return id != null && id.equals(((DataSet) o).id);
     }
 
     @Override
@@ -821,7 +821,7 @@ public class Dataset implements Serializable, Persistable<String> {
     // prettier-ignore
     @Override
     public String toString() {
-        return "Dataset{" +
+        return "DataSet{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", created='" + getCreated() + "'" +

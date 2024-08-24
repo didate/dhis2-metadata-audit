@@ -9,10 +9,10 @@ class OptionsetTest {
 
     @Test
     void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Optionset.class);
-        Optionset optionset1 = new Optionset();
+        TestUtil.equalsVerifier(OptionSet.class);
+        OptionSet optionset1 = new OptionSet();
         optionset1.setId("id1");
-        Optionset optionset2 = new Optionset();
+        OptionSet optionset2 = new OptionSet();
         optionset2.setId(optionset1.getId());
         assertThat(optionset1).isEqualTo(optionset2);
         optionset2.setId("id2");

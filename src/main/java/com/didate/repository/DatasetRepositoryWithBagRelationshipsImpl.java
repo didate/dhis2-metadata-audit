@@ -1,6 +1,6 @@
 package com.didate.repository;
 
-import com.didate.domain.Dataset;
+import com.didate.domain.DataSet;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -21,17 +21,17 @@ public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetReposit
     private EntityManager entityManager;
 
     @Override
-    public Optional<Dataset> fetchBagRelationships(Optional<Dataset> dataset) {
+    public Optional<DataSet> fetchBagRelationships(Optional<DataSet> dataset) {
         return dataset.map(this::fetchDataSetElements).map(this::fetchIndicators).map(this::fetchOrganisationUnits);
     }
 
     @Override
-    public Page<Dataset> fetchBagRelationships(Page<Dataset> datasets) {
+    public Page<DataSet> fetchBagRelationships(Page<DataSet> datasets) {
         return new PageImpl<>(fetchBagRelationships(datasets.getContent()), datasets.getPageable(), datasets.getTotalElements());
     }
 
     @Override
-    public List<Dataset> fetchBagRelationships(List<Dataset> datasets) {
+    public List<DataSet> fetchBagRelationships(List<DataSet> datasets) {
         return Optional
             .of(datasets)
             .map(this::fetchDataSetElements)
@@ -40,23 +40,23 @@ public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetReposit
             .orElse(Collections.emptyList());
     }
 
-    Dataset fetchDataSetElements(Dataset result) {
+    DataSet fetchDataSetElements(DataSet result) {
         return entityManager
             .createQuery(
-                "select dataset from Dataset dataset left join fetch dataset.dataSetElements where dataset is :dataset",
-                Dataset.class
+                "select dataset from DataSet dataset left join fetch dataset.dataSetElements where dataset is :dataset",
+                DataSet.class
             )
             .setParameter("dataset", result)
             .getSingleResult();
     }
 
-    List<Dataset> fetchDataSetElements(List<Dataset> datasets) {
+    List<DataSet> fetchDataSetElements(List<DataSet> datasets) {
         HashMap<Object, Integer> order = new HashMap<>();
         IntStream.range(0, datasets.size()).forEach(index -> order.put(datasets.get(index).getId(), index));
-        List<Dataset> result = entityManager
+        List<DataSet> result = entityManager
             .createQuery(
-                "select distinct dataset from Dataset dataset left join fetch dataset.dataSetElements where dataset in :datasets",
-                Dataset.class
+                "select distinct dataset from DataSet dataset left join fetch dataset.dataSetElements where dataset in :datasets",
+                DataSet.class
             )
             .setParameter("datasets", datasets)
             .getResultList();
@@ -64,20 +64,20 @@ public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetReposit
         return result;
     }
 
-    Dataset fetchIndicators(Dataset result) {
+    DataSet fetchIndicators(DataSet result) {
         return entityManager
-            .createQuery("select dataset from Dataset dataset left join fetch dataset.indicators where dataset is :dataset", Dataset.class)
+            .createQuery("select dataset from DataSet dataset left join fetch dataset.indicators where dataset is :dataset", DataSet.class)
             .setParameter("dataset", result)
             .getSingleResult();
     }
 
-    List<Dataset> fetchIndicators(List<Dataset> datasets) {
+    List<DataSet> fetchIndicators(List<DataSet> datasets) {
         HashMap<Object, Integer> order = new HashMap<>();
         IntStream.range(0, datasets.size()).forEach(index -> order.put(datasets.get(index).getId(), index));
-        List<Dataset> result = entityManager
+        List<DataSet> result = entityManager
             .createQuery(
-                "select distinct dataset from Dataset dataset left join fetch dataset.indicators where dataset in :datasets",
-                Dataset.class
+                "select distinct dataset from DataSet dataset left join fetch dataset.indicators where dataset in :datasets",
+                DataSet.class
             )
             .setParameter("datasets", datasets)
             .getResultList();
@@ -85,23 +85,23 @@ public class DatasetRepositoryWithBagRelationshipsImpl implements DatasetReposit
         return result;
     }
 
-    Dataset fetchOrganisationUnits(Dataset result) {
+    DataSet fetchOrganisationUnits(DataSet result) {
         return entityManager
             .createQuery(
-                "select dataset from Dataset dataset left join fetch dataset.organisationUnits where dataset is :dataset",
-                Dataset.class
+                "select dataset from DataSet dataset left join fetch dataset.organisationUnits where dataset is :dataset",
+                DataSet.class
             )
             .setParameter("dataset", result)
             .getSingleResult();
     }
 
-    List<Dataset> fetchOrganisationUnits(List<Dataset> datasets) {
+    List<DataSet> fetchOrganisationUnits(List<DataSet> datasets) {
         HashMap<Object, Integer> order = new HashMap<>();
         IntStream.range(0, datasets.size()).forEach(index -> order.put(datasets.get(index).getId(), index));
-        List<Dataset> result = entityManager
+        List<DataSet> result = entityManager
             .createQuery(
-                "select distinct dataset from Dataset dataset left join fetch dataset.organisationUnits where dataset in :datasets",
-                Dataset.class
+                "select distinct dataset from DataSet dataset left join fetch dataset.organisationUnits where dataset in :datasets",
+                DataSet.class
             )
             .setParameter("datasets", datasets)
             .getResultList();

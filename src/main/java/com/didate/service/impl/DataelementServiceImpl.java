@@ -1,6 +1,6 @@
 package com.didate.service.impl;
 
-import com.didate.domain.Dataelement;
+import com.didate.domain.DataElement;
 import com.didate.repository.DataelementRepository;
 import com.didate.service.DataelementService;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link Dataelement}.
+ * Service Implementation for managing {@link DataElement}.
  */
 @Service
 @Transactional
@@ -27,20 +27,20 @@ public class DataelementServiceImpl implements DataelementService {
     }
 
     @Override
-    public Dataelement save(Dataelement dataelement) {
+    public DataElement save(DataElement dataelement) {
         log.debug("Request to save Dataelement : {}", dataelement);
         return dataelementRepository.save(dataelement);
     }
 
     @Override
-    public Dataelement update(Dataelement dataelement) {
+    public DataElement update(DataElement dataelement) {
         log.debug("Request to update Dataelement : {}", dataelement);
         dataelement.setIsPersisted();
         return dataelementRepository.save(dataelement);
     }
 
     @Override
-    public Optional<Dataelement> partialUpdate(Dataelement dataelement) {
+    public Optional<DataElement> partialUpdate(DataElement dataelement) {
         log.debug("Request to partially update Dataelement : {}", dataelement);
 
         return dataelementRepository
@@ -108,14 +108,14 @@ public class DataelementServiceImpl implements DataelementService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Dataelement> findAll(Pageable pageable) {
+    public Page<DataElement> findAll(Pageable pageable) {
         log.debug("Request to get all Dataelements");
         return dataelementRepository.findAll(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Dataelement> findOne(String id) {
+    public Optional<DataElement> findOne(String id) {
         log.debug("Request to get Dataelement : {}", id);
         return dataelementRepository.findById(id);
     }

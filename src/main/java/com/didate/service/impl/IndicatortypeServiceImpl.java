@@ -1,6 +1,6 @@
 package com.didate.service.impl;
 
-import com.didate.domain.Indicatortype;
+import com.didate.domain.IndicatorType;
 import com.didate.repository.IndicatortypeRepository;
 import com.didate.service.IndicatortypeService;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link Indicatortype}.
+ * Service Implementation for managing {@link IndicatorType}.
  */
 @Service
 @Transactional
@@ -27,20 +27,20 @@ public class IndicatortypeServiceImpl implements IndicatortypeService {
     }
 
     @Override
-    public Indicatortype save(Indicatortype indicatortype) {
+    public IndicatorType save(IndicatorType indicatortype) {
         log.debug("Request to save Indicatortype : {}", indicatortype);
         return indicatortypeRepository.save(indicatortype);
     }
 
     @Override
-    public Indicatortype update(Indicatortype indicatortype) {
+    public IndicatorType update(IndicatorType indicatortype) {
         log.debug("Request to update Indicatortype : {}", indicatortype);
         indicatortype.setIsPersisted();
         return indicatortypeRepository.save(indicatortype);
     }
 
     @Override
-    public Optional<Indicatortype> partialUpdate(Indicatortype indicatortype) {
+    public Optional<IndicatorType> partialUpdate(IndicatorType indicatortype) {
         log.debug("Request to partially update Indicatortype : {}", indicatortype);
 
         return indicatortypeRepository
@@ -57,14 +57,14 @@ public class IndicatortypeServiceImpl implements IndicatortypeService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Indicatortype> findAll(Pageable pageable) {
+    public Page<IndicatorType> findAll(Pageable pageable) {
         log.debug("Request to get all Indicatortypes");
         return indicatortypeRepository.findAll(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Indicatortype> findOne(String id) {
+    public Optional<IndicatorType> findOne(String id) {
         log.debug("Request to get Indicatortype : {}", id);
         return indicatortypeRepository.findById(id);
     }

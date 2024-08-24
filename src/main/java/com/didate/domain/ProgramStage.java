@@ -142,7 +142,7 @@ public class ProgramStage implements Serializable, Persistable<String> {
         value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "dataSets", "programStages" },
         allowSetters = true
     )
-    private Set<Dataelement> programStageDataElements = new HashSet<>();
+    private Set<DataElement> programStageDataElements = new HashSet<>();
 
     @ManyToMany(mappedBy = "programStages")
     @JsonIgnoreProperties(
@@ -569,26 +569,26 @@ public class ProgramStage implements Serializable, Persistable<String> {
         return this;
     }
 
-    public Set<Dataelement> getProgramStageDataElements() {
+    public Set<DataElement> getProgramStageDataElements() {
         return this.programStageDataElements;
     }
 
-    public void setProgramStageDataElements(Set<Dataelement> dataelements) {
+    public void setProgramStageDataElements(Set<DataElement> dataelements) {
         this.programStageDataElements = dataelements;
     }
 
-    public ProgramStage programStageDataElements(Set<Dataelement> dataelements) {
+    public ProgramStage programStageDataElements(Set<DataElement> dataelements) {
         this.setProgramStageDataElements(dataelements);
         return this;
     }
 
-    public ProgramStage addProgramStageDataElements(Dataelement dataelement) {
+    public ProgramStage addProgramStageDataElements(DataElement dataelement) {
         this.programStageDataElements.add(dataelement);
         dataelement.getProgramStages().add(this);
         return this;
     }
 
-    public ProgramStage removeProgramStageDataElements(Dataelement dataelement) {
+    public ProgramStage removeProgramStageDataElements(DataElement dataelement) {
         this.programStageDataElements.remove(dataelement);
         dataelement.getProgramStages().remove(this);
         return this;

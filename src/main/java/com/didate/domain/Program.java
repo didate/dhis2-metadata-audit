@@ -177,7 +177,7 @@ public class Program implements Serializable, Persistable<String> {
     private DHISUser lastUpdatedBy;
 
     @ManyToOne
-    private Categorycombo categoryCombo;
+    private CategoryCombo categoryCombo;
 
     @ManyToMany
     @JoinTable(
@@ -858,15 +858,15 @@ public class Program implements Serializable, Persistable<String> {
         return this;
     }
 
-    public Categorycombo getCategoryCombo() {
+    public CategoryCombo getCategoryCombo() {
         return this.categoryCombo;
     }
 
-    public void setCategoryCombo(Categorycombo categorycombo) {
+    public void setCategoryCombo(CategoryCombo categorycombo) {
         this.categoryCombo = categorycombo;
     }
 
-    public Program categoryCombo(Categorycombo categorycombo) {
+    public Program categoryCombo(CategoryCombo categorycombo) {
         this.setCategoryCombo(categorycombo);
         return this;
     }

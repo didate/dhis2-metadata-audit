@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.didate.IntegrationTest;
 import com.didate.domain.DHISUser;
-import com.didate.domain.Dataset;
+import com.didate.domain.DataSet;
 import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.DatasetRepository;
 import com.didate.service.DatasetService;
@@ -165,7 +165,7 @@ class DatasetResourceIT {
     @Autowired
     private MockMvc restDatasetMockMvc;
 
-    private Dataset dataset;
+    private DataSet dataset;
 
     /**
      * Create an entity for this test.
@@ -173,8 +173,8 @@ class DatasetResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Dataset createEntity(EntityManager em) {
-        Dataset dataset = new Dataset()
+    public static DataSet createEntity(EntityManager em) {
+        DataSet dataset = new DataSet()
             .name(DEFAULT_NAME)
             .created(DEFAULT_CREATED)
             .lastUpdated(DEFAULT_LAST_UPDATED)
@@ -231,8 +231,8 @@ class DatasetResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Dataset createUpdatedEntity(EntityManager em) {
-        Dataset dataset = new Dataset()
+    public static DataSet createUpdatedEntity(EntityManager em) {
+        DataSet dataset = new DataSet()
             .name(UPDATED_NAME)
             .created(UPDATED_CREATED)
             .lastUpdated(UPDATED_LAST_UPDATED)
@@ -292,15 +292,15 @@ class DatasetResourceIT {
     @Transactional
     void createDataset() throws Exception {
         int databaseSizeBeforeCreate = datasetRepository.findAll().size();
-        // Create the Dataset
+        // Create the DataSet
         restDatasetMockMvc
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataset)))
             .andExpect(status().isCreated());
 
-        // Validate the Dataset in the database
-        List<Dataset> datasetList = datasetRepository.findAll();
+        // Validate the DataSet in the database
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeCreate + 1);
-        Dataset testDataset = datasetList.get(datasetList.size() - 1);
+        DataSet testDataset = datasetList.get(datasetList.size() - 1);
         assertThat(testDataset.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testDataset.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testDataset.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
@@ -341,7 +341,7 @@ class DatasetResourceIT {
     @Test
     @Transactional
     void createDatasetWithExistingId() throws Exception {
-        // Create the Dataset with an existing ID
+        // Create the DataSet with an existing ID
         dataset.setId("existing_id");
 
         int databaseSizeBeforeCreate = datasetRepository.findAll().size();
@@ -351,8 +351,8 @@ class DatasetResourceIT {
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataset)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Dataset in the database
-        List<Dataset> datasetList = datasetRepository.findAll();
+        // Validate the DataSet in the database
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -363,13 +363,13 @@ class DatasetResourceIT {
         // set the field null
         dataset.setCreated(null);
 
-        // Create the Dataset, which fails.
+        // Create the DataSet, which fails.
 
         restDatasetMockMvc
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataset)))
             .andExpect(status().isBadRequest());
 
-        List<Dataset> datasetList = datasetRepository.findAll();
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -380,13 +380,13 @@ class DatasetResourceIT {
         // set the field null
         dataset.setLastUpdated(null);
 
-        // Create the Dataset, which fails.
+        // Create the DataSet, which fails.
 
         restDatasetMockMvc
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataset)))
             .andExpect(status().isBadRequest());
 
-        List<Dataset> datasetList = datasetRepository.findAll();
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -397,13 +397,13 @@ class DatasetResourceIT {
         // set the field null
         dataset.setTrack(null);
 
-        // Create the Dataset, which fails.
+        // Create the DataSet, which fails.
 
         restDatasetMockMvc
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataset)))
             .andExpect(status().isBadRequest());
 
-        List<Dataset> datasetList = datasetRepository.findAll();
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -543,7 +543,7 @@ class DatasetResourceIT {
         int databaseSizeBeforeUpdate = datasetRepository.findAll().size();
 
         // Update the dataset
-        Dataset updatedDataset = datasetRepository.findById(dataset.getId()).get();
+        DataSet updatedDataset = datasetRepository.findById(dataset.getId()).get();
         // Disconnect from session so that the updates on updatedDataset are not directly saved in db
         em.detach(updatedDataset);
         updatedDataset
@@ -591,10 +591,10 @@ class DatasetResourceIT {
             )
             .andExpect(status().isOk());
 
-        // Validate the Dataset in the database
-        List<Dataset> datasetList = datasetRepository.findAll();
+        // Validate the DataSet in the database
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
-        Dataset testDataset = datasetList.get(datasetList.size() - 1);
+        DataSet testDataset = datasetList.get(datasetList.size() - 1);
         assertThat(testDataset.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testDataset.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testDataset.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
@@ -647,8 +647,8 @@ class DatasetResourceIT {
             )
             .andExpect(status().isBadRequest());
 
-        // Validate the Dataset in the database
-        List<Dataset> datasetList = datasetRepository.findAll();
+        // Validate the DataSet in the database
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -667,8 +667,8 @@ class DatasetResourceIT {
             )
             .andExpect(status().isBadRequest());
 
-        // Validate the Dataset in the database
-        List<Dataset> datasetList = datasetRepository.findAll();
+        // Validate the DataSet in the database
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -683,8 +683,8 @@ class DatasetResourceIT {
             .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(dataset)))
             .andExpect(status().isMethodNotAllowed());
 
-        // Validate the Dataset in the database
-        List<Dataset> datasetList = datasetRepository.findAll();
+        // Validate the DataSet in the database
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -698,7 +698,7 @@ class DatasetResourceIT {
         int databaseSizeBeforeUpdate = datasetRepository.findAll().size();
 
         // Update the dataset using partial update
-        Dataset partialUpdatedDataset = new Dataset();
+        DataSet partialUpdatedDataset = new DataSet();
         partialUpdatedDataset.setId(dataset.getId());
 
         partialUpdatedDataset
@@ -725,10 +725,10 @@ class DatasetResourceIT {
             )
             .andExpect(status().isOk());
 
-        // Validate the Dataset in the database
-        List<Dataset> datasetList = datasetRepository.findAll();
+        // Validate the DataSet in the database
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
-        Dataset testDataset = datasetList.get(datasetList.size() - 1);
+        DataSet testDataset = datasetList.get(datasetList.size() - 1);
         assertThat(testDataset.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testDataset.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testDataset.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
@@ -776,7 +776,7 @@ class DatasetResourceIT {
         int databaseSizeBeforeUpdate = datasetRepository.findAll().size();
 
         // Update the dataset using partial update
-        Dataset partialUpdatedDataset = new Dataset();
+        DataSet partialUpdatedDataset = new DataSet();
         partialUpdatedDataset.setId(dataset.getId());
 
         partialUpdatedDataset
@@ -824,10 +824,10 @@ class DatasetResourceIT {
             )
             .andExpect(status().isOk());
 
-        // Validate the Dataset in the database
-        List<Dataset> datasetList = datasetRepository.findAll();
+        // Validate the DataSet in the database
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
-        Dataset testDataset = datasetList.get(datasetList.size() - 1);
+        DataSet testDataset = datasetList.get(datasetList.size() - 1);
         assertThat(testDataset.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testDataset.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testDataset.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
@@ -880,8 +880,8 @@ class DatasetResourceIT {
             )
             .andExpect(status().isBadRequest());
 
-        // Validate the Dataset in the database
-        List<Dataset> datasetList = datasetRepository.findAll();
+        // Validate the DataSet in the database
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -900,8 +900,8 @@ class DatasetResourceIT {
             )
             .andExpect(status().isBadRequest());
 
-        // Validate the Dataset in the database
-        List<Dataset> datasetList = datasetRepository.findAll();
+        // Validate the DataSet in the database
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -916,8 +916,8 @@ class DatasetResourceIT {
             .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(dataset)))
             .andExpect(status().isMethodNotAllowed());
 
-        // Validate the Dataset in the database
-        List<Dataset> datasetList = datasetRepository.findAll();
+        // Validate the DataSet in the database
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeUpdate);
     }
 
@@ -936,7 +936,7 @@ class DatasetResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        List<Dataset> datasetList = datasetRepository.findAll();
+        List<DataSet> datasetList = datasetRepository.findAll();
         assertThat(datasetList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

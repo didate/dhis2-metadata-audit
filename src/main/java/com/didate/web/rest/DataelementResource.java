@@ -1,6 +1,6 @@
 package com.didate.web.rest;
 
-import com.didate.domain.Dataelement;
+import com.didate.domain.DataElement;
 import com.didate.repository.DataelementRepository;
 import com.didate.service.DataelementService;
 import com.didate.web.rest.errors.BadRequestAlertException;
@@ -26,7 +26,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link com.didate.domain.Dataelement}.
+ * REST controller for managing {@link com.didate.domain.DataElement}.
  */
 @RestController
 @RequestMapping("/api")
@@ -56,12 +56,12 @@ public class DataelementResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/dataelements")
-    public ResponseEntity<Dataelement> createDataelement(@Valid @RequestBody Dataelement dataelement) throws URISyntaxException {
+    public ResponseEntity<DataElement> createDataelement(@Valid @RequestBody DataElement dataelement) throws URISyntaxException {
         log.debug("REST request to save Dataelement : {}", dataelement);
         if (dataelement.getId() != null) {
             throw new BadRequestAlertException("A new dataelement cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Dataelement result = dataelementService.save(dataelement);
+        DataElement result = dataelementService.save(dataelement);
         return ResponseEntity
             .created(new URI("/api/dataelements/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -79,9 +79,9 @@ public class DataelementResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/dataelements/{id}")
-    public ResponseEntity<Dataelement> updateDataelement(
+    public ResponseEntity<DataElement> updateDataelement(
         @PathVariable(value = "id", required = false) final String id,
-        @Valid @RequestBody Dataelement dataelement
+        @Valid @RequestBody DataElement dataelement
     ) throws URISyntaxException {
         log.debug("REST request to update Dataelement : {}, {}", id, dataelement);
         if (dataelement.getId() == null) {
@@ -95,7 +95,7 @@ public class DataelementResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Dataelement result = dataelementService.update(dataelement);
+        DataElement result = dataelementService.update(dataelement);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, dataelement.getId()))
@@ -114,9 +114,9 @@ public class DataelementResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/dataelements/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<Dataelement> partialUpdateDataelement(
+    public ResponseEntity<DataElement> partialUpdateDataelement(
         @PathVariable(value = "id", required = false) final String id,
-        @NotNull @RequestBody Dataelement dataelement
+        @NotNull @RequestBody DataElement dataelement
     ) throws URISyntaxException {
         log.debug("REST request to partial update Dataelement partially : {}, {}", id, dataelement);
         if (dataelement.getId() == null) {
@@ -130,7 +130,7 @@ public class DataelementResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Dataelement> result = dataelementService.partialUpdate(dataelement);
+        Optional<DataElement> result = dataelementService.partialUpdate(dataelement);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -145,9 +145,9 @@ public class DataelementResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of dataelements in body.
      */
     @GetMapping("/dataelements")
-    public ResponseEntity<List<Dataelement>> getAllDataelements(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<DataElement>> getAllDataelements(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Dataelements");
-        Page<Dataelement> page = dataelementService.findAll(pageable);
+        Page<DataElement> page = dataelementService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -159,9 +159,9 @@ public class DataelementResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the dataelement, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/dataelements/{id}")
-    public ResponseEntity<Dataelement> getDataelement(@PathVariable String id) {
+    public ResponseEntity<DataElement> getDataelement(@PathVariable String id) {
         log.debug("REST request to get Dataelement : {}", id);
-        Optional<Dataelement> dataelement = dataelementService.findOne(id);
+        Optional<DataElement> dataelement = dataelementService.findOne(id);
         return ResponseUtil.wrapOrNotFound(dataelement);
     }
 

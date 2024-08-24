@@ -12,7 +12,7 @@ import { IOptionset } from '../optionset.model';
 
 import { OptionsetUpdateComponent } from './optionset-update.component';
 
-describe('Optionset Management Update Component', () => {
+describe('OptionSet Management Update Component', () => {
   let comp: OptionsetUpdateComponent;
   let fixture: ComponentFixture<OptionsetUpdateComponent>;
   let activatedRoute: ActivatedRoute;

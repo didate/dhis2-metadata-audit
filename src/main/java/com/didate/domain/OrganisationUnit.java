@@ -89,7 +89,7 @@ public class OrganisationUnit implements Serializable, Persistable<String> {
         value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "dataSetElements", "indicators", "organisationUnits" },
         allowSetters = true
     )
-    private Set<Dataset> dataSets = new HashSet<>();
+    private Set<DataSet> dataSets = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -271,11 +271,11 @@ public class OrganisationUnit implements Serializable, Persistable<String> {
         return this;
     }
 
-    public Set<Dataset> getDataSets() {
+    public Set<DataSet> getDataSets() {
         return this.dataSets;
     }
 
-    public void setDataSets(Set<Dataset> datasets) {
+    public void setDataSets(Set<DataSet> datasets) {
         if (this.dataSets != null) {
             this.dataSets.forEach(i -> i.removeOrganisationUnits(this));
         }
@@ -285,18 +285,18 @@ public class OrganisationUnit implements Serializable, Persistable<String> {
         this.dataSets = datasets;
     }
 
-    public OrganisationUnit dataSets(Set<Dataset> datasets) {
+    public OrganisationUnit dataSets(Set<DataSet> datasets) {
         this.setDataSets(datasets);
         return this;
     }
 
-    public OrganisationUnit addDataSets(Dataset dataset) {
+    public OrganisationUnit addDataSets(DataSet dataset) {
         this.dataSets.add(dataset);
         dataset.getOrganisationUnits().add(this);
         return this;
     }
 
-    public OrganisationUnit removeDataSets(Dataset dataset) {
+    public OrganisationUnit removeDataSets(DataSet dataset) {
         this.dataSets.remove(dataset);
         dataset.getOrganisationUnits().remove(this);
         return this;

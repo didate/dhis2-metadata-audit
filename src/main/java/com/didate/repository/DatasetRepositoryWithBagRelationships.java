@@ -1,14 +1,14 @@
 package com.didate.repository;
 
-import com.didate.domain.Dataset;
+import com.didate.domain.DataSet;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 
 public interface DatasetRepositoryWithBagRelationships {
-    Optional<Dataset> fetchBagRelationships(Optional<Dataset> dataset);
+    Optional<DataSet> fetchBagRelationships(Optional<DataSet> dataset);
 
-    List<Dataset> fetchBagRelationships(List<Dataset> datasets);
+    List<DataSet> fetchBagRelationships(List<DataSet> datasets);
 
-    Page<Dataset> fetchBagRelationships(Page<Dataset> datasets);
+    Page<DataSet> fetchBagRelationships(Page<DataSet> datasets);
 }

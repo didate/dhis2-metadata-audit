@@ -1,6 +1,6 @@
 package com.didate.web.rest;
 
-import com.didate.domain.Indicatortype;
+import com.didate.domain.IndicatorType;
 import com.didate.repository.IndicatortypeRepository;
 import com.didate.service.IndicatortypeService;
 import com.didate.web.rest.errors.BadRequestAlertException;
@@ -26,7 +26,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link com.didate.domain.Indicatortype}.
+ * REST controller for managing {@link com.didate.domain.IndicatorType}.
  */
 @RestController
 @RequestMapping("/api")
@@ -56,12 +56,12 @@ public class IndicatortypeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/indicatortypes")
-    public ResponseEntity<Indicatortype> createIndicatortype(@Valid @RequestBody Indicatortype indicatortype) throws URISyntaxException {
+    public ResponseEntity<IndicatorType> createIndicatortype(@Valid @RequestBody IndicatorType indicatortype) throws URISyntaxException {
         log.debug("REST request to save Indicatortype : {}", indicatortype);
         if (indicatortype.getId() != null) {
             throw new BadRequestAlertException("A new indicatortype cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Indicatortype result = indicatortypeService.save(indicatortype);
+        IndicatorType result = indicatortypeService.save(indicatortype);
         return ResponseEntity
             .created(new URI("/api/indicatortypes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -79,9 +79,9 @@ public class IndicatortypeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/indicatortypes/{id}")
-    public ResponseEntity<Indicatortype> updateIndicatortype(
+    public ResponseEntity<IndicatorType> updateIndicatortype(
         @PathVariable(value = "id", required = false) final String id,
-        @Valid @RequestBody Indicatortype indicatortype
+        @Valid @RequestBody IndicatorType indicatortype
     ) throws URISyntaxException {
         log.debug("REST request to update Indicatortype : {}, {}", id, indicatortype);
         if (indicatortype.getId() == null) {
@@ -95,7 +95,7 @@ public class IndicatortypeResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Indicatortype result = indicatortypeService.update(indicatortype);
+        IndicatorType result = indicatortypeService.update(indicatortype);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, indicatortype.getId()))
@@ -114,9 +114,9 @@ public class IndicatortypeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/indicatortypes/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<Indicatortype> partialUpdateIndicatortype(
+    public ResponseEntity<IndicatorType> partialUpdateIndicatortype(
         @PathVariable(value = "id", required = false) final String id,
-        @NotNull @RequestBody Indicatortype indicatortype
+        @NotNull @RequestBody IndicatorType indicatortype
     ) throws URISyntaxException {
         log.debug("REST request to partial update Indicatortype partially : {}, {}", id, indicatortype);
         if (indicatortype.getId() == null) {
@@ -130,7 +130,7 @@ public class IndicatortypeResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Indicatortype> result = indicatortypeService.partialUpdate(indicatortype);
+        Optional<IndicatorType> result = indicatortypeService.partialUpdate(indicatortype);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -145,9 +145,9 @@ public class IndicatortypeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of indicatortypes in body.
      */
     @GetMapping("/indicatortypes")
-    public ResponseEntity<List<Indicatortype>> getAllIndicatortypes(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<IndicatorType>> getAllIndicatortypes(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Indicatortypes");
-        Page<Indicatortype> page = indicatortypeService.findAll(pageable);
+        Page<IndicatorType> page = indicatortypeService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -159,9 +159,9 @@ public class IndicatortypeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the indicatortype, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/indicatortypes/{id}")
-    public ResponseEntity<Indicatortype> getIndicatortype(@PathVariable String id) {
+    public ResponseEntity<IndicatorType> getIndicatortype(@PathVariable String id) {
         log.debug("REST request to get Indicatortype : {}", id);
-        Optional<Indicatortype> indicatortype = indicatortypeService.findOne(id);
+        Optional<IndicatorType> indicatortype = indicatortypeService.findOne(id);
         return ResponseUtil.wrapOrNotFound(indicatortype);
     }
 
