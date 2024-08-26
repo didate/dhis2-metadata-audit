@@ -211,13 +211,9 @@ class ProgramResourceIT {
             .programType(DEFAULT_PROGRAM_TYPE)
             .displayIncidentDate(DEFAULT_DISPLAY_INCIDENT_DATE)
             .ignoreOverdueEvents(DEFAULT_IGNORE_OVERDUE_EVENTS)
-            .userRoles(DEFAULT_USER_ROLES)
             .onlyEnrollOnce(DEFAULT_ONLY_ENROLL_ONCE)
-            .notificationTemplates(DEFAULT_NOTIFICATION_TEMPLATES)
             .selectEnrollmentDatesInFuture(DEFAULT_SELECT_ENROLLMENT_DATES_IN_FUTURE)
             .selectIncidentDatesInFuture(DEFAULT_SELECT_INCIDENT_DATES_IN_FUTURE)
-            .trackedEntityType(DEFAULT_TRACKED_ENTITY_TYPE)
-            .style(DEFAULT_STYLE)
             .skipOffline(DEFAULT_SKIP_OFFLINE)
             .displayFrontPageList(DEFAULT_DISPLAY_FRONT_PAGE_LIST)
             .useFirstStageDuringRegistration(DEFAULT_USE_FIRST_STAGE_DURING_REGISTRATION)
@@ -278,13 +274,9 @@ class ProgramResourceIT {
             .programType(UPDATED_PROGRAM_TYPE)
             .displayIncidentDate(UPDATED_DISPLAY_INCIDENT_DATE)
             .ignoreOverdueEvents(UPDATED_IGNORE_OVERDUE_EVENTS)
-            .userRoles(UPDATED_USER_ROLES)
             .onlyEnrollOnce(UPDATED_ONLY_ENROLL_ONCE)
-            .notificationTemplates(UPDATED_NOTIFICATION_TEMPLATES)
             .selectEnrollmentDatesInFuture(UPDATED_SELECT_ENROLLMENT_DATES_IN_FUTURE)
             .selectIncidentDatesInFuture(UPDATED_SELECT_INCIDENT_DATES_IN_FUTURE)
-            .trackedEntityType(UPDATED_TRACKED_ENTITY_TYPE)
-            .style(UPDATED_STYLE)
             .skipOffline(UPDATED_SKIP_OFFLINE)
             .displayFrontPageList(UPDATED_DISPLAY_FRONT_PAGE_LIST)
             .useFirstStageDuringRegistration(UPDATED_USE_FIRST_STAGE_DURING_REGISTRATION)
@@ -355,13 +347,12 @@ class ProgramResourceIT {
         assertThat(testProgram.getProgramType()).isEqualTo(DEFAULT_PROGRAM_TYPE);
         assertThat(testProgram.getDisplayIncidentDate()).isEqualTo(DEFAULT_DISPLAY_INCIDENT_DATE);
         assertThat(testProgram.getIgnoreOverdueEvents()).isEqualTo(DEFAULT_IGNORE_OVERDUE_EVENTS);
-        assertThat(testProgram.getUserRoles()).isEqualTo(DEFAULT_USER_ROLES);
+
         assertThat(testProgram.getOnlyEnrollOnce()).isEqualTo(DEFAULT_ONLY_ENROLL_ONCE);
-        assertThat(testProgram.getNotificationTemplates()).isEqualTo(DEFAULT_NOTIFICATION_TEMPLATES);
+
         assertThat(testProgram.getSelectEnrollmentDatesInFuture()).isEqualTo(DEFAULT_SELECT_ENROLLMENT_DATES_IN_FUTURE);
         assertThat(testProgram.getSelectIncidentDatesInFuture()).isEqualTo(DEFAULT_SELECT_INCIDENT_DATES_IN_FUTURE);
-        assertThat(testProgram.getTrackedEntityType()).isEqualTo(DEFAULT_TRACKED_ENTITY_TYPE);
-        assertThat(testProgram.getStyle()).isEqualTo(DEFAULT_STYLE);
+
         assertThat(testProgram.getSkipOffline()).isEqualTo(DEFAULT_SKIP_OFFLINE);
         assertThat(testProgram.getDisplayFrontPageList()).isEqualTo(DEFAULT_DISPLAY_FRONT_PAGE_LIST);
         assertThat(testProgram.getUseFirstStageDuringRegistration()).isEqualTo(DEFAULT_USE_FIRST_STAGE_DURING_REGISTRATION);
@@ -602,13 +593,9 @@ class ProgramResourceIT {
             .programType(UPDATED_PROGRAM_TYPE)
             .displayIncidentDate(UPDATED_DISPLAY_INCIDENT_DATE)
             .ignoreOverdueEvents(UPDATED_IGNORE_OVERDUE_EVENTS)
-            .userRoles(UPDATED_USER_ROLES)
             .onlyEnrollOnce(UPDATED_ONLY_ENROLL_ONCE)
-            .notificationTemplates(UPDATED_NOTIFICATION_TEMPLATES)
             .selectEnrollmentDatesInFuture(UPDATED_SELECT_ENROLLMENT_DATES_IN_FUTURE)
             .selectIncidentDatesInFuture(UPDATED_SELECT_INCIDENT_DATES_IN_FUTURE)
-            .trackedEntityType(UPDATED_TRACKED_ENTITY_TYPE)
-            .style(UPDATED_STYLE)
             .skipOffline(UPDATED_SKIP_OFFLINE)
             .displayFrontPageList(UPDATED_DISPLAY_FRONT_PAGE_LIST)
             .useFirstStageDuringRegistration(UPDATED_USE_FIRST_STAGE_DURING_REGISTRATION)
@@ -659,13 +646,12 @@ class ProgramResourceIT {
         assertThat(testProgram.getProgramType()).isEqualTo(UPDATED_PROGRAM_TYPE);
         assertThat(testProgram.getDisplayIncidentDate()).isEqualTo(UPDATED_DISPLAY_INCIDENT_DATE);
         assertThat(testProgram.getIgnoreOverdueEvents()).isEqualTo(UPDATED_IGNORE_OVERDUE_EVENTS);
-        assertThat(testProgram.getUserRoles()).isEqualTo(UPDATED_USER_ROLES);
+
         assertThat(testProgram.getOnlyEnrollOnce()).isEqualTo(UPDATED_ONLY_ENROLL_ONCE);
-        assertThat(testProgram.getNotificationTemplates()).isEqualTo(UPDATED_NOTIFICATION_TEMPLATES);
+
         assertThat(testProgram.getSelectEnrollmentDatesInFuture()).isEqualTo(UPDATED_SELECT_ENROLLMENT_DATES_IN_FUTURE);
         assertThat(testProgram.getSelectIncidentDatesInFuture()).isEqualTo(UPDATED_SELECT_INCIDENT_DATES_IN_FUTURE);
-        assertThat(testProgram.getTrackedEntityType()).isEqualTo(UPDATED_TRACKED_ENTITY_TYPE);
-        assertThat(testProgram.getStyle()).isEqualTo(UPDATED_STYLE);
+
         assertThat(testProgram.getSkipOffline()).isEqualTo(UPDATED_SKIP_OFFLINE);
         assertThat(testProgram.getDisplayFrontPageList()).isEqualTo(UPDATED_DISPLAY_FRONT_PAGE_LIST);
         assertThat(testProgram.getUseFirstStageDuringRegistration()).isEqualTo(UPDATED_USE_FIRST_STAGE_DURING_REGISTRATION);
@@ -769,7 +755,6 @@ class ProgramResourceIT {
             .displayIncidentDate(UPDATED_DISPLAY_INCIDENT_DATE)
             .ignoreOverdueEvents(UPDATED_IGNORE_OVERDUE_EVENTS)
             .selectIncidentDatesInFuture(UPDATED_SELECT_INCIDENT_DATES_IN_FUTURE)
-            .trackedEntityType(UPDATED_TRACKED_ENTITY_TYPE)
             .completeEventsExpiryDays(UPDATED_COMPLETE_EVENTS_EXPIRY_DAYS)
             .openDaysAfterCoEndDate(UPDATED_OPEN_DAYS_AFTER_CO_END_DATE)
             .displayIncidentDateLabel(UPDATED_DISPLAY_INCIDENT_DATE_LABEL)
@@ -803,13 +788,12 @@ class ProgramResourceIT {
         assertThat(testProgram.getProgramType()).isEqualTo(DEFAULT_PROGRAM_TYPE);
         assertThat(testProgram.getDisplayIncidentDate()).isEqualTo(UPDATED_DISPLAY_INCIDENT_DATE);
         assertThat(testProgram.getIgnoreOverdueEvents()).isEqualTo(UPDATED_IGNORE_OVERDUE_EVENTS);
-        assertThat(testProgram.getUserRoles()).isEqualTo(DEFAULT_USER_ROLES);
+
         assertThat(testProgram.getOnlyEnrollOnce()).isEqualTo(DEFAULT_ONLY_ENROLL_ONCE);
-        assertThat(testProgram.getNotificationTemplates()).isEqualTo(DEFAULT_NOTIFICATION_TEMPLATES);
+
         assertThat(testProgram.getSelectEnrollmentDatesInFuture()).isEqualTo(DEFAULT_SELECT_ENROLLMENT_DATES_IN_FUTURE);
         assertThat(testProgram.getSelectIncidentDatesInFuture()).isEqualTo(UPDATED_SELECT_INCIDENT_DATES_IN_FUTURE);
-        assertThat(testProgram.getTrackedEntityType()).isEqualTo(UPDATED_TRACKED_ENTITY_TYPE);
-        assertThat(testProgram.getStyle()).isEqualTo(DEFAULT_STYLE);
+
         assertThat(testProgram.getSkipOffline()).isEqualTo(DEFAULT_SKIP_OFFLINE);
         assertThat(testProgram.getDisplayFrontPageList()).isEqualTo(DEFAULT_DISPLAY_FRONT_PAGE_LIST);
         assertThat(testProgram.getUseFirstStageDuringRegistration()).isEqualTo(DEFAULT_USE_FIRST_STAGE_DURING_REGISTRATION);
@@ -863,13 +847,9 @@ class ProgramResourceIT {
             .programType(UPDATED_PROGRAM_TYPE)
             .displayIncidentDate(UPDATED_DISPLAY_INCIDENT_DATE)
             .ignoreOverdueEvents(UPDATED_IGNORE_OVERDUE_EVENTS)
-            .userRoles(UPDATED_USER_ROLES)
             .onlyEnrollOnce(UPDATED_ONLY_ENROLL_ONCE)
-            .notificationTemplates(UPDATED_NOTIFICATION_TEMPLATES)
             .selectEnrollmentDatesInFuture(UPDATED_SELECT_ENROLLMENT_DATES_IN_FUTURE)
             .selectIncidentDatesInFuture(UPDATED_SELECT_INCIDENT_DATES_IN_FUTURE)
-            .trackedEntityType(UPDATED_TRACKED_ENTITY_TYPE)
-            .style(UPDATED_STYLE)
             .skipOffline(UPDATED_SKIP_OFFLINE)
             .displayFrontPageList(UPDATED_DISPLAY_FRONT_PAGE_LIST)
             .useFirstStageDuringRegistration(UPDATED_USE_FIRST_STAGE_DURING_REGISTRATION)
@@ -920,13 +900,10 @@ class ProgramResourceIT {
         assertThat(testProgram.getProgramType()).isEqualTo(UPDATED_PROGRAM_TYPE);
         assertThat(testProgram.getDisplayIncidentDate()).isEqualTo(UPDATED_DISPLAY_INCIDENT_DATE);
         assertThat(testProgram.getIgnoreOverdueEvents()).isEqualTo(UPDATED_IGNORE_OVERDUE_EVENTS);
-        assertThat(testProgram.getUserRoles()).isEqualTo(UPDATED_USER_ROLES);
+
         assertThat(testProgram.getOnlyEnrollOnce()).isEqualTo(UPDATED_ONLY_ENROLL_ONCE);
-        assertThat(testProgram.getNotificationTemplates()).isEqualTo(UPDATED_NOTIFICATION_TEMPLATES);
         assertThat(testProgram.getSelectEnrollmentDatesInFuture()).isEqualTo(UPDATED_SELECT_ENROLLMENT_DATES_IN_FUTURE);
         assertThat(testProgram.getSelectIncidentDatesInFuture()).isEqualTo(UPDATED_SELECT_INCIDENT_DATES_IN_FUTURE);
-        assertThat(testProgram.getTrackedEntityType()).isEqualTo(UPDATED_TRACKED_ENTITY_TYPE);
-        assertThat(testProgram.getStyle()).isEqualTo(UPDATED_STYLE);
         assertThat(testProgram.getSkipOffline()).isEqualTo(UPDATED_SKIP_OFFLINE);
         assertThat(testProgram.getDisplayFrontPageList()).isEqualTo(UPDATED_DISPLAY_FRONT_PAGE_LIST);
         assertThat(testProgram.getUseFirstStageDuringRegistration()).isEqualTo(UPDATED_USE_FIRST_STAGE_DURING_REGISTRATION);

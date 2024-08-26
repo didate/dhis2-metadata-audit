@@ -1,3 +1,5 @@
+src/main/resources/config/liquibase/fake-data/*
+
 ######################
 # Node
 ######################

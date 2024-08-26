@@ -130,4 +130,9 @@ public class DataelementServiceImpl implements DataelementService {
     public Boolean exist(String id) {
         return dataelementRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return dataelementRepository.count();
+    }
 }

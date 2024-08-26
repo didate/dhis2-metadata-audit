@@ -1,0 +1,80 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    
+    <changeSet author="didate (generated)" id="202408250001-2">
+    
+    
+        <addForeignKeyConstraint baseColumnNames="project_id"
+                                 baseTableName="option_group"
+                                 constraintName="fk_option_group__project_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="project"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="option_group"
+                                 constraintName="fk_option_group__created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dhis_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_updated_by_id"
+                                 baseTableName="option_group"
+                                 constraintName="fk_option_group__last_updated_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dhis_user"/>
+
+
+        <addForeignKeyConstraint baseColumnNames="project_id"
+                                 baseTableName="optionset"
+                                 constraintName="fk_optionset__project_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="project"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="optionset"
+                                 constraintName="fk_optionset__created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dhis_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_updated_by_id"
+                                 baseTableName="optionset"
+                                 constraintName="fk_optionset__last_updated_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dhis_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="project_id"
+                                 baseTableName="categorycombo"
+                                 constraintName="fk_categorycombo__project_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="project"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="categorycombo"
+                                 constraintName="fk_categorycombo__created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dhis_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_updated_by_id"
+                                 baseTableName="categorycombo"
+                                 constraintName="fk_categorycombo__last_updated_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dhis_user"/>
+        
+        <addForeignKeyConstraint baseColumnNames="project_id"
+                                 baseTableName="indicatortype"
+                                 constraintName="fk_indicatortype__project_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="project"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="indicatortype"
+                                 constraintName="fk_indicatortype__created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dhis_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_updated_by_id"
+                                 baseTableName="indicatortype"
+                                 constraintName="fk_indicatortype__last_updated_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dhis_user"/>
+    </changeSet>
+</databaseChangeLog>

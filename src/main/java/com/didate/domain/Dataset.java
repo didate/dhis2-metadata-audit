@@ -1,7 +1,9 @@
 package com.didate.domain;
 
+import com.didate.deserialize.DataElementSetDeserializer;
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -165,6 +167,7 @@ public class DataSet implements Serializable, Persistable<String> {
         value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "dataSets", "programStages" },
         allowSetters = true
     )
+    @JsonDeserialize(using = DataElementSetDeserializer.class)
     private Set<DataElement> dataSetElements = new HashSet<>();
 
     @ManyToMany

@@ -46,42 +46,18 @@ public class DHISUserServiceImpl implements DHISUserService {
         return dHISUserRepository
             .findById(dHISUser.getId())
             .map(existingDHISUser -> {
-                if (dHISUser.getCode() != null) {
-                    existingDHISUser.setCode(dHISUser.getCode());
-                }
-                if (dHISUser.getName() != null) {
-                    existingDHISUser.setName(dHISUser.getName());
-                }
-                if (dHISUser.getDisplayName() != null) {
-                    existingDHISUser.setDisplayName(dHISUser.getDisplayName());
-                }
-                if (dHISUser.getUsername() != null) {
-                    existingDHISUser.setUsername(dHISUser.getUsername());
-                }
-                if (dHISUser.getLastLogin() != null) {
-                    existingDHISUser.setLastLogin(dHISUser.getLastLogin());
-                }
-                if (dHISUser.getEmail() != null) {
-                    existingDHISUser.setEmail(dHISUser.getEmail());
-                }
-                if (dHISUser.getPhoneNumber() != null) {
-                    existingDHISUser.setPhoneNumber(dHISUser.getPhoneNumber());
-                }
-                if (dHISUser.getDisabled() != null) {
-                    existingDHISUser.setDisabled(dHISUser.getDisabled());
-                }
-                if (dHISUser.getPasswordLastUpdated() != null) {
-                    existingDHISUser.setPasswordLastUpdated(dHISUser.getPasswordLastUpdated());
-                }
-                if (dHISUser.getCreated() != null) {
-                    existingDHISUser.setCreated(dHISUser.getCreated());
-                }
-                if (dHISUser.getLastUpdated() != null) {
-                    existingDHISUser.setLastUpdated(dHISUser.getLastUpdated());
-                }
-                if (dHISUser.getTrack() != null) {
-                    existingDHISUser.setTrack(dHISUser.getTrack());
-                }
+                existingDHISUser.setCode(dHISUser.getCode());
+                existingDHISUser.setName(dHISUser.getName());
+                existingDHISUser.setDisplayName(dHISUser.getDisplayName());
+                existingDHISUser.setUsername(dHISUser.getUsername());
+                existingDHISUser.setLastLogin(dHISUser.getLastLogin());
+                existingDHISUser.setEmail(dHISUser.getEmail());
+                existingDHISUser.setPhoneNumber(dHISUser.getPhoneNumber());
+                existingDHISUser.setDisabled(dHISUser.getDisabled());
+                existingDHISUser.setPasswordLastUpdated(dHISUser.getPasswordLastUpdated());
+                existingDHISUser.setCreated(dHISUser.getCreated());
+                existingDHISUser.setLastUpdated(dHISUser.getLastUpdated());
+                existingDHISUser.setTrack(dHISUser.getTrack());
 
                 return existingDHISUser;
             })

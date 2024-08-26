@@ -79,4 +79,9 @@ public class IndicatortypeServiceImpl implements IndicatortypeService {
     public Boolean exist(String id) {
         return indicatortypeRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return indicatortypeRepository.count();
+    }
 }

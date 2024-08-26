@@ -79,27 +79,18 @@ public class ProgramServiceImpl implements ProgramService {
                 if (program.getIgnoreOverdueEvents() != null) {
                     existingProgram.setIgnoreOverdueEvents(program.getIgnoreOverdueEvents());
                 }
-                if (program.getUserRoles() != null) {
-                    existingProgram.setUserRoles(program.getUserRoles());
-                }
+
                 if (program.getOnlyEnrollOnce() != null) {
                     existingProgram.setOnlyEnrollOnce(program.getOnlyEnrollOnce());
                 }
-                if (program.getNotificationTemplates() != null) {
-                    existingProgram.setNotificationTemplates(program.getNotificationTemplates());
-                }
+
                 if (program.getSelectEnrollmentDatesInFuture() != null) {
                     existingProgram.setSelectEnrollmentDatesInFuture(program.getSelectEnrollmentDatesInFuture());
                 }
                 if (program.getSelectIncidentDatesInFuture() != null) {
                     existingProgram.setSelectIncidentDatesInFuture(program.getSelectIncidentDatesInFuture());
                 }
-                if (program.getTrackedEntityType() != null) {
-                    existingProgram.setTrackedEntityType(program.getTrackedEntityType());
-                }
-                if (program.getStyle() != null) {
-                    existingProgram.setStyle(program.getStyle());
-                }
+
                 if (program.getSkipOffline() != null) {
                     existingProgram.setSkipOffline(program.getSkipOffline());
                 }
@@ -211,5 +202,10 @@ public class ProgramServiceImpl implements ProgramService {
     @Override
     public Boolean exist(String id) {
         return programRepository.existsById(id);
+    }
+
+    @Override
+    public Long count() {
+        return programRepository.count();
     }
 }

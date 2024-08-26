@@ -130,4 +130,9 @@ public class IndicatorServiceImpl implements IndicatorService {
     public Boolean exist(String id) {
         return indicatorRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return indicatorRepository.count();
+    }
 }

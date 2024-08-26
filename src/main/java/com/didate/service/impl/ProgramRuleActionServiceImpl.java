@@ -103,4 +103,9 @@ public class ProgramRuleActionServiceImpl implements ProgramRuleActionService {
     public Boolean exist(String id) {
         return programRuleActionRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return programRuleActionRepository.count();
+    }
 }

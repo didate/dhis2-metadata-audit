@@ -18,9 +18,15 @@ public class DhisApiService<T> {
         this.objectMapper = objectMapper;
     }
 
-    public List<T> getData(Project project, String endpoint, TypeReference<Dhis2ApiResponse<T>> typeReference) throws java.io.IOException {
+    public List<T> getData(Project project, String endpoint, String date, TypeReference<Dhis2ApiResponse<T>> typeReference)
+        throws java.io.IOException {
         OkHttpClient client = OkHttpClientConfig.createClient(project.getToken());
+
         String url = project.getDhis2URL() + "/api/" + endpoint + "?fields=*";
+        if (!"".equals(date)) {
+            url = url + "&filter=lastUpdated:gt:" + date;
+        }
+        System.out.println("-----------------" + url + "-------------------");
 
         List<T> data = new ArrayList<>();
         Dhis2ApiResponse<T> response = DhisServiceUtil.fetchPage(client, url, typeReference, objectMapper);

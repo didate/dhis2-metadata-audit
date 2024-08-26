@@ -60,14 +60,14 @@ public class Program implements Serializable, Persistable<String> {
     @Column(name = "ignore_overdue_events")
     private Boolean ignoreOverdueEvents;
 
-    @Column(name = "user_roles")
-    private String userRoles;
+    //@Column(name = "user_roles")
+    //private String userRoles;
 
     @Column(name = "only_enroll_once")
     private Boolean onlyEnrollOnce;
 
-    @Column(name = "notification_templates")
-    private String notificationTemplates;
+    //@Column(name = "notification_templates")
+    //private String notificationTemplates;
 
     @Column(name = "select_enrollment_dates_in_future")
     private Boolean selectEnrollmentDatesInFuture;
@@ -75,11 +75,11 @@ public class Program implements Serializable, Persistable<String> {
     @Column(name = "select_incident_dates_in_future")
     private Boolean selectIncidentDatesInFuture;
 
-    @Column(name = "tracked_entity_type")
-    private String trackedEntityType;
+    //  @Column(name = "tracked_entity_type")
+    // private String trackedEntityType;
 
-    @Column(name = "style")
-    private String style;
+    // @Column(name = "style")
+    // private String style;
 
     @Column(name = "skip_offline")
     private Boolean skipOffline;
@@ -373,7 +373,7 @@ public class Program implements Serializable, Persistable<String> {
         this.ignoreOverdueEvents = ignoreOverdueEvents;
     }
 
-    public String getUserRoles() {
+    /*  public String getUserRoles() {
         return this.userRoles;
     }
 
@@ -384,7 +384,7 @@ public class Program implements Serializable, Persistable<String> {
 
     public void setUserRoles(String userRoles) {
         this.userRoles = userRoles;
-    }
+    } */
 
     public Boolean getOnlyEnrollOnce() {
         return this.onlyEnrollOnce;
@@ -399,7 +399,7 @@ public class Program implements Serializable, Persistable<String> {
         this.onlyEnrollOnce = onlyEnrollOnce;
     }
 
-    public String getNotificationTemplates() {
+    /*  public String getNotificationTemplates() {
         return this.notificationTemplates;
     }
 
@@ -411,7 +411,7 @@ public class Program implements Serializable, Persistable<String> {
     public void setNotificationTemplates(String notificationTemplates) {
         this.notificationTemplates = notificationTemplates;
     }
-
+ */
     public Boolean getSelectEnrollmentDatesInFuture() {
         return this.selectEnrollmentDatesInFuture;
     }
@@ -436,32 +436,6 @@ public class Program implements Serializable, Persistable<String> {
 
     public void setSelectIncidentDatesInFuture(Boolean selectIncidentDatesInFuture) {
         this.selectIncidentDatesInFuture = selectIncidentDatesInFuture;
-    }
-
-    public String getTrackedEntityType() {
-        return this.trackedEntityType;
-    }
-
-    public Program trackedEntityType(String trackedEntityType) {
-        this.setTrackedEntityType(trackedEntityType);
-        return this;
-    }
-
-    public void setTrackedEntityType(String trackedEntityType) {
-        this.trackedEntityType = trackedEntityType;
-    }
-
-    public String getStyle() {
-        return this.style;
-    }
-
-    public Program style(String style) {
-        this.setStyle(style);
-        return this;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
     }
 
     public Boolean getSkipOffline() {
@@ -1006,13 +980,13 @@ public class Program implements Serializable, Persistable<String> {
             ", programType='" + getProgramType() + "'" +
             ", displayIncidentDate='" + getDisplayIncidentDate() + "'" +
             ", ignoreOverdueEvents='" + getIgnoreOverdueEvents() + "'" +
-            ", userRoles='" + getUserRoles() + "'" +
+           // ", userRoles='" + getUserRoles() + "'" +
             ", onlyEnrollOnce='" + getOnlyEnrollOnce() + "'" +
-            ", notificationTemplates='" + getNotificationTemplates() + "'" +
+            //", notificationTemplates='" + getNotificationTemplates() + "'" +
             ", selectEnrollmentDatesInFuture='" + getSelectEnrollmentDatesInFuture() + "'" +
             ", selectIncidentDatesInFuture='" + getSelectIncidentDatesInFuture() + "'" +
-            ", trackedEntityType='" + getTrackedEntityType() + "'" +
-            ", style='" + getStyle() + "'" +
+            //", trackedEntityType='" + getTrackedEntityType() + "'" +
+           // ", style='" + getStyle() + "'" +
             ", skipOffline='" + getSkipOffline() + "'" +
             ", displayFrontPageList='" + getDisplayFrontPageList() + "'" +
             ", useFirstStageDuringRegistration='" + getUseFirstStageDuringRegistration() + "'" +

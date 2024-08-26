@@ -1,6 +1,9 @@
 package com.didate.domain;
 
+import com.didate.deserialize.DataElementSetDeserializer;
+import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -8,6 +11,7 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.data.domain.Persistable;
 
 /**
@@ -102,7 +106,7 @@ public class ProgramStage implements Serializable, Persistable<String> {
     private Integer programStageDataElementsCount;
 
     @Column(name = "program_stage_data_elements_content")
-    private Integer programStageDataElementsContent;
+    private String programStageDataElementsContent;
 
     @Transient
     private boolean isPersisted;
@@ -142,6 +146,7 @@ public class ProgramStage implements Serializable, Persistable<String> {
         value = { "project", "createdBy", "lastUpdatedBy", "categoryCombo", "optionSet", "dataSets", "programStages" },
         allowSetters = true
     )
+    @JsonDeserialize(using = DataElementSetDeserializer.class)
     private Set<DataElement> programStageDataElements = new HashSet<>();
 
     @ManyToMany(mappedBy = "programStages")
@@ -159,6 +164,15 @@ public class ProgramStage implements Serializable, Persistable<String> {
         allowSetters = true
     )
     private Set<Program> programs = new HashSet<>();
+
+    @ManyToOne
+    private Project project;
+
+    @NotAudited
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "track", nullable = false)
+    private TypeTrack track;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -303,6 +317,32 @@ public class ProgramStage implements Serializable, Persistable<String> {
 
     public void setBlockEntryForm(Boolean blockEntryForm) {
         this.blockEntryForm = blockEntryForm;
+    }
+
+    public TypeTrack getTrack() {
+        return this.track;
+    }
+
+    public ProgramStage track(TypeTrack track) {
+        this.setTrack(track);
+        return this;
+    }
+
+    public void setTrack(TypeTrack track) {
+        this.track = track;
+    }
+
+    public Project getProject() {
+        return this.project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public ProgramStage project(Project project) {
+        this.setProject(project);
+        return this;
     }
 
     public Boolean getPreGenerateUID() {
@@ -500,16 +540,16 @@ public class ProgramStage implements Serializable, Persistable<String> {
         this.programStageDataElementsCount = programStageDataElementsCount;
     }
 
-    public Integer getProgramStageDataElementsContent() {
+    public String getProgramStageDataElementsContent() {
         return this.programStageDataElementsContent;
     }
 
-    public ProgramStage programStageDataElementsContent(Integer programStageDataElementsContent) {
+    public ProgramStage programStageDataElementsContent(String programStageDataElementsContent) {
         this.setProgramStageDataElementsContent(programStageDataElementsContent);
         return this;
     }
 
-    public void setProgramStageDataElementsContent(Integer programStageDataElementsContent) {
+    public void setProgramStageDataElementsContent(String programStageDataElementsContent) {
         this.programStageDataElementsContent = programStageDataElementsContent;
     }
 

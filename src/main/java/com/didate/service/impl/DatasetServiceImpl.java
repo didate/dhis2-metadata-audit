@@ -185,4 +185,9 @@ public class DatasetServiceImpl implements DatasetService {
     public Boolean exist(String id) {
         return datasetRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return datasetRepository.count();
+    }
 }

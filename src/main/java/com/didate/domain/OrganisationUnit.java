@@ -91,6 +91,9 @@ public class OrganisationUnit implements Serializable, Persistable<String> {
     )
     private Set<DataSet> dataSets = new HashSet<>();
 
+    @ManyToOne
+    private Project project;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public String getId() {
@@ -195,6 +198,19 @@ public class OrganisationUnit implements Serializable, Persistable<String> {
 
     public void setTrack(TypeTrack track) {
         this.track = track;
+    }
+
+    public Project getProject() {
+        return this.project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public OrganisationUnit project(Project project) {
+        this.setProject(project);
+        return this;
     }
 
     @Transient

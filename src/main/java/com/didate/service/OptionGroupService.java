@@ -57,4 +57,5 @@ public interface OptionGroupService {
     void delete(String id);
 
     Boolean exist(String id);
+    Long count();
 }

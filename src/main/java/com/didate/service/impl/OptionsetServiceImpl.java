@@ -79,4 +79,9 @@ public class OptionsetServiceImpl implements OptionsetService {
     public Boolean exist(String id) {
         return optionsetRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return optionsetRepository.count();
+    }
 }

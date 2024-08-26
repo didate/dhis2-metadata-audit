@@ -53,14 +53,6 @@ public class DataElement implements Serializable, Persistable<String> {
     private String displayFormName;
 
     @NotNull
-    @Column(name = "created", nullable = false)
-    private Instant created;
-
-    @NotNull
-    @Column(name = "last_updated", nullable = false)
-    private Instant lastUpdated;
-
-    @NotNull
     @Column(name = "public_access", nullable = false)
     private String publicAccess;
 
@@ -89,17 +81,19 @@ public class DataElement implements Serializable, Persistable<String> {
     @Column(name = "dimension_item")
     private String dimensionItem;
 
+    @NotNull
+    @Column(name = "created", nullable = false)
+    private Instant created;
+
+    @NotNull
+    @Column(name = "last_updated", nullable = false)
+    private Instant lastUpdated;
+
     @NotAudited
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "track", nullable = false)
     private TypeTrack track;
-
-    @Transient
-    private boolean isPersisted;
-
-    @ManyToOne
-    private Project project;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -108,6 +102,12 @@ public class DataElement implements Serializable, Persistable<String> {
     @ManyToOne(optional = false)
     @NotNull
     private DHISUser lastUpdatedBy;
+
+    @ManyToOne
+    private Project project;
+
+    @Transient
+    private boolean isPersisted;
 
     @ManyToOne
     private CategoryCombo categoryCombo;
@@ -139,32 +139,6 @@ public class DataElement implements Serializable, Persistable<String> {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public DataElement name(String name) {
-        this.setName(name);
-        return this;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getShortName() {
-        return this.shortName;
-    }
-
-    public DataElement shortName(String shortName) {
-        this.setShortName(shortName);
-        return this;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
     }
 
     public String getFormName() {
@@ -230,32 +204,6 @@ public class DataElement implements Serializable, Persistable<String> {
 
     public void setDisplayFormName(String displayFormName) {
         this.displayFormName = displayFormName;
-    }
-
-    public Instant getCreated() {
-        return this.created;
-    }
-
-    public DataElement created(Instant created) {
-        this.setCreated(created);
-        return this;
-    }
-
-    public void setCreated(Instant created) {
-        this.created = created;
-    }
-
-    public Instant getLastUpdated() {
-        return this.lastUpdated;
-    }
-
-    public DataElement lastUpdated(Instant lastUpdated) {
-        this.setLastUpdated(lastUpdated);
-        return this;
-    }
-
-    public void setLastUpdated(Instant lastUpdated) {
-        this.lastUpdated = lastUpdated;
     }
 
     public String getPublicAccess() {
@@ -375,21 +323,56 @@ public class DataElement implements Serializable, Persistable<String> {
         this.track = track;
     }
 
-    @Transient
-    @Override
-    public boolean isNew() {
-        return !this.isPersisted;
+    public String getName() {
+        return this.name;
     }
 
-    public DataElement setIsPersisted() {
-        this.isPersisted = true;
+    public DataElement name(String name) {
+        this.setName(name);
         return this;
     }
 
-    @PostLoad
-    @PostPersist
-    public void updateEntityState() {
-        this.setIsPersisted();
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getShortName() {
+        return this.shortName;
+    }
+
+    public DataElement shortName(String shortName) {
+        this.setShortName(shortName);
+        return this;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public Instant getCreated() {
+        return this.created;
+    }
+
+    public DataElement created(Instant created) {
+        this.setCreated(created);
+        return this;
+    }
+
+    public void setCreated(Instant created) {
+        this.created = created;
+    }
+
+    public Instant getLastUpdated() {
+        return this.lastUpdated;
+    }
+
+    public DataElement lastUpdated(Instant lastUpdated) {
+        this.setLastUpdated(lastUpdated);
+        return this;
+    }
+
+    public void setLastUpdated(Instant lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     public Project getProject() {
@@ -429,6 +412,23 @@ public class DataElement implements Serializable, Persistable<String> {
     public DataElement lastUpdatedBy(DHISUser dHISUser) {
         this.setLastUpdatedBy(dHISUser);
         return this;
+    }
+
+    @Transient
+    @Override
+    public boolean isNew() {
+        return !this.isPersisted;
+    }
+
+    public DataElement setIsPersisted() {
+        this.isPersisted = true;
+        return this;
+    }
+
+    @PostLoad
+    @PostPersist
+    public void updateEntityState() {
+        this.setIsPersisted();
     }
 
     public CategoryCombo getCategoryCombo() {

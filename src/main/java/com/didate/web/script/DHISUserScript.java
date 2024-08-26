@@ -8,6 +8,8 @@ import com.didate.service.dhis2.DhisApiService;
 import com.didate.service.dhis2.response.Dhis2ApiResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Component;
 public class DHISUserScript {
 
     private static final Logger log = LoggerFactory.getLogger(DHISUserScript.class);
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private final DhisApiService<DHISUser> dhisUserApiService;
     private final DHISUserService dhisUserService;
@@ -29,13 +32,24 @@ public class DHISUserScript {
     public void perform(Project project) throws IOException {
         log.info("Calling users API...");
 
-        List<DHISUser> dhisUsers = dhisUserApiService.getData(project, "users", new TypeReference<Dhis2ApiResponse<DHISUser>>() {});
-
         boolean hasExistingUsers = dhisUserService.count() > 0;
+        String lastUpdated = hasExistingUsers ? LocalDate.now().format(DATE_FORMATTER) : "";
+
+        List<DHISUser> dhisUsers = dhisUserApiService.getData(
+            project,
+            "users",
+            lastUpdated,
+            new TypeReference<Dhis2ApiResponse<DHISUser>>() {}
+        );
 
         for (DHISUser user : dhisUsers) {
             TypeTrack typeTrack = determineTypeTrack(user.getId(), hasExistingUsers);
-            dhisUserService.save(user.track(typeTrack));
+            user = user.track(typeTrack).project(project);
+            if (typeTrack == TypeTrack.UPDATE) {
+                dhisUserService.partialUpdate(user);
+            } else {
+                dhisUserService.save(user);
+            }
         }
 
         log.info("Fetched users: {}", dhisUsers.size());

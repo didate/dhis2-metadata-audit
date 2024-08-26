@@ -158,4 +158,9 @@ public class ProgramStageServiceImpl implements ProgramStageService {
     public Boolean exist(String id) {
         return programStageRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return programStageRepository.count();
+    }
 }
