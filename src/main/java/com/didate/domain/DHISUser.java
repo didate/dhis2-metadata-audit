@@ -71,6 +71,9 @@ public class DHISUser implements Serializable, Persistable<String> {
     @Column(name = "track", nullable = false)
     private TypeTrack track;
 
+    @ManyToOne
+    private Project project;
+
     @Transient
     private boolean isPersisted;
 
@@ -243,6 +246,19 @@ public class DHISUser implements Serializable, Persistable<String> {
 
     public void setTrack(TypeTrack track) {
         this.track = track;
+    }
+
+    public Project getProject() {
+        return this.project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public DHISUser project(Project project) {
+        this.setProject(project);
+        return this;
     }
 
     @Transient

@@ -79,4 +79,9 @@ public class CategorycomboServiceImpl implements CategorycomboService {
     public Boolean exist(String id) {
         return categorycomboRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return categorycomboRepository.count();
+    }
 }

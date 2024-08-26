@@ -97,4 +97,9 @@ public class ProgramRuleVariableServiceImpl implements ProgramRuleVariableServic
     public Boolean exist(String id) {
         return programRuleVariableRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return programRuleVariableRepository.count();
+    }
 }

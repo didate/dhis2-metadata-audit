@@ -115,4 +115,9 @@ public class ProgramIndicatorServiceImpl implements ProgramIndicatorService {
     public Boolean exist(String id) {
         return programIndicatorRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return programIndicatorRepository.count();
+    }
 }

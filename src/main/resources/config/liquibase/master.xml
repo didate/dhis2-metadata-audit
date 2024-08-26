@@ -42,7 +42,9 @@
     <include file="config/liquibase/changelog/20240823214453_added_entity_constraints_TrackedEntityAttribute.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240823214455_added_entity_constraints_OrganisationUnit.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20240823214456_added_entity_constraints_ProgramIndicator.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20240825221701_others_contraints_changelog.xml" relativeToChangelogFile="false"/>
+    
     <include file="config/liquibase/changelog/20240823221701_envers_changelog.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

@@ -8,6 +8,18 @@
     -->
     <changeSet id="20240823214456-2" author="jhipster">
 
+        <addForeignKeyConstraint baseColumnNames="project_id"
+                                 baseTableName="program_indicator"
+                                 constraintName="fk_program_indicator__project_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="project"/>
+        
+        <addForeignKeyConstraint baseColumnNames="project_id"
+                                 baseTableName="dhis_user"
+                                 constraintName="fk_dhis_user__project_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="project"/>
+
         <addForeignKeyConstraint baseColumnNames="created_by_id"
                                  baseTableName="program_indicator"
                                  constraintName="fk_program_indicator__created_by_id"

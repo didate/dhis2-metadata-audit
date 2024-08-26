@@ -81,7 +81,7 @@ public class ProgramRuleAction implements Serializable, Persistable<String> {
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "optionSet", "programs" }, allowSetters = true)
-    private TrackedEntityAttribute dataElement;
+    private DataElement dataElement;
 
     @ManyToOne
     private OptionGroup optionGroup;
@@ -300,15 +300,15 @@ public class ProgramRuleAction implements Serializable, Persistable<String> {
         return this;
     }
 
-    public TrackedEntityAttribute getDataElement() {
+    public DataElement getDataElement() {
         return this.dataElement;
     }
 
-    public void setDataElement(TrackedEntityAttribute trackedEntityAttribute) {
+    public void setDataElement(DataElement trackedEntityAttribute) {
         this.dataElement = trackedEntityAttribute;
     }
 
-    public ProgramRuleAction dataElement(TrackedEntityAttribute trackedEntityAttribute) {
+    public ProgramRuleAction dataElement(DataElement trackedEntityAttribute) {
         this.setDataElement(trackedEntityAttribute);
         return this;
     }

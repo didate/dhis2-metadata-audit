@@ -148,4 +148,9 @@ public class TrackedEntityAttributeServiceImpl implements TrackedEntityAttribute
     public Boolean exist(String id) {
         return trackedEntityAttributeRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return trackedEntityAttributeRepository.count();
+    }
 }

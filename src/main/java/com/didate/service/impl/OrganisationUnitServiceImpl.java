@@ -97,4 +97,9 @@ public class OrganisationUnitServiceImpl implements OrganisationUnitService {
     public Boolean exist(String id) {
         return organisationUnitRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return organisationUnitRepository.count();
+    }
 }

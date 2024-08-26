@@ -75,4 +75,9 @@ public class OptionGroupServiceImpl implements OptionGroupService {
     public Boolean exist(String id) {
         return optionGroupRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return optionGroupRepository.count();
+    }
 }

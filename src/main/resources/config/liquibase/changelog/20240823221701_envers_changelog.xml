@@ -1,9 +1,9 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="didate (generated)" id="1724451425334-3">
+    <changeSet author="didate (generated)" id="1724594314194-7">
         <createSequence incrementBy="1" sequenceName="hibernate_sequence" startValue="1"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-4">
+    <changeSet author="didate (generated)" id="1724594314194-8">
         <createTable tableName="categorycombo_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="categorycombo_audPK"/>
@@ -12,10 +12,16 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="categorycombo_audPK"/>
             </column>
             <column name="revtype" type="SMALLINT"/>
+            <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="name" type="VARCHAR(255)"/>
+            <column name="short_name" type="VARCHAR(255)"/>
+            <column name="created_by_id" type="VARCHAR(255)"/>
+            <column name="last_updated_by_id" type="VARCHAR(255)"/>
+            <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-5">
+    <changeSet author="didate (generated)" id="1724594314194-9">
         <createTable tableName="dataelement_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="dataelement_audPK"/>
@@ -48,7 +54,7 @@
             <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-6">
+    <changeSet author="didate (generated)" id="1724594314194-10">
         <createTable tableName="dataset_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="dataset_audPK"/>
@@ -60,7 +66,7 @@
             <column name="compulsory_fields_complete_only" type="BOOLEAN"/>
             <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="data_element_decoration" type="BOOLEAN"/>
-            <column name="data_set_elements_content" type="VARCHAR(255)"/>
+            <column name="data_set_elements_content" type="TEXT"/>
             <column name="data_set_elements_count" type="INTEGER"/>
             <column name="description" type="VARCHAR(255)"/>
             <column name="dimension_item" type="VARCHAR(255)"/>
@@ -72,7 +78,7 @@
             <column name="expiry_days" type="FLOAT8"/>
             <column name="field_combination_required" type="BOOLEAN"/>
             <column name="form_type" type="VARCHAR(255)"/>
-            <column name="indicators_content" type="VARCHAR(255)"/>
+            <column name="indicators_content" type="TEXT"/>
             <column name="indicators_count" type="INTEGER"/>
             <column name="last_updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="mobile" type="VARCHAR(255)"/>
@@ -81,7 +87,7 @@
             <column name="notify_completing_user" type="VARCHAR(255)"/>
             <column name="open_future_periods" type="FLOAT8"/>
             <column name="open_periods_after_co_end_date" type="FLOAT8"/>
-            <column name="organisation_units_content" type="VARCHAR(255)"/>
+            <column name="organisation_units_content" type="TEXT"/>
             <column name="organisation_units_count" type="INTEGER"/>
             <column name="period_type" type="VARCHAR(255)"/>
             <column name="render_as_tabs" type="BOOLEAN"/>
@@ -97,7 +103,7 @@
             <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-7">
+    <changeSet author="didate (generated)" id="1724594314194-11">
         <createTable tableName="dhis_user_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="dhis_user_audPK"/>
@@ -117,9 +123,10 @@
             <column name="password_last_updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="phone_number" type="VARCHAR(255)"/>
             <column name="username" type="VARCHAR(255)"/>
+            <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-8">
+    <changeSet author="didate (generated)" id="1724594314194-12">
         <createTable tableName="indicator_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="indicator_audPK"/>
@@ -151,7 +158,7 @@
             <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-9">
+    <changeSet author="didate (generated)" id="1724594314194-13">
         <createTable tableName="indicatortype_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="indicatortype_audPK"/>
@@ -160,10 +167,16 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="indicatortype_audPK"/>
             </column>
             <column name="revtype" type="SMALLINT"/>
+            <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="name" type="VARCHAR(255)"/>
+            <column name="short_name" type="VARCHAR(255)"/>
+            <column name="created_by_id" type="VARCHAR(255)"/>
+            <column name="last_updated_by_id" type="VARCHAR(255)"/>
+            <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-10">
+    <changeSet author="didate (generated)" id="1724594314194-14">
         <createTable tableName="option_group_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="option_group_audPK"/>
@@ -172,9 +185,16 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="option_group_audPK"/>
             </column>
             <column name="revtype" type="SMALLINT"/>
+            <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="short_name" type="VARCHAR(255)"/>
+            <column name="created_by_id" type="VARCHAR(255)"/>
+            <column name="last_updated_by_id" type="VARCHAR(255)"/>
+            <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-11">
+    <changeSet author="didate (generated)" id="1724594314194-15">
         <createTable tableName="optionset_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="optionset_audPK"/>
@@ -183,10 +203,16 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="optionset_audPK"/>
             </column>
             <column name="revtype" type="SMALLINT"/>
+            <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="name" type="VARCHAR(255)"/>
+            <column name="short_name" type="VARCHAR(255)"/>
+            <column name="created_by_id" type="VARCHAR(255)"/>
+            <column name="last_updated_by_id" type="VARCHAR(255)"/>
+            <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-12">
+    <changeSet author="didate (generated)" id="1724594314194-16">
         <createTable tableName="organisation_unit_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="organisation_unit_audPK"/>
@@ -203,9 +229,10 @@
             <column name="path" type="VARCHAR(255)"/>
             <column name="created_by_id" type="VARCHAR(255)"/>
             <column name="last_updated_by_id" type="VARCHAR(255)"/>
+            <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-13">
+    <changeSet author="didate (generated)" id="1724594314194-17">
         <createTable tableName="program_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="program_audPK"/>
@@ -237,13 +264,13 @@
             <column name="notification_templates" type="VARCHAR(255)"/>
             <column name="only_enroll_once" type="BOOLEAN"/>
             <column name="open_days_after_co_end_date" type="FLOAT8"/>
-            <column name="organisation_units_content" type="VARCHAR(255)"/>
+            <column name="organisation_units_content" type="TEXT"/>
             <column name="organisation_units_count" type="INTEGER"/>
-            <column name="program_indicators_content" type="VARCHAR(255)"/>
+            <column name="program_indicators_content" type="TEXT"/>
             <column name="program_indicators_count" type="INTEGER"/>
-            <column name="program_stages_content" type="VARCHAR(255)"/>
+            <column name="program_stages_content" type="TEXT"/>
             <column name="program_stages_count" type="INTEGER"/>
-            <column name="program_tracked_entity_attributes_content" type="VARCHAR(255)"/>
+            <column name="program_tracked_entity_attributes_content" type="TEXT"/>
             <column name="program_tracked_entity_attributes_count" type="INTEGER"/>
             <column name="program_type" type="VARCHAR(255)"/>
             <column name="registration" type="BOOLEAN"/>
@@ -263,7 +290,7 @@
             <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-14">
+    <changeSet author="didate (generated)" id="1724594314194-18">
         <createTable tableName="program_indicator_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="program_indicator_audPK"/>
@@ -279,17 +306,18 @@
             <column name="display_form_name" type="VARCHAR(255)"/>
             <column name="display_name" type="VARCHAR(255)"/>
             <column name="display_short_name" type="VARCHAR(255)"/>
-            <column name="expression" type="VARCHAR(255)"/>
-            <column name="filter" type="VARCHAR(255)"/>
+            <column name="expression" type="text"/>
+            <column name="filter" type="text"/>
             <column name="last_updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="name" type="VARCHAR(255)"/>
             <column name="short_name" type="VARCHAR(255)"/>
             <column name="created_by_id" type="VARCHAR(255)"/>
             <column name="last_updated_by_id" type="VARCHAR(255)"/>
             <column name="program_id" type="VARCHAR(255)"/>
+            <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-15">
+    <changeSet author="didate (generated)" id="1724594314194-19">
         <createTable tableName="program_rule_action_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="program_rule_action_audPK"/>
@@ -298,10 +326,10 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="program_rule_action_audPK"/>
             </column>
             <column name="revtype" type="SMALLINT"/>
-            <column name="content" type="VARCHAR(255)"/>
+            <column name="content" type="TEXT"/>
             <column name="created" type="VARCHAR(255)"/>
             <column name="data" type="VARCHAR(255)"/>
-            <column name="display_content" type="VARCHAR(255)"/>
+            <column name="display_content" type="TEXT"/>
             <column name="evaluation_time" type="VARCHAR(255)"/>
             <column name="last_updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="program_rule_action_type" type="VARCHAR(255)"/>
@@ -315,7 +343,7 @@
             <column name="tracked_entity_attribute_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-16">
+    <changeSet author="didate (generated)" id="1724594314194-20">
         <createTable tableName="program_rule_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="program_rule_audPK"/>
@@ -324,7 +352,7 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="program_rule_audPK"/>
             </column>
             <column name="revtype" type="SMALLINT"/>
-            <column name="condition" type="VARCHAR(255)"/>
+            <column name="condition" type="TEXT"/>
             <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="display_name" type="VARCHAR(255)"/>
             <column name="last_updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
@@ -336,7 +364,7 @@
             <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-17">
+    <changeSet author="didate (generated)" id="1724594314194-21">
         <createTable tableName="program_rule_variable_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="program_rule_variable_audPK"/>
@@ -359,7 +387,7 @@
             <column name="tracked_entity_attribute_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-18">
+    <changeSet author="didate (generated)" id="1724594314194-22">
         <createTable tableName="program_stage_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="program_stage_audPK"/>
@@ -387,7 +415,7 @@
             <column name="name" type="VARCHAR(255)"/>
             <column name="open_after_enrollment" type="BOOLEAN"/>
             <column name="pre_generate_uid" type="BOOLEAN"/>
-            <column name="program_stage_data_elements_content" type="INTEGER"/>
+            <column name="program_stage_data_elements_content" type="TEXT"/>
             <column name="program_stage_data_elements_count" type="INTEGER"/>
             <column name="referral" type="BOOLEAN"/>
             <column name="remind_completed" type="BOOLEAN"/>
@@ -397,9 +425,10 @@
             <column name="created_by_id" type="VARCHAR(255)"/>
             <column name="last_updated_by_id" type="VARCHAR(255)"/>
             <column name="program_id" type="VARCHAR(255)"/>
+            <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-19">
+    <changeSet author="didate (generated)" id="1724594314194-23">
         <createTable tableName="project_aud">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="project_audPK"/>
@@ -416,7 +445,7 @@
             <column name="token" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-20">
+    <changeSet author="didate (generated)" id="1724594314194-24">
         <createTable tableName="rel_dataset__data_set_elements_aud">
             <column name="rev" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="rel_dataset__data_set_elements_audPK"/>
@@ -430,7 +459,7 @@
             <column name="revtype" type="SMALLINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-21">
+    <changeSet author="didate (generated)" id="1724594314194-25">
         <createTable tableName="rel_dataset__indicators_aud">
             <column name="rev" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="rel_dataset__indicators_audPK"/>
@@ -444,7 +473,7 @@
             <column name="revtype" type="SMALLINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-22">
+    <changeSet author="didate (generated)" id="1724594314194-26">
         <createTable tableName="rel_dataset__organisation_units_aud">
             <column name="rev" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="rel_dataset__organisation_units_audPK"/>
@@ -458,7 +487,7 @@
             <column name="revtype" type="SMALLINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-23">
+    <changeSet author="didate (generated)" id="1724594314194-27">
         <createTable tableName="rel_program__organisation_units_aud">
             <column name="rev" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="rel_program__organisation_units_audPK"/>
@@ -472,7 +501,7 @@
             <column name="revtype" type="SMALLINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-24">
+    <changeSet author="didate (generated)" id="1724594314194-28">
         <createTable tableName="rel_program__program_indicators_aud">
             <column name="rev" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="rel_program__program_indicators_audPK"/>
@@ -486,7 +515,7 @@
             <column name="revtype" type="SMALLINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-25">
+    <changeSet author="didate (generated)" id="1724594314194-29">
         <createTable tableName="rel_program__program_stage_aud">
             <column name="rev" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="rel_program__program_stage_audPK"/>
@@ -500,7 +529,7 @@
             <column name="revtype" type="SMALLINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-26">
+    <changeSet author="didate (generated)" id="1724594314194-30">
         <createTable tableName="rel_program__program_tracked_entity_attributes_aud">
             <column name="rev" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="rel_program__program_tracked_entity_attributes_audPK"/>
@@ -514,7 +543,7 @@
             <column name="revtype" type="SMALLINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-27">
+    <changeSet author="didate (generated)" id="1724594314194-31">
         <createTable tableName="rel_program_stage__program_stage_data_elements_aud">
             <column name="rev" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="rel_program_stage__program_stage_data_elements_audPK"/>
@@ -528,7 +557,7 @@
             <column name="revtype" type="SMALLINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-28">
+    <changeSet author="didate (generated)" id="1724594314194-32">
         <createTable tableName="revinfo">
             <column autoIncrement="true" name="rev" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="revinfoPK"/>
@@ -536,7 +565,7 @@
             <column name="revtstmp" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-29">
+    <changeSet author="didate (generated)" id="1724594314194-33">
         <createTable tableName="tracked_entity_attribute_aud">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="tracked_entity_attribute_audPK"/>
@@ -574,82 +603,92 @@
             <column name="project_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-30">
+    <changeSet author="didate (generated)" id="1724594314194-34">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="rel_program__program_indicators_aud" constraintName="FK10i38sm73oqqfabe570auyxv2" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-31">
+    <changeSet author="didate (generated)" id="1724594314194-35">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="program_indicator_aud" constraintName="FK1y0fngu5ll1gfm7c4wq7fw8w5" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-32">
+    <changeSet author="didate (generated)" id="1724594314194-36">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="program_aud" constraintName="FK4gfdp9d0b9i0hw2hiaxjvepv6" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-33">
+    <changeSet author="didate (generated)" id="1724594314194-37">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="categorycombo_aud" constraintName="FK5qf5x2a33m4oyfust49mkp14i" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-34">
+    <changeSet author="didate (generated)" id="1724594314194-38">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="rel_dataset__data_set_elements_aud" constraintName="FK5t6nev2nvs9xm26x0crq5onhv" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-35">
+    <changeSet author="didate (generated)" id="1724594314194-39">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="program_rule_aud" constraintName="FK5yp64jm9ujygn79uc33beosfg" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-36">
+    <changeSet author="didate (generated)" id="1724594314194-40">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="program_rule_variable_aud" constraintName="FK7dhqhulasfqjpa8icmv5n3te3" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-37">
+    <changeSet author="didate (generated)" id="1724594314194-41">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="rel_program_stage__program_stage_data_elements_aud" constraintName="FK898c253hvg941x38t2isufb7d" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-38">
+    <changeSet author="didate (generated)" id="1724594314194-42">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="rel_program__organisation_units_aud" constraintName="FK92kd5uw506durn8ndb1uybx95" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-39">
+    <changeSet author="didate (generated)" id="1724594314194-43">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="program_stage_aud" constraintName="FKc8sqnnn0regu87tenyneqk9n9" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-40">
+    <changeSet author="didate (generated)" id="1724594314194-44">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="rel_dataset__indicators_aud" constraintName="FKe17uakj4g16okqrsklk7tv173" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-41">
+    <changeSet author="didate (generated)" id="1724594314194-45">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="rel_dataset__organisation_units_aud" constraintName="FKee6ysnsgut048vup3kmnmto5b" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-42">
+    <changeSet author="didate (generated)" id="1724594314194-46">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="organisation_unit_aud" constraintName="FKeiq8elnktao99q8cqdyucc27t" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-43">
+    <changeSet author="didate (generated)" id="1724594314194-47">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="dhis_user_aud" constraintName="FKfq4dsqweooxp5jfwj02ijtvwp" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-44">
+    <changeSet author="didate (generated)" id="1724594314194-48">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="tracked_entity_attribute_aud" constraintName="FKhrlua54i6453kgksv1nmdac94" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-45">
+    <changeSet author="didate (generated)" id="1724594314194-49">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="indicatortype_aud" constraintName="FKi356krbkk96l7bvpksrn0wr73" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-46">
+    <changeSet author="didate (generated)" id="1724594314194-50">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="indicator_aud" constraintName="FKlw984l8469qeo7s9wri4sn0s1" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-47">
+    <changeSet author="didate (generated)" id="1724594314194-51">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="optionset_aud" constraintName="FKo85pjli43gsegiodvkjvx1kl6" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-48">
+    <changeSet author="didate (generated)" id="1724594314194-52">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="project_aud" constraintName="FKpnojd25gxjyn8jg0mj5k96mcl" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-49">
+    <changeSet author="didate (generated)" id="1724594314194-53">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="dataset_aud" constraintName="FKq1dreytx4fgchkqdohqqp8wmu" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-50">
+    <changeSet author="didate (generated)" id="1724594314194-54">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="rel_program__program_stage_aud" constraintName="FKq4yt6kr26fs2r6ipplh5xy4px" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-51">
+    <changeSet author="didate (generated)" id="1724594314194-55">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="rel_program__program_tracked_entity_attributes_aud" constraintName="FKqn4q97bxspl8bjw20rp05qo81" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-52">
+    <changeSet author="didate (generated)" id="1724594314194-56">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="program_rule_action_aud" constraintName="FKqpqju7yt94f42otcbc395c1mm" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-53">
+    <changeSet author="didate (generated)" id="1724594314194-57">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="dataelement_aud" constraintName="FKrmxl8d5buqbajpbwwtmdc63e9" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-54">
+    <changeSet author="didate (generated)" id="1724594314194-58">
         <addForeignKeyConstraint baseColumnNames="rev" baseTableName="option_group_aud" constraintName="FKss4prwlyc7k84f4amnapc0ao1" deferrable="false" initiallyDeferred="false" referencedColumnNames="rev" referencedTableName="revinfo" validate="true"/>
     </changeSet>
-    <changeSet author="didate (generated)" id="1724451425334-2">
-        <addUniqueConstraint columnNames="login" constraintName="UC_JHI_USERLOGIN_COL" tableName="jhi_user"/>
+    <changeSet author="didate (generated)" id="1724594314194-1">
+        <addNotNullConstraint columnDataType="varchar(255)" columnName="short_name" tableName="categorycombo" validate="true"/>
     </changeSet>
+    <changeSet author="didate (generated)" id="1724594314194-2">
+        <addNotNullConstraint columnDataType="varchar(255)" columnName="short_name" tableName="indicatortype" validate="true"/>
+    </changeSet>
+    <changeSet author="didate (generated)" id="1724594314194-3">
+        <addNotNullConstraint columnDataType="varchar(255)" columnName="short_name" tableName="option_group" validate="true"/>
+    </changeSet>
+    <changeSet author="didate (generated)" id="1724594314194-4">
+        <addNotNullConstraint columnDataType="varchar(255)" columnName="short_name" tableName="optionset" validate="true"/>
+    </changeSet>
+    
 </databaseChangeLog>

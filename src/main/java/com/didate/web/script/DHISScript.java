@@ -19,6 +19,7 @@ public class DHISScript {
     private final DHISUserScript userScript;
     private final DataElementScript dataElementScript;
     private final IndicatorScript indicatorScript;
+    private final CategoryComboScript categoryComboScript;
     private final OptionGroupScript optionGroupScript;
     private final TrackedEntityAttributeScript trackedEntityAttributeScript;
     private final ProgramStageScript programStageScript;
@@ -37,6 +38,7 @@ public class DHISScript {
         DHISUserScript userScript,
         DataElementScript dataElementScript,
         IndicatorScript indicatorScript,
+        CategoryComboScript categoryComboScript,
         OptionGroupScript optionGroupScript,
         TrackedEntityAttributeScript trackedEntityAttributeScript,
         ProgramStageScript programStageScript,
@@ -54,6 +56,7 @@ public class DHISScript {
         this.userScript = userScript;
         this.dataElementScript = dataElementScript;
         this.indicatorScript = indicatorScript;
+        this.categoryComboScript = categoryComboScript;
         this.optionGroupScript = optionGroupScript;
         this.trackedEntityAttributeScript = trackedEntityAttributeScript;
         this.programStageScript = programStageScript;
@@ -76,26 +79,27 @@ public class DHISScript {
 
         for (Project project : projects) {
             userScript.perform(project);
-            /* indicatorTypeScript.perform(project);
             optionGroupScript.perform(project);
+            categoryComboScript.perform(project);
+            indicatorTypeScript.perform(project);
             optionSetScript.perform(project);
             organisationUnitScript.perform(project);
-
             dataElementScript.perform(project);
-            
+            indicatorScript.perform(project);
             dataSetScript.perform(project);
 
-
-            indicatorScript.perform(project);
             trackedEntityAttributeScript.perform(project);
-            
+
             programScript.perform(project);
             programStageScript.perform(project);
-            programIndicatorScript.perform(project);
-            programRuleScript.perform(project);
-            programRuleVariableScript.perform(project);
-            programRuleActionScript.perform(project); */
 
+            programIndicatorScript.perform(project);
+
+            programRuleScript.perform(project);
+
+            programRuleVariableScript.perform(project);
+
+            programRuleActionScript.perform(project);
         }
     }
 }

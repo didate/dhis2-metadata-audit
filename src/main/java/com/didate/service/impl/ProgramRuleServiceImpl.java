@@ -97,4 +97,9 @@ public class ProgramRuleServiceImpl implements ProgramRuleService {
     public Boolean exist(String id) {
         return programRuleRepository.existsById(id);
     }
+
+    @Override
+    public Long count() {
+        return programRuleRepository.count();
+    }
 }

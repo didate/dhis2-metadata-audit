@@ -42,7 +42,7 @@
                                  baseTableName="program_rule_action"
                                  constraintName="fk_program_rule_action__data_element_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="tracked_entity_attribute"/>
+                                 referencedTableName="dataelement"/>
 
         <addForeignKeyConstraint baseColumnNames="option_group_id"
                                  baseTableName="program_rule_action"

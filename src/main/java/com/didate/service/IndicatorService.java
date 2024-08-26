@@ -57,4 +57,5 @@ public interface IndicatorService {
     void delete(String id);
 
     Boolean exist(String id);
+    Long count();
 }
