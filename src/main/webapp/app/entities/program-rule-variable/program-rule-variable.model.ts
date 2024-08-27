@@ -16,8 +16,8 @@ export interface IProgramRuleVariable {
   useCodeForOptionSet?: boolean | null;
   track?: TypeTrack | null;
   project?: Pick<IProject, 'id'> | null;
-  createdBy?: Pick<IDHISUser, 'id'> | null;
-  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'name'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'name'> | null;
   program?: Pick<IProgram, 'id'> | null;
   trackedEntityAttribute?: Pick<ITrackedEntityAttribute, 'id'> | null;
   dataElement?: Pick<IDataelement, 'id'> | null;

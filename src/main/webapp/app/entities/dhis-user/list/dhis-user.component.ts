@@ -9,7 +9,6 @@ import { IDHISUser } from '../dhis-user.model';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, DHISUserService } from '../service/dhis-user.service';
-import { DHISUserDeleteDialogComponent } from '../delete/dhis-user-delete-dialog.component';
 
 @Component({
   selector: 'jhi-dhis-user',
@@ -37,22 +36,6 @@ export class DHISUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
-  }
-
-  delete(dHISUser: IDHISUser): void {
-    const modalRef = this.modalService.open(DHISUserDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.dHISUser = dHISUser;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed
-      .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
-        switchMap(() => this.loadFromBackendWithRouteInformations())
-      )
-      .subscribe({
-        next: (res: EntityArrayResponseType) => {
-          this.onResponseSuccess(res);
-        },
-      });
   }
 
   load(): void {

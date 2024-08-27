@@ -13,8 +13,8 @@ export interface IOrganisationUnit {
   openingDate?: dayjs.Dayjs | null;
   level?: number | null;
   track?: TypeTrack | null;
-  createdBy?: Pick<IDHISUser, 'id'> | null;
-  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'name'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'name'> | null;
   programs?: Pick<IProgram, 'id'>[] | null;
   dataSets?: Pick<IDataset, 'id'>[] | null;
 }

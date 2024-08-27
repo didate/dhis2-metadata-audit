@@ -121,13 +121,13 @@
         <dt><span jhiTranslate="dhis2TrackApp.programStage.createdBy">Created By</span></dt>
         <dd>
           <div *ngIf="programStage.createdBy">
-            <a [routerLink]="['/dhis-user', programStage.createdBy.id, 'view']">{{ programStage.createdBy.id }}</a>
+            <a [routerLink]="['/dhis-user', programStage.createdBy.name, 'view']">{{ programStage.createdBy.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.programStage.lastUpdatedBy">Last Updated By</span></dt>
         <dd>
           <div *ngIf="programStage.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', programStage.lastUpdatedBy.id, 'view']">{{ programStage.lastUpdatedBy.id }}</a>
+            <a [routerLink]="['/dhis-user', programStage.lastUpdatedBy.name, 'view']">{{ programStage.lastUpdatedBy.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.programStage.program">Program</span></dt>

@@ -9,7 +9,6 @@ import { IOptionGroup } from '../option-group.model';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, OptionGroupService } from '../service/option-group.service';
-import { OptionGroupDeleteDialogComponent } from '../delete/option-group-delete-dialog.component';
 
 @Component({
   selector: 'jhi-option-group',
@@ -37,22 +36,6 @@ export class OptionGroupComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
-  }
-
-  delete(optionGroup: IOptionGroup): void {
-    const modalRef = this.modalService.open(OptionGroupDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.optionGroup = optionGroup;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed
-      .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
-        switchMap(() => this.loadFromBackendWithRouteInformations())
-      )
-      .subscribe({
-        next: (res: EntityArrayResponseType) => {
-          this.onResponseSuccess(res);
-        },
-      });
   }
 
   load(): void {

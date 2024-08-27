@@ -18,8 +18,8 @@ export interface IProgramRuleAction {
   displayContent?: string | null;
   track?: TypeTrack | null;
   project?: Pick<IProject, 'id'> | null;
-  createdBy?: Pick<IDHISUser, 'id'> | null;
-  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'name'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'name'> | null;
   programRule?: Pick<IProgramRule, 'id'> | null;
   trackedEntityAttribute?: Pick<ITrackedEntityAttribute, 'id'> | null;
   dataElement?: Pick<ITrackedEntityAttribute, 'id'> | null;

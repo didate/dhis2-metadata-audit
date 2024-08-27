@@ -95,13 +95,13 @@
         <dt><span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span></dt>
         <dd>
           <div *ngIf="indicator.createdBy">
-            <a [routerLink]="['/dhis-user', indicator.createdBy.id, 'view']">{{ indicator.createdBy.id }}</a>
+            <a [routerLink]="['/dhis-user', indicator.createdBy.name, 'view']">{{ indicator.createdBy.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.indicator.lastUpdatedBy">Last Updated By</span></dt>
         <dd>
           <div *ngIf="indicator.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', indicator.lastUpdatedBy.id, 'view']">{{ indicator.lastUpdatedBy.id }}</a>
+            <a [routerLink]="['/dhis-user', indicator.lastUpdatedBy.name, 'view']">{{ indicator.lastUpdatedBy.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.indicator.indicatorType">Indicator Type</span></dt>

@@ -245,13 +245,15 @@
           </td>
           <td>
             <div *ngIf="trackedEntityAttribute.createdBy">
-              <a [routerLink]="['/dhis-user', trackedEntityAttribute.createdBy.id, 'view']">{{ trackedEntityAttribute.createdBy.id }}</a>
+              <a [routerLink]="['/dhis-user', trackedEntityAttribute.createdBy.name, 'view']">{{
+                trackedEntityAttribute.createdBy.name
+              }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="trackedEntityAttribute.lastUpdatedBy">
-              <a [routerLink]="['/dhis-user', trackedEntityAttribute.lastUpdatedBy.id, 'view']">{{
-                trackedEntityAttribute.lastUpdatedBy.id
+              <a [routerLink]="['/dhis-user', trackedEntityAttribute.lastUpdatedBy.name, 'view']">{{
+                trackedEntityAttribute.lastUpdatedBy.name
               }}</a>
             </div>
           </td>
@@ -270,21 +272,6 @@
               >
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/tracked-entity-attribute', trackedEntityAttribute.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-              </button>
-
-              <button type="submit" (click)="delete(trackedEntityAttribute)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
               </button>
             </div>
           </td>

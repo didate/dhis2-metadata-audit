@@ -31,8 +31,8 @@ export interface IProgramStage {
   repeatable?: boolean | null;
   programStageDataElementsCount?: number | null;
   programStageDataElementsContent?: number | null;
-  createdBy?: Pick<IDHISUser, 'id'> | null;
-  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'name'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'name'> | null;
   program?: Pick<IProgram, 'id'> | null;
   programStageDataElements?: Pick<IDataelement, 'id'>[] | null;
   programs?: Pick<IProgram, 'id'>[] | null;

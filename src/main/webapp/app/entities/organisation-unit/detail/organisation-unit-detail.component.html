@@ -47,13 +47,13 @@
         <dt><span jhiTranslate="dhis2TrackApp.organisationUnit.createdBy">Created By</span></dt>
         <dd>
           <div *ngIf="organisationUnit.createdBy">
-            <a [routerLink]="['/dhis-user', organisationUnit.createdBy.id, 'view']">{{ organisationUnit.createdBy.id }}</a>
+            <a [routerLink]="['/dhis-user', organisationUnit.createdBy.name, 'view']">{{ organisationUnit.createdBy.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdatedBy">Last Updated By</span></dt>
         <dd>
           <div *ngIf="organisationUnit.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', organisationUnit.lastUpdatedBy.id, 'view']">{{ organisationUnit.lastUpdatedBy.id }}</a>
+            <a [routerLink]="['/dhis-user', organisationUnit.lastUpdatedBy.name, 'view']">{{ organisationUnit.lastUpdatedBy.name }}</a>
           </div>
         </dd>
       </dl>

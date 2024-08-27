@@ -203,12 +203,12 @@
           </td>
           <td>
             <div *ngIf="indicator.createdBy">
-              <a [routerLink]="['/dhis-user', indicator.createdBy.id, 'view']">{{ indicator.createdBy.id }}</a>
+              <a [routerLink]="['/dhis-user', indicator.createdBy.name, 'view']">{{ indicator.createdBy.name }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="indicator.lastUpdatedBy">
-              <a [routerLink]="['/dhis-user', indicator.lastUpdatedBy.id, 'view']">{{ indicator.lastUpdatedBy.id }}</a>
+              <a [routerLink]="['/dhis-user', indicator.lastUpdatedBy.name, 'view']">{{ indicator.lastUpdatedBy.name }}</a>
             </div>
           </td>
           <td>
@@ -226,21 +226,6 @@
               >
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/indicator', indicator.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-              </button>
-
-              <button type="submit" (click)="delete(indicator)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
               </button>
             </div>
           </td>

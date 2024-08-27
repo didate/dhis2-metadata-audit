@@ -109,12 +109,12 @@
           <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + organisationUnit.track }}">{{ organisationUnit.track }}</td>
           <td>
             <div *ngIf="organisationUnit.createdBy">
-              <a [routerLink]="['/dhis-user', organisationUnit.createdBy.id, 'view']">{{ organisationUnit.createdBy.id }}</a>
+              <a [routerLink]="['/dhis-user', organisationUnit.createdBy.name, 'view']">{{ organisationUnit.createdBy.name }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="organisationUnit.lastUpdatedBy">
-              <a [routerLink]="['/dhis-user', organisationUnit.lastUpdatedBy.id, 'view']">{{ organisationUnit.lastUpdatedBy.id }}</a>
+              <a [routerLink]="['/dhis-user', organisationUnit.lastUpdatedBy.name, 'view']">{{ organisationUnit.lastUpdatedBy.name }}</a>
             </div>
           </td>
           <td class="text-end">
@@ -127,21 +127,6 @@
               >
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/organisation-unit', organisationUnit.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-              </button>
-
-              <button type="submit" (click)="delete(organisationUnit)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
               </button>
             </div>
           </td>

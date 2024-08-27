@@ -9,7 +9,6 @@ import { IProgramRule } from '../program-rule.model';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, ProgramRuleService } from '../service/program-rule.service';
-import { ProgramRuleDeleteDialogComponent } from '../delete/program-rule-delete-dialog.component';
 
 @Component({
   selector: 'jhi-program-rule',
@@ -37,22 +36,6 @@ export class ProgramRuleComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
-  }
-
-  delete(programRule: IProgramRule): void {
-    const modalRef = this.modalService.open(ProgramRuleDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.programRule = programRule;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed
-      .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
-        switchMap(() => this.loadFromBackendWithRouteInformations())
-      )
-      .subscribe({
-        next: (res: EntityArrayResponseType) => {
-          this.onResponseSuccess(res);
-        },
-      });
   }
 
   load(): void {

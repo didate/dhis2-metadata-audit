@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { DataelementComponent } from '../list/dataelement.component';
 import { DataelementDetailComponent } from '../detail/dataelement-detail.component';
-import { DataelementUpdateComponent } from '../update/dataelement-update.component';
 import { DataelementRoutingResolveService } from './dataelement-routing-resolve.service';
 import { DESC } from 'app/config/navigation.constants';
 
@@ -20,22 +19,6 @@ const dataelementRoute: Routes = [
   {
     path: ':id/view',
     component: DataelementDetailComponent,
-    resolve: {
-      dataelement: DataelementRoutingResolveService,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: 'new',
-    component: DataelementUpdateComponent,
-    resolve: {
-      dataelement: DataelementRoutingResolveService,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: ':id/edit',
-    component: DataelementUpdateComponent,
     resolve: {
       dataelement: DataelementRoutingResolveService,
     },
