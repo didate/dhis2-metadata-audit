@@ -28,7 +28,7 @@ export interface IIndicator {
   project?: Pick<IProject, 'id'> | null;
   createdBy?: Pick<IDHISUser, 'name'> | null;
   lastUpdatedBy?: Pick<IDHISUser, 'name'> | null;
-  indicatorType?: Pick<IIndicatortype, 'id'> | null;
+  indicatorType?: Pick<IIndicatortype, 'name'> | null;
   dataSets?: Pick<IDataset, 'id'>[] | null;
 }
 

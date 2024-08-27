@@ -107,7 +107,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.indicator.indicatorType">Indicator Type</span></dt>
         <dd>
           <div *ngIf="indicator.indicatorType">
-            <a [routerLink]="['/indicatortype', indicator.indicatorType.id, 'view']">{{ indicator.indicatorType.id }}</a>
+            <a [routerLink]="['/indicatortype', indicator.indicatorType.name, 'view']">{{ indicator.indicatorType.name }}</a>
           </div>
         </dd>
       </dl>
