@@ -1,10 +1,14 @@
 package com.didate.web.rest;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.didate.IntegrationTest;
 import com.didate.domain.DHISUser;
@@ -15,7 +19,6 @@ import com.didate.service.ProgramStageService;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +29,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -172,8 +174,7 @@ class ProgramStageResourceIT {
             .displayFormName(DEFAULT_DISPLAY_FORM_NAME)
             .displayName(DEFAULT_DISPLAY_NAME)
             .repeatable(DEFAULT_REPEATABLE)
-            .programStageDataElementsCount(DEFAULT_PROGRAM_STAGE_DATA_ELEMENTS_COUNT)
-            .programStageDataElementsContent(DEFAULT_PROGRAM_STAGE_DATA_ELEMENTS_CONTENT);
+            .programStageDataElementsCount(DEFAULT_PROGRAM_STAGE_DATA_ELEMENTS_COUNT);
         // Add required entity
         DHISUser dHISUser;
         if (TestUtil.findAll(em, DHISUser.class).isEmpty()) {
@@ -231,8 +232,7 @@ class ProgramStageResourceIT {
             .displayFormName(UPDATED_DISPLAY_FORM_NAME)
             .displayName(UPDATED_DISPLAY_NAME)
             .repeatable(UPDATED_REPEATABLE)
-            .programStageDataElementsCount(UPDATED_PROGRAM_STAGE_DATA_ELEMENTS_COUNT)
-            .programStageDataElementsContent(UPDATED_PROGRAM_STAGE_DATA_ELEMENTS_CONTENT);
+            .programStageDataElementsCount(UPDATED_PROGRAM_STAGE_DATA_ELEMENTS_COUNT);
         // Add required entity
         DHISUser dHISUser;
         if (TestUtil.findAll(em, DHISUser.class).isEmpty()) {
@@ -261,65 +261,6 @@ class ProgramStageResourceIT {
     @BeforeEach
     public void initTest() {
         programStage = createEntity(em);
-    }
-
-    @Test
-    @Transactional
-    void createProgramStage() throws Exception {
-        int databaseSizeBeforeCreate = programStageRepository.findAll().size();
-        // Create the ProgramStage
-        restProgramStageMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programStage)))
-            .andExpect(status().isCreated());
-
-        // Validate the ProgramStage in the database
-        List<ProgramStage> programStageList = programStageRepository.findAll();
-        assertThat(programStageList).hasSize(databaseSizeBeforeCreate + 1);
-        ProgramStage testProgramStage = programStageList.get(programStageList.size() - 1);
-        assertThat(testProgramStage.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testProgramStage.getCreated()).isEqualTo(DEFAULT_CREATED);
-        assertThat(testProgramStage.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
-        assertThat(testProgramStage.getMinDaysFromStart()).isEqualTo(DEFAULT_MIN_DAYS_FROM_START);
-        assertThat(testProgramStage.getExecutionDateLabel()).isEqualTo(DEFAULT_EXECUTION_DATE_LABEL);
-        assertThat(testProgramStage.getAutoGenerateEvent()).isEqualTo(DEFAULT_AUTO_GENERATE_EVENT);
-        assertThat(testProgramStage.getValidationStrategy()).isEqualTo(DEFAULT_VALIDATION_STRATEGY);
-        assertThat(testProgramStage.getDisplayGenerateEventBox()).isEqualTo(DEFAULT_DISPLAY_GENERATE_EVENT_BOX);
-        assertThat(testProgramStage.getFeatureType()).isEqualTo(DEFAULT_FEATURE_TYPE);
-        assertThat(testProgramStage.getBlockEntryForm()).isEqualTo(DEFAULT_BLOCK_ENTRY_FORM);
-        assertThat(testProgramStage.getPreGenerateUID()).isEqualTo(DEFAULT_PRE_GENERATE_UID);
-        assertThat(testProgramStage.getRemindCompleted()).isEqualTo(DEFAULT_REMIND_COMPLETED);
-        assertThat(testProgramStage.getGeneratedByEnrollmentDate()).isEqualTo(DEFAULT_GENERATED_BY_ENROLLMENT_DATE);
-        assertThat(testProgramStage.getAllowGenerateNextVisit()).isEqualTo(DEFAULT_ALLOW_GENERATE_NEXT_VISIT);
-        assertThat(testProgramStage.getOpenAfterEnrollment()).isEqualTo(DEFAULT_OPEN_AFTER_ENROLLMENT);
-        assertThat(testProgramStage.getSortOrder()).isEqualTo(DEFAULT_SORT_ORDER);
-        assertThat(testProgramStage.getHideDueDate()).isEqualTo(DEFAULT_HIDE_DUE_DATE);
-        assertThat(testProgramStage.getEnableUserAssignment()).isEqualTo(DEFAULT_ENABLE_USER_ASSIGNMENT);
-        assertThat(testProgramStage.getReferral()).isEqualTo(DEFAULT_REFERRAL);
-        assertThat(testProgramStage.getDisplayExecutionDateLabel()).isEqualTo(DEFAULT_DISPLAY_EXECUTION_DATE_LABEL);
-        assertThat(testProgramStage.getFormType()).isEqualTo(DEFAULT_FORM_TYPE);
-        assertThat(testProgramStage.getDisplayFormName()).isEqualTo(DEFAULT_DISPLAY_FORM_NAME);
-        assertThat(testProgramStage.getDisplayName()).isEqualTo(DEFAULT_DISPLAY_NAME);
-        assertThat(testProgramStage.getRepeatable()).isEqualTo(DEFAULT_REPEATABLE);
-        assertThat(testProgramStage.getProgramStageDataElementsCount()).isEqualTo(DEFAULT_PROGRAM_STAGE_DATA_ELEMENTS_COUNT);
-        assertThat(testProgramStage.getProgramStageDataElementsContent()).isEqualTo(DEFAULT_PROGRAM_STAGE_DATA_ELEMENTS_CONTENT);
-    }
-
-    @Test
-    @Transactional
-    void createProgramStageWithExistingId() throws Exception {
-        // Create the ProgramStage with an existing ID
-        programStage.setId("existing_id");
-
-        int databaseSizeBeforeCreate = programStageRepository.findAll().size();
-
-        // An entity with an existing ID cannot be created, so this API call must fail
-        restProgramStageMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programStage)))
-            .andExpect(status().isBadRequest());
-
-        // Validate the ProgramStage in the database
-        List<ProgramStage> programStageList = programStageRepository.findAll();
-        assertThat(programStageList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -426,364 +367,5 @@ class ProgramStageResourceIT {
     void getNonExistingProgramStage() throws Exception {
         // Get the programStage
         restProgramStageMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
-    }
-
-    @Test
-    @Transactional
-    void putExistingProgramStage() throws Exception {
-        // Initialize the database
-        programStage.setId(UUID.randomUUID().toString());
-        programStageRepository.saveAndFlush(programStage);
-
-        int databaseSizeBeforeUpdate = programStageRepository.findAll().size();
-
-        // Update the programStage
-        ProgramStage updatedProgramStage = programStageRepository.findById(programStage.getId()).get();
-        // Disconnect from session so that the updates on updatedProgramStage are not directly saved in db
-        em.detach(updatedProgramStage);
-        updatedProgramStage
-            .name(UPDATED_NAME)
-            .created(UPDATED_CREATED)
-            .lastUpdated(UPDATED_LAST_UPDATED)
-            .minDaysFromStart(UPDATED_MIN_DAYS_FROM_START)
-            .executionDateLabel(UPDATED_EXECUTION_DATE_LABEL)
-            .autoGenerateEvent(UPDATED_AUTO_GENERATE_EVENT)
-            .validationStrategy(UPDATED_VALIDATION_STRATEGY)
-            .displayGenerateEventBox(UPDATED_DISPLAY_GENERATE_EVENT_BOX)
-            .featureType(UPDATED_FEATURE_TYPE)
-            .blockEntryForm(UPDATED_BLOCK_ENTRY_FORM)
-            .preGenerateUID(UPDATED_PRE_GENERATE_UID)
-            .remindCompleted(UPDATED_REMIND_COMPLETED)
-            .generatedByEnrollmentDate(UPDATED_GENERATED_BY_ENROLLMENT_DATE)
-            .allowGenerateNextVisit(UPDATED_ALLOW_GENERATE_NEXT_VISIT)
-            .openAfterEnrollment(UPDATED_OPEN_AFTER_ENROLLMENT)
-            .sortOrder(UPDATED_SORT_ORDER)
-            .hideDueDate(UPDATED_HIDE_DUE_DATE)
-            .enableUserAssignment(UPDATED_ENABLE_USER_ASSIGNMENT)
-            .referral(UPDATED_REFERRAL)
-            .displayExecutionDateLabel(UPDATED_DISPLAY_EXECUTION_DATE_LABEL)
-            .formType(UPDATED_FORM_TYPE)
-            .displayFormName(UPDATED_DISPLAY_FORM_NAME)
-            .displayName(UPDATED_DISPLAY_NAME)
-            .repeatable(UPDATED_REPEATABLE)
-            .programStageDataElementsCount(UPDATED_PROGRAM_STAGE_DATA_ELEMENTS_COUNT)
-            .programStageDataElementsContent(UPDATED_PROGRAM_STAGE_DATA_ELEMENTS_CONTENT);
-
-        restProgramStageMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, updatedProgramStage.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedProgramStage))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the ProgramStage in the database
-        List<ProgramStage> programStageList = programStageRepository.findAll();
-        assertThat(programStageList).hasSize(databaseSizeBeforeUpdate);
-        ProgramStage testProgramStage = programStageList.get(programStageList.size() - 1);
-        assertThat(testProgramStage.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testProgramStage.getCreated()).isEqualTo(UPDATED_CREATED);
-        assertThat(testProgramStage.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
-        assertThat(testProgramStage.getMinDaysFromStart()).isEqualTo(UPDATED_MIN_DAYS_FROM_START);
-        assertThat(testProgramStage.getExecutionDateLabel()).isEqualTo(UPDATED_EXECUTION_DATE_LABEL);
-        assertThat(testProgramStage.getAutoGenerateEvent()).isEqualTo(UPDATED_AUTO_GENERATE_EVENT);
-        assertThat(testProgramStage.getValidationStrategy()).isEqualTo(UPDATED_VALIDATION_STRATEGY);
-        assertThat(testProgramStage.getDisplayGenerateEventBox()).isEqualTo(UPDATED_DISPLAY_GENERATE_EVENT_BOX);
-        assertThat(testProgramStage.getFeatureType()).isEqualTo(UPDATED_FEATURE_TYPE);
-        assertThat(testProgramStage.getBlockEntryForm()).isEqualTo(UPDATED_BLOCK_ENTRY_FORM);
-        assertThat(testProgramStage.getPreGenerateUID()).isEqualTo(UPDATED_PRE_GENERATE_UID);
-        assertThat(testProgramStage.getRemindCompleted()).isEqualTo(UPDATED_REMIND_COMPLETED);
-        assertThat(testProgramStage.getGeneratedByEnrollmentDate()).isEqualTo(UPDATED_GENERATED_BY_ENROLLMENT_DATE);
-        assertThat(testProgramStage.getAllowGenerateNextVisit()).isEqualTo(UPDATED_ALLOW_GENERATE_NEXT_VISIT);
-        assertThat(testProgramStage.getOpenAfterEnrollment()).isEqualTo(UPDATED_OPEN_AFTER_ENROLLMENT);
-        assertThat(testProgramStage.getSortOrder()).isEqualTo(UPDATED_SORT_ORDER);
-        assertThat(testProgramStage.getHideDueDate()).isEqualTo(UPDATED_HIDE_DUE_DATE);
-        assertThat(testProgramStage.getEnableUserAssignment()).isEqualTo(UPDATED_ENABLE_USER_ASSIGNMENT);
-        assertThat(testProgramStage.getReferral()).isEqualTo(UPDATED_REFERRAL);
-        assertThat(testProgramStage.getDisplayExecutionDateLabel()).isEqualTo(UPDATED_DISPLAY_EXECUTION_DATE_LABEL);
-        assertThat(testProgramStage.getFormType()).isEqualTo(UPDATED_FORM_TYPE);
-        assertThat(testProgramStage.getDisplayFormName()).isEqualTo(UPDATED_DISPLAY_FORM_NAME);
-        assertThat(testProgramStage.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
-        assertThat(testProgramStage.getRepeatable()).isEqualTo(UPDATED_REPEATABLE);
-        assertThat(testProgramStage.getProgramStageDataElementsCount()).isEqualTo(UPDATED_PROGRAM_STAGE_DATA_ELEMENTS_COUNT);
-        assertThat(testProgramStage.getProgramStageDataElementsContent()).isEqualTo(UPDATED_PROGRAM_STAGE_DATA_ELEMENTS_CONTENT);
-    }
-
-    @Test
-    @Transactional
-    void putNonExistingProgramStage() throws Exception {
-        int databaseSizeBeforeUpdate = programStageRepository.findAll().size();
-        programStage.setId(UUID.randomUUID().toString());
-
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restProgramStageMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, programStage.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(programStage))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the ProgramStage in the database
-        List<ProgramStage> programStageList = programStageRepository.findAll();
-        assertThat(programStageList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void putWithIdMismatchProgramStage() throws Exception {
-        int databaseSizeBeforeUpdate = programStageRepository.findAll().size();
-        programStage.setId(UUID.randomUUID().toString());
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restProgramStageMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, UUID.randomUUID().toString())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(programStage))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the ProgramStage in the database
-        List<ProgramStage> programStageList = programStageRepository.findAll();
-        assertThat(programStageList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void putWithMissingIdPathParamProgramStage() throws Exception {
-        int databaseSizeBeforeUpdate = programStageRepository.findAll().size();
-        programStage.setId(UUID.randomUUID().toString());
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restProgramStageMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(programStage)))
-            .andExpect(status().isMethodNotAllowed());
-
-        // Validate the ProgramStage in the database
-        List<ProgramStage> programStageList = programStageRepository.findAll();
-        assertThat(programStageList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void partialUpdateProgramStageWithPatch() throws Exception {
-        // Initialize the database
-        programStage.setId(UUID.randomUUID().toString());
-        programStageRepository.saveAndFlush(programStage);
-
-        int databaseSizeBeforeUpdate = programStageRepository.findAll().size();
-
-        // Update the programStage using partial update
-        ProgramStage partialUpdatedProgramStage = new ProgramStage();
-        partialUpdatedProgramStage.setId(programStage.getId());
-
-        partialUpdatedProgramStage
-            .minDaysFromStart(UPDATED_MIN_DAYS_FROM_START)
-            .autoGenerateEvent(UPDATED_AUTO_GENERATE_EVENT)
-            .generatedByEnrollmentDate(UPDATED_GENERATED_BY_ENROLLMENT_DATE)
-            .openAfterEnrollment(UPDATED_OPEN_AFTER_ENROLLMENT)
-            .sortOrder(UPDATED_SORT_ORDER)
-            .enableUserAssignment(UPDATED_ENABLE_USER_ASSIGNMENT)
-            .referral(UPDATED_REFERRAL)
-            .formType(UPDATED_FORM_TYPE)
-            .repeatable(UPDATED_REPEATABLE);
-
-        restProgramStageMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedProgramStage.getId())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedProgramStage))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the ProgramStage in the database
-        List<ProgramStage> programStageList = programStageRepository.findAll();
-        assertThat(programStageList).hasSize(databaseSizeBeforeUpdate);
-        ProgramStage testProgramStage = programStageList.get(programStageList.size() - 1);
-        assertThat(testProgramStage.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testProgramStage.getCreated()).isEqualTo(DEFAULT_CREATED);
-        assertThat(testProgramStage.getLastUpdated()).isEqualTo(DEFAULT_LAST_UPDATED);
-        assertThat(testProgramStage.getMinDaysFromStart()).isEqualTo(UPDATED_MIN_DAYS_FROM_START);
-        assertThat(testProgramStage.getExecutionDateLabel()).isEqualTo(DEFAULT_EXECUTION_DATE_LABEL);
-        assertThat(testProgramStage.getAutoGenerateEvent()).isEqualTo(UPDATED_AUTO_GENERATE_EVENT);
-        assertThat(testProgramStage.getValidationStrategy()).isEqualTo(DEFAULT_VALIDATION_STRATEGY);
-        assertThat(testProgramStage.getDisplayGenerateEventBox()).isEqualTo(DEFAULT_DISPLAY_GENERATE_EVENT_BOX);
-        assertThat(testProgramStage.getFeatureType()).isEqualTo(DEFAULT_FEATURE_TYPE);
-        assertThat(testProgramStage.getBlockEntryForm()).isEqualTo(DEFAULT_BLOCK_ENTRY_FORM);
-        assertThat(testProgramStage.getPreGenerateUID()).isEqualTo(DEFAULT_PRE_GENERATE_UID);
-        assertThat(testProgramStage.getRemindCompleted()).isEqualTo(DEFAULT_REMIND_COMPLETED);
-        assertThat(testProgramStage.getGeneratedByEnrollmentDate()).isEqualTo(UPDATED_GENERATED_BY_ENROLLMENT_DATE);
-        assertThat(testProgramStage.getAllowGenerateNextVisit()).isEqualTo(DEFAULT_ALLOW_GENERATE_NEXT_VISIT);
-        assertThat(testProgramStage.getOpenAfterEnrollment()).isEqualTo(UPDATED_OPEN_AFTER_ENROLLMENT);
-        assertThat(testProgramStage.getSortOrder()).isEqualTo(UPDATED_SORT_ORDER);
-        assertThat(testProgramStage.getHideDueDate()).isEqualTo(DEFAULT_HIDE_DUE_DATE);
-        assertThat(testProgramStage.getEnableUserAssignment()).isEqualTo(UPDATED_ENABLE_USER_ASSIGNMENT);
-        assertThat(testProgramStage.getReferral()).isEqualTo(UPDATED_REFERRAL);
-        assertThat(testProgramStage.getDisplayExecutionDateLabel()).isEqualTo(DEFAULT_DISPLAY_EXECUTION_DATE_LABEL);
-        assertThat(testProgramStage.getFormType()).isEqualTo(UPDATED_FORM_TYPE);
-        assertThat(testProgramStage.getDisplayFormName()).isEqualTo(DEFAULT_DISPLAY_FORM_NAME);
-        assertThat(testProgramStage.getDisplayName()).isEqualTo(DEFAULT_DISPLAY_NAME);
-        assertThat(testProgramStage.getRepeatable()).isEqualTo(UPDATED_REPEATABLE);
-        assertThat(testProgramStage.getProgramStageDataElementsCount()).isEqualTo(DEFAULT_PROGRAM_STAGE_DATA_ELEMENTS_COUNT);
-        assertThat(testProgramStage.getProgramStageDataElementsContent()).isEqualTo(DEFAULT_PROGRAM_STAGE_DATA_ELEMENTS_CONTENT);
-    }
-
-    @Test
-    @Transactional
-    void fullUpdateProgramStageWithPatch() throws Exception {
-        // Initialize the database
-        programStage.setId(UUID.randomUUID().toString());
-        programStageRepository.saveAndFlush(programStage);
-
-        int databaseSizeBeforeUpdate = programStageRepository.findAll().size();
-
-        // Update the programStage using partial update
-        ProgramStage partialUpdatedProgramStage = new ProgramStage();
-        partialUpdatedProgramStage.setId(programStage.getId());
-
-        partialUpdatedProgramStage
-            .name(UPDATED_NAME)
-            .created(UPDATED_CREATED)
-            .lastUpdated(UPDATED_LAST_UPDATED)
-            .minDaysFromStart(UPDATED_MIN_DAYS_FROM_START)
-            .executionDateLabel(UPDATED_EXECUTION_DATE_LABEL)
-            .autoGenerateEvent(UPDATED_AUTO_GENERATE_EVENT)
-            .validationStrategy(UPDATED_VALIDATION_STRATEGY)
-            .displayGenerateEventBox(UPDATED_DISPLAY_GENERATE_EVENT_BOX)
-            .featureType(UPDATED_FEATURE_TYPE)
-            .blockEntryForm(UPDATED_BLOCK_ENTRY_FORM)
-            .preGenerateUID(UPDATED_PRE_GENERATE_UID)
-            .remindCompleted(UPDATED_REMIND_COMPLETED)
-            .generatedByEnrollmentDate(UPDATED_GENERATED_BY_ENROLLMENT_DATE)
-            .allowGenerateNextVisit(UPDATED_ALLOW_GENERATE_NEXT_VISIT)
-            .openAfterEnrollment(UPDATED_OPEN_AFTER_ENROLLMENT)
-            .sortOrder(UPDATED_SORT_ORDER)
-            .hideDueDate(UPDATED_HIDE_DUE_DATE)
-            .enableUserAssignment(UPDATED_ENABLE_USER_ASSIGNMENT)
-            .referral(UPDATED_REFERRAL)
-            .displayExecutionDateLabel(UPDATED_DISPLAY_EXECUTION_DATE_LABEL)
-            .formType(UPDATED_FORM_TYPE)
-            .displayFormName(UPDATED_DISPLAY_FORM_NAME)
-            .displayName(UPDATED_DISPLAY_NAME)
-            .repeatable(UPDATED_REPEATABLE)
-            .programStageDataElementsCount(UPDATED_PROGRAM_STAGE_DATA_ELEMENTS_COUNT)
-            .programStageDataElementsContent(UPDATED_PROGRAM_STAGE_DATA_ELEMENTS_CONTENT);
-
-        restProgramStageMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedProgramStage.getId())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedProgramStage))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the ProgramStage in the database
-        List<ProgramStage> programStageList = programStageRepository.findAll();
-        assertThat(programStageList).hasSize(databaseSizeBeforeUpdate);
-        ProgramStage testProgramStage = programStageList.get(programStageList.size() - 1);
-        assertThat(testProgramStage.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testProgramStage.getCreated()).isEqualTo(UPDATED_CREATED);
-        assertThat(testProgramStage.getLastUpdated()).isEqualTo(UPDATED_LAST_UPDATED);
-        assertThat(testProgramStage.getMinDaysFromStart()).isEqualTo(UPDATED_MIN_DAYS_FROM_START);
-        assertThat(testProgramStage.getExecutionDateLabel()).isEqualTo(UPDATED_EXECUTION_DATE_LABEL);
-        assertThat(testProgramStage.getAutoGenerateEvent()).isEqualTo(UPDATED_AUTO_GENERATE_EVENT);
-        assertThat(testProgramStage.getValidationStrategy()).isEqualTo(UPDATED_VALIDATION_STRATEGY);
-        assertThat(testProgramStage.getDisplayGenerateEventBox()).isEqualTo(UPDATED_DISPLAY_GENERATE_EVENT_BOX);
-        assertThat(testProgramStage.getFeatureType()).isEqualTo(UPDATED_FEATURE_TYPE);
-        assertThat(testProgramStage.getBlockEntryForm()).isEqualTo(UPDATED_BLOCK_ENTRY_FORM);
-        assertThat(testProgramStage.getPreGenerateUID()).isEqualTo(UPDATED_PRE_GENERATE_UID);
-        assertThat(testProgramStage.getRemindCompleted()).isEqualTo(UPDATED_REMIND_COMPLETED);
-        assertThat(testProgramStage.getGeneratedByEnrollmentDate()).isEqualTo(UPDATED_GENERATED_BY_ENROLLMENT_DATE);
-        assertThat(testProgramStage.getAllowGenerateNextVisit()).isEqualTo(UPDATED_ALLOW_GENERATE_NEXT_VISIT);
-        assertThat(testProgramStage.getOpenAfterEnrollment()).isEqualTo(UPDATED_OPEN_AFTER_ENROLLMENT);
-        assertThat(testProgramStage.getSortOrder()).isEqualTo(UPDATED_SORT_ORDER);
-        assertThat(testProgramStage.getHideDueDate()).isEqualTo(UPDATED_HIDE_DUE_DATE);
-        assertThat(testProgramStage.getEnableUserAssignment()).isEqualTo(UPDATED_ENABLE_USER_ASSIGNMENT);
-        assertThat(testProgramStage.getReferral()).isEqualTo(UPDATED_REFERRAL);
-        assertThat(testProgramStage.getDisplayExecutionDateLabel()).isEqualTo(UPDATED_DISPLAY_EXECUTION_DATE_LABEL);
-        assertThat(testProgramStage.getFormType()).isEqualTo(UPDATED_FORM_TYPE);
-        assertThat(testProgramStage.getDisplayFormName()).isEqualTo(UPDATED_DISPLAY_FORM_NAME);
-        assertThat(testProgramStage.getDisplayName()).isEqualTo(UPDATED_DISPLAY_NAME);
-        assertThat(testProgramStage.getRepeatable()).isEqualTo(UPDATED_REPEATABLE);
-        assertThat(testProgramStage.getProgramStageDataElementsCount()).isEqualTo(UPDATED_PROGRAM_STAGE_DATA_ELEMENTS_COUNT);
-        assertThat(testProgramStage.getProgramStageDataElementsContent()).isEqualTo(UPDATED_PROGRAM_STAGE_DATA_ELEMENTS_CONTENT);
-    }
-
-    @Test
-    @Transactional
-    void patchNonExistingProgramStage() throws Exception {
-        int databaseSizeBeforeUpdate = programStageRepository.findAll().size();
-        programStage.setId(UUID.randomUUID().toString());
-
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restProgramStageMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, programStage.getId())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(programStage))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the ProgramStage in the database
-        List<ProgramStage> programStageList = programStageRepository.findAll();
-        assertThat(programStageList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void patchWithIdMismatchProgramStage() throws Exception {
-        int databaseSizeBeforeUpdate = programStageRepository.findAll().size();
-        programStage.setId(UUID.randomUUID().toString());
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restProgramStageMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, UUID.randomUUID().toString())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(programStage))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the ProgramStage in the database
-        List<ProgramStage> programStageList = programStageRepository.findAll();
-        assertThat(programStageList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void patchWithMissingIdPathParamProgramStage() throws Exception {
-        int databaseSizeBeforeUpdate = programStageRepository.findAll().size();
-        programStage.setId(UUID.randomUUID().toString());
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restProgramStageMockMvc
-            .perform(
-                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(programStage))
-            )
-            .andExpect(status().isMethodNotAllowed());
-
-        // Validate the ProgramStage in the database
-        List<ProgramStage> programStageList = programStageRepository.findAll();
-        assertThat(programStageList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void deleteProgramStage() throws Exception {
-        // Initialize the database
-        programStage.setId(UUID.randomUUID().toString());
-        programStageRepository.saveAndFlush(programStage);
-
-        int databaseSizeBeforeDelete = programStageRepository.findAll().size();
-
-        // Delete the programStage
-        restProgramStageMockMvc
-            .perform(delete(ENTITY_API_URL_ID, programStage.getId()).accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNoContent());
-
-        // Validate the database contains one less item
-        List<ProgramStage> programStageList = programStageRepository.findAll();
-        assertThat(programStageList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

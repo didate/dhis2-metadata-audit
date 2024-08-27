@@ -5,14 +5,14 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
 import { ProgramComponent } from '../list/program.component';
 import { ProgramDetailComponent } from '../detail/program-detail.component';
 import { ProgramRoutingResolveService } from './program-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const programRoute: Routes = [
   {
     path: '',
     component: ProgramComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'lastUpdated,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

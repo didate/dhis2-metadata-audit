@@ -6,14 +6,14 @@ import { CategorycomboComponent } from '../list/categorycombo.component';
 import { CategorycomboDetailComponent } from '../detail/categorycombo-detail.component';
 import { CategorycomboUpdateComponent } from '../update/categorycombo-update.component';
 import { CategorycomboRoutingResolveService } from './categorycombo-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const categorycomboRoute: Routes = [
   {
     path: '',
     component: CategorycomboComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'lastUpdated,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

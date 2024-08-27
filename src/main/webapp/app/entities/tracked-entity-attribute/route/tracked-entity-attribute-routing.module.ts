@@ -6,14 +6,14 @@ import { TrackedEntityAttributeComponent } from '../list/tracked-entity-attribut
 import { TrackedEntityAttributeDetailComponent } from '../detail/tracked-entity-attribute-detail.component';
 import { TrackedEntityAttributeUpdateComponent } from '../update/tracked-entity-attribute-update.component';
 import { TrackedEntityAttributeRoutingResolveService } from './tracked-entity-attribute-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const trackedEntityAttributeRoute: Routes = [
   {
     path: '',
     component: TrackedEntityAttributeComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'lastUpdated,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

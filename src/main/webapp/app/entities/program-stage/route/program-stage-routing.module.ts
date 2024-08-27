@@ -6,14 +6,14 @@ import { ProgramStageComponent } from '../list/program-stage.component';
 import { ProgramStageDetailComponent } from '../detail/program-stage-detail.component';
 import { ProgramStageUpdateComponent } from '../update/program-stage-update.component';
 import { ProgramStageRoutingResolveService } from './program-stage-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const programStageRoute: Routes = [
   {
     path: '',
     component: ProgramStageComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'lastUpdated,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

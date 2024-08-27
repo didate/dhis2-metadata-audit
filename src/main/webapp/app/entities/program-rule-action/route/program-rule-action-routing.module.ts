@@ -6,14 +6,14 @@ import { ProgramRuleActionComponent } from '../list/program-rule-action.componen
 import { ProgramRuleActionDetailComponent } from '../detail/program-rule-action-detail.component';
 import { ProgramRuleActionUpdateComponent } from '../update/program-rule-action-update.component';
 import { ProgramRuleActionRoutingResolveService } from './program-rule-action-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const programRuleActionRoute: Routes = [
   {
     path: '',
     component: ProgramRuleActionComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'lastUpdated,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

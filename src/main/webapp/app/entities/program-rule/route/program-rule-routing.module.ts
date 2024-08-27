@@ -6,14 +6,14 @@ import { ProgramRuleComponent } from '../list/program-rule.component';
 import { ProgramRuleDetailComponent } from '../detail/program-rule-detail.component';
 import { ProgramRuleUpdateComponent } from '../update/program-rule-update.component';
 import { ProgramRuleRoutingResolveService } from './program-rule-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const programRuleRoute: Routes = [
   {
     path: '',
     component: ProgramRuleComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'lastUpdated,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

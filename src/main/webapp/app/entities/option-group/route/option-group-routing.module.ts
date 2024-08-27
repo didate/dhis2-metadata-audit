@@ -6,14 +6,14 @@ import { OptionGroupComponent } from '../list/option-group.component';
 import { OptionGroupDetailComponent } from '../detail/option-group-detail.component';
 import { OptionGroupUpdateComponent } from '../update/option-group-update.component';
 import { OptionGroupRoutingResolveService } from './option-group-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const optionGroupRoute: Routes = [
   {
     path: '',
     component: OptionGroupComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'lastUpdated,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

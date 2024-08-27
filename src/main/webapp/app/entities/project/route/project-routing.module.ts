@@ -6,14 +6,14 @@ import { ProjectComponent } from '../list/project.component';
 import { ProjectDetailComponent } from '../detail/project-detail.component';
 import { ProjectUpdateComponent } from '../update/project-update.component';
 import { ProjectRoutingResolveService } from './project-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const projectRoute: Routes = [
   {
     path: '',
     component: ProjectComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'id,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

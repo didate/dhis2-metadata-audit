@@ -18,18 +18,6 @@ export class ProgramService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(program: NewProgram): Observable<EntityResponseType> {
-    return this.http.post<IProgram>(this.resourceUrl, program, { observe: 'response' });
-  }
-
-  update(program: IProgram): Observable<EntityResponseType> {
-    return this.http.put<IProgram>(`${this.resourceUrl}/${this.getProgramIdentifier(program)}`, program, { observe: 'response' });
-  }
-
-  partialUpdate(program: PartialUpdateProgram): Observable<EntityResponseType> {
-    return this.http.patch<IProgram>(`${this.resourceUrl}/${this.getProgramIdentifier(program)}`, program, { observe: 'response' });
-  }
-
   find(id: string): Observable<EntityResponseType> {
     return this.http.get<IProgram>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
@@ -37,10 +25,6 @@ export class ProgramService {
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IProgram[]>(this.resourceUrl, { params: options, observe: 'response' });
-  }
-
-  delete(id: string): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   getProgramIdentifier(program: Pick<IProgram, 'id'>): string {
