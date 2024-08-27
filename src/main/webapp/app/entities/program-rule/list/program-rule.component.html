@@ -7,16 +7,6 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="dhis2TrackApp.programRule.home.refreshListLabel">Actualiser la liste</span>
       </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-program-rule"
-        [routerLink]="['/program-rule/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2TrackApp.programRule.home.createLabel"> Créer un nouveau Program Rule </span>
-      </button>
     </div>
   </h2>
 
@@ -56,36 +46,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="displayName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRule.displayName">Display Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="priority">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRule.priority">Priority</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="condition">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRule.condition">Condition</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="track">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRule.track">Track</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="project.id">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRule.project">Project</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col" jhiSortBy="createdBy.id">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.programRule.createdBy">Created By</span>
@@ -110,33 +71,25 @@
       <tbody>
         <tr *ngFor="let programRule of programRules; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/program-rule', programRule.id, 'view']">{{ programRule.id }}</a>
+            {{ programRule.id }}
           </td>
           <td>{{ programRule.lastUpdated | formatMediumDatetime }}</td>
           <td>{{ programRule.created | formatMediumDatetime }}</td>
           <td>{{ programRule.name }}</td>
-          <td>{{ programRule.displayName }}</td>
-          <td>{{ programRule.priority }}</td>
-          <td>{{ programRule.condition }}</td>
-          <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + programRule.track }}">{{ programRule.track }}</td>
-          <td>
-            <div *ngIf="programRule.project">
-              <a [routerLink]="['/project', programRule.project.id, 'view']">{{ programRule.project.id }}</a>
-            </div>
-          </td>
+
           <td>
             <div *ngIf="programRule.createdBy">
-              <a [routerLink]="['/dhis-user', programRule.createdBy.name, 'view']">{{ programRule.createdBy.name }}</a>
+              {{ programRule.createdBy.name }}
             </div>
           </td>
           <td>
             <div *ngIf="programRule.lastUpdatedBy">
-              <a [routerLink]="['/dhis-user', programRule.lastUpdatedBy.name, 'view']">{{ programRule.lastUpdatedBy.name }}</a>
+              {{ programRule.lastUpdatedBy.name }}
             </div>
           </td>
           <td>
             <div *ngIf="programRule.program">
-              <a [routerLink]="['/program', programRule.program.id, 'view']">{{ programRule.program.id }}</a>
+              {{ programRule.program.name }}
             </div>
           </td>
           <td class="text-end">

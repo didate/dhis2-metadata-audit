@@ -72,7 +72,7 @@ public class ProgramRuleAction implements Serializable, Persistable<String> {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy", "program" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "project", "createdBy", "lastUpdatedBy" }, allowSetters = true)
     private ProgramRule programRule;
 
     @ManyToOne

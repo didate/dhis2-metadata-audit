@@ -7,16 +7,6 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="dhis2TrackApp.dHISUser.home.refreshListLabel">Actualiser la liste</span>
       </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-dhis-user"
-        [routerLink]="['/dhis-user/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2TrackApp.dHISUser.home.createLabel"> Créer un nouveau DHIS User </span>
-      </button>
     </div>
   </h2>
 
@@ -38,24 +28,14 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="code">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.dHISUser.code">Code</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col" jhiSortBy="name">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dHISUser.name">Name</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="displayName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.dHISUser.displayName">Display Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col" jhiSortBy="username">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dHISUser.username">Username</span>
@@ -68,30 +48,14 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="email">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.dHISUser.email">Email</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="phoneNumber">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.dHISUser.phoneNumber">Phone Number</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col" jhiSortBy="disabled">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dHISUser.disabled">Disabled</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="passwordLastUpdated">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.dHISUser.passwordLastUpdated">Password Last Updated</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col" jhiSortBy="created">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dHISUser.created">Created</span>
@@ -104,32 +68,22 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="track">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.dHISUser.track">Track</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let dHISUser of dHISUsers; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/dhis-user', dHISUser.id, 'view']">{{ dHISUser.id }}</a>
+            {{ dHISUser.id }}
           </td>
-          <td>{{ dHISUser.code }}</td>
           <td>{{ dHISUser.name }}</td>
-          <td>{{ dHISUser.displayName }}</td>
           <td>{{ dHISUser.username }}</td>
           <td>{{ dHISUser.lastLogin | formatMediumDatetime }}</td>
-          <td>{{ dHISUser.email }}</td>
-          <td>{{ dHISUser.phoneNumber }}</td>
+
           <td>{{ dHISUser.disabled }}</td>
-          <td>{{ dHISUser.passwordLastUpdated | formatMediumDatetime }}</td>
           <td>{{ dHISUser.created | formatMediumDatetime }}</td>
           <td>{{ dHISUser.lastUpdated | formatMediumDatetime }}</td>
-          <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + dHISUser.track }}">{{ dHISUser.track }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button

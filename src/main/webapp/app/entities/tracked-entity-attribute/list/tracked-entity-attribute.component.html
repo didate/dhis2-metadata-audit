@@ -7,16 +7,6 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.home.refreshListLabel">Actualiser la liste</span>
       </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-tracked-entity-attribute"
-        [routerLink]="['/tracked-entity-attribute/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.home.createLabel"> Créer un nouveau Tracked Entity Attribute </span>
-      </button>
     </div>
   </h2>
 
@@ -38,6 +28,12 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="name">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.name">Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="lastUpdated">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.lastUpdated">Last Updated</span>
@@ -50,144 +46,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="name">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.name">Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="shortName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.shortName">Short Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="generated">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.generated">Generated</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="valueType">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.valueType">Value Type</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="confidential">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.confidential">Confidential</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayFormName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayFormName">Display Form Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="uniquee">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.uniquee">Uniquee</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="dimensionItemType">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.dimensionItemType">Dimension Item Type</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="aggregationType">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.aggregationType">Aggregation Type</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayInListNoProgram">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayInListNoProgram">Display In List No Program</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayName">Display Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="patterne">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.patterne">Patterne</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="skipSynchronization">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.skipSynchronization">Skip Synchronization</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayShortName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayShortName">Display Short Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="periodOffset">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.periodOffset">Period Offset</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayOnVisitSchedule">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayOnVisitSchedule">Display On Visit Schedule</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="formName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.formName">Form Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="orgunitScope">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.orgunitScope">Orgunit Scope</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="dimensionItem">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.dimensionItem">Dimension Item</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="inherit">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.inherit">Inherit</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="optionSetValue">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.optionSetValue">Option Set Value</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="track">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.track">Track</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="project.id">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.project">Project</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col" jhiSortBy="createdBy.id">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.createdBy">Created By</span>
@@ -200,68 +59,30 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="optionSet.id">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.optionSet">Option Set</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let trackedEntityAttribute of trackedEntityAttributes; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/tracked-entity-attribute', trackedEntityAttribute.id, 'view']">{{ trackedEntityAttribute.id }}</a>
+            {{ trackedEntityAttribute.id }}
           </td>
+          <td>{{ trackedEntityAttribute.name }}</td>
           <td>{{ trackedEntityAttribute.lastUpdated | formatMediumDatetime }}</td>
           <td>{{ trackedEntityAttribute.created | formatMediumDatetime }}</td>
-          <td>{{ trackedEntityAttribute.name }}</td>
-          <td>{{ trackedEntityAttribute.shortName }}</td>
-          <td>{{ trackedEntityAttribute.generated }}</td>
-          <td>{{ trackedEntityAttribute.valueType }}</td>
-          <td>{{ trackedEntityAttribute.confidential }}</td>
-          <td>{{ trackedEntityAttribute.displayFormName }}</td>
-          <td>{{ trackedEntityAttribute.uniquee }}</td>
-          <td>{{ trackedEntityAttribute.dimensionItemType }}</td>
-          <td>{{ trackedEntityAttribute.aggregationType }}</td>
-          <td>{{ trackedEntityAttribute.displayInListNoProgram }}</td>
-          <td>{{ trackedEntityAttribute.displayName }}</td>
-          <td>{{ trackedEntityAttribute.patterne }}</td>
-          <td>{{ trackedEntityAttribute.skipSynchronization }}</td>
-          <td>{{ trackedEntityAttribute.displayShortName }}</td>
-          <td>{{ trackedEntityAttribute.periodOffset }}</td>
-          <td>{{ trackedEntityAttribute.displayOnVisitSchedule }}</td>
-          <td>{{ trackedEntityAttribute.formName }}</td>
-          <td>{{ trackedEntityAttribute.orgunitScope }}</td>
-          <td>{{ trackedEntityAttribute.dimensionItem }}</td>
-          <td>{{ trackedEntityAttribute.inherit }}</td>
-          <td>{{ trackedEntityAttribute.optionSetValue }}</td>
-          <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + trackedEntityAttribute.track }}">{{ trackedEntityAttribute.track }}</td>
-          <td>
-            <div *ngIf="trackedEntityAttribute.project">
-              <a [routerLink]="['/project', trackedEntityAttribute.project.id, 'view']">{{ trackedEntityAttribute.project.id }}</a>
-            </div>
-          </td>
+
           <td>
             <div *ngIf="trackedEntityAttribute.createdBy">
-              <a [routerLink]="['/dhis-user', trackedEntityAttribute.createdBy.name, 'view']">{{
-                trackedEntityAttribute.createdBy.name
-              }}</a>
+              {{ trackedEntityAttribute.createdBy.name }}
             </div>
           </td>
           <td>
             <div *ngIf="trackedEntityAttribute.lastUpdatedBy">
-              <a [routerLink]="['/dhis-user', trackedEntityAttribute.lastUpdatedBy.name, 'view']">{{
-                trackedEntityAttribute.lastUpdatedBy.name
-              }}</a>
+              {{ trackedEntityAttribute.lastUpdatedBy.name }}
             </div>
           </td>
-          <td>
-            <div *ngIf="trackedEntityAttribute.optionSet">
-              <a [routerLink]="['/optionset', trackedEntityAttribute.optionSet.id, 'view']">{{ trackedEntityAttribute.optionSet.id }}</a>
-            </div>
-          </td>
+
           <td class="text-end">
             <div class="btn-group">
               <button

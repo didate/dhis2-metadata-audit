@@ -20,7 +20,7 @@ export interface IProgramRuleAction {
   project?: Pick<IProject, 'id'> | null;
   createdBy?: Pick<IDHISUser, 'name'> | null;
   lastUpdatedBy?: Pick<IDHISUser, 'name'> | null;
-  programRule?: Pick<IProgramRule, 'id'> | null;
+  programRule?: IProgramRule | null;
   trackedEntityAttribute?: Pick<ITrackedEntityAttribute, 'id'> | null;
   dataElement?: Pick<ITrackedEntityAttribute, 'id'> | null;
   optionGroup?: Pick<IOptionGroup, 'id'> | null;
