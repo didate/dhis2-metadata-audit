@@ -126,12 +126,12 @@
           </td>
           <td>
             <div *ngIf="programRule.createdBy">
-              <a [routerLink]="['/dhis-user', programRule.createdBy.id, 'view']">{{ programRule.createdBy.id }}</a>
+              <a [routerLink]="['/dhis-user', programRule.createdBy.name, 'view']">{{ programRule.createdBy.name }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="programRule.lastUpdatedBy">
-              <a [routerLink]="['/dhis-user', programRule.lastUpdatedBy.id, 'view']">{{ programRule.lastUpdatedBy.id }}</a>
+              <a [routerLink]="['/dhis-user', programRule.lastUpdatedBy.name, 'view']">{{ programRule.lastUpdatedBy.name }}</a>
             </div>
           </td>
           <td>
@@ -149,21 +149,6 @@
               >
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/program-rule', programRule.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-              </button>
-
-              <button type="submit" (click)="delete(programRule)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
               </button>
             </div>
           </td>

@@ -32,8 +32,8 @@ export interface ITrackedEntityAttribute {
   optionSetValue?: boolean | null;
   track?: TypeTrack | null;
   project?: Pick<IProject, 'id'> | null;
-  createdBy?: Pick<IDHISUser, 'id'> | null;
-  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'name'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'name'> | null;
   optionSet?: Pick<IOptionset, 'id'> | null;
   programs?: Pick<IProgram, 'id'>[] | null;
 }

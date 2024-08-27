@@ -9,7 +9,6 @@ import { IDataset } from '../dataset.model';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, DatasetService } from '../service/dataset.service';
-import { DatasetDeleteDialogComponent } from '../delete/dataset-delete-dialog.component';
 
 @Component({
   selector: 'jhi-dataset',
@@ -37,22 +36,6 @@ export class DatasetComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
-  }
-
-  delete(dataset: IDataset): void {
-    const modalRef = this.modalService.open(DatasetDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.dataset = dataset;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed
-      .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
-        switchMap(() => this.loadFromBackendWithRouteInformations())
-      )
-      .subscribe({
-        next: (res: EntityArrayResponseType) => {
-          this.onResponseSuccess(res);
-        },
-      });
   }
 
   load(): void {

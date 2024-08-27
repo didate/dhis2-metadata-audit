@@ -3,6 +3,7 @@ package com.didate.web.rest;
 import com.didate.domain.DataSet;
 import com.didate.repository.DatasetRepository;
 import com.didate.service.DatasetService;
+import com.didate.service.dto.DataSetDTO;
 import com.didate.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -143,18 +144,14 @@ public class DatasetResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of datasets in body.
      */
     @GetMapping("/datasets")
-    public ResponseEntity<List<DataSet>> getAllDatasets(
+    public ResponseEntity<List<DataSetDTO>> getAllDatasetDataSetDTOs(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         @RequestParam(required = false, defaultValue = "false") boolean eagerload
     ) {
         log.debug("REST request to get a page of Datasets");
-        Page<DataSet> page;
-        if (eagerload) {
-            page = datasetService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = datasetService.findAll(pageable);
-        }
+        Page<DataSetDTO> page = datasetService.findAllDataSets(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

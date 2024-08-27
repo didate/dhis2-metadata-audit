@@ -3,6 +3,7 @@ package com.didate.service.impl;
 import com.didate.domain.DataSet;
 import com.didate.repository.DatasetRepository;
 import com.didate.service.DatasetService;
+import com.didate.service.dto.DataSetDTO;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -189,5 +190,10 @@ public class DatasetServiceImpl implements DatasetService {
     @Override
     public Long count() {
         return datasetRepository.count();
+    }
+
+    @Override
+    public Page<DataSetDTO> findAllDataSets(Pageable pageable) {
+        return datasetRepository.findAll(pageable).map(DataSetDTO::new);
     }
 }

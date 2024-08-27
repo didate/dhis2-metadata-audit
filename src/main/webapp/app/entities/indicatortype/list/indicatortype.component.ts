@@ -9,7 +9,6 @@ import { IIndicatortype } from '../indicatortype.model';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, IndicatortypeService } from '../service/indicatortype.service';
-import { IndicatortypeDeleteDialogComponent } from '../delete/indicatortype-delete-dialog.component';
 
 @Component({
   selector: 'jhi-indicatortype',
@@ -37,22 +36,6 @@ export class IndicatortypeComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
-  }
-
-  delete(indicatortype: IIndicatortype): void {
-    const modalRef = this.modalService.open(IndicatortypeDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.indicatortype = indicatortype;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed
-      .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
-        switchMap(() => this.loadFromBackendWithRouteInformations())
-      )
-      .subscribe({
-        next: (res: EntityArrayResponseType) => {
-          this.onResponseSuccess(res);
-        },
-      });
   }
 
   load(): void {

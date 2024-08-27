@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.DataSet;
+import com.didate.service.dto.DataSetDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,7 @@ public interface DatasetService {
      * @return the list of entities.
      */
     Page<DataSet> findAll(Pageable pageable);
+    Page<DataSetDTO> findAllDataSets(Pageable pageable);
 
     /**
      * Get all the datasets with eager load of many-to-many relationships.

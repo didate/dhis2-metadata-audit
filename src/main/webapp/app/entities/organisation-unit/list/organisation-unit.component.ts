@@ -9,7 +9,6 @@ import { IOrganisationUnit } from '../organisation-unit.model';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, OrganisationUnitService } from '../service/organisation-unit.service';
-import { OrganisationUnitDeleteDialogComponent } from '../delete/organisation-unit-delete-dialog.component';
 
 @Component({
   selector: 'jhi-organisation-unit',
@@ -37,22 +36,6 @@ export class OrganisationUnitComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
-  }
-
-  delete(organisationUnit: IOrganisationUnit): void {
-    const modalRef = this.modalService.open(OrganisationUnitDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.organisationUnit = organisationUnit;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed
-      .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
-        switchMap(() => this.loadFromBackendWithRouteInformations())
-      )
-      .subscribe({
-        next: (res: EntityArrayResponseType) => {
-          this.onResponseSuccess(res);
-        },
-      });
   }
 
   load(): void {

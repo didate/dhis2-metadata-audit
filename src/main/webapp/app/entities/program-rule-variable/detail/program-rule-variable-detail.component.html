@@ -55,13 +55,15 @@
         <dt><span jhiTranslate="dhis2TrackApp.programRuleVariable.createdBy">Created By</span></dt>
         <dd>
           <div *ngIf="programRuleVariable.createdBy">
-            <a [routerLink]="['/dhis-user', programRuleVariable.createdBy.id, 'view']">{{ programRuleVariable.createdBy.id }}</a>
+            <a [routerLink]="['/dhis-user', programRuleVariable.createdBy.name, 'view']">{{ programRuleVariable.createdBy.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.programRuleVariable.lastUpdatedBy">Last Updated By</span></dt>
         <dd>
           <div *ngIf="programRuleVariable.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', programRuleVariable.lastUpdatedBy.id, 'view']">{{ programRuleVariable.lastUpdatedBy.id }}</a>
+            <a [routerLink]="['/dhis-user', programRuleVariable.lastUpdatedBy.name, 'view']">{{
+              programRuleVariable.lastUpdatedBy.name
+            }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.programRuleVariable.program">Program</span></dt>

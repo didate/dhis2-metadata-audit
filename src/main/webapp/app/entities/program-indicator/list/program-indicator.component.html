@@ -157,12 +157,12 @@
           <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + programIndicator.track }}">{{ programIndicator.track }}</td>
           <td>
             <div *ngIf="programIndicator.createdBy">
-              <a [routerLink]="['/dhis-user', programIndicator.createdBy.id, 'view']">{{ programIndicator.createdBy.id }}</a>
+              <a [routerLink]="['/dhis-user', programIndicator.createdBy.name, 'view']">{{ programIndicator.createdBy.name }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="programIndicator.lastUpdatedBy">
-              <a [routerLink]="['/dhis-user', programIndicator.lastUpdatedBy.id, 'view']">{{ programIndicator.lastUpdatedBy.id }}</a>
+              <a [routerLink]="['/dhis-user', programIndicator.lastUpdatedBy.name, 'view']">{{ programIndicator.lastUpdatedBy.name }}</a>
             </div>
           </td>
           <td>
@@ -180,21 +180,6 @@
               >
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/program-indicator', programIndicator.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-              </button>
-
-              <button type="submit" (click)="delete(programIndicator)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
               </button>
             </div>
           </td>

@@ -209,12 +209,12 @@
           </td>
           <td>
             <div *ngIf="dataelement.createdBy">
-              <a [routerLink]="['/dhis-user', dataelement.createdBy.id, 'view']">{{ dataelement.createdBy.id }}</a>
+              {{ dataelement.createdBy.name }}
             </div>
           </td>
           <td>
             <div *ngIf="dataelement.lastUpdatedBy">
-              <a [routerLink]="['/dhis-user', dataelement.lastUpdatedBy.id, 'view']">{{ dataelement.lastUpdatedBy.id }}</a>
+              {{ dataelement.lastUpdatedBy.name }}
             </div>
           </td>
           <td>
@@ -237,21 +237,6 @@
               >
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/dataelement', dataelement.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-              </button>
-
-              <button type="submit" (click)="delete(dataelement)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
               </button>
             </div>
           </td>

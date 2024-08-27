@@ -45,8 +45,8 @@ export interface IDataset {
   organisationUnitsContent?: string | null;
   track?: TypeTrack | null;
   project?: Pick<IProject, 'id'> | null;
-  createdBy?: Pick<IDHISUser, 'id'> | null;
-  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'name'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'name'> | null;
   categoryCombo?: Pick<ICategorycombo, 'id'> | null;
   dataSetElements?: Pick<IDataelement, 'id'>[] | null;
   indicators?: Pick<IIndicator, 'id'>[] | null;

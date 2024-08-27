@@ -121,14 +121,14 @@
         <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.createdBy">Created By</span></dt>
         <dd>
           <div *ngIf="trackedEntityAttribute.createdBy">
-            <a [routerLink]="['/dhis-user', trackedEntityAttribute.createdBy.id, 'view']">{{ trackedEntityAttribute.createdBy.id }}</a>
+            <a [routerLink]="['/dhis-user', trackedEntityAttribute.createdBy.name, 'view']">{{ trackedEntityAttribute.createdBy.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.lastUpdatedBy">Last Updated By</span></dt>
         <dd>
           <div *ngIf="trackedEntityAttribute.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', trackedEntityAttribute.lastUpdatedBy.id, 'view']">{{
-              trackedEntityAttribute.lastUpdatedBy.id
+            <a [routerLink]="['/dhis-user', trackedEntityAttribute.lastUpdatedBy.name, 'view']">{{
+              trackedEntityAttribute.lastUpdatedBy.name
             }}</a>
           </div>
         </dd>

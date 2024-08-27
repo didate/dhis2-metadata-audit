@@ -9,7 +9,6 @@ import { IProgramStage } from '../program-stage.model';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, ProgramStageService } from '../service/program-stage.service';
-import { ProgramStageDeleteDialogComponent } from '../delete/program-stage-delete-dialog.component';
 
 @Component({
   selector: 'jhi-program-stage',
@@ -37,22 +36,6 @@ export class ProgramStageComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
-  }
-
-  delete(programStage: IProgramStage): void {
-    const modalRef = this.modalService.open(ProgramStageDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.programStage = programStage;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed
-      .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
-        switchMap(() => this.loadFromBackendWithRouteInformations())
-      )
-      .subscribe({
-        next: (res: EntityArrayResponseType) => {
-          this.onResponseSuccess(res);
-        },
-      });
   }
 
   load(): void {

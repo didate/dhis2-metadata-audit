@@ -163,13 +163,13 @@
         <dt><span jhiTranslate="dhis2TrackApp.dataset.createdBy">Created By</span></dt>
         <dd>
           <div *ngIf="dataset.createdBy">
-            <a [routerLink]="['/dhis-user', dataset.createdBy.id, 'view']">{{ dataset.createdBy.id }}</a>
+            <a [routerLink]="['/dhis-user', dataset.createdBy.name, 'view']">{{ dataset.createdBy.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.dataset.lastUpdatedBy">Last Updated By</span></dt>
         <dd>
           <div *ngIf="dataset.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', dataset.lastUpdatedBy.id, 'view']">{{ dataset.lastUpdatedBy.id }}</a>
+            <a [routerLink]="['/dhis-user', dataset.lastUpdatedBy.name, 'view']">{{ dataset.lastUpdatedBy.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.dataset.categoryCombo">Category Combo</span></dt>

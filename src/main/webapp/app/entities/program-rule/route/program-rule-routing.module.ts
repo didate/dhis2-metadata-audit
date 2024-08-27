@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ProgramRuleComponent } from '../list/program-rule.component';
 import { ProgramRuleDetailComponent } from '../detail/program-rule-detail.component';
-import { ProgramRuleUpdateComponent } from '../update/program-rule-update.component';
 import { ProgramRuleRoutingResolveService } from './program-rule-routing-resolve.service';
 import { DESC } from 'app/config/navigation.constants';
 
@@ -20,22 +19,6 @@ const programRuleRoute: Routes = [
   {
     path: ':id/view',
     component: ProgramRuleDetailComponent,
-    resolve: {
-      programRule: ProgramRuleRoutingResolveService,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: 'new',
-    component: ProgramRuleUpdateComponent,
-    resolve: {
-      programRule: ProgramRuleRoutingResolveService,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: ':id/edit',
-    component: ProgramRuleUpdateComponent,
     resolve: {
       programRule: ProgramRuleRoutingResolveService,
     },
