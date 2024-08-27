@@ -3,6 +3,7 @@ package com.didate.service.impl;
 import com.didate.domain.Program;
 import com.didate.repository.ProgramRepository;
 import com.didate.service.ProgramService;
+import com.didate.service.dto.ProgramDTO;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -207,5 +208,10 @@ public class ProgramServiceImpl implements ProgramService {
     @Override
     public Long count() {
         return programRepository.count();
+    }
+
+    @Override
+    public Page<ProgramDTO> findAllPrograms(Pageable pageable) {
+        return programRepository.findAll(pageable).map(ProgramDTO::new);
     }
 }

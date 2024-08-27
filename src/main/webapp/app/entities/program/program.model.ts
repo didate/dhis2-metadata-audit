@@ -54,8 +54,8 @@ export interface IProgram {
   programTrackedEntityAttributesContent?: string | null;
   track?: TypeTrack | null;
   project?: Pick<IProject, 'id'> | null;
-  createdBy?: Pick<IDHISUser, 'id'> | null;
-  lastUpdatedBy?: Pick<IDHISUser, 'id'> | null;
+  createdBy?: Pick<IDHISUser, 'name'> | null;
+  lastUpdatedBy?: Pick<IDHISUser, 'name'> | null;
   categoryCombo?: Pick<ICategorycombo, 'id'> | null;
   programTrackedEntityAttributes?: Pick<ITrackedEntityAttribute, 'id'>[] | null;
   organisationUnits?: Pick<IOrganisationUnit, 'id'>[] | null;
