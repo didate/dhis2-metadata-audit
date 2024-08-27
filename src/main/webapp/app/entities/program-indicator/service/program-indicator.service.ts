@@ -116,8 +116,8 @@ export class ProgramIndicatorService {
   protected convertDateFromServer(restProgramIndicator: RestProgramIndicator): IProgramIndicator {
     return {
       ...restProgramIndicator,
-      created: restProgramIndicator.created ? dayjs(restProgramIndicator.created) : undefined,
-      lastUpdated: restProgramIndicator.lastUpdated ? dayjs(restProgramIndicator.lastUpdated) : undefined,
+      created: restProgramIndicator.created ? dayjs.unix(restProgramIndicator.created as unknown as number) : undefined,
+      lastUpdated: restProgramIndicator.lastUpdated ? dayjs.unix(restProgramIndicator.lastUpdated as unknown as number) : undefined,
     };
   }
 

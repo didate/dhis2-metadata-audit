@@ -38,6 +38,12 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="name">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programRuleVariable.name">Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="lastUpdated">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.programRuleVariable.lastUpdated">Last Updated</span>
@@ -47,42 +53,6 @@
           <th scope="col" jhiSortBy="created">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.programRuleVariable.created">Created</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="name">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleVariable.name">Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleVariable.displayName">Display Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="programRuleVariableSourceType">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleVariable.programRuleVariableSourceType">Program Rule Variable Source Type</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="useCodeForOptionSet">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleVariable.useCodeForOptionSet">Use Code For Option Set</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="track">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleVariable.track">Track</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="project.id">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleVariable.project">Project</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -104,67 +74,36 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="trackedEntityAttribute.id">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleVariable.trackedEntityAttribute">Tracked Entity Attribute</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="dataElement.id">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleVariable.dataElement">Data Element</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let programRuleVariable of programRuleVariables; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/program-rule-variable', programRuleVariable.id, 'view']">{{ programRuleVariable.id }}</a>
+            {{ programRuleVariable.id }}
           </td>
+
+          <td>{{ programRuleVariable.name }}</td>
           <td>{{ programRuleVariable.lastUpdated | formatMediumDatetime }}</td>
           <td>{{ programRuleVariable.created | formatMediumDatetime }}</td>
-          <td>{{ programRuleVariable.name }}</td>
-          <td>{{ programRuleVariable.displayName }}</td>
-          <td>{{ programRuleVariable.programRuleVariableSourceType }}</td>
-          <td>{{ programRuleVariable.useCodeForOptionSet }}</td>
-          <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + programRuleVariable.track }}">{{ programRuleVariable.track }}</td>
-          <td>
-            <div *ngIf="programRuleVariable.project">
-              <a [routerLink]="['/project', programRuleVariable.project.id, 'view']">{{ programRuleVariable.project.id }}</a>
-            </div>
-          </td>
+
           <td>
             <div *ngIf="programRuleVariable.createdBy">
-              <a [routerLink]="['/dhis-user', programRuleVariable.createdBy.name, 'view']">{{ programRuleVariable.createdBy.name }}</a>
+              {{ programRuleVariable.createdBy.name }}
             </div>
           </td>
           <td>
             <div *ngIf="programRuleVariable.lastUpdatedBy">
-              <a [routerLink]="['/dhis-user', programRuleVariable.lastUpdatedBy.name, 'view']">{{
-                programRuleVariable.lastUpdatedBy.name
-              }}</a>
+              {{ programRuleVariable.lastUpdatedBy.name }}
             </div>
           </td>
           <td>
             <div *ngIf="programRuleVariable.program">
-              <a [routerLink]="['/program', programRuleVariable.program.id, 'view']">{{ programRuleVariable.program.id }}</a>
+              {{ programRuleVariable.program.name }}
             </div>
           </td>
-          <td>
-            <div *ngIf="programRuleVariable.trackedEntityAttribute">
-              <a [routerLink]="['/tracked-entity-attribute', programRuleVariable.trackedEntityAttribute.id, 'view']">{{
-                programRuleVariable.trackedEntityAttribute.id
-              }}</a>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="programRuleVariable.dataElement">
-              <a [routerLink]="['/dataelement', programRuleVariable.dataElement.id, 'view']">{{ programRuleVariable.dataElement.id }}</a>
-            </div>
-          </td>
+
           <td class="text-end">
             <div class="btn-group">
               <button

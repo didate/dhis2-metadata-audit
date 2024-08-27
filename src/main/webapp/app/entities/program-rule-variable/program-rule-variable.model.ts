@@ -18,7 +18,7 @@ export interface IProgramRuleVariable {
   project?: Pick<IProject, 'id'> | null;
   createdBy?: Pick<IDHISUser, 'name'> | null;
   lastUpdatedBy?: Pick<IDHISUser, 'name'> | null;
-  program?: Pick<IProgram, 'id'> | null;
+  program?: Pick<IProgram, 'name'> | null;
   trackedEntityAttribute?: Pick<ITrackedEntityAttribute, 'id'> | null;
   dataElement?: Pick<IDataelement, 'id'> | null;
 }

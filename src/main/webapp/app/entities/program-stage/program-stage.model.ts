@@ -33,7 +33,7 @@ export interface IProgramStage {
   programStageDataElementsContent?: number | null;
   createdBy?: Pick<IDHISUser, 'name'> | null;
   lastUpdatedBy?: Pick<IDHISUser, 'name'> | null;
-  program?: Pick<IProgram, 'id'> | null;
+  program?: Pick<IProgram, 'name'> | null;
   programStageDataElements?: Pick<IDataelement, 'id'>[] | null;
   programs?: Pick<IProgram, 'id'>[] | null;
 }

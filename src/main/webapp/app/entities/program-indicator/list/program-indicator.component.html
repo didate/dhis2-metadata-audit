@@ -7,16 +7,6 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="dhis2TrackApp.programIndicator.home.refreshListLabel">Actualiser la liste</span>
       </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-program-indicator"
-        [routerLink]="['/program-indicator/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2TrackApp.programIndicator.home.createLabel"> Créer un nouveau Program Indicator </span>
-      </button>
     </div>
   </h2>
 
@@ -56,66 +46,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="shortName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programIndicator.shortName">Short Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="dimensionItemType">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programIndicator.dimensionItemType">Dimension Item Type</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="expression">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programIndicator.expression">Expression</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="filter">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programIndicator.filter">Filter</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="analyticsType">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programIndicator.analyticsType">Analytics Type</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="dimensionItem">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programIndicator.dimensionItem">Dimension Item</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayShortName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programIndicator.displayShortName">Display Short Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programIndicator.displayName">Display Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayFormName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programIndicator.displayFormName">Display Form Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="track">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programIndicator.track">Track</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col" jhiSortBy="createdBy.id">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.programIndicator.createdBy">Created By</span>
@@ -140,34 +71,24 @@
       <tbody>
         <tr *ngFor="let programIndicator of programIndicators; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/program-indicator', programIndicator.id, 'view']">{{ programIndicator.id }}</a>
+            {{ programIndicator.id }}
           </td>
           <td>{{ programIndicator.name }}</td>
           <td>{{ programIndicator.created | formatMediumDatetime }}</td>
           <td>{{ programIndicator.lastUpdated | formatMediumDatetime }}</td>
-          <td>{{ programIndicator.shortName }}</td>
-          <td>{{ programIndicator.dimensionItemType }}</td>
-          <td>{{ programIndicator.expression }}</td>
-          <td>{{ programIndicator.filter }}</td>
-          <td>{{ programIndicator.analyticsType }}</td>
-          <td>{{ programIndicator.dimensionItem }}</td>
-          <td>{{ programIndicator.displayShortName }}</td>
-          <td>{{ programIndicator.displayName }}</td>
-          <td>{{ programIndicator.displayFormName }}</td>
-          <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + programIndicator.track }}">{{ programIndicator.track }}</td>
           <td>
             <div *ngIf="programIndicator.createdBy">
-              <a [routerLink]="['/dhis-user', programIndicator.createdBy.name, 'view']">{{ programIndicator.createdBy.name }}</a>
+              {{ programIndicator.createdBy.name }}
             </div>
           </td>
           <td>
             <div *ngIf="programIndicator.lastUpdatedBy">
-              <a [routerLink]="['/dhis-user', programIndicator.lastUpdatedBy.name, 'view']">{{ programIndicator.lastUpdatedBy.name }}</a>
+              {{ programIndicator.lastUpdatedBy.name }}
             </div>
           </td>
           <td>
             <div *ngIf="programIndicator.program">
-              <a [routerLink]="['/program', programIndicator.program.id, 'view']">{{ programIndicator.program.id }}</a>
+              {{ programIndicator.program.name }}
             </div>
           </td>
           <td class="text-end">

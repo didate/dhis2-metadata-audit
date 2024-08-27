@@ -116,8 +116,8 @@ export class ProgramRuleVariableService {
   protected convertDateFromServer(restProgramRuleVariable: RestProgramRuleVariable): IProgramRuleVariable {
     return {
       ...restProgramRuleVariable,
-      lastUpdated: restProgramRuleVariable.lastUpdated ? dayjs(restProgramRuleVariable.lastUpdated) : undefined,
-      created: restProgramRuleVariable.created ? dayjs(restProgramRuleVariable.created) : undefined,
+      lastUpdated: restProgramRuleVariable.lastUpdated ? dayjs.unix(restProgramRuleVariable.lastUpdated as unknown as number) : undefined,
+      created: restProgramRuleVariable.created ? dayjs.unix(restProgramRuleVariable.created as unknown as number) : undefined,
     };
   }
 

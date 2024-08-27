@@ -83,7 +83,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.programIndicator.program">Program</span></dt>
         <dd>
           <div *ngIf="programIndicator.program">
-            <a [routerLink]="['/program', programIndicator.program.id, 'view']">{{ programIndicator.program.id }}</a>
+            <a [routerLink]="['/program', programIndicator.program.name, 'view']">{{ programIndicator.program.name }}</a>
           </div>
         </dd>
       </dl>

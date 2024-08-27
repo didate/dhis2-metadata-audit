@@ -118,9 +118,9 @@ export class OrganisationUnitService {
   protected convertDateFromServer(restOrganisationUnit: RestOrganisationUnit): IOrganisationUnit {
     return {
       ...restOrganisationUnit,
-      created: restOrganisationUnit.created ? dayjs(restOrganisationUnit.created) : undefined,
-      lastUpdated: restOrganisationUnit.lastUpdated ? dayjs(restOrganisationUnit.lastUpdated) : undefined,
-      openingDate: restOrganisationUnit.openingDate ? dayjs(restOrganisationUnit.openingDate) : undefined,
+      created: restOrganisationUnit.created ? dayjs.unix(restOrganisationUnit.created as unknown as number) : undefined,
+      lastUpdated: restOrganisationUnit.lastUpdated ? dayjs.unix(restOrganisationUnit.lastUpdated as unknown as number) : undefined,
+      openingDate: restOrganisationUnit.openingDate ? dayjs.unix(restOrganisationUnit.openingDate as unknown as number) : undefined,
     };
   }
 

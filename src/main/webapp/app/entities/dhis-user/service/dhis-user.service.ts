@@ -112,10 +112,10 @@ export class DHISUserService {
   protected convertDateFromServer(restDHISUser: RestDHISUser): IDHISUser {
     return {
       ...restDHISUser,
-      lastLogin: restDHISUser.lastLogin ? dayjs(restDHISUser.lastLogin) : undefined,
-      passwordLastUpdated: restDHISUser.passwordLastUpdated ? dayjs(restDHISUser.passwordLastUpdated) : undefined,
-      created: restDHISUser.created ? dayjs(restDHISUser.created) : undefined,
-      lastUpdated: restDHISUser.lastUpdated ? dayjs(restDHISUser.lastUpdated) : undefined,
+      lastLogin: restDHISUser.lastLogin ? dayjs.unix(restDHISUser.lastLogin as unknown as number) : undefined,
+      passwordLastUpdated: restDHISUser.passwordLastUpdated ? dayjs.unix(restDHISUser.passwordLastUpdated as unknown as number) : undefined,
+      created: restDHISUser.created ? dayjs.unix(restDHISUser.created as unknown as number) : undefined,
+      lastUpdated: restDHISUser.lastUpdated ? dayjs.unix(restDHISUser.lastUpdated as unknown as number) : undefined,
     };
   }
 

@@ -7,16 +7,6 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="dhis2TrackApp.organisationUnit.home.refreshListLabel">Actualiser la liste</span>
       </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-organisation-unit"
-        [routerLink]="['/organisation-unit/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2TrackApp.organisationUnit.home.createLabel"> Créer un nouveau Organisation Unit </span>
-      </button>
     </div>
   </h2>
 
@@ -56,30 +46,14 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="path">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.organisationUnit.path">Path</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="openingDate">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.organisationUnit.openingDate">Opening Date</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col" jhiSortBy="level">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.organisationUnit.level">Level</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="track">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.organisationUnit.track">Track</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col" jhiSortBy="createdBy.id">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.organisationUnit.createdBy">Created By</span>
@@ -98,23 +72,21 @@
       <tbody>
         <tr *ngFor="let organisationUnit of organisationUnits; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/organisation-unit', organisationUnit.id, 'view']">{{ organisationUnit.id }}</a>
+            {{ organisationUnit.id }}
           </td>
           <td>{{ organisationUnit.name }}</td>
           <td>{{ organisationUnit.created | formatMediumDatetime }}</td>
           <td>{{ organisationUnit.lastUpdated | formatMediumDatetime }}</td>
-          <td>{{ organisationUnit.path }}</td>
-          <td>{{ organisationUnit.openingDate | formatMediumDatetime }}</td>
+
           <td>{{ organisationUnit.level }}</td>
-          <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + organisationUnit.track }}">{{ organisationUnit.track }}</td>
           <td>
             <div *ngIf="organisationUnit.createdBy">
-              <a [routerLink]="['/dhis-user', organisationUnit.createdBy.name, 'view']">{{ organisationUnit.createdBy.name }}</a>
+              {{ organisationUnit.createdBy.name }}
             </div>
           </td>
           <td>
             <div *ngIf="organisationUnit.lastUpdatedBy">
-              <a [routerLink]="['/dhis-user', organisationUnit.lastUpdatedBy.name, 'view']">{{ organisationUnit.lastUpdatedBy.name }}</a>
+              {{ organisationUnit.lastUpdatedBy.name }}
             </div>
           </td>
           <td class="text-end">

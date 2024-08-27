@@ -50,54 +50,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="programRuleActionType">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleAction.programRuleActionType">Program Rule Action Type</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="evaluationTime">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleAction.evaluationTime">Evaluation Time</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="data">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleAction.data">Data</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="templateUid">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleAction.templateUid">Template Uid</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="content">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleAction.content">Content</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayContent">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleAction.displayContent">Display Content</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="track">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleAction.track">Track</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="project.id">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleAction.project">Project</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col" jhiSortBy="createdBy.id">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.programRuleAction.createdBy">Created By</span>
@@ -116,22 +69,10 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="trackedEntityAttribute.id">
+
+          <th scope="col">
             <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleAction.trackedEntityAttribute">Tracked Entity Attribute</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="dataElement.id">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleAction.dataElement">Data Element</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="optionGroup.id">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.programRuleAction.optionGroup">Option Group</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
+              <span jhiTranslate="dhis2TrackApp.programRule.program">Program</span>
             </div>
           </th>
           <th scope="col"></th>
@@ -140,56 +81,32 @@
       <tbody>
         <tr *ngFor="let programRuleAction of programRuleActions; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/program-rule-action', programRuleAction.id, 'view']">{{ programRuleAction.id }}</a>
+            {{ programRuleAction.id }}
           </td>
           <td>{{ programRuleAction.lastUpdated | formatMediumDatetime }}</td>
           <td>{{ programRuleAction.created }}</td>
-          <td>{{ programRuleAction.programRuleActionType }}</td>
-          <td>{{ programRuleAction.evaluationTime }}</td>
-          <td>{{ programRuleAction.data }}</td>
-          <td>{{ programRuleAction.templateUid }}</td>
-          <td>{{ programRuleAction.content }}</td>
-          <td>{{ programRuleAction.displayContent }}</td>
-          <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + programRuleAction.track }}">{{ programRuleAction.track }}</td>
-          <td>
-            <div *ngIf="programRuleAction.project">
-              <a [routerLink]="['/project', programRuleAction.project.id, 'view']">{{ programRuleAction.project.id }}</a>
-            </div>
-          </td>
+
           <td>
             <div *ngIf="programRuleAction.createdBy">
-              <a [routerLink]="['/dhis-user', programRuleAction.createdBy.name, 'view']">{{ programRuleAction.createdBy.name }}</a>
+              {{ programRuleAction.createdBy.name }}
             </div>
           </td>
           <td>
             <div *ngIf="programRuleAction.lastUpdatedBy">
-              <a [routerLink]="['/dhis-user', programRuleAction.lastUpdatedBy.name, 'view']">{{ programRuleAction.lastUpdatedBy.name }}</a>
+              {{ programRuleAction.lastUpdatedBy.name }}
             </div>
           </td>
           <td>
             <div *ngIf="programRuleAction.programRule">
-              <a [routerLink]="['/program-rule', programRuleAction.programRule.id, 'view']">{{ programRuleAction.programRule.id }}</a>
+              {{ programRuleAction.programRule.name }}
             </div>
           </td>
           <td>
-            <div *ngIf="programRuleAction.trackedEntityAttribute">
-              <a [routerLink]="['/tracked-entity-attribute', programRuleAction.trackedEntityAttribute.id, 'view']">{{
-                programRuleAction.trackedEntityAttribute.id
-              }}</a>
+            <div *ngIf="programRuleAction.programRule && programRuleAction.programRule.program">
+              {{ programRuleAction.programRule.program.name }}
             </div>
           </td>
-          <td>
-            <div *ngIf="programRuleAction.dataElement">
-              <a [routerLink]="['/tracked-entity-attribute', programRuleAction.dataElement.id, 'view']">{{
-                programRuleAction.dataElement.id
-              }}</a>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="programRuleAction.optionGroup">
-              <a [routerLink]="['/option-group', programRuleAction.optionGroup.id, 'view']">{{ programRuleAction.optionGroup.id }}</a>
-            </div>
-          </td>
+
           <td class="text-end">
             <div class="btn-group">
               <button

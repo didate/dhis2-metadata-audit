@@ -16,7 +16,7 @@ export interface IProgramRule {
   project?: Pick<IProject, 'id'> | null;
   createdBy?: Pick<IDHISUser, 'name'> | null;
   lastUpdatedBy?: Pick<IDHISUser, 'name'> | null;
-  program?: Pick<IProgram, 'id'> | null;
+  program?: Pick<IProgram, 'name'> | null;
 }
 
 export type NewProgramRule = Omit<IProgramRule, 'id'> & { id: null };

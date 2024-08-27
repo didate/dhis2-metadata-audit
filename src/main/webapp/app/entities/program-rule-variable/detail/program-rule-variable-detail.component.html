@@ -69,7 +69,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.programRuleVariable.program">Program</span></dt>
         <dd>
           <div *ngIf="programRuleVariable.program">
-            <a [routerLink]="['/program', programRuleVariable.program.id, 'view']">{{ programRuleVariable.program.id }}</a>
+            <a [routerLink]="['/program', programRuleVariable.program.name, 'view']">{{ programRuleVariable.program.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.programRuleVariable.trackedEntityAttribute">Tracked Entity Attribute</span></dt>

@@ -133,7 +133,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.programStage.program">Program</span></dt>
         <dd>
           <div *ngIf="programStage.program">
-            <a [routerLink]="['/program', programStage.program.id, 'view']">{{ programStage.program.id }}</a>
+            <a [routerLink]="['/program', programStage.program.name, 'view']">{{ programStage.program.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.programStage.programStageDataElements">Program Stage Data Elements</span></dt>
