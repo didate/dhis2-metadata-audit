@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.DataElement;
+import com.didate.service.dto.DataElementDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,7 @@ public interface DataelementService {
      * @return the list of entities.
      */
     Page<DataElement> findAll(Pageable pageable);
+    Page<DataElementDTO> findAllDataElements(Pageable pageable);
 
     /**
      * Get the "id" dataelement.
