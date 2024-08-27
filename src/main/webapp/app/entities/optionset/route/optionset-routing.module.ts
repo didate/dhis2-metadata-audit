@@ -6,14 +6,14 @@ import { OptionsetComponent } from '../list/optionset.component';
 import { OptionsetDetailComponent } from '../detail/optionset-detail.component';
 import { OptionsetUpdateComponent } from '../update/optionset-update.component';
 import { OptionsetRoutingResolveService } from './optionset-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const optionsetRoute: Routes = [
   {
     path: '',
     component: OptionsetComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'lastUpdated,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

@@ -6,14 +6,14 @@ import { DHISUserComponent } from '../list/dhis-user.component';
 import { DHISUserDetailComponent } from '../detail/dhis-user-detail.component';
 import { DHISUserUpdateComponent } from '../update/dhis-user-update.component';
 import { DHISUserRoutingResolveService } from './dhis-user-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const dHISUserRoute: Routes = [
   {
     path: '',
     component: DHISUserComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'lastUpdated,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

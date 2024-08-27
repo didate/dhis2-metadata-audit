@@ -6,14 +6,14 @@ import { OrganisationUnitComponent } from '../list/organisation-unit.component';
 import { OrganisationUnitDetailComponent } from '../detail/organisation-unit-detail.component';
 import { OrganisationUnitUpdateComponent } from '../update/organisation-unit-update.component';
 import { OrganisationUnitRoutingResolveService } from './organisation-unit-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const organisationUnitRoute: Routes = [
   {
     path: '',
     component: OrganisationUnitComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'lastUpdated,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

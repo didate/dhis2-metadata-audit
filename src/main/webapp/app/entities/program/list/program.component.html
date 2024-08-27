@@ -72,7 +72,7 @@
       <tbody>
         <tr *ngFor="let program of programs; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/program', program.id, 'view']">{{ program.id }}</a>
+            {{ program.id }}
           </td>
           <td>{{ program.name }}</td>
           <td>{{ program.created | date: 'short' }}</td>

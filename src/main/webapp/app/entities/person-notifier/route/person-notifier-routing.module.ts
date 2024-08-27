@@ -6,14 +6,14 @@ import { PersonNotifierComponent } from '../list/person-notifier.component';
 import { PersonNotifierDetailComponent } from '../detail/person-notifier-detail.component';
 import { PersonNotifierUpdateComponent } from '../update/person-notifier-update.component';
 import { PersonNotifierRoutingResolveService } from './person-notifier-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const personNotifierRoute: Routes = [
   {
     path: '',
     component: PersonNotifierComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'id,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

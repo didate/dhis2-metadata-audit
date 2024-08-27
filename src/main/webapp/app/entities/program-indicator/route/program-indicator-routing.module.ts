@@ -6,14 +6,14 @@ import { ProgramIndicatorComponent } from '../list/program-indicator.component';
 import { ProgramIndicatorDetailComponent } from '../detail/program-indicator-detail.component';
 import { ProgramIndicatorUpdateComponent } from '../update/program-indicator-update.component';
 import { ProgramIndicatorRoutingResolveService } from './program-indicator-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const programIndicatorRoute: Routes = [
   {
     path: '',
     component: ProgramIndicatorComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'lastUpdated,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

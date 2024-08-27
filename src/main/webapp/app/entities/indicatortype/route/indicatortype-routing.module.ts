@@ -6,14 +6,14 @@ import { IndicatortypeComponent } from '../list/indicatortype.component';
 import { IndicatortypeDetailComponent } from '../detail/indicatortype-detail.component';
 import { IndicatortypeUpdateComponent } from '../update/indicatortype-update.component';
 import { IndicatortypeRoutingResolveService } from './indicatortype-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const indicatortypeRoute: Routes = [
   {
     path: '',
     component: IndicatortypeComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'lastUpdated,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },

@@ -6,14 +6,14 @@ import { DataelementComponent } from '../list/dataelement.component';
 import { DataelementDetailComponent } from '../detail/dataelement-detail.component';
 import { DataelementUpdateComponent } from '../update/dataelement-update.component';
 import { DataelementRoutingResolveService } from './dataelement-routing-resolve.service';
-import { ASC } from 'app/config/navigation.constants';
+import { DESC } from 'app/config/navigation.constants';
 
 const dataelementRoute: Routes = [
   {
     path: '',
     component: DataelementComponent,
     data: {
-      defaultSort: 'id,' + ASC,
+      defaultSort: 'lastUpdated,' + DESC,
     },
     canActivate: [UserRouteAccessService],
   },
