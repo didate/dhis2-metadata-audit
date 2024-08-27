@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.Indicator;
+import com.didate.service.dto.IndicatorDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,7 @@ public interface IndicatorService {
      * @return the list of entities.
      */
     Page<Indicator> findAll(Pageable pageable);
+    Page<IndicatorDTO> findAllIndicators(Pageable pageable);
 
     /**
      * Get the "id" indicator.

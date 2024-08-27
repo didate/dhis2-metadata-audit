@@ -3,6 +3,7 @@ package com.didate.service.impl;
 import com.didate.domain.Indicator;
 import com.didate.repository.IndicatorRepository;
 import com.didate.service.IndicatorService;
+import com.didate.service.dto.IndicatorDTO;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,5 +135,10 @@ public class IndicatorServiceImpl implements IndicatorService {
     @Override
     public Long count() {
         return indicatorRepository.count();
+    }
+
+    @Override
+    public Page<IndicatorDTO> findAllIndicators(Pageable pageable) {
+        return indicatorRepository.findAll(pageable).map(IndicatorDTO::new);
     }
 }

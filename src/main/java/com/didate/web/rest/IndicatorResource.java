@@ -3,6 +3,7 @@ package com.didate.web.rest;
 import com.didate.domain.Indicator;
 import com.didate.repository.IndicatorRepository;
 import com.didate.service.IndicatorService;
+import com.didate.service.dto.IndicatorDTO;
 import com.didate.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -145,9 +146,9 @@ public class IndicatorResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of indicators in body.
      */
     @GetMapping("/indicators")
-    public ResponseEntity<List<Indicator>> getAllIndicators(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<IndicatorDTO>> getAllIndicators(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Indicators");
-        Page<Indicator> page = indicatorService.findAll(pageable);
+        Page<IndicatorDTO> page = indicatorService.findAllIndicators(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

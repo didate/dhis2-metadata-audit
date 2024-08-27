@@ -7,16 +7,6 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="dhis2TrackApp.indicator.home.refreshListLabel">Actualiser la liste</span>
       </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-indicator"
-        [routerLink]="['/indicator/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2TrackApp.indicator.home.createLabel"> Créer un nouveau Indicator </span>
-      </button>
     </div>
   </h2>
 
@@ -44,27 +34,9 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="shortName">
+          <th scope="col" jhiSortBy="indicatorType.id">
             <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.shortName">Short Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayShortName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.displayShortName">Display Short Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.displayName">Display Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayFormName">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.displayFormName">Display Form Name</span>
+              <span jhiTranslate="dhis2TrackApp.indicator.indicatorType">Indicator Type</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -80,78 +52,6 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="publicAccess">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.publicAccess">Public Access</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="dimensionItemType">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.dimensionItemType">Dimension Item Type</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="annualized">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.annualized">Annualized</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="numerator">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.numerator">Numerator</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="numeratorDescription">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.numeratorDescription">Numerator Description</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="denominator">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.denominator">Denominator</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="denominatorDescription">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.denominatorDescription">Denominator Description</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayNumeratorDescription">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.displayNumeratorDescription">Display Numerator Description</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="displayDenominatorDescription">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.displayDenominatorDescription">Display Denominator Description</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="dimensionItem">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.dimensionItem">Dimension Item</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="track">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.track">Track</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="project.id">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.project">Project</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
           <th scope="col" jhiSortBy="createdBy.id">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span>
@@ -164,12 +64,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="indicatorType.id">
-            <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicator.indicatorType">Indicator Type</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+
           <th scope="col"></th>
         </tr>
       </thead>
@@ -179,43 +74,27 @@
             <a [routerLink]="['/indicator', indicator.id, 'view']">{{ indicator.id }}</a>
           </td>
           <td>{{ indicator.name }}</td>
-          <td>{{ indicator.shortName }}</td>
-          <td>{{ indicator.displayShortName }}</td>
-          <td>{{ indicator.displayName }}</td>
-          <td>{{ indicator.displayFormName }}</td>
-          <td>{{ indicator.created | formatMediumDatetime }}</td>
-          <td>{{ indicator.lastUpdated | formatMediumDatetime }}</td>
-          <td>{{ indicator.publicAccess }}</td>
-          <td>{{ indicator.dimensionItemType }}</td>
-          <td>{{ indicator.annualized }}</td>
-          <td>{{ indicator.numerator }}</td>
-          <td>{{ indicator.numeratorDescription }}</td>
-          <td>{{ indicator.denominator }}</td>
-          <td>{{ indicator.denominatorDescription }}</td>
-          <td>{{ indicator.displayNumeratorDescription }}</td>
-          <td>{{ indicator.displayDenominatorDescription }}</td>
-          <td>{{ indicator.dimensionItem }}</td>
-          <td jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + indicator.track }}">{{ indicator.track }}</td>
+
           <td>
-            <div *ngIf="indicator.project">
-              <a [routerLink]="['/project', indicator.project.id, 'view']">{{ indicator.project.id }}</a>
+            <div *ngIf="indicator.indicatorType">
+              {{ indicator.indicatorType.name }}
             </div>
           </td>
+
+          <td>{{ indicator.created | formatMediumDatetime }}</td>
+          <td>{{ indicator.lastUpdated | formatMediumDatetime }}</td>
+
           <td>
             <div *ngIf="indicator.createdBy">
-              <a [routerLink]="['/dhis-user', indicator.createdBy.name, 'view']">{{ indicator.createdBy.name }}</a>
+              {{ indicator.createdBy.name }}
             </div>
           </td>
           <td>
             <div *ngIf="indicator.lastUpdatedBy">
-              <a [routerLink]="['/dhis-user', indicator.lastUpdatedBy.name, 'view']">{{ indicator.lastUpdatedBy.name }}</a>
+              {{ indicator.lastUpdatedBy.name }}
             </div>
           </td>
-          <td>
-            <div *ngIf="indicator.indicatorType">
-              <a [routerLink]="['/indicatortype', indicator.indicatorType.id, 'view']">{{ indicator.indicatorType.id }}</a>
-            </div>
-          </td>
+
           <td class="text-end">
             <div class="btn-group">
               <button
