@@ -3,6 +3,7 @@ package com.didate.web.rest;
 import com.didate.domain.Program;
 import com.didate.repository.ProgramRepository;
 import com.didate.service.ProgramService;
+import com.didate.service.dto.ProgramDTO;
 import com.didate.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -143,17 +144,17 @@ public class ProgramResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of programs in body.
      */
     @GetMapping("/programs")
-    public ResponseEntity<List<Program>> getAllPrograms(
+    public ResponseEntity<List<ProgramDTO>> getAllPrograms(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         @RequestParam(required = false, defaultValue = "false") boolean eagerload
     ) {
         log.debug("REST request to get a page of Programs");
-        Page<Program> page;
-        if (eagerload) {
-            page = programService.findAllWithEagerRelationships(pageable);
+        Page<ProgramDTO> page = programService.findAllPrograms(pageable);
+        /*  if (eagerload) {
+           // page = programService.findAllWithEagerRelationships(pageable);
         } else {
-            page = programService.findAll(pageable);
-        }
+            page = 
+        } */
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
