@@ -3,6 +3,7 @@ package com.didate.web.rest;
 import com.didate.domain.DataElement;
 import com.didate.repository.DataelementRepository;
 import com.didate.service.DataelementService;
+import com.didate.service.dto.DataElementDTO;
 import com.didate.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -145,9 +146,9 @@ public class DataelementResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of dataelements in body.
      */
     @GetMapping("/dataelements")
-    public ResponseEntity<List<DataElement>> getAllDataelements(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<DataElementDTO>> getAllDataelements(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Dataelements");
-        Page<DataElement> page = dataelementService.findAll(pageable);
+        Page<DataElementDTO> page = dataelementService.findAllDataElements(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

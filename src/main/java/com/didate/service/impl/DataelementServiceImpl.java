@@ -3,6 +3,7 @@ package com.didate.service.impl;
 import com.didate.domain.DataElement;
 import com.didate.repository.DataelementRepository;
 import com.didate.service.DataelementService;
+import com.didate.service.dto.DataElementDTO;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,5 +135,10 @@ public class DataelementServiceImpl implements DataelementService {
     @Override
     public Long count() {
         return dataelementRepository.count();
+    }
+
+    @Override
+    public Page<DataElementDTO> findAllDataElements(Pageable pageable) {
+        return dataelementRepository.findAll(pageable).map(DataElementDTO::new);
     }
 }

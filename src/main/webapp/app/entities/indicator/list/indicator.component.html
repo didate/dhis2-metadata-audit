@@ -71,7 +71,7 @@
       <tbody>
         <tr *ngFor="let indicator of indicators; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/indicator', indicator.id, 'view']">{{ indicator.id }}</a>
+            {{ indicator.id }}
           </td>
           <td>{{ indicator.name }}</td>
 
