@@ -1,0 +1,127 @@
+.table-responsive,
+.long-table {
+  width: 100%;
+  margin-bottom: 1.5em;
+  border-spacing: 0;
+}
+.table-responsive,
+.long-table {
+  font-size: 12px;
+}
+
+.table-responsive thead,
+.long-table thead {
+  position: absolute;
+  clip: rect(1px 1px 1px 1px);
+  /* IE6, IE7 */
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+.table-responsive thead,
+.long-table thead {
+  position: relative;
+  clip: auto;
+  height: auto;
+  width: auto;
+  overflow: auto;
+}
+.table-responsive thead th,
+.long-table thead th {
+  background-color: $primary;
+  border: 1px solid $primary;
+  text-align: left;
+  color: white;
+  text-transform: uppercase;
+}
+.currency {
+  text-align: right !important;
+}
+.table-responsive tbody td,
+.long-table tbody td {
+  border: 1px solid $primary;
+  text-align: left;
+  font-weight: 500;
+  min-height: 30px;
+  font-size: 13px;
+  padding: 0.5em;
+}
+
+.table-responsive th,
+.table-responsive td,
+.long-table th,
+.long-table td {
+  padding: 0.3em;
+  vertical-align: middle;
+}
+
+@media only screen and (max-width: 700px) {
+  .table-responsive th,
+  .table-responsive td {
+    padding: 1.3em;
+  }
+  .table-responsive table,
+  .table-responsive thead,
+  .table-responsive tbody,
+  .table-responsive tr,
+  .table-responsive th,
+  .table-responsive td {
+    display: block;
+  }
+
+  .table-responsive thead {
+    display: none;
+  }
+
+  .table-responsive td {
+    padding-left: 180px !important;
+    position: relative;
+    margin-top: -1px;
+  }
+
+  .table-responsive td::before {
+    padding: 10px;
+    content: attr(data-label);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    width: 170px;
+    color: white;
+    background-color: $primary;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+  }
+  .table-responsive tr {
+    margin-bottom: 1rem;
+  }
+}
+
+.table-detail > tbody > tr > th {
+  width: 117px;
+  background-color: $primary;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.table-detail > tbody > tr > td {
+  font-size: 13px;
+}
+
+.table-detail > tbody > tr > th {
+  width: 117px;
+  background-color: $primary;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.table-detail > tbody > tr > td,
+.table > tbody > tr > td,
+.table > tbody > tr > th {
+  font-size: 13px;
+}

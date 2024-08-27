@@ -71,7 +71,7 @@ public class DHISScript {
         this.dataSetScript = dataSetScript;
     }
 
-    @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
+    //@Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
     public void script() throws IOException {
         log.info("Calling dataElements API...");
 

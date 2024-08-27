@@ -12,7 +12,7 @@ import { AccountService } from 'app/core/auth/account.service';
 })
 export class MainComponent implements OnInit {
   private renderer: Renderer2;
-
+  private observer: MutationObserver | null = null;
   constructor(
     private accountService: AccountService,
     private titleService: Title,
@@ -21,6 +21,44 @@ export class MainComponent implements OnInit {
     rootRenderer: RendererFactory2
   ) {
     this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
+  }
+
+  ngAfterViewInit() {
+    this.observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (mutation.type === 'childList') {
+          const tableResponsiveElements = document.querySelectorAll('.table-responsive');
+          if (tableResponsiveElements.length > 0) {
+            this.handleTableResponsiveElements(tableResponsiveElements);
+          }
+        }
+      });
+    });
+
+    // Start observing the document body for changes
+    this.observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  handleTableResponsiveElements(elements: NodeListOf<Element>) {
+    document.querySelectorAll('.table-responsive').forEach(function (table) {
+      let labels: string[] = [];
+      table.querySelectorAll('th').forEach(function (th) {
+        labels.push(th.innerText);
+      });
+
+      table.querySelectorAll('td').forEach(function (td, i) {
+        td.setAttribute('data-label', labels[i % labels.length]);
+      });
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   }
 
   ngOnInit(): void {
