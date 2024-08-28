@@ -3,7 +3,9 @@ package com.didate.web.rest;
 import com.didate.domain.Program;
 import com.didate.service.ProgramService;
 import com.didate.service.dto.ProgramDTO;
+import com.didate.service.dto.ProgramFullDTO;
 import io.micrometer.core.annotation.Timed;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -78,5 +80,19 @@ public class ProgramResource {
     @Timed
     public ResponseEntity<List<ProgramDTO>> findRevisions(@PathVariable String id) {
         return new ResponseEntity<>(programService.findAudits(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/programs/{id}/compare/{rev1}/{rev2}")
+    @Timed
+    public ResponseEntity<List<ProgramFullDTO>> findRevisions(
+        @PathVariable String id,
+        @PathVariable Integer rev1,
+        @PathVariable Integer rev2
+    ) {
+        List<ProgramFullDTO> programFullDTOs = new ArrayList<>();
+        programFullDTOs.add(programService.findAuditRevision(id, rev1));
+        programFullDTOs.add(programService.findAuditRevision(id, rev2));
+
+        return new ResponseEntity<>(programFullDTOs, HttpStatus.OK);
     }
 }
