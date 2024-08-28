@@ -4,9 +4,11 @@ import com.didate.domain.Program;
 import com.didate.repository.ProgramRepository;
 import com.didate.service.ProgramService;
 import com.didate.service.dto.ProgramDTO;
+import com.didate.service.dto.ProgramFullDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +60,15 @@ public class ProgramServiceImpl implements ProgramService {
                 }
                 if (program.getLastUpdated() != null) {
                     existingProgram.setLastUpdated(program.getLastUpdated());
+                }
+                if (program.getCreatedBy() != null) {
+                    existingProgram.setCreatedBy(program.getCreatedBy());
+                }
+                if (program.getLastUpdatedBy() != null) {
+                    existingProgram.setLastUpdatedBy(program.getLastUpdatedBy());
+                }
+                if (program.getCategoryCombo() != null) {
+                    existingProgram.setCategoryCombo(program.getCategoryCombo());
                 }
                 if (program.getShortName() != null) {
                     existingProgram.setShortName(program.getShortName());
@@ -231,5 +242,21 @@ public class ProgramServiceImpl implements ProgramService {
                 return new ProgramDTO(p).revisionNumber(revision.getRequiredRevisionNumber());
             })
             .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProgramFullDTO findAuditRevision(String id, Integer rev) {
+        // Retrieve the revision from the repository
+        Program program = programRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        Hibernate.unproxy(program.getCreatedBy());
+        Hibernate.unproxy(program.getLastUpdatedBy());
+        Hibernate.unproxy(program.getCategoryCombo());
+
+        return new ProgramFullDTO(program);
     }
 }
