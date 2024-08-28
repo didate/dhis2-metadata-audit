@@ -23,6 +23,7 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr>
+          <th scope="col"></th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="history.number">Id</span>
@@ -72,7 +73,11 @@
       <tbody>
         <tr *ngFor="let program of programs; trackBy: trackId" data-cy="entityTable">
           <td>
-            {{ program.revisionNumber }}
+            <input type="checkbox" name="select" [(ngModel)]="program.isSelected" (change)="selectRev(program)" />
+          </td>
+
+          <td>
+            <div class="float-end">{{ program.revisionNumber }}</div>
           </td>
           <td>
             {{ program.id }}

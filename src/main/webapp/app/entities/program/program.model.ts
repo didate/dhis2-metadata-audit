@@ -62,6 +62,8 @@ export interface IProgram {
   organisationUnits?: Pick<IOrganisationUnit, 'id'>[] | null;
   programIndicators?: Pick<IProgramIndicator, 'id'>[] | null;
   programStages?: Pick<IProgramStage, 'id'>[] | null;
+
+  isSelected?: boolean | null;
 }
 
 export type NewProgram = Omit<IProgram, 'id'> & { id: null };

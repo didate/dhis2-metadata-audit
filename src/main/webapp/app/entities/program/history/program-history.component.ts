@@ -25,6 +25,8 @@ export class ProgramHistoryComponent implements OnInit {
   totalItems = 0;
   page = 1;
 
+  setRev: Set<number | null | undefined> = new Set<number | null | undefined>();
+
   constructor(
     protected programService: ProgramService,
     protected activatedRoute: ActivatedRoute,
@@ -60,6 +62,16 @@ export class ProgramHistoryComponent implements OnInit {
 
   previousState(): void {
     window.history.back();
+  }
+
+  selectRev(program: IProgram) {
+    if (this.setRev.size < 2 && program.isSelected) {
+      this.setRev.add(program.revisionNumber);
+    } else if (!program.isSelected) {
+      this.setRev.delete(program.revisionNumber);
+    } else {
+      program.isSelected = false;
+    }
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
