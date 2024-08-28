@@ -5,6 +5,7 @@ import com.didate.domain.Program;
 public class ProgramDTO extends AbstractDTO {
 
     private String programType;
+    private Integer revisionNumber;
 
     public ProgramDTO(Program program) {
         super(
@@ -24,5 +25,18 @@ public class ProgramDTO extends AbstractDTO {
 
     public void setProgramType(String programType) {
         this.programType = programType;
+    }
+
+    public Integer getRevisionNumber() {
+        return revisionNumber;
+    }
+
+    public void setRevisionNumber(Integer revisionNumber) {
+        this.revisionNumber = revisionNumber;
+    }
+
+    public ProgramDTO revisionNumber(Integer revisionNumber) {
+        setRevisionNumber(revisionNumber);
+        return this;
     }
 }

@@ -60,20 +60,6 @@
       }
     </script>
 
-    <script type="text/javascript">
-      document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.table').forEach(function (table) {
-          let labels = [];
-          table.querySelectorAll('th').forEach(function (th) {
-            labels.push(th.innerText);
-          }),
-            table.querySelectorAll('td').forEach(function (td, i) {
-              td.setAttribute('data-label', labels[i % labels.length]);
-            });
-        });
-      });
-    </script>
-
     <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
     <script>
       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

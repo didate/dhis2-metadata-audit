@@ -1,6 +1,9 @@
 package com.didate.service.dto;
 
 import com.didate.domain.DHISUser;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 public class AbstractDTO {
 
@@ -8,7 +11,9 @@ public class AbstractDTO {
     private String name;
     private String created;
     private String lastUpdated;
+
     private DHISUser createdBy;
+
     private DHISUser lastUpdatedBy;
 
     public AbstractDTO() {}

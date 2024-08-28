@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -16,7 +16,8 @@ import org.springframework.stereotype.Repository;
  * For more information refer to https://github.com/jhipster/generator-jhipster/issues/17990.
  */
 @Repository
-public interface ProgramRepository extends ProgramRepositoryWithBagRelationships, JpaRepository<Program, String> {
+public interface ProgramRepository
+    extends ProgramRepositoryWithBagRelationships, JpaRepository<Program, String>, RevisionRepository<Program, String, Integer> {
     default Optional<Program> findOneWithEagerRelationships(String id) {
         return this.fetchBagRelationships(this.findById(id));
     }

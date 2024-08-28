@@ -8,6 +8,7 @@ import { IProgramStage } from 'app/entities/program-stage/program-stage.model';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface IProgram {
+  revisionNumber?: number | null;
   id: string;
   name?: string | null;
   created?: string | null;

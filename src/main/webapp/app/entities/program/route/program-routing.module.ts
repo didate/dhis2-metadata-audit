@@ -6,6 +6,7 @@ import { ProgramComponent } from '../list/program.component';
 import { ProgramDetailComponent } from '../detail/program-detail.component';
 import { ProgramRoutingResolveService } from './program-routing-resolve.service';
 import { DESC } from 'app/config/navigation.constants';
+import { ProgramHistoryComponent } from '../history/program-history.component';
 
 const programRoute: Routes = [
   {
@@ -19,6 +20,14 @@ const programRoute: Routes = [
   {
     path: ':id/view',
     component: ProgramDetailComponent,
+    resolve: {
+      program: ProgramRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':historyId/history',
+    component: ProgramHistoryComponent,
     resolve: {
       program: ProgramRoutingResolveService,
     },
