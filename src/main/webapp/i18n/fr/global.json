@@ -105,6 +105,10 @@
     },
     "item-count": "Affichage {{first}} - {{second}} de {{total}} items."
   },
+  "history": {
+    "title": "Audit",
+    "number": "No Audit"
+  },
   "entity": {
     "action": {
       "addblob": "Ajouter blob",
@@ -116,12 +120,14 @@
       "open": "Ouvrir",
       "save": "Sauvegarder",
       "view": "Voir",
+      "audit": "Audit",
       "show": "Show {{otherEntity}}"
     },
     "detail": {
       "field": "Champs",
       "value": "Valeur"
     },
+
     "delete": {
       "title": "Confirmation de suppression"
     },

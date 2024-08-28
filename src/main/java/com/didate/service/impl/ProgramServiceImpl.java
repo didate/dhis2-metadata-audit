@@ -4,7 +4,10 @@ import com.didate.domain.Program;
 import com.didate.repository.ProgramRepository;
 import com.didate.service.ProgramService;
 import com.didate.service.dto.ProgramDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -213,5 +216,20 @@ public class ProgramServiceImpl implements ProgramService {
     @Override
     public Page<ProgramDTO> findAllPrograms(Pageable pageable) {
         return programRepository.findAll(pageable).map(ProgramDTO::new);
+    }
+
+    @Override
+    public List<ProgramDTO> findAudits(String id) {
+        return programRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                Program p = revision.getEntity();
+                Hibernate.unproxy(p.getCreatedBy());
+                Hibernate.unproxy(p.getLastUpdatedBy());
+                return new ProgramDTO(p).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
     }
 }

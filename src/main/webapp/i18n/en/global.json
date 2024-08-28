@@ -105,6 +105,10 @@
     },
     "item-count": "Showing {{first}} - {{second}} of {{total}} items."
   },
+  "history": {
+    "title": "Audit",
+    "number": "Audit No"
+  },
   "entity": {
     "action": {
       "addblob": "Add blob",
@@ -115,6 +119,7 @@
       "edit": "Edit",
       "open": "Open",
       "save": "Save",
+      "audit": "Audit",
       "view": "View",
       "show": "Show {{otherEntity}}"
     },
@@ -122,6 +127,7 @@
       "field": "Field",
       "value": "Value"
     },
+
     "delete": {
       "title": "Confirm delete operation"
     },
