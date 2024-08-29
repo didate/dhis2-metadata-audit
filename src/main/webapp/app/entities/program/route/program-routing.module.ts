@@ -26,6 +26,14 @@ const programRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
+    path: ':historyId/compare/:rev1/:rev2',
+    component: ProgramDetailComponent,
+    resolve: {
+      program: ProgramRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
     path: ':historyId/history',
     component: ProgramHistoryComponent,
     resolve: {

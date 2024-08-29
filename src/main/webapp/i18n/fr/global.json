@@ -120,6 +120,7 @@
       "open": "Ouvrir",
       "save": "Sauvegarder",
       "view": "Voir",
+      "compare": "Comparer",
       "audit": "Audit",
       "show": "Show {{otherEntity}}"
     },
