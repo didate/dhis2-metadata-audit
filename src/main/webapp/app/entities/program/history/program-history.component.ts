@@ -25,7 +25,7 @@ export class ProgramHistoryComponent implements OnInit {
   totalItems = 0;
   page = 1;
 
-  setRev: Set<number | null | undefined> = new Set<number | null | undefined>();
+  setRev: number[] = [];
 
   constructor(
     protected programService: ProgramService,
@@ -65,10 +65,13 @@ export class ProgramHistoryComponent implements OnInit {
   }
 
   selectRev(program: IProgram) {
-    if (this.setRev.size < 2 && program.isSelected) {
-      this.setRev.add(program.revisionNumber);
+    if (this.setRev.length < 2 && program.isSelected) {
+      this.setRev.push(program.revisionNumber as number);
     } else if (!program.isSelected) {
-      this.setRev.delete(program.revisionNumber);
+      const index = this.setRev.indexOf(program.revisionNumber as number);
+      if (index > -1) {
+        this.setRev.splice(index, 1);
+      }
     } else {
       program.isSelected = false;
     }

@@ -5,6 +5,16 @@
     <span *ngIf="program" id="audit-id"> : {{ program.id }}</span>
 
     <div class="d-flex justify-content-end">
+      <button
+        *ngIf="setRev.length == 2"
+        type="submit"
+        [routerLink]="['/program', program?.id, 'compare', setRev[0], setRev[1]]"
+        class="me-2 btn btn-warning"
+        data-cy="entityCompareButton"
+      >
+        <fa-icon icon="tasks"></fa-icon>&nbsp;<span jhiTranslate="entity.action.compare">Comparer</span>
+      </button>
+
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
       </button>
@@ -66,14 +76,18 @@
               <span jhiTranslate="dhis2TrackApp.program.lastUpdatedBy">Last Updated By</span>
             </div>
           </th>
-
-          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let program of programs; trackBy: trackId" data-cy="entityTable">
           <td>
-            <input type="checkbox" name="select" [(ngModel)]="program.isSelected" (change)="selectRev(program)" />
+            <input
+              [disabled]="setRev.length == 2 && !program.isSelected"
+              type="checkbox"
+              name="select"
+              [(ngModel)]="program.isSelected"
+              (change)="selectRev(program)"
+            />
           </td>
 
           <td>
@@ -96,20 +110,6 @@
           <td>
             <div *ngIf="program.lastUpdatedBy">
               {{ program.lastUpdatedBy.name }}
-            </div>
-          </td>
-
-          <td class="text-end">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/program', program.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-              </button>
             </div>
           </td>
         </tr>

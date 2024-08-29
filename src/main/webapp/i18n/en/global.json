@@ -121,6 +121,7 @@
       "save": "Save",
       "audit": "Audit",
       "view": "View",
+      "compare": "Compare",
       "show": "Show {{otherEntity}}"
     },
     "detail": {
