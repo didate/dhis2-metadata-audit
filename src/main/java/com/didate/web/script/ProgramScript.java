@@ -6,6 +6,7 @@ import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.ProgramService;
 import com.didate.service.dhis2.DhisApiService;
 import com.didate.service.dhis2.response.Dhis2ApiResponse;
+import com.didate.web.rest.util.RemoveCommonWords;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -50,22 +51,28 @@ public class ProgramScript {
             program.setProgramStagesCount(program.getProgramStages().size());
 
             program.setProgramIndicatorsContent(
-                program.getProgramIndicators().stream().map(ds -> ds.getId()).collect(Collectors.joining("|"))
+                program.getProgramIndicators().stream().map(ds -> ds.getId()).collect(Collectors.joining(RemoveCommonWords.SPLITER))
             );
 
             program.setProgramIndicators(null);
 
             program.setOrganisationUnitsContent(
-                program.getOrganisationUnits().stream().map(ds -> ds.getId()).collect(Collectors.joining("|"))
+                program.getOrganisationUnits().stream().map(ds -> ds.getId()).collect(Collectors.joining(RemoveCommonWords.SPLITER))
             );
 
             program.setProgramTrackedEntityAttributesContent(
-                program.getProgramTrackedEntityAttributes().stream().map(ds -> ds.getId()).collect(Collectors.joining("|"))
+                program
+                    .getProgramTrackedEntityAttributes()
+                    .stream()
+                    .map(ds -> ds.getId())
+                    .collect(Collectors.joining(RemoveCommonWords.SPLITER))
             );
 
             program.setProgramTrackedEntityAttributes(null);
 
-            program.setProgramStagesContent(program.getProgramStages().stream().map(ds -> ds.getId()).collect(Collectors.joining("|")));
+            program.setProgramStagesContent(
+                program.getProgramStages().stream().map(ds -> ds.getId()).collect(Collectors.joining(RemoveCommonWords.SPLITER))
+            );
 
             program.setProgramStages(null);
 

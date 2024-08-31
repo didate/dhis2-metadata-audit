@@ -246,4 +246,14 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
     }
   }
 }
+
+ins {
+  background-color: #e6ffed; /* Green background for added text */
+  text-decoration: none; /* Remove default underline */
+}
+
+del {
+  background-color: #f7b7be; /* Red background for deleted text */
+  text-decoration: line-through; /* Keep the strikethrough */
+}
 /* jhipster-needle-scss-add-main JHipster will add new css style */

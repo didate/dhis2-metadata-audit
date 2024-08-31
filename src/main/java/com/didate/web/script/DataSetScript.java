@@ -12,6 +12,7 @@ import com.didate.service.IndicatorService;
 import com.didate.service.OrganisationUnitService;
 import com.didate.service.dhis2.DhisApiService;
 import com.didate.service.dhis2.response.Dhis2ApiResponse;
+import com.didate.web.rest.util.RemoveCommonWords;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -69,13 +70,17 @@ public class DataSetScript {
                 .dataSetElementsCount(dataSet.getDataSetElements().size())
                 .indicatorsCount(dataSet.getIndicators().size());
 
-            dataSet.setDataSetElementsContent(dataSet.getDataSetElements().stream().map(ds -> ds.getId()).collect(Collectors.joining("|")));
-
-            dataSet.setOrganisationUnitsContent(
-                dataSet.getOrganisationUnits().stream().map(ds -> ds.getId()).collect(Collectors.joining("|"))
+            dataSet.setDataSetElementsContent(
+                dataSet.getDataSetElements().stream().map(ds -> ds.getId()).collect(Collectors.joining(RemoveCommonWords.SPLITER))
             );
 
-            dataSet.setIndicatorsContent(dataSet.getIndicators().stream().map(ds -> ds.getId()).collect(Collectors.joining("|")));
+            dataSet.setOrganisationUnitsContent(
+                dataSet.getOrganisationUnits().stream().map(ds -> ds.getId()).collect(Collectors.joining(RemoveCommonWords.SPLITER))
+            );
+
+            dataSet.setIndicatorsContent(
+                dataSet.getIndicators().stream().map(ds -> ds.getId()).collect(Collectors.joining(RemoveCommonWords.SPLITER))
+            );
 
             Set<DataElement> dataElementSet = new HashSet<>();
             for (DataElement dataElement : dataSet.getDataSetElements()) {
