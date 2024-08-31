@@ -4,6 +4,7 @@ import com.didate.domain.Program;
 import com.didate.service.ProgramService;
 import com.didate.service.dto.ProgramDTO;
 import com.didate.service.dto.ProgramFullDTO;
+import com.didate.web.rest.util.RemoveCommonWords;
 import io.micrometer.core.annotation.Timed;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,8 +91,39 @@ public class ProgramResource {
         @PathVariable Integer rev2
     ) {
         List<ProgramFullDTO> programFullDTOs = new ArrayList<>();
-        programFullDTOs.add(programService.findAuditRevision(id, rev1));
-        programFullDTOs.add(programService.findAuditRevision(id, rev2));
+        ProgramFullDTO programFullDTO1 = programService.findAuditRevision(id, Math.max(rev1, rev2));
+        ProgramFullDTO programFullDTO2 = programService.findAuditRevision(id, Math.min(rev1, rev2));
+
+        String[] orgUnit = RemoveCommonWords.remove(
+            programFullDTO1.getOrganisationUnitsContent(),
+            programFullDTO2.getOrganisationUnitsContent()
+        );
+        String[] programAttribute = RemoveCommonWords.remove(
+            programFullDTO1.getProgramTrackedEntityAttributesContent(),
+            programFullDTO2.getProgramTrackedEntityAttributesContent()
+        );
+        String[] programStage = RemoveCommonWords.remove(
+            programFullDTO1.getProgramStagesContent(),
+            programFullDTO2.getProgramStagesContent()
+        );
+        String[] programInidicator = RemoveCommonWords.remove(
+            programFullDTO1.getProgramIndicatorsContent(),
+            programFullDTO2.getProgramIndicatorsContent()
+        );
+
+        programFullDTO1.setOrganisationUnitsContent(orgUnit[0]);
+        programFullDTO2.setOrganisationUnitsContent(orgUnit[1]);
+        programFullDTO1.setProgramTrackedEntityAttributesContent(programAttribute[0]);
+        programFullDTO2.setProgramTrackedEntityAttributesContent(programAttribute[1]);
+
+        programFullDTO1.setProgramStagesContent(programStage[0]);
+        programFullDTO2.setProgramStagesContent(programStage[1]);
+
+        programFullDTO1.setProgramIndicatorsContent(programInidicator[0]);
+        programFullDTO2.setProgramIndicatorsContent(programInidicator[1]);
+
+        programFullDTOs.add(programFullDTO1);
+        programFullDTOs.add(programFullDTO2);
 
         return new ResponseEntity<>(programFullDTOs, HttpStatus.OK);
     }

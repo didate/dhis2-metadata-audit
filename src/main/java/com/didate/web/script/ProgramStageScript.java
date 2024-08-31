@@ -6,6 +6,7 @@ import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.ProgramStageService;
 import com.didate.service.dhis2.DhisApiService;
 import com.didate.service.dhis2.response.Dhis2ApiResponse;
+import com.didate.web.rest.util.RemoveCommonWords;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -48,7 +49,11 @@ public class ProgramStageScript {
                 stage.setProgramStageDataElementsCount(stage.getProgramStageDataElements().size());
 
                 stage.setProgramStageDataElementsContent(
-                    stage.getProgramStageDataElements().stream().map(ds -> ds.getId()).collect(Collectors.joining("|"))
+                    stage
+                        .getProgramStageDataElements()
+                        .stream()
+                        .map(ds -> ds.getId())
+                        .collect(Collectors.joining(RemoveCommonWords.SPLITER))
                 );
 
                 TypeTrack typeTrack = determineTypeTrack(stage.getId(), hasExistingStages);

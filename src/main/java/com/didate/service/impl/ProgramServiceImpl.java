@@ -5,6 +5,7 @@ import com.didate.repository.ProgramRepository;
 import com.didate.service.ProgramService;
 import com.didate.service.dto.ProgramDTO;
 import com.didate.service.dto.ProgramFullDTO;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,7 +14,12 @@ import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.history.Revision;
+import org.springframework.data.history.RevisionSort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +58,9 @@ public class ProgramServiceImpl implements ProgramService {
         return programRepository
             .findById(program.getId())
             .map(existingProgram -> {
+                if (existingProgram.getLastUpdated().equals(program.getLastUpdated())) {
+                    return existingProgram;
+                }
                 if (program.getName() != null) {
                     existingProgram.setName(program.getName());
                 }

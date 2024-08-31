@@ -1,55 +1,84 @@
 <div class="">
   <div *ngIf="programRev1 && programRev2">
-    <table class="table">
+    <table class="table long-table">
       <thead>
         <tr>
           <th></th>
-          <th>Program 1 (Rev : {{ rev1 }})</th>
-          <th>Program 2 (Rev : {{ rev2 }})</th>
+          <th>Program 1</th>
+          <th>Program 2</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.id">Id</span></td>
-          <td>{{ programRev1.id }}</td>
-          <td>{{ programRev2.id }}</td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.name">Name</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.version">Version </span></td>
           <td>
-            <span>{{ programRev1.name }}</span>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.version, programRev1.version)"></span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.name }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.created">Created</span></td>
-          <td>
-            <span>{{ programRev1.created }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.created }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.lastUpdated">Last Updated</span></td>
-          <td>
-            <span>{{ programRev1.lastUpdated }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.lastUpdated }}</span>
+            <span>
+              {{ programRev2.version }}
+            </span>
           </td>
         </tr>
 
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.createdBy">Created By</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.id">Id </span></td>
           <td>
-            <div *ngIf="programRev1.createdBy">
-              {{ programRev1.createdBy.name }}
+            <span [innerHTML]="showDiff(programRev2.id, programRev1.id)"></span>
+          </td>
+          <td>
+            {{ programRev2.id }}
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.name">Name </span></td>
+          <td>
+            <span [innerHTML]="showDiff(programRev2.name, programRev1.name)"> </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.name }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.created">Created </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.created, programRev1.created)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.created }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.lastUpdated">Last Updated </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.lastUpdated, programRev1.lastUpdated)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.lastUpdated }}
+            </span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.createdBy">Created By </span></td>
+          <td>
+            <div *ngIf="programRev1.createdBy && programRev2.createdBy">
+              <span [innerHTML]="showDiff(programRev2.createdBy.name!, programRev1.createdBy.name!)"></span>
             </div>
           </td>
           <td>
@@ -59,10 +88,10 @@
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.lastUpdatedBy">Last Updated By</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.lastUpdatedBy">Last Updated By </span></td>
           <td>
-            <div *ngIf="programRev1.lastUpdatedBy">
-              {{ programRev1.lastUpdatedBy.name }}
+            <div *ngIf="programRev1.lastUpdatedBy && programRev2.lastUpdatedBy">
+              <span [innerHTML]="showDiff(programRev2.lastUpdatedBy.name!, programRev1.lastUpdatedBy.name!)"></span>
             </div>
           </td>
           <td>
@@ -72,10 +101,10 @@
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.categoryCombo">Category Combo</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.categoryCombo">Category Combo </span></td>
           <td>
-            <div *ngIf="programRev1.categoryCombo">
-              {{ programRev1.categoryCombo.id }}
+            <div *ngIf="programRev1.categoryCombo && programRev2.categoryCombo">
+              <span [innerHTML]="showDiff(programRev2.categoryCombo.id!, programRev1.categoryCombo.id!)"></span>
             </div>
           </td>
           <td>
@@ -85,398 +114,545 @@
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.shortName">Short Name</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.shortName">Short Name </span></td>
           <td>
-            <span>{{ programRev1.shortName }}</span>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.shortName, programRev1.shortName)"></span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.shortName }}</span>
+            <span>
+              {{ programRev2.shortName }}
+            </span>
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.description">Description</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.description">Description </span></td>
           <td>
-            <span>{{ programRev1.description }}</span>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.description, programRev1.description)"></span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.description }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.version">Version</span></td>
-          <td>
-            <span>{{ programRev1.version }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.version }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.enrollmentDateLabel">Enrollment Date Label</span></td>
-          <td>
-            <span>{{ programRev1.enrollmentDateLabel }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.enrollmentDateLabel }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.incidentDateLabel">Incident Date Label</span></td>
-          <td>
-            <span>{{ programRev1.incidentDateLabel }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.incidentDateLabel }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.programType">Program Type</span></td>
-          <td>
-            <span>{{ programRev1.programType }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.programType }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.displayIncidentDate">Display Incident Date</span></td>
-          <td>
-            <span>{{ programRev1.displayIncidentDate }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.displayIncidentDate }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.ignoreOverdueEvents">Ignore Overdue Events</span></td>
-          <td>
-            <span>{{ programRev1.ignoreOverdueEvents }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.ignoreOverdueEvents }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.userRoles">User Roles</span></td>
-          <td>
-            <span>{{ programRev1.userRoles }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.userRoles }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.onlyEnrollOnce">Only Enroll Once</span></td>
-          <td>
-            <span>{{ programRev1.onlyEnrollOnce }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.onlyEnrollOnce }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.notificationTemplates">Notification Templates</span></td>
-          <td>
-            <span>{{ programRev1.notificationTemplates }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.notificationTemplates }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.selectEnrollmentDatesInFuture">Select Enrollment Dates In Future</span></td>
-          <td>
-            <span>{{ programRev1.selectEnrollmentDatesInFuture }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.selectEnrollmentDatesInFuture }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.selectIncidentDatesInFuture">Select Incident Dates In Future</span></td>
-          <td>
-            <span>{{ programRev1.selectIncidentDatesInFuture }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.selectIncidentDatesInFuture }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.trackedEntityType">Tracked Entity Type</span></td>
-          <td>
-            <span>{{ programRev1.trackedEntityType }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.trackedEntityType }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.style">Style</span></td>
-          <td>
-            <span>{{ programRev1.style }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.style }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.skipOffline">Skip Offline</span></td>
-          <td>
-            <span>{{ programRev1.skipOffline }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.skipOffline }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.displayFrontPageList">Display Front Page List</span></td>
-          <td>
-            <span>{{ programRev1.displayFrontPageList }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.displayFrontPageList }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.useFirstStageDuringRegistration">Use First Stage During Registration</span></td>
-          <td>
-            <span>{{ programRev1.useFirstStageDuringRegistration }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.useFirstStageDuringRegistration }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.expiryDays">Expiry Days</span></td>
-          <td>
-            <span>{{ programRev1.expiryDays }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.expiryDays }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.completeEventsExpiryDays">Complete Events Expiry Days</span></td>
-          <td>
-            <span>{{ programRev1.completeEventsExpiryDays }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.completeEventsExpiryDays }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.openDaysAfterCoEndDate">Open Days After Co End Date</span></td>
-          <td>
-            <span>{{ programRev1.openDaysAfterCoEndDate }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.openDaysAfterCoEndDate }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.minAttributesRequiredToSearch">Min Attributes Required To Search</span></td>
-          <td>
-            <span>{{ programRev1.minAttributesRequiredToSearch }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.minAttributesRequiredToSearch }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.maxTeiCountToReturn">Max Tei Count To Return</span></td>
-          <td>
-            <span>{{ programRev1.maxTeiCountToReturn }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.maxTeiCountToReturn }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.accessLevel">Access Level</span></td>
-          <td>
-            <span>{{ programRev1.accessLevel }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.accessLevel }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.displayEnrollmentDateLabel">Display Enrollment Date Label</span></td>
-          <td>
-            <span>{{ programRev1.displayEnrollmentDateLabel }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.displayEnrollmentDateLabel }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.displayIncidentDateLabel">Display Incident Date Label</span></td>
-          <td>
-            <span>{{ programRev1.displayIncidentDateLabel }}</span>
-          </td>
-
-          <td>
-            <span>{{ programRev2.displayIncidentDateLabel }}</span>
+            <span>
+              {{ programRev2.description }}
+            </span>
           </td>
         </tr>
 
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.registration">Registration</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.enrollmentDateLabel">Enrollment Date Label </span></td>
           <td>
-            <span>{{ programRev1.registration }}</span>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.enrollmentDateLabel, programRev1.enrollmentDateLabel)"></span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.registration }}</span>
+            <span>
+              {{ programRev2.enrollmentDateLabel }}
+            </span>
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.withoutRegistration">Without Registration</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.incidentDateLabel">Incident Date Label </span></td>
           <td>
-            <span>{{ programRev1.withoutRegistration }}</span>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.incidentDateLabel, programRev1.incidentDateLabel)"></span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.withoutRegistration }}</span>
+            <span>
+              {{ programRev2.incidentDateLabel }}
+            </span>
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.displayShortName">Display Short Name</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.programType">Program Type </span></td>
           <td>
-            <span>{{ programRev1.displayShortName }}</span>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.programType, programRev1.programType)"></span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.displayShortName }}</span>
+            <span>
+              {{ programRev2.programType }}
+            </span>
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.displayDescription">Display Description</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.displayIncidentDate">Display Incident Date </span></td>
           <td>
-            <span>{{ programRev1.displayDescription }}</span>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.displayIncidentDate, programRev1.displayIncidentDate)"></span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.displayDescription }}</span>
+            <span>
+              {{ programRev2.displayIncidentDate }}
+            </span>
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.displayFormName">Display Form Name</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.ignoreOverdueEvents">Ignore Overdue Events </span></td>
           <td>
-            <span>{{ programRev1.displayFormName }}</span>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.ignoreOverdueEvents, programRev1.ignoreOverdueEvents)"></span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.displayFormName }}</span>
+            <span>
+              {{ programRev2.ignoreOverdueEvents }}
+            </span>
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.displayName">Display Name</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.userRoles">User Roles </span></td>
           <td>
-            <span>{{ programRev1.displayName }}</span>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.userRoles, programRev1.userRoles)"></span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.displayName }}</span>
+            <span>
+              {{ programRev2.userRoles }}
+            </span>
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.organisationUnitsCount">Organisation Units Count</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.onlyEnrollOnce">Only Enroll Once </span></td>
           <td>
-            <span>{{ programRev1.organisationUnitsCount }}</span>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.onlyEnrollOnce, programRev1.onlyEnrollOnce)"></span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.organisationUnitsCount }}</span>
+            <span>
+              {{ programRev2.onlyEnrollOnce }}
+            </span>
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.programStagesCount">Program Stages Count</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.notificationTemplates">Notification Templates </span></td>
           <td>
-            <span>{{ programRev1.programStagesCount }}</span>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.notificationTemplates, programRev1.notificationTemplates)"></span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.programStagesCount }}</span>
+            <span>
+              {{ programRev2.notificationTemplates }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.selectEnrollmentDatesInFuture">Select Enrollment Dates In Future </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.selectEnrollmentDatesInFuture, programRev1.selectEnrollmentDatesInFuture)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.selectEnrollmentDatesInFuture }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.selectIncidentDatesInFuture">Select Incident Dates In Future </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.selectIncidentDatesInFuture, programRev1.selectIncidentDatesInFuture)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.selectIncidentDatesInFuture }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.trackedEntityType">Tracked Entity Type </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.trackedEntityType, programRev1.trackedEntityType)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.trackedEntityType }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.style">Style </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.style, programRev1.style)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.style }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.skipOffline">Skip Offline </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.skipOffline, programRev1.skipOffline)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.skipOffline }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.displayFrontPageList">Display Front Page List </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.displayFrontPageList, programRev1.displayFrontPageList)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.displayFrontPageList }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.useFirstStageDuringRegistration">Use First Stage During Registration </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.useFirstStageDuringRegistration, programRev1.useFirstStageDuringRegistration)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.useFirstStageDuringRegistration }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.expiryDays">Expiry Days </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.expiryDays, programRev1.expiryDays)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.expiryDays }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.completeEventsExpiryDays">Complete Events Expiry Days </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.completeEventsExpiryDays, programRev1.completeEventsExpiryDays)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.completeEventsExpiryDays }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.openDaysAfterCoEndDate">Open Days After Co End Date </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.openDaysAfterCoEndDate, programRev1.openDaysAfterCoEndDate)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.openDaysAfterCoEndDate }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.minAttributesRequiredToSearch">Min Attributes Required To Search </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.minAttributesRequiredToSearch, programRev1.minAttributesRequiredToSearch)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.minAttributesRequiredToSearch }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.maxTeiCountToReturn">Max Tei Count To Return </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.maxTeiCountToReturn, programRev1.maxTeiCountToReturn)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.maxTeiCountToReturn }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.accessLevel">Access Level </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.accessLevel, programRev1.accessLevel)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.accessLevel }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.displayEnrollmentDateLabel">Display Enrollment Date Label </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.displayEnrollmentDateLabel, programRev1.displayEnrollmentDateLabel)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.displayEnrollmentDateLabel }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.displayIncidentDateLabel">Display Incident Date Label </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.displayIncidentDateLabel, programRev1.displayIncidentDateLabel)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.displayIncidentDateLabel }}
+            </span>
           </td>
         </tr>
 
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.programIndicatorsCount">Program Indicators Count</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.registration">Registration </span></td>
           <td>
-            <span>{{ programRev1.programIndicatorsCount }}</span>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.registration, programRev1.registration)"></span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.programIndicatorsCount }}</span>
+            <span>
+              {{ programRev2.registration }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.withoutRegistration">Without Registration </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.withoutRegistration, programRev1.withoutRegistration)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.withoutRegistration }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.displayShortName">Display Short Name </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.displayShortName, programRev1.displayShortName)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.displayShortName }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.displayDescription">Display Description </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.displayDescription, programRev1.displayDescription)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.displayDescription }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.displayFormName">Display Form Name </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.displayFormName, programRev1.displayFormName)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.displayFormName }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.displayName">Display Name </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.displayName, programRev1.displayName)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.displayName }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.organisationUnitsCount">Organisation Units Count </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.organisationUnitsCount, programRev1.organisationUnitsCount)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.organisationUnitsCount }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.programStagesCount">Program Stages Count </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.programStagesCount, programRev1.programStagesCount)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.programStagesCount }}
+            </span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><span jhiTranslate="dhis2TrackApp.program.programIndicatorsCount">Program Indicators Count </span></td>
+          <td>
+            <span>
+              <span [innerHTML]="showDiff(programRev2.programIndicatorsCount, programRev1.programIndicatorsCount)"></span>
+            </span>
+          </td>
+
+          <td>
+            <span>
+              {{ programRev2.programIndicatorsCount }}
+            </span>
           </td>
         </tr>
 
         <tr>
           <td>
-            <span jhiTranslate="dhis2TrackApp.program.programTrackedEntityAttributesCount">Program Tracked Entity Attributes Count</span>
+            <span jhiTranslate="dhis2TrackApp.program.programTrackedEntityAttributesCount">Program Tracked Entity Attributes Count </span>
           </td>
           <td>
-            <span>{{ programRev1.programTrackedEntityAttributesCount }}</span>
+            <span>
+              <span
+                [innerHTML]="showDiff(programRev2.programTrackedEntityAttributesCount, programRev1.programTrackedEntityAttributesCount)"
+              ></span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.programTrackedEntityAttributesCount }}</span>
+            <span>
+              {{ programRev2.programTrackedEntityAttributesCount }}
+            </span>
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.organisationUnitsContent">Organisation Units Content</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.organisationUnitsContent">Organisation Units Content </span></td>
           <td>
-            <span>{{ programRev1.organisationUnitsContent }}</span>
+            <span>
+              <span>
+                {{ programRev1.organisationUnitsContent }}
+              </span>
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.organisationUnitsContent }}</span>
+            <span>
+              {{ programRev2.organisationUnitsContent }}
+            </span>
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.programStagesContent">Program Stages Content</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.programStagesContent">Program Stages Content </span></td>
           <td>
-            <span>{{ programRev1.programStagesContent }}</span>
+            <span>
+              {{ programRev1.programStagesContent }}
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.programStagesContent }}</span>
+            <span>
+              {{ programRev2.programStagesContent }}
+            </span>
           </td>
         </tr>
         <tr>
-          <td><span jhiTranslate="dhis2TrackApp.program.programIndicatorsContent">Program Indicators Content</span></td>
+          <td><span jhiTranslate="dhis2TrackApp.program.programIndicatorsContent">Program Indicators Content </span></td>
           <td>
-            <span>{{ programRev1.programIndicatorsContent }}</span>
+            <span>
+              {{ programRev1.programIndicatorsContent }}
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.programIndicatorsContent }}</span>
+            <span>
+              {{ programRev2.programIndicatorsContent }}
+            </span>
           </td>
         </tr>
         <tr></tr>
@@ -487,18 +663,22 @@
             >
           </td>
           <td>
-            <span>{{ programRev1.programTrackedEntityAttributesContent }}</span>
+            <span>
+              {{ programRev1.programTrackedEntityAttributesContent }}
+            </span>
           </td>
 
           <td>
-            <span>{{ programRev2.programTrackedEntityAttributesContent }}</span>
+            <span>
+              {{ programRev2.programTrackedEntityAttributesContent }}
+            </span>
           </td>
         </tr>
       </tbody>
     </table>
 
     <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-      <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour </span>
     </button>
   </div>
 </div>

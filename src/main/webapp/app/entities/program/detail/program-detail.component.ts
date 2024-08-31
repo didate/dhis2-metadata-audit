@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IProgram } from '../program.model';
 import { EntityArrayResponseType, ProgramService } from '../service/program.service';
 import { tap } from 'rxjs';
+import { DiffService } from 'app/entities/diff.service';
 
 @Component({
   selector: 'jhi-program-detail',
@@ -20,7 +21,7 @@ export class ProgramDetailComponent implements OnInit {
   rev1: number = 0;
   rev2: number = 0;
 
-  constructor(protected activatedRoute: ActivatedRoute, protected programService: ProgramService) {}
+  constructor(protected activatedRoute: ActivatedRoute, protected programService: ProgramService, private diffService: DiffService) {}
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
@@ -45,6 +46,17 @@ export class ProgramDetailComponent implements OnInit {
       });
   }
 
+  showDiff(text1: any, text2: any) {
+    if (text1) {
+      return this.diffService.generateDiff(text1 as string, text2 as string);
+    }
+    return text1;
+  }
+
+  previousState(): void {
+    window.history.back();
+  }
+
   protected onResponseSuccess(response: EntityArrayResponseType): void {
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.programs = dataFromBody;
@@ -54,9 +66,5 @@ export class ProgramDetailComponent implements OnInit {
 
   protected fillComponentAttributesFromResponseBody(data: IProgram[] | null): IProgram[] {
     return data ?? [];
-  }
-
-  previousState(): void {
-    window.history.back();
   }
 }
