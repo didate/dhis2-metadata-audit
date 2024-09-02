@@ -12,8 +12,8 @@ public class DataElementDTO extends AbstractDTO {
             dataElement.getId(),
             dataElement.getName(),
             dataElement.getShortName(),
-            dataElement.getCreated().toString(),
-            dataElement.getLastUpdated().toString(),
+            dataElement.getCreated() == null ? "" : dataElement.getCreated().toString(),
+            dataElement.getLastUpdated() == null ? "" : dataElement.getLastUpdated().toString(),
             dataElement.getCreatedBy(),
             dataElement.getLastUpdatedBy()
         );

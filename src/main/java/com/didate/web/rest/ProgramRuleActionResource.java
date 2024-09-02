@@ -3,7 +3,10 @@ package com.didate.web.rest;
 import com.didate.domain.ProgramRuleAction;
 import com.didate.repository.ProgramRuleActionRepository;
 import com.didate.service.ProgramRuleActionService;
+import com.didate.service.dto.ProgramRuleActionDTO;
+import com.didate.service.dto.ProgramRuleActionFullDTO;
 import com.didate.web.rest.errors.BadRequestAlertException;
+import io.micrometer.core.annotation.Timed;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -68,5 +71,31 @@ public class ProgramRuleActionResource {
         log.debug("REST request to get ProgramRuleAction : {}", id);
         Optional<ProgramRuleAction> programRuleAction = programRuleActionService.findOne(id);
         return ResponseUtil.wrapOrNotFound(programRuleAction);
+    }
+
+    @GetMapping("/program-rule-actions/{id}/audit")
+    @Timed
+    public ResponseEntity<List<ProgramRuleActionDTO>> findRevisions(@PathVariable String id) {
+        return new ResponseEntity<>(programRuleActionService.findAudits(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/program-rule-actions/{id}/compare/{rev1}/{rev2}")
+    @Timed
+    public ResponseEntity<List<ProgramRuleActionFullDTO>> findRevisions(
+        @PathVariable String id,
+        @PathVariable Integer rev1,
+        @PathVariable Integer rev2
+    ) {
+        // Retrieve both revisions, with the latest revision first
+        ProgramRuleActionFullDTO latestRevisionDTO = programRuleActionService.findAuditRevision(id, Math.max(rev1, rev2));
+        ProgramRuleActionFullDTO earlierRevisionDTO = programRuleActionService.findAuditRevision(id, Math.min(rev1, rev2));
+
+        // Check if either revision is not found (Optional)
+        if (latestRevisionDTO == null || earlierRevisionDTO == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // Return the two compared revisions in a response
+        return new ResponseEntity<>(List.of(latestRevisionDTO, earlierRevisionDTO), HttpStatus.OK);
     }
 }

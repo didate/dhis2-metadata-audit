@@ -2,6 +2,8 @@ package com.didate.web.rest;
 
 import com.didate.domain.CategoryCombo;
 import com.didate.service.CategorycomboService;
+import com.didate.service.dto.CategoryComboDTO;
+import io.micrometer.core.annotation.Timed;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -9,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,5 +61,31 @@ public class CategorycomboResource {
         log.debug("REST request to get Categorycombo : {}", id);
         Optional<CategoryCombo> categorycombo = categorycomboService.findOne(id);
         return ResponseUtil.wrapOrNotFound(categorycombo);
+    }
+
+    @GetMapping("/categorycombos/{id}/audit")
+    @Timed
+    public ResponseEntity<List<CategoryComboDTO>> findRevisions(@PathVariable String id) {
+        return new ResponseEntity<>(categorycomboService.findAudits(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/categorycombos/{id}/compare/{rev1}/{rev2}")
+    @Timed
+    public ResponseEntity<List<CategoryComboDTO>> findRevisions(
+        @PathVariable String id,
+        @PathVariable Integer rev1,
+        @PathVariable Integer rev2
+    ) {
+        // Retrieve both revisions, with the latest revision first
+        CategoryComboDTO latestRevisionDTO = categorycomboService.findAuditRevision(id, Math.max(rev1, rev2));
+        CategoryComboDTO earlierRevisionDTO = categorycomboService.findAuditRevision(id, Math.min(rev1, rev2));
+
+        // Check if either revision is not found (Optional)
+        if (latestRevisionDTO == null || earlierRevisionDTO == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // Return the two compared revisions in a response
+        return new ResponseEntity<>(List.of(latestRevisionDTO, earlierRevisionDTO), HttpStatus.OK);
     }
 }
