@@ -65,6 +65,14 @@ export class IndicatorService {
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
+  history(id: any): Observable<EntityArrayResponseType> {
+    return this.http.get<IIndicator[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' });
+  }
+
+  compare(id: string, rev1: number, rev2: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IIndicator[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' });
+  }
+
   delete(id: string): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
