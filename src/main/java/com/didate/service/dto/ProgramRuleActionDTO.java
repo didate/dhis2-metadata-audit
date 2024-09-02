@@ -8,7 +8,7 @@ public class ProgramRuleActionDTO extends AbstractDTO {
         super(
             programRuleAction.getId(),
             programRuleAction.getCreated(),
-            programRuleAction.getLastUpdated().toString(),
+            programRuleAction.getLastUpdated(),
             programRuleAction.getCreatedBy(),
             programRuleAction.getLastUpdatedBy()
         );

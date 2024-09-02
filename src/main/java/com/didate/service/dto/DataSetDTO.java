@@ -11,8 +11,8 @@ public class DataSetDTO extends AbstractDTO {
         super(
             dataSet.getId(),
             dataSet.getName(),
-            dataSet.getCreated().toString(),
-            dataSet.getLastUpdated().toString(),
+            dataSet.getCreated(),
+            dataSet.getLastUpdated(),
             dataSet.getCreatedBy(),
             dataSet.getLastUpdatedBy()
         );

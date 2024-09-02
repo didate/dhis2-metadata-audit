@@ -45,8 +45,8 @@ public class IndicatorFullDTO extends AbstractDTO {
             indicator.getId(),
             indicator.getName(),
             indicator.getShortName(),
-            indicator.getCreated().toString(),
-            indicator.getLastUpdated().toString(),
+            indicator.getCreated(),
+            indicator.getLastUpdated(),
             indicator.getCreatedBy(),
             indicator.getLastUpdatedBy()
         );

@@ -10,8 +10,8 @@ public class ProgramRuleVariableDTO extends AbstractDTO {
         super(
             programRuleVariable.getId(),
             programRuleVariable.getName(),
-            programRuleVariable.getCreated().toString(),
-            programRuleVariable.getLastUpdated().toString(),
+            programRuleVariable.getCreated(),
+            programRuleVariable.getLastUpdated(),
             programRuleVariable.getCreatedBy(),
             programRuleVariable.getLastUpdatedBy()
         );

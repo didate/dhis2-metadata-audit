@@ -3,10 +3,23 @@ package com.didate.domain;
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.domain.Persistable;
@@ -31,10 +44,10 @@ public class Program implements Serializable, Persistable<String> {
     private String name;
 
     @Column(name = "created")
-    private String created;
+    private Instant created;
 
     @Column(name = "last_updated")
-    private String lastUpdated;
+    private Instant lastUpdated;
 
     @Column(name = "short_name")
     private String shortName;
@@ -243,29 +256,29 @@ public class Program implements Serializable, Persistable<String> {
         this.name = name;
     }
 
-    public String getCreated() {
+    public Instant getCreated() {
         return this.created;
     }
 
-    public Program created(String created) {
+    public Program created(Instant created) {
         this.setCreated(created);
         return this;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Instant created) {
         this.created = created;
     }
 
-    public String getLastUpdated() {
+    public Instant getLastUpdated() {
         return this.lastUpdated;
     }
 
-    public Program lastUpdated(String lastUpdated) {
+    public Program lastUpdated(Instant lastUpdated) {
         this.setLastUpdated(lastUpdated);
         return this;
     }
 
-    public void setLastUpdated(String lastUpdated) {
+    public void setLastUpdated(Instant lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
