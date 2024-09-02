@@ -3,7 +3,13 @@ package com.didate.service.impl;
 import com.didate.domain.ProgramRule;
 import com.didate.repository.ProgramRuleRepository;
 import com.didate.service.ProgramRuleService;
+import com.didate.service.dto.ProgramRuleDTO;
+import com.didate.service.dto.ProgramRuleFullDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -46,6 +52,9 @@ public class ProgramRuleServiceImpl implements ProgramRuleService {
         return programRuleRepository
             .findById(programRule.getId())
             .map(existingProgramRule -> {
+                if (existingProgramRule.getLastUpdated().equals(programRule.getLastUpdated())) {
+                    return existingProgramRule;
+                }
                 if (programRule.getLastUpdated() != null) {
                     existingProgramRule.setLastUpdated(programRule.getLastUpdated());
                 }
@@ -101,5 +110,35 @@ public class ProgramRuleServiceImpl implements ProgramRuleService {
     @Override
     public Long count() {
         return programRuleRepository.count();
+    }
+
+    @Override
+    public List<ProgramRuleDTO> findAudits(String id) {
+        return programRuleRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                ProgramRule programRule = revision.getEntity();
+                Hibernate.unproxy(programRule.getCreatedBy());
+                Hibernate.unproxy(programRule.getLastUpdatedBy());
+                return new ProgramRuleDTO(programRule).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProgramRuleFullDTO findAuditRevision(String id, Integer rev) {
+        // Retrieve the revision from the repository
+        ProgramRule programRule = programRuleRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        Hibernate.unproxy(programRule.getCreatedBy());
+        Hibernate.unproxy(programRule.getLastUpdatedBy());
+
+        return new ProgramRuleFullDTO(programRule);
     }
 }

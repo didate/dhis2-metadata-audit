@@ -1,6 +1,9 @@
 package com.didate.service;
 
 import com.didate.domain.ProgramRuleAction;
+import com.didate.service.dto.ProgramRuleActionDTO;
+import com.didate.service.dto.ProgramRuleActionFullDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,4 +61,7 @@ public interface ProgramRuleActionService {
 
     Boolean exist(String id);
     Long count();
+
+    List<ProgramRuleActionDTO> findAudits(String id);
+    ProgramRuleActionFullDTO findAuditRevision(String id, Integer rev);
 }

@@ -2,6 +2,9 @@ package com.didate.service;
 
 import com.didate.domain.ProgramStage;
 import com.didate.service.dto.ProgramStageDTO;
+import com.didate.service.dto.ProgramStageFullDTO;
+import java.util.List;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -68,4 +71,7 @@ public interface ProgramStageService {
 
     Boolean exist(String id);
     Long count();
+
+    List<ProgramStageDTO> findAudits(String id);
+    ProgramStageFullDTO findAuditRevision(String id, Integer rev);
 }

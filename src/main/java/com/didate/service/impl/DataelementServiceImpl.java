@@ -4,7 +4,13 @@ import com.didate.domain.DataElement;
 import com.didate.repository.DataelementRepository;
 import com.didate.service.DataelementService;
 import com.didate.service.dto.DataElementDTO;
+import com.didate.service.dto.DataElementFullDTO;
+import com.didate.service.dto.DataSetFullDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -47,6 +53,9 @@ public class DataelementServiceImpl implements DataelementService {
         return dataelementRepository
             .findById(dataelement.getId())
             .map(existingDataelement -> {
+                if (existingDataelement.getLastUpdated().equals(dataelement.getLastUpdated())) {
+                    return existingDataelement;
+                }
                 if (dataelement.getName() != null) {
                     existingDataelement.setName(dataelement.getName());
                 }
@@ -135,6 +144,37 @@ public class DataelementServiceImpl implements DataelementService {
     @Override
     public Long count() {
         return dataelementRepository.count();
+    }
+
+    @Override
+    public List<DataElementDTO> findAudits(String id) {
+        return dataelementRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                DataElement dataElement = revision.getEntity();
+                Hibernate.unproxy(dataElement.getCreatedBy());
+                Hibernate.unproxy(dataElement.getLastUpdatedBy());
+                return new DataElementDTO(dataElement).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DataElementFullDTO findAuditRevision(String id, Integer rev) {
+        // Retrieve the revision from the repository
+        DataElement dataElement = dataelementRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        Hibernate.unproxy(dataElement.getCreatedBy());
+        Hibernate.unproxy(dataElement.getLastUpdatedBy());
+        Hibernate.unproxy(dataElement.getCategoryCombo());
+
+        return new DataElementFullDTO(dataElement);
     }
 
     @Override

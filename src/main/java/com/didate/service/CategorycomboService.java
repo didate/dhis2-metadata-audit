@@ -1,6 +1,8 @@
 package com.didate.service;
 
 import com.didate.domain.CategoryCombo;
+import com.didate.service.dto.CategoryComboDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,4 +60,7 @@ public interface CategorycomboService {
 
     Boolean exist(String id);
     Long count();
+
+    List<CategoryComboDTO> findAudits(String id);
+    CategoryComboDTO findAuditRevision(String id, Integer rev);
 }

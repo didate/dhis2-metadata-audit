@@ -1,9 +1,17 @@
 package com.didate.service.impl;
 
 import com.didate.domain.OptionGroup;
+import com.didate.domain.Program;
 import com.didate.repository.OptionGroupRepository;
 import com.didate.service.OptionGroupService;
+import com.didate.service.dto.OptionGroupDTO;
+import com.didate.service.dto.ProgramDTO;
+import com.didate.service.dto.ProgramFullDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -79,5 +87,34 @@ public class OptionGroupServiceImpl implements OptionGroupService {
     @Override
     public Long count() {
         return optionGroupRepository.count();
+    }
+
+    @Override
+    public List<OptionGroupDTO> findAudits(String id) {
+        return optionGroupRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                OptionGroup optionGroup = revision.getEntity();
+                Hibernate.unproxy(optionGroup.getCreatedBy());
+                Hibernate.unproxy(optionGroup.getLastUpdatedBy());
+                return new OptionGroupDTO(optionGroup).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public OptionGroupDTO findAuditRevision(String id, Integer rev) {
+        OptionGroup optionGroup = optionGroupRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        Hibernate.unproxy(optionGroup.getCreatedBy());
+        Hibernate.unproxy(optionGroup.getLastUpdatedBy());
+
+        return new OptionGroupDTO(optionGroup);
     }
 }

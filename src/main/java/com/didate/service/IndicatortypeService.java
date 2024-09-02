@@ -1,6 +1,8 @@
 package com.didate.service;
 
 import com.didate.domain.IndicatorType;
+import com.didate.service.dto.IndicatorTypeDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,4 +60,7 @@ public interface IndicatortypeService {
 
     Boolean exist(String id);
     Long count();
+
+    List<IndicatorTypeDTO> findAudits(String id);
+    IndicatorTypeDTO findAuditRevision(String id, Integer rev);
 }

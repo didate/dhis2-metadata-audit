@@ -2,6 +2,7 @@ package com.didate.repository;
 
 import com.didate.domain.CategoryCombo;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,4 +10,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CategorycomboRepository extends JpaRepository<CategoryCombo, String> {}
+public interface CategorycomboRepository extends JpaRepository<CategoryCombo, String>, RevisionRepository<CategoryCombo, String, Integer> {}

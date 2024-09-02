@@ -3,7 +3,12 @@ package com.didate.service.impl;
 import com.didate.domain.CategoryCombo;
 import com.didate.repository.CategorycomboRepository;
 import com.didate.service.CategorycomboService;
+import com.didate.service.dto.CategoryComboDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -83,5 +88,35 @@ public class CategorycomboServiceImpl implements CategorycomboService {
     @Override
     public Long count() {
         return categorycomboRepository.count();
+    }
+
+    @Override
+    public List<CategoryComboDTO> findAudits(String id) {
+        return categorycomboRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                CategoryCombo categoryCombo = revision.getEntity();
+                Hibernate.unproxy(categoryCombo.getCreatedBy());
+                Hibernate.unproxy(categoryCombo.getLastUpdatedBy());
+                return new CategoryComboDTO(categoryCombo).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CategoryComboDTO findAuditRevision(String id, Integer rev) {
+        // Retrieve the revision from the repository
+        CategoryCombo categoryCombo = categorycomboRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        Hibernate.unproxy(categoryCombo.getCreatedBy());
+        Hibernate.unproxy(categoryCombo.getLastUpdatedBy());
+
+        return new CategoryComboDTO(categoryCombo);
     }
 }

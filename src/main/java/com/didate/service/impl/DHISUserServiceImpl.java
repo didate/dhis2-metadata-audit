@@ -3,7 +3,12 @@ package com.didate.service.impl;
 import com.didate.domain.DHISUser;
 import com.didate.repository.DHISUserRepository;
 import com.didate.service.DHISUserService;
+import com.didate.service.dto.DHISUserDTO;
+import com.didate.service.dto.DHISUserFullDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -46,6 +51,9 @@ public class DHISUserServiceImpl implements DHISUserService {
         return dHISUserRepository
             .findById(dHISUser.getId())
             .map(existingDHISUser -> {
+                if (existingDHISUser.getLastUpdated().equals(dHISUser.getLastUpdated())) {
+                    return existingDHISUser;
+                }
                 existingDHISUser.setCode(dHISUser.getCode());
                 existingDHISUser.setName(dHISUser.getName());
                 existingDHISUser.setDisplayName(dHISUser.getDisplayName());
@@ -92,5 +100,35 @@ public class DHISUserServiceImpl implements DHISUserService {
     @Override
     public Long count() {
         return dHISUserRepository.count();
+    }
+
+    @Override
+    public List<DHISUserDTO> findAudits(String id) {
+        return dHISUserRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                DHISUser dHisUser = revision.getEntity();
+                // Hibernate.unproxy(dHisUser.getCreatedBy());
+                // Hibernate.unproxy(dHisUser.getLastUpdatedBy());
+                return new DHISUserDTO(dHisUser).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DHISUserFullDTO findAuditRevision(String id, Integer rev) {
+        // Retrieve the revision from the repository
+        DHISUser dhisUser = dHISUserRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        //Hibernate.unproxy(dhisUser.getCreatedBy());
+        //Hibernate.unproxy(dhisUser.getLastUpdatedBy());
+
+        return new DHISUserFullDTO(dhisUser);
     }
 }

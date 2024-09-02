@@ -1,7 +1,9 @@
 package com.didate.repository;
 
+import com.didate.domain.CategoryCombo;
 import com.didate.domain.ProgramIndicator;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,4 +11,5 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ProgramIndicatorRepository extends JpaRepository<ProgramIndicator, String> {}
+public interface ProgramIndicatorRepository
+    extends JpaRepository<ProgramIndicator, String>, RevisionRepository<ProgramIndicator, String, Integer> {}

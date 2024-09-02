@@ -1,6 +1,9 @@
 package com.didate.service;
 
 import com.didate.domain.DHISUser;
+import com.didate.service.dto.DHISUserDTO;
+import com.didate.service.dto.DHISUserFullDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,4 +61,7 @@ public interface DHISUserService {
 
     Boolean exist(String id);
     Long count();
+
+    List<DHISUserDTO> findAudits(String id);
+    DHISUserFullDTO findAuditRevision(String id, Integer rev);
 }

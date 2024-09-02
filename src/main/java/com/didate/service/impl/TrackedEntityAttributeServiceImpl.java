@@ -3,7 +3,13 @@ package com.didate.service.impl;
 import com.didate.domain.TrackedEntityAttribute;
 import com.didate.repository.TrackedEntityAttributeRepository;
 import com.didate.service.TrackedEntityAttributeService;
+import com.didate.service.dto.TrackedEntityAttributeDTO;
+import com.didate.service.dto.TrackedEntityAttributeFullDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -46,6 +52,9 @@ public class TrackedEntityAttributeServiceImpl implements TrackedEntityAttribute
         return trackedEntityAttributeRepository
             .findById(trackedEntityAttribute.getId())
             .map(existingTrackedEntityAttribute -> {
+                if (existingTrackedEntityAttribute.getLastUpdated().equals(trackedEntityAttribute.getLastUpdated())) {
+                    return existingTrackedEntityAttribute;
+                }
                 if (trackedEntityAttribute.getLastUpdated() != null) {
                     existingTrackedEntityAttribute.setLastUpdated(trackedEntityAttribute.getLastUpdated());
                 }
@@ -152,5 +161,33 @@ public class TrackedEntityAttributeServiceImpl implements TrackedEntityAttribute
     @Override
     public Long count() {
         return trackedEntityAttributeRepository.count();
+    }
+
+    @Override
+    public List<TrackedEntityAttributeDTO> findAudits(String id) {
+        return trackedEntityAttributeRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                TrackedEntityAttribute p = revision.getEntity();
+                Hibernate.unproxy(p.getCreatedBy());
+                Hibernate.unproxy(p.getLastUpdatedBy());
+                return new TrackedEntityAttributeDTO(p).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TrackedEntityAttributeFullDTO findAuditRevision(String id, Integer rev) {
+        TrackedEntityAttribute trackedEntityAttribute = trackedEntityAttributeRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        Hibernate.unproxy(trackedEntityAttribute.getCreatedBy());
+        Hibernate.unproxy(trackedEntityAttribute.getLastUpdatedBy());
+        return new TrackedEntityAttributeFullDTO(trackedEntityAttribute);
     }
 }

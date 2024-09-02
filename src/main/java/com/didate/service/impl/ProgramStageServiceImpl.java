@@ -4,7 +4,12 @@ import com.didate.domain.ProgramStage;
 import com.didate.repository.ProgramStageRepository;
 import com.didate.service.ProgramStageService;
 import com.didate.service.dto.ProgramStageDTO;
+import com.didate.service.dto.ProgramStageFullDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -47,6 +52,9 @@ public class ProgramStageServiceImpl implements ProgramStageService {
         return programStageRepository
             .findById(programStage.getId())
             .map(existingProgramStage -> {
+                if (existingProgramStage.getLastUpdated().equals(programStage.getLastUpdated())) {
+                    return existingProgramStage;
+                }
                 if (programStage.getName() != null) {
                     existingProgramStage.setName(programStage.getName());
                 }
@@ -163,6 +171,35 @@ public class ProgramStageServiceImpl implements ProgramStageService {
     @Override
     public Long count() {
         return programStageRepository.count();
+    }
+
+    @Override
+    public List<ProgramStageDTO> findAudits(String id) {
+        return programStageRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                ProgramStage programStage = revision.getEntity();
+                Hibernate.unproxy(programStage.getCreatedBy());
+                Hibernate.unproxy(programStage.getLastUpdatedBy());
+                return new ProgramStageDTO(programStage).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProgramStageFullDTO findAuditRevision(String id, Integer rev) {
+        ProgramStage program = programStageRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        Hibernate.unproxy(program.getCreatedBy());
+        Hibernate.unproxy(program.getLastUpdatedBy());
+
+        return new ProgramStageFullDTO(program);
     }
 
     @Override

@@ -3,7 +3,13 @@ package com.didate.service.impl;
 import com.didate.domain.ProgramRuleAction;
 import com.didate.repository.ProgramRuleActionRepository;
 import com.didate.service.ProgramRuleActionService;
+import com.didate.service.dto.ProgramRuleActionDTO;
+import com.didate.service.dto.ProgramRuleActionFullDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -107,5 +113,34 @@ public class ProgramRuleActionServiceImpl implements ProgramRuleActionService {
     @Override
     public Long count() {
         return programRuleActionRepository.count();
+    }
+
+    @Override
+    public List<ProgramRuleActionDTO> findAudits(String id) {
+        return programRuleActionRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                ProgramRuleAction p = revision.getEntity();
+                Hibernate.unproxy(p.getCreatedBy());
+                Hibernate.unproxy(p.getLastUpdatedBy());
+                return new ProgramRuleActionDTO(p).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProgramRuleActionFullDTO findAuditRevision(String id, Integer rev) {
+        ProgramRuleAction program = programRuleActionRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        Hibernate.unproxy(program.getCreatedBy());
+        Hibernate.unproxy(program.getLastUpdatedBy());
+
+        return new ProgramRuleActionFullDTO(program);
     }
 }

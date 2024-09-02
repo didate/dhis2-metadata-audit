@@ -8,6 +8,7 @@ import com.didate.web.rest.util.RemoveCommonWords;
 import io.micrometer.core.annotation.Timed;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

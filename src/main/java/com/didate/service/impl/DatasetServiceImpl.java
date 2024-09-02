@@ -4,7 +4,12 @@ import com.didate.domain.DataSet;
 import com.didate.repository.DatasetRepository;
 import com.didate.service.DatasetService;
 import com.didate.service.dto.DataSetDTO;
+import com.didate.service.dto.DataSetFullDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -47,6 +52,9 @@ public class DatasetServiceImpl implements DatasetService {
         return datasetRepository
             .findById(dataset.getId())
             .map(existingDataset -> {
+                if (existingDataset.getLastUpdated().equals(dataset.getLastUpdated())) {
+                    return existingDataset;
+                }
                 if (dataset.getName() != null) {
                     existingDataset.setName(dataset.getName());
                 }
@@ -190,6 +198,37 @@ public class DatasetServiceImpl implements DatasetService {
     @Override
     public Long count() {
         return datasetRepository.count();
+    }
+
+    @Override
+    public List<DataSetDTO> findAudits(String id) {
+        return datasetRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                DataSet dataSet = revision.getEntity();
+                Hibernate.unproxy(dataSet.getCreatedBy());
+                Hibernate.unproxy(dataSet.getLastUpdatedBy());
+                return new DataSetDTO(dataSet).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DataSetFullDTO findAuditRevision(String id, Integer rev) {
+        // Retrieve the revision from the repository
+        DataSet dataSet = datasetRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        Hibernate.unproxy(dataSet.getCreatedBy());
+        Hibernate.unproxy(dataSet.getLastUpdatedBy());
+        Hibernate.unproxy(dataSet.getCategoryCombo());
+
+        return new DataSetFullDTO(dataSet);
     }
 
     @Override

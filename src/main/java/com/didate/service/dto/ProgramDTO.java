@@ -1,9 +1,6 @@
 package com.didate.service.dto;
 
 import com.didate.domain.Program;
-import com.didate.domain.TrackedEntityAttribute;
-import java.util.HashSet;
-import java.util.Set;
 
 public class ProgramDTO extends AbstractDTO {
 
@@ -14,6 +11,7 @@ public class ProgramDTO extends AbstractDTO {
         super(
             program.getId(),
             program.getName(),
+            program.getShortName(),
             program.getCreated(),
             program.getLastUpdated(),
             program.getCreatedBy(),
