@@ -2,6 +2,8 @@ package com.didate.service;
 
 import com.didate.domain.DataElement;
 import com.didate.service.dto.DataElementDTO;
+import com.didate.service.dto.DataElementFullDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,4 +62,7 @@ public interface DataelementService {
 
     Boolean exist(String id);
     Long count();
+
+    List<DataElementDTO> findAudits(String id);
+    DataElementFullDTO findAuditRevision(String id, Integer rev);
 }

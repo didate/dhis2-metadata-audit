@@ -5,6 +5,7 @@ import com.didate.domain.DataSet;
 public class DataSetDTO extends AbstractDTO {
 
     private String periodType;
+    private Integer revisionNumber;
 
     public DataSetDTO(DataSet dataSet) {
         super(
@@ -16,6 +17,19 @@ public class DataSetDTO extends AbstractDTO {
             dataSet.getLastUpdatedBy()
         );
         this.periodType = dataSet.getPeriodType();
+    }
+
+    public Integer getRevisionNumber() {
+        return revisionNumber;
+    }
+
+    public void setRevisionNumber(Integer revisionNumber) {
+        this.revisionNumber = revisionNumber;
+    }
+
+    public DataSetDTO revisionNumber(Integer revisionNumber) {
+        setRevisionNumber(revisionNumber);
+        return this;
     }
 
     public String getPeriodType() {

@@ -4,7 +4,12 @@ import com.didate.domain.Indicator;
 import com.didate.repository.IndicatorRepository;
 import com.didate.service.IndicatorService;
 import com.didate.service.dto.IndicatorDTO;
+import com.didate.service.dto.IndicatorFullDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -47,6 +52,9 @@ public class IndicatorServiceImpl implements IndicatorService {
         return indicatorRepository
             .findById(indicator.getId())
             .map(existingIndicator -> {
+                if (existingIndicator.getLastUpdated().equals(indicator.getLastUpdated())) {
+                    return existingIndicator;
+                }
                 if (indicator.getName() != null) {
                     existingIndicator.setName(indicator.getName());
                 }
@@ -135,6 +143,37 @@ public class IndicatorServiceImpl implements IndicatorService {
     @Override
     public Long count() {
         return indicatorRepository.count();
+    }
+
+    @Override
+    public List<IndicatorDTO> findAudits(String id) {
+        return indicatorRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                Indicator indicator = revision.getEntity();
+                Hibernate.unproxy(indicator.getCreatedBy());
+                Hibernate.unproxy(indicator.getLastUpdatedBy());
+                return new IndicatorDTO(indicator).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public IndicatorFullDTO findAuditRevision(String id, Integer rev) {
+        // Retrieve the revision from the repository
+        Indicator indicator = indicatorRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        Hibernate.unproxy(indicator.getCreatedBy());
+        Hibernate.unproxy(indicator.getLastUpdatedBy());
+        Hibernate.unproxy(indicator.getIndicatorType());
+
+        return new IndicatorFullDTO(indicator);
     }
 
     @Override

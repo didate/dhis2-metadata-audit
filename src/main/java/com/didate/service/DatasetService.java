@@ -2,6 +2,8 @@ package com.didate.service;
 
 import com.didate.domain.DataSet;
 import com.didate.service.dto.DataSetDTO;
+import com.didate.service.dto.DataSetFullDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -68,4 +70,7 @@ public interface DatasetService {
 
     Boolean exist(String id);
     Long count();
+
+    List<DataSetDTO> findAudits(String id);
+    DataSetFullDTO findAuditRevision(String id, Integer rev);
 }

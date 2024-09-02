@@ -3,6 +3,7 @@ package com.didate.service.impl;
 import com.didate.domain.PersonNotifier;
 import com.didate.repository.PersonNotifierRepository;
 import com.didate.service.PersonNotifierService;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

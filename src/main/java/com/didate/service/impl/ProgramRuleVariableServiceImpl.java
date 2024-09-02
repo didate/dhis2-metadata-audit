@@ -3,7 +3,13 @@ package com.didate.service.impl;
 import com.didate.domain.ProgramRuleVariable;
 import com.didate.repository.ProgramRuleVariableRepository;
 import com.didate.service.ProgramRuleVariableService;
+import com.didate.service.dto.ProgramRuleVariableDTO;
+import com.didate.service.dto.ProgramRuleVariableFullDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -101,5 +107,35 @@ public class ProgramRuleVariableServiceImpl implements ProgramRuleVariableServic
     @Override
     public Long count() {
         return programRuleVariableRepository.count();
+    }
+
+    @Override
+    public List<ProgramRuleVariableDTO> findAudits(String id) {
+        return programRuleVariableRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                ProgramRuleVariable progamRuleVariable = revision.getEntity();
+                Hibernate.unproxy(progamRuleVariable.getCreatedBy());
+                Hibernate.unproxy(progamRuleVariable.getLastUpdatedBy());
+
+                return new ProgramRuleVariableDTO(progamRuleVariable).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProgramRuleVariableFullDTO findAuditRevision(String id, Integer rev) {
+        ProgramRuleVariable programRuleVariable = programRuleVariableRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        Hibernate.unproxy(programRuleVariable.getCreatedBy());
+        Hibernate.unproxy(programRuleVariable.getLastUpdatedBy());
+
+        return new ProgramRuleVariableFullDTO(programRuleVariable);
     }
 }

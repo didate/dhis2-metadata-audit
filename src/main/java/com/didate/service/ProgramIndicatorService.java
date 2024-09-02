@@ -1,6 +1,9 @@
 package com.didate.service;
 
 import com.didate.domain.ProgramIndicator;
+import com.didate.service.dto.ProgramIndicatorDTO;
+import com.didate.service.dto.ProgramIndicatorFullDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,4 +61,7 @@ public interface ProgramIndicatorService {
 
     Boolean exist(String id);
     Long count();
+
+    List<ProgramIndicatorDTO> findAudits(String id);
+    ProgramIndicatorFullDTO findAuditRevision(String id, Integer rev);
 }

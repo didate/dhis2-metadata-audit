@@ -1,6 +1,9 @@
 package com.didate.service;
 
 import com.didate.domain.TrackedEntityAttribute;
+import com.didate.service.dto.TrackedEntityAttributeDTO;
+import com.didate.service.dto.TrackedEntityAttributeFullDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,4 +61,7 @@ public interface TrackedEntityAttributeService {
 
     Boolean exist(String id);
     Long count();
+
+    List<TrackedEntityAttributeDTO> findAudits(String id);
+    TrackedEntityAttributeFullDTO findAuditRevision(String id, Integer rev);
 }

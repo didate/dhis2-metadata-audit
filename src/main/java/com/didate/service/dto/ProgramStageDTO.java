@@ -20,6 +20,21 @@ public class ProgramStageDTO extends AbstractDTO {
         this.repeatable = programStage.getRepeatable();
     }
 
+    private Integer revisionNumber;
+
+    public Integer getRevisionNumber() {
+        return revisionNumber;
+    }
+
+    public void setRevisionNumber(Integer revisionNumber) {
+        this.revisionNumber = revisionNumber;
+    }
+
+    public ProgramStageDTO revisionNumber(Integer revisionNumber) {
+        setRevisionNumber(revisionNumber);
+        return this;
+    }
+
     public ProgramDTO getProgram() {
         return program;
     }

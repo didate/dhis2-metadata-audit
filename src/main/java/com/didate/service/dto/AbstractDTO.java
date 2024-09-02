@@ -1,20 +1,34 @@
 package com.didate.service.dto;
 
 import com.didate.domain.DHISUser;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 public class AbstractDTO {
 
     private String id;
     private String name;
+    private String shortName;
     private String created;
     private String lastUpdated;
-
     private DHISUser createdBy;
-
     private DHISUser lastUpdatedBy;
+
+    public AbstractDTO(
+        String id,
+        String name,
+        String shortName,
+        String created,
+        String lastUpdated,
+        DHISUser createdBy,
+        DHISUser lastUpdatedBy
+    ) {
+        this.id = id;
+        this.name = name;
+        this.shortName = shortName;
+        this.created = created;
+        this.lastUpdated = lastUpdated;
+        this.createdBy = createdBy;
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
 
     public AbstractDTO() {}
 
@@ -25,6 +39,21 @@ public class AbstractDTO {
         this.lastUpdated = lastUpdated;
         this.createdBy = createdBy;
         this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public AbstractDTO(String id, String created, String lastUpdated, DHISUser createdBy, DHISUser lastUpdatedBy) {
+        this.id = id;
+        this.created = created;
+        this.lastUpdated = lastUpdated;
+        this.createdBy = createdBy;
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public AbstractDTO(String id, String name, String created, String lastUpdated) {
+        this.id = id;
+        this.name = name;
+        this.created = created;
+        this.lastUpdated = lastUpdated;
     }
 
     public String getId() {
@@ -73,5 +102,13 @@ public class AbstractDTO {
 
     public void setLastUpdatedBy(DHISUser lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 }

@@ -3,7 +3,13 @@ package com.didate.service.impl;
 import com.didate.domain.ProgramIndicator;
 import com.didate.repository.ProgramIndicatorRepository;
 import com.didate.service.ProgramIndicatorService;
+import com.didate.service.dto.ProgramIndicatorDTO;
+import com.didate.service.dto.ProgramIndicatorFullDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -46,6 +52,9 @@ public class ProgramIndicatorServiceImpl implements ProgramIndicatorService {
         return programIndicatorRepository
             .findById(programIndicator.getId())
             .map(existingProgramIndicator -> {
+                if (existingProgramIndicator.getLastUpdated().equals(programIndicator.getLastUpdated())) {
+                    return existingProgramIndicator;
+                }
                 if (programIndicator.getName() != null) {
                     existingProgramIndicator.setName(programIndicator.getName());
                 }
@@ -119,5 +128,35 @@ public class ProgramIndicatorServiceImpl implements ProgramIndicatorService {
     @Override
     public Long count() {
         return programIndicatorRepository.count();
+    }
+
+    @Override
+    public List<ProgramIndicatorDTO> findAudits(String id) {
+        return programIndicatorRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                ProgramIndicator programIndicator = revision.getEntity();
+                Hibernate.unproxy(programIndicator.getCreatedBy());
+                Hibernate.unproxy(programIndicator.getLastUpdatedBy());
+                return new ProgramIndicatorDTO(programIndicator).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProgramIndicatorFullDTO findAuditRevision(String id, Integer rev) {
+        // Retrieve the revision from the repository
+        ProgramIndicator programIndicator = programIndicatorRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        Hibernate.unproxy(programIndicator.getCreatedBy());
+        Hibernate.unproxy(programIndicator.getLastUpdatedBy());
+
+        return new ProgramIndicatorFullDTO(programIndicator);
     }
 }

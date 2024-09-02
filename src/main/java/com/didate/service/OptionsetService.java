@@ -1,6 +1,8 @@
 package com.didate.service;
 
 import com.didate.domain.OptionSet;
+import com.didate.service.dto.OptionSetDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,4 +60,7 @@ public interface OptionsetService {
 
     Boolean exist(String id);
     Long count();
+
+    List<OptionSetDTO> findAudits(String id);
+    OptionSetDTO findAuditRevision(String id, Integer rev);
 }

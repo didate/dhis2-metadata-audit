@@ -28,12 +28,12 @@ public class DHISUser implements Serializable, Persistable<String> {
     @Column(name = "id", nullable = false)
     private String id;
 
-    @Column(name = "code")
-    private String code;
-
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "code")
+    private String code;
 
     @Column(name = "display_name")
     private String displayName;

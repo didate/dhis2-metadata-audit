@@ -9,12 +9,12 @@ public class ProgramFullDTO extends AbstractDTO {
         super(
             program.getId(),
             program.getName(),
+            program.getShortName(),
             program.getCreated(),
             program.getLastUpdated(),
             program.getCreatedBy(),
             program.getLastUpdatedBy()
         );
-        this.shortName = program.getShortName();
         this.description = program.getDescription();
         this.version = program.getVersion();
         this.enrollmentDateLabel = program.getEnrollmentDateLabel();
@@ -52,8 +52,6 @@ public class ProgramFullDTO extends AbstractDTO {
         this.programTrackedEntityAttributesContent = program.getProgramTrackedEntityAttributesContent();
         this.categoryCombo = program.getCategoryCombo();
     }
-
-    private String shortName;
 
     private String description;
 
@@ -126,14 +124,6 @@ public class ProgramFullDTO extends AbstractDTO {
     private String programTrackedEntityAttributesContent;
 
     private CategoryCombo categoryCombo;
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
 
     public String getDescription() {
         return description;

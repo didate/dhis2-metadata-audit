@@ -3,7 +3,12 @@ package com.didate.service.impl;
 import com.didate.domain.IndicatorType;
 import com.didate.repository.IndicatortypeRepository;
 import com.didate.service.IndicatortypeService;
+import com.didate.service.dto.IndicatorTypeDTO;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -83,5 +88,35 @@ public class IndicatortypeServiceImpl implements IndicatortypeService {
     @Override
     public Long count() {
         return indicatortypeRepository.count();
+    }
+
+    @Override
+    public List<IndicatorTypeDTO> findAudits(String id) {
+        return indicatortypeRepository
+            .findRevisions(id)
+            .getContent()
+            .stream()
+            .map(revision -> {
+                IndicatorType indicatorType = revision.getEntity();
+                Hibernate.unproxy(indicatorType.getCreatedBy());
+                Hibernate.unproxy(indicatorType.getLastUpdatedBy());
+                return new IndicatorTypeDTO(indicatorType).revisionNumber(revision.getRequiredRevisionNumber());
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public IndicatorTypeDTO findAuditRevision(String id, Integer rev) {
+        // Retrieve the revision from the repository
+        IndicatorType indicatorType = indicatortypeRepository
+            .findRevision(id, rev)
+            .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
+            .getEntity();
+
+        Hibernate.unproxy(indicatorType.getCreatedBy());
+        Hibernate.unproxy(indicatorType.getLastUpdatedBy());
+
+        return new IndicatorTypeDTO(indicatorType);
     }
 }

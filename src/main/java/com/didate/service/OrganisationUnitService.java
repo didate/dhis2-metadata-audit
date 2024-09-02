@@ -1,6 +1,9 @@
 package com.didate.service;
 
 import com.didate.domain.OrganisationUnit;
+import com.didate.service.dto.OrganisationUnitDTO;
+import com.didate.service.dto.OrganisationUnitFullDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,4 +61,7 @@ public interface OrganisationUnitService {
 
     Boolean exist(String id);
     Long count();
+
+    List<OrganisationUnitDTO> findAudits(String id);
+    OrganisationUnitFullDTO findAuditRevision(String id, Integer rev);
 }
