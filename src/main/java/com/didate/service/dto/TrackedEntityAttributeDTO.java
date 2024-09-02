@@ -9,8 +9,8 @@ public class TrackedEntityAttributeDTO extends AbstractDTO {
             trackedEntityAttribute.getId(),
             trackedEntityAttribute.getName(),
             trackedEntityAttribute.getShortName(),
-            trackedEntityAttribute.getCreated().toString(),
-            trackedEntityAttribute.getLastUpdated().toString(),
+            trackedEntityAttribute.getCreated(),
+            trackedEntityAttribute.getLastUpdated(),
             trackedEntityAttribute.getCreatedBy(),
             trackedEntityAttribute.getLastUpdatedBy()
         );

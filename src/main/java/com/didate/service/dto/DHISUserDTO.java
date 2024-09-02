@@ -5,7 +5,7 @@ import com.didate.domain.DHISUser;
 public class DHISUserDTO extends AbstractDTO {
 
     public DHISUserDTO(DHISUser dhisUser) {
-        super(dhisUser.getId(), dhisUser.getName(), dhisUser.getCreated().toString(), dhisUser.getLastUpdated().toString());
+        super(dhisUser.getId(), dhisUser.getName(), dhisUser.getCreated(), dhisUser.getLastUpdated());
     }
 
     private Integer revisionNumber;

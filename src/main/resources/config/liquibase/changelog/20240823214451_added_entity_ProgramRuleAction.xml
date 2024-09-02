@@ -17,7 +17,7 @@
             <column name="last_updated" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
-            <column name="created" type="varchar(255)">
+            <column name="created" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
             <column name="program_rule_action_type" type="varchar(255)">

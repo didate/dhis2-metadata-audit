@@ -1,14 +1,15 @@
 package com.didate.service.dto;
 
 import com.didate.domain.DHISUser;
+import java.time.Instant;
 
 public class AbstractDTO {
 
     private String id;
     private String name;
     private String shortName;
-    private String created;
-    private String lastUpdated;
+    private Instant created;
+    private Instant lastUpdated;
     private DHISUser createdBy;
     private DHISUser lastUpdatedBy;
 
@@ -16,8 +17,8 @@ public class AbstractDTO {
         String id,
         String name,
         String shortName,
-        String created,
-        String lastUpdated,
+        Instant created,
+        Instant lastUpdated,
         DHISUser createdBy,
         DHISUser lastUpdatedBy
     ) {
@@ -32,7 +33,7 @@ public class AbstractDTO {
 
     public AbstractDTO() {}
 
-    public AbstractDTO(String id, String name, String created, String lastUpdated, DHISUser createdBy, DHISUser lastUpdatedBy) {
+    public AbstractDTO(String id, String name, Instant created, Instant lastUpdated, DHISUser createdBy, DHISUser lastUpdatedBy) {
         this.id = id;
         this.name = name;
         this.created = created;
@@ -41,7 +42,7 @@ public class AbstractDTO {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
-    public AbstractDTO(String id, String created, String lastUpdated, DHISUser createdBy, DHISUser lastUpdatedBy) {
+    public AbstractDTO(String id, Instant created, Instant lastUpdated, DHISUser createdBy, DHISUser lastUpdatedBy) {
         this.id = id;
         this.created = created;
         this.lastUpdated = lastUpdated;
@@ -49,7 +50,7 @@ public class AbstractDTO {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
-    public AbstractDTO(String id, String name, String created, String lastUpdated) {
+    public AbstractDTO(String id, String name, Instant created, Instant lastUpdated) {
         this.id = id;
         this.name = name;
         this.created = created;
@@ -72,19 +73,19 @@ public class AbstractDTO {
         this.name = name;
     }
 
-    public String getCreated() {
+    public Instant getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Instant created) {
         this.created = created;
     }
 
-    public String getLastUpdated() {
+    public Instant getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(String lastUpdated) {
+    public void setLastUpdated(Instant lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 

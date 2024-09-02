@@ -14,7 +14,7 @@
     },
     {
       "fieldName": "created",
-      "fieldType": "String"
+      "fieldType": "Instant"
     },
     {
       "fieldName": "programRuleActionType",

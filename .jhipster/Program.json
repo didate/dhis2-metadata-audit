@@ -14,11 +14,11 @@
     },
     {
       "fieldName": "created",
-      "fieldType": "String"
+      "fieldType": "Instant"
     },
     {
       "fieldName": "lastUpdated",
-      "fieldType": "String"
+      "fieldType": "Instant"
     },
     {
       "fieldName": "shortName",

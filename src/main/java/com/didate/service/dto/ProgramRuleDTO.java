@@ -9,8 +9,8 @@ public class ProgramRuleDTO extends AbstractDTO {
         super(
             programRule.getId(),
             programRule.getName(),
-            programRule.getCreated().toString(),
-            programRule.getLastUpdated().toString(),
+            programRule.getCreated(),
+            programRule.getLastUpdated(),
             programRule.getCreatedBy(),
             programRule.getLastUpdatedBy()
         );

@@ -49,8 +49,8 @@ public class DataElementFullDTO extends AbstractDTO {
         super(
             dataElement.getId(),
             dataElement.getName(),
-            dataElement.getCreated().toString(),
-            dataElement.getLastUpdated().toString(),
+            dataElement.getCreated(),
+            dataElement.getLastUpdated(),
             dataElement.getCreatedBy(),
             dataElement.getLastUpdatedBy()
         );

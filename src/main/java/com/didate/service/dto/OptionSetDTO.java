@@ -9,8 +9,8 @@ public class OptionSetDTO extends AbstractDTO {
             optionSet.getId(),
             optionSet.getName(),
             optionSet.getShortName(),
-            optionSet.getCreated().toString(),
-            optionSet.getLastUpdated().toString(),
+            optionSet.getCreated(),
+            optionSet.getLastUpdated(),
             optionSet.getCreatedBy(),
             optionSet.getLastUpdatedBy()
         );

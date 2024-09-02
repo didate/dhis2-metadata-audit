@@ -37,8 +37,8 @@ public class ProgramStageFullDTO extends AbstractDTO implements Serializable {
         super(
             programStage.getId(),
             programStage.getName(),
-            programStage.getCreated().toString(),
-            programStage.getLastUpdated().toString(),
+            programStage.getCreated(),
+            programStage.getLastUpdated(),
             programStage.getCreatedBy(),
             programStage.getLastUpdatedBy()
         );

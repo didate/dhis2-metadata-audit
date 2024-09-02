@@ -10,8 +10,8 @@ public class ProgramIndicatorDTO extends AbstractDTO {
             programIndicator.getId(),
             programIndicator.getName(),
             programIndicator.getShortName(),
-            programIndicator.getCreated().toString(),
-            programIndicator.getLastUpdated().toString(),
+            programIndicator.getCreated(),
+            programIndicator.getLastUpdated(),
             programIndicator.getCreatedBy(),
             programIndicator.getLastUpdatedBy()
         );

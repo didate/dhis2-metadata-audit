@@ -9,8 +9,8 @@ public class CategoryComboDTO extends AbstractDTO {
             categoryCombo.getId(),
             categoryCombo.getName(),
             categoryCombo.getShortName(),
-            categoryCombo.getCreated().toString(),
-            categoryCombo.getLastUpdated().toString(),
+            categoryCombo.getCreated(),
+            categoryCombo.getLastUpdated(),
             categoryCombo.getCreatedBy(),
             categoryCombo.getLastUpdatedBy()
         );

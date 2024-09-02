@@ -46,8 +46,8 @@ public class DataSetFullDTO extends AbstractDTO {
             dataSet.getId(),
             dataSet.getName(),
             dataSet.getShortName(),
-            dataSet.getCreated().toString(),
-            dataSet.getLastUpdated().toString(),
+            dataSet.getCreated(),
+            dataSet.getLastUpdated(),
             dataSet.getCreatedBy(),
             dataSet.getLastUpdatedBy()
         );

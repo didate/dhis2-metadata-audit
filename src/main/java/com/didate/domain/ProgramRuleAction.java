@@ -30,7 +30,7 @@ public class ProgramRuleAction implements Serializable, Persistable<String> {
     private Instant lastUpdated;
 
     @Column(name = "created")
-    private String created;
+    private Instant created;
 
     @Column(name = "program_rule_action_type")
     private String programRuleActionType;
@@ -114,16 +114,16 @@ public class ProgramRuleAction implements Serializable, Persistable<String> {
         this.lastUpdated = lastUpdated;
     }
 
-    public String getCreated() {
+    public Instant getCreated() {
         return this.created;
     }
 
-    public ProgramRuleAction created(String created) {
+    public ProgramRuleAction created(Instant created) {
         this.setCreated(created);
         return this;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Instant created) {
         this.created = created;
     }
 

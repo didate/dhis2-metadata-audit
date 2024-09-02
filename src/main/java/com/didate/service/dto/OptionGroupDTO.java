@@ -9,8 +9,8 @@ public class OptionGroupDTO extends AbstractDTO {
             optionGroup.getId(),
             optionGroup.getName(),
             optionGroup.getShortName(),
-            optionGroup.getCreated().toString(),
-            optionGroup.getLastUpdated().toString(),
+            optionGroup.getCreated(),
+            optionGroup.getLastUpdated(),
             optionGroup.getCreatedBy(),
             optionGroup.getLastUpdatedBy()
         );

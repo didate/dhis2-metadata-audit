@@ -8,8 +8,8 @@ public class OrganisationUnitDTO extends AbstractDTO {
         super(
             organisationUnit.getId(),
             organisationUnit.getName(),
-            organisationUnit.getCreated().toString(),
-            organisationUnit.getLastUpdated().toString(),
+            organisationUnit.getCreated(),
+            organisationUnit.getLastUpdated(),
             organisationUnit.getCreatedBy(),
             organisationUnit.getLastUpdatedBy()
         );

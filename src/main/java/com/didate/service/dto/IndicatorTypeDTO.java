@@ -9,8 +9,8 @@ public class IndicatorTypeDTO extends AbstractDTO {
             indicatorType.getId(),
             indicatorType.getName(),
             indicatorType.getShortName(),
-            indicatorType.getCreated().toString(),
-            indicatorType.getLastUpdated().toString(),
+            indicatorType.getCreated(),
+            indicatorType.getLastUpdated(),
             indicatorType.getCreatedBy(),
             indicatorType.getLastUpdatedBy()
         );
