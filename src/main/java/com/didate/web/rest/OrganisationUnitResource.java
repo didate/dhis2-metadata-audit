@@ -1,28 +1,24 @@
 package com.didate.web.rest;
 
 import com.didate.domain.OrganisationUnit;
-import com.didate.repository.OrganisationUnitRepository;
 import com.didate.service.OrganisationUnitService;
-import com.didate.web.rest.errors.BadRequestAlertException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.didate.service.dto.OrganisationUnitDTO;
+import com.didate.service.dto.OrganisationUnitFullDTO;
+import io.micrometer.core.annotation.Timed;
 import java.util.List;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
@@ -68,5 +64,31 @@ public class OrganisationUnitResource {
         log.debug("REST request to get OrganisationUnit : {}", id);
         Optional<OrganisationUnit> organisationUnit = organisationUnitService.findOne(id);
         return ResponseUtil.wrapOrNotFound(organisationUnit);
+    }
+
+    @GetMapping("/organisation-units/{id}/audit")
+    @Timed
+    public ResponseEntity<List<OrganisationUnitDTO>> findRevisions(@PathVariable String id) {
+        return new ResponseEntity<>(organisationUnitService.findAudits(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/organisation-units/{id}/compare/{rev1}/{rev2}")
+    @Timed
+    public ResponseEntity<List<OrganisationUnitFullDTO>> findRevisions(
+        @PathVariable String id,
+        @PathVariable Integer rev1,
+        @PathVariable Integer rev2
+    ) {
+        // Retrieve both revisions, with the latest revision first
+        OrganisationUnitFullDTO latestRevisionDTO = organisationUnitService.findAuditRevision(id, Math.max(rev1, rev2));
+        OrganisationUnitFullDTO earlierRevisionDTO = organisationUnitService.findAuditRevision(id, Math.min(rev1, rev2));
+
+        // Check if either revision is not found (Optional)
+        if (latestRevisionDTO == null || earlierRevisionDTO == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // Return the two compared revisions in a response
+        return new ResponseEntity<>(List.of(latestRevisionDTO, earlierRevisionDTO), HttpStatus.OK);
     }
 }

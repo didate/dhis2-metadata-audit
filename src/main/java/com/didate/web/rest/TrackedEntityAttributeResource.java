@@ -2,6 +2,11 @@ package com.didate.web.rest;
 
 import com.didate.domain.TrackedEntityAttribute;
 import com.didate.service.TrackedEntityAttributeService;
+import com.didate.service.dto.ProgramStageDTO;
+import com.didate.service.dto.TrackedEntityAttributeDTO;
+import com.didate.service.dto.TrackedEntityAttributeFullDTO;
+import com.didate.web.rest.util.RemoveCommonWords;
+import io.micrometer.core.annotation.Timed;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -9,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,5 +66,31 @@ public class TrackedEntityAttributeResource {
         log.debug("REST request to get TrackedEntityAttribute : {}", id);
         Optional<TrackedEntityAttribute> trackedEntityAttribute = trackedEntityAttributeService.findOne(id);
         return ResponseUtil.wrapOrNotFound(trackedEntityAttribute);
+    }
+
+    @GetMapping("/tracked-entity-attributes/{id}/audit")
+    @Timed
+    public ResponseEntity<List<TrackedEntityAttributeDTO>> findRevisions(@PathVariable String id) {
+        return new ResponseEntity<>(trackedEntityAttributeService.findAudits(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/tracked-entity-attributes/{id}/compare/{rev1}/{rev2}")
+    @Timed
+    public ResponseEntity<List<TrackedEntityAttributeFullDTO>> findRevisions(
+        @PathVariable String id,
+        @PathVariable Integer rev1,
+        @PathVariable Integer rev2
+    ) {
+        // Retrieve both revisions, with the latest revision first
+        TrackedEntityAttributeFullDTO latestRevisionDTO = trackedEntityAttributeService.findAuditRevision(id, Math.max(rev1, rev2));
+        TrackedEntityAttributeFullDTO earlierRevisionDTO = trackedEntityAttributeService.findAuditRevision(id, Math.min(rev1, rev2));
+
+        // Check if either revision is not found (Optional)
+        if (latestRevisionDTO == null || earlierRevisionDTO == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // Return the two compared revisions in a response
+        return new ResponseEntity<>(List.of(latestRevisionDTO, earlierRevisionDTO), HttpStatus.OK);
     }
 }

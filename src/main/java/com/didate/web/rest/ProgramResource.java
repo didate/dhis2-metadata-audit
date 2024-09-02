@@ -47,9 +47,11 @@ public class ProgramResource {
     /**
      * {@code GET  /programs} : get all the programs.
      *
-     * @param pageable the pagination information.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of programs in body.
+     * @param pageable  the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is
+     *                  applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of programs in body.
      */
     @GetMapping("/programs")
     public ResponseEntity<List<ProgramDTO>> getAllPrograms(
@@ -66,7 +68,8 @@ public class ProgramResource {
      * {@code GET  /programs/:id} : get the "id" program.
      *
      * @param id the id of the program to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the program, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the program, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/programs/{id}")
     public ResponseEntity<Program> getProgram(@PathVariable String id) {
@@ -88,41 +91,46 @@ public class ProgramResource {
         @PathVariable Integer rev1,
         @PathVariable Integer rev2
     ) {
-        List<ProgramFullDTO> programFullDTOs = new ArrayList<>();
-        ProgramFullDTO programFullDTO1 = programService.findAuditRevision(id, Math.max(rev1, rev2));
-        ProgramFullDTO programFullDTO2 = programService.findAuditRevision(id, Math.min(rev1, rev2));
+        // Retrieve both revisions, with the latest revision first
+        ProgramFullDTO latestRevisionDTO = programService.findAuditRevision(id, Math.max(rev1, rev2));
+        ProgramFullDTO earlierRevisionDTO = programService.findAuditRevision(id, Math.min(rev1, rev2));
 
-        String[] orgUnit = RemoveCommonWords.remove(
-            programFullDTO1.getOrganisationUnitsContent(),
-            programFullDTO2.getOrganisationUnitsContent()
+        // Check if either revision is not found (Optional)
+        if (latestRevisionDTO == null || earlierRevisionDTO == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // Compute the differences and update DTOs
+        String[] orgUnitDiff = RemoveCommonWords.remove(
+            latestRevisionDTO.getOrganisationUnitsContent(),
+            earlierRevisionDTO.getOrganisationUnitsContent()
         );
-        String[] programAttribute = RemoveCommonWords.remove(
-            programFullDTO1.getProgramTrackedEntityAttributesContent(),
-            programFullDTO2.getProgramTrackedEntityAttributesContent()
+        latestRevisionDTO.setOrganisationUnitsContent(orgUnitDiff[0]);
+        earlierRevisionDTO.setOrganisationUnitsContent(orgUnitDiff[1]);
+
+        String[] programStagesDiff = RemoveCommonWords.remove(
+            latestRevisionDTO.getProgramStagesContent(),
+            earlierRevisionDTO.getProgramStagesContent()
         );
-        String[] programStage = RemoveCommonWords.remove(
-            programFullDTO1.getProgramStagesContent(),
-            programFullDTO2.getProgramStagesContent()
+        latestRevisionDTO.setProgramStagesContent(programStagesDiff[0]);
+        earlierRevisionDTO.setProgramStagesContent(programStagesDiff[1]);
+
+        String[] trackedEntityAttributesDiff = RemoveCommonWords.remove(
+            latestRevisionDTO.getProgramTrackedEntityAttributesContent(),
+            earlierRevisionDTO.getProgramTrackedEntityAttributesContent()
         );
-        String[] programInidicator = RemoveCommonWords.remove(
-            programFullDTO1.getProgramIndicatorsContent(),
-            programFullDTO2.getProgramIndicatorsContent()
+        latestRevisionDTO.setProgramTrackedEntityAttributesContent(trackedEntityAttributesDiff[0]);
+        earlierRevisionDTO.setProgramTrackedEntityAttributesContent(trackedEntityAttributesDiff[1]);
+
+        // Compute the differences for Program Indicators Content
+        String[] programIndicatorsDiff = RemoveCommonWords.remove(
+            latestRevisionDTO.getProgramIndicatorsContent(),
+            earlierRevisionDTO.getProgramIndicatorsContent()
         );
+        latestRevisionDTO.setProgramIndicatorsContent(programIndicatorsDiff[0]);
+        earlierRevisionDTO.setProgramIndicatorsContent(programIndicatorsDiff[1]);
 
-        programFullDTO1.setOrganisationUnitsContent(orgUnit[0]);
-        programFullDTO2.setOrganisationUnitsContent(orgUnit[1]);
-        programFullDTO1.setProgramTrackedEntityAttributesContent(programAttribute[0]);
-        programFullDTO2.setProgramTrackedEntityAttributesContent(programAttribute[1]);
-
-        programFullDTO1.setProgramStagesContent(programStage[0]);
-        programFullDTO2.setProgramStagesContent(programStage[1]);
-
-        programFullDTO1.setProgramIndicatorsContent(programInidicator[0]);
-        programFullDTO2.setProgramIndicatorsContent(programInidicator[1]);
-
-        programFullDTOs.add(programFullDTO1);
-        programFullDTOs.add(programFullDTO2);
-
-        return new ResponseEntity<>(programFullDTOs, HttpStatus.OK);
+        // Return the two compared revisions in a response
+        return new ResponseEntity<>(List.of(latestRevisionDTO, earlierRevisionDTO), HttpStatus.OK);
     }
 }
