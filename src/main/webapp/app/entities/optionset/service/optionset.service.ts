@@ -39,6 +39,14 @@ export class OptionsetService {
     return this.http.get<IOptionset[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
+  history(id: any): Observable<EntityArrayResponseType> {
+    return this.http.get<IOptionset[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' });
+  }
+
+  compare(id: string, rev1: number, rev2: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IOptionset[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' });
+  }
+
   delete(id: string): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
