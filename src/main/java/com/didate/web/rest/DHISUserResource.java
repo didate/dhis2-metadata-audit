@@ -35,108 +35,10 @@ public class DHISUserResource {
 
     private final Logger log = LoggerFactory.getLogger(DHISUserResource.class);
 
-    private static final String ENTITY_NAME = "dHISUser";
-
-    @Value("${jhipster.clientApp.name}")
-    private String applicationName;
-
     private final DHISUserService dHISUserService;
 
-    private final DHISUserRepository dHISUserRepository;
-
-    public DHISUserResource(DHISUserService dHISUserService, DHISUserRepository dHISUserRepository) {
+    public DHISUserResource(DHISUserService dHISUserService) {
         this.dHISUserService = dHISUserService;
-        this.dHISUserRepository = dHISUserRepository;
-    }
-
-    /**
-     * {@code POST  /dhis-users} : Create a new dHISUser.
-     *
-     * @param dHISUser the dHISUser to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new dHISUser, or with status {@code 400 (Bad Request)} if the dHISUser has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PostMapping("/dhis-users")
-    public ResponseEntity<DHISUser> createDHISUser(@Valid @RequestBody DHISUser dHISUser) throws URISyntaxException {
-        log.debug("REST request to save DHISUser : {}", dHISUser);
-        if (dHISUser.getId() != null) {
-            throw new BadRequestAlertException("A new dHISUser cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        DHISUser result = dHISUserService.save(dHISUser);
-        return ResponseEntity
-            .created(new URI("/api/dhis-users/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
-            .body(result);
-    }
-
-    /**
-     * {@code PUT  /dhis-users/:id} : Updates an existing dHISUser.
-     *
-     * @param id the id of the dHISUser to save.
-     * @param dHISUser the dHISUser to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated dHISUser,
-     * or with status {@code 400 (Bad Request)} if the dHISUser is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the dHISUser couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PutMapping("/dhis-users/{id}")
-    public ResponseEntity<DHISUser> updateDHISUser(
-        @PathVariable(value = "id", required = false) final String id,
-        @Valid @RequestBody DHISUser dHISUser
-    ) throws URISyntaxException {
-        log.debug("REST request to update DHISUser : {}, {}", id, dHISUser);
-        if (dHISUser.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, dHISUser.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!dHISUserRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        DHISUser result = dHISUserService.update(dHISUser);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, dHISUser.getId()))
-            .body(result);
-    }
-
-    /**
-     * {@code PATCH  /dhis-users/:id} : Partial updates given fields of an existing dHISUser, field will ignore if it is null
-     *
-     * @param id the id of the dHISUser to save.
-     * @param dHISUser the dHISUser to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated dHISUser,
-     * or with status {@code 400 (Bad Request)} if the dHISUser is not valid,
-     * or with status {@code 404 (Not Found)} if the dHISUser is not found,
-     * or with status {@code 500 (Internal Server Error)} if the dHISUser couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/dhis-users/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<DHISUser> partialUpdateDHISUser(
-        @PathVariable(value = "id", required = false) final String id,
-        @NotNull @RequestBody DHISUser dHISUser
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update DHISUser partially : {}, {}", id, dHISUser);
-        if (dHISUser.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, dHISUser.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!dHISUserRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<DHISUser> result = dHISUserService.partialUpdate(dHISUser);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, dHISUser.getId())
-        );
     }
 
     /**
@@ -164,18 +66,5 @@ public class DHISUserResource {
         log.debug("REST request to get DHISUser : {}", id);
         Optional<DHISUser> dHISUser = dHISUserService.findOne(id);
         return ResponseUtil.wrapOrNotFound(dHISUser);
-    }
-
-    /**
-     * {@code DELETE  /dhis-users/:id} : delete the "id" dHISUser.
-     *
-     * @param id the id of the dHISUser to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
-    @DeleteMapping("/dhis-users/{id}")
-    public ResponseEntity<Void> deleteDHISUser(@PathVariable String id) {
-        log.debug("REST request to delete DHISUser : {}", id);
-        dHISUserService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }
