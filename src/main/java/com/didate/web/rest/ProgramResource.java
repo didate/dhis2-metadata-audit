@@ -8,7 +8,6 @@ import com.didate.web.rest.util.RemoveCommonWords;
 import io.micrometer.core.annotation.Timed;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +34,6 @@ import tech.jhipster.web.util.ResponseUtil;
 public class ProgramResource {
 
     private final Logger log = LoggerFactory.getLogger(ProgramResource.class);
-
-    private static final String ENTITY_NAME = "program";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;

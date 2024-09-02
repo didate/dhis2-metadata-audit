@@ -35,108 +35,10 @@ public class OptionsetResource {
 
     private final Logger log = LoggerFactory.getLogger(OptionsetResource.class);
 
-    private static final String ENTITY_NAME = "optionset";
-
-    @Value("${jhipster.clientApp.name}")
-    private String applicationName;
-
     private final OptionsetService optionsetService;
 
-    private final OptionsetRepository optionsetRepository;
-
-    public OptionsetResource(OptionsetService optionsetService, OptionsetRepository optionsetRepository) {
+    public OptionsetResource(OptionsetService optionsetService) {
         this.optionsetService = optionsetService;
-        this.optionsetRepository = optionsetRepository;
-    }
-
-    /**
-     * {@code POST  /optionsets} : Create a new optionset.
-     *
-     * @param optionset the optionset to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new optionset, or with status {@code 400 (Bad Request)} if the optionset has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PostMapping("/optionsets")
-    public ResponseEntity<OptionSet> createOptionset(@Valid @RequestBody OptionSet optionset) throws URISyntaxException {
-        log.debug("REST request to save OptionSet : {}", optionset);
-        if (optionset.getId() != null) {
-            throw new BadRequestAlertException("A new optionset cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        OptionSet result = optionsetService.save(optionset);
-        return ResponseEntity
-            .created(new URI("/api/optionsets/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
-            .body(result);
-    }
-
-    /**
-     * {@code PUT  /optionsets/:id} : Updates an existing optionset.
-     *
-     * @param id the id of the optionset to save.
-     * @param optionset the optionset to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated optionset,
-     * or with status {@code 400 (Bad Request)} if the optionset is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the optionset couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PutMapping("/optionsets/{id}")
-    public ResponseEntity<OptionSet> updateOptionset(
-        @PathVariable(value = "id", required = false) final String id,
-        @Valid @RequestBody OptionSet optionset
-    ) throws URISyntaxException {
-        log.debug("REST request to update OptionSet : {}, {}", id, optionset);
-        if (optionset.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, optionset.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!optionsetRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        OptionSet result = optionsetService.update(optionset);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, optionset.getId()))
-            .body(result);
-    }
-
-    /**
-     * {@code PATCH  /optionsets/:id} : Partial updates given fields of an existing optionset, field will ignore if it is null
-     *
-     * @param id the id of the optionset to save.
-     * @param optionset the optionset to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated optionset,
-     * or with status {@code 400 (Bad Request)} if the optionset is not valid,
-     * or with status {@code 404 (Not Found)} if the optionset is not found,
-     * or with status {@code 500 (Internal Server Error)} if the optionset couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/optionsets/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<OptionSet> partialUpdateOptionset(
-        @PathVariable(value = "id", required = false) final String id,
-        @NotNull @RequestBody OptionSet optionset
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update OptionSet partially : {}, {}", id, optionset);
-        if (optionset.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, optionset.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!optionsetRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<OptionSet> result = optionsetService.partialUpdate(optionset);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, optionset.getId())
-        );
     }
 
     /**
@@ -164,18 +66,5 @@ public class OptionsetResource {
         log.debug("REST request to get OptionSet : {}", id);
         Optional<OptionSet> optionset = optionsetService.findOne(id);
         return ResponseUtil.wrapOrNotFound(optionset);
-    }
-
-    /**
-     * {@code DELETE  /optionsets/:id} : delete the "id" optionset.
-     *
-     * @param id the id of the optionset to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
-    @DeleteMapping("/optionsets/{id}")
-    public ResponseEntity<Void> deleteOptionset(@PathVariable String id) {
-        log.debug("REST request to delete OptionSet : {}", id);
-        optionsetService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }
