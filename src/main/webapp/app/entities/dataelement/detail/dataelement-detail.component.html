@@ -89,7 +89,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.dataelement.project">Project</span></dt>
         <dd>
           <div *ngIf="dataelement.project">
-            <a [routerLink]="['/project', dataelement.project.id, 'view']">{{ dataelement.project.id }}</a>
+            <a [routerLink]="['/project', dataelement.project.id, 'history']">{{ dataelement.project.id }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.dataelement.createdBy">Created By</span></dt>
@@ -107,13 +107,13 @@
         <dt><span jhiTranslate="dhis2TrackApp.dataelement.categoryCombo">Category Combo</span></dt>
         <dd>
           <div *ngIf="dataelement.categoryCombo">
-            <a [routerLink]="['/categorycombo', dataelement.categoryCombo.id, 'view']">{{ dataelement.categoryCombo.id }}</a>
+            <a [routerLink]="['/categorycombo', dataelement.categoryCombo.id, 'history']">{{ dataelement.categoryCombo.id }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.dataelement.optionSet">Option Set</span></dt>
         <dd>
           <div *ngIf="dataelement.optionSet">
-            <a [routerLink]="['/optionset', dataelement.optionSet.id, 'view']">{{ dataelement.optionSet.id }}</a>
+            <a [routerLink]="['/optionset', dataelement.optionSet.id, 'history']">{{ dataelement.optionSet.id }}</a>
           </div>
         </dd>
       </dl>

@@ -6,6 +6,7 @@ import { OrganisationUnitComponent } from '../list/organisation-unit.component';
 import { OrganisationUnitDetailComponent } from '../detail/organisation-unit-detail.component';
 import { OrganisationUnitRoutingResolveService } from './organisation-unit-routing-resolve.service';
 import { DESC } from 'app/config/navigation.constants';
+import { OrganisationUnitHistoryComponent } from '../history/organisation-unit-history.component';
 
 const organisationUnitRoute: Routes = [
   {
@@ -17,10 +18,18 @@ const organisationUnitRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/view',
+    path: ':historyId/compare/:rev1/:rev2',
     component: OrganisationUnitDetailComponent,
     resolve: {
       organisationUnit: OrganisationUnitRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':historyId/history',
+    component: OrganisationUnitHistoryComponent,
+    resolve: {
+      program: OrganisationUnitRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

@@ -6,6 +6,7 @@ import { ProgramRuleComponent } from '../list/program-rule.component';
 import { ProgramRuleDetailComponent } from '../detail/program-rule-detail.component';
 import { ProgramRuleRoutingResolveService } from './program-rule-routing-resolve.service';
 import { DESC } from 'app/config/navigation.constants';
+import { ProgramRuleHistoryComponent } from '../history/program-rule-history.component';
 
 const programRuleRoute: Routes = [
   {
@@ -17,10 +18,18 @@ const programRuleRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/view',
+    path: ':historyId/compare/:rev1/:rev2',
     component: ProgramRuleDetailComponent,
     resolve: {
       programRule: ProgramRuleRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':historyId/history',
+    component: ProgramRuleHistoryComponent,
+    resolve: {
+      program: ProgramRuleRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

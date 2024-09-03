@@ -6,6 +6,7 @@ import { ProgramIndicatorComponent } from '../list/program-indicator.component';
 import { ProgramIndicatorDetailComponent } from '../detail/program-indicator-detail.component';
 import { ProgramIndicatorRoutingResolveService } from './program-indicator-routing-resolve.service';
 import { DESC } from 'app/config/navigation.constants';
+import { ProgramIndicatorHistoryComponent } from '../history/program-indicator-history.component';
 
 const programIndicatorRoute: Routes = [
   {
@@ -17,10 +18,18 @@ const programIndicatorRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/view',
+    path: ':historyId/compare/:rev1/:rev2',
     component: ProgramIndicatorDetailComponent,
     resolve: {
       programIndicator: ProgramIndicatorRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':historyId/history',
+    component: ProgramIndicatorHistoryComponent,
+    resolve: {
+      program: ProgramIndicatorRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

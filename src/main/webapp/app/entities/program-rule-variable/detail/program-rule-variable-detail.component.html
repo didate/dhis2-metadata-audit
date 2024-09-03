@@ -49,7 +49,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.programRuleVariable.project">Project</span></dt>
         <dd>
           <div *ngIf="programRuleVariable.project">
-            <a [routerLink]="['/project', programRuleVariable.project.id, 'view']">{{ programRuleVariable.project.id }}</a>
+            <a [routerLink]="['/project', programRuleVariable.project.id, 'history']">{{ programRuleVariable.project.id }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.programRuleVariable.createdBy">Created By</span></dt>
@@ -75,7 +75,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.programRuleVariable.trackedEntityAttribute">Tracked Entity Attribute</span></dt>
         <dd>
           <div *ngIf="programRuleVariable.trackedEntityAttribute">
-            <a [routerLink]="['/tracked-entity-attribute', programRuleVariable.trackedEntityAttribute.id, 'view']">{{
+            <a [routerLink]="['/tracked-entity-attribute', programRuleVariable.trackedEntityAttribute.id, 'history']">{{
               programRuleVariable.trackedEntityAttribute.id
             }}</a>
           </div>
@@ -83,7 +83,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.programRuleVariable.dataElement">Data Element</span></dt>
         <dd>
           <div *ngIf="programRuleVariable.dataElement">
-            <a [routerLink]="['/dataelement', programRuleVariable.dataElement.id, 'view']">{{ programRuleVariable.dataElement.id }}</a>
+            <a [routerLink]="['/dataelement', programRuleVariable.dataElement.id, 'history']">{{ programRuleVariable.dataElement.id }}</a>
           </div>
         </dd>
       </dl>

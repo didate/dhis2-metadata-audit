@@ -26,8 +26,8 @@ export class ProgramRoutingResolveService implements Resolve<IProgram | null> {
         })
       );
     } else if (historyId) {
-      let p: IProgram = { id: historyId };
-      return of(p);
+      let current: IProgram = { id: historyId };
+      return of(current);
     }
     return of(null);
   }

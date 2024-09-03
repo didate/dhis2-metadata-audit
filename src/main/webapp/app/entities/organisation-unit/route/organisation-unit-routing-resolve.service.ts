@@ -13,6 +13,7 @@ export class OrganisationUnitRoutingResolveService implements Resolve<IOrganisat
 
   resolve(route: ActivatedRouteSnapshot): Observable<IOrganisationUnit | null | never> {
     const id = route.params['id'];
+    const historyId = route.params['historyId'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((organisationUnit: HttpResponse<IOrganisationUnit>) => {
@@ -24,6 +25,9 @@ export class OrganisationUnitRoutingResolveService implements Resolve<IOrganisat
           }
         })
       );
+    } else if (historyId) {
+      let current: IOrganisationUnit = { id: historyId };
+      return of(current);
     }
     return of(null);
   }

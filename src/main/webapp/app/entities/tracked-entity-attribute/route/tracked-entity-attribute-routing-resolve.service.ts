@@ -13,6 +13,7 @@ export class TrackedEntityAttributeRoutingResolveService implements Resolve<ITra
 
   resolve(route: ActivatedRouteSnapshot): Observable<ITrackedEntityAttribute | null | never> {
     const id = route.params['id'];
+    const historyId = route.params['historyId'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((trackedEntityAttribute: HttpResponse<ITrackedEntityAttribute>) => {
@@ -24,6 +25,9 @@ export class TrackedEntityAttributeRoutingResolveService implements Resolve<ITra
           }
         })
       );
+    } else if (historyId) {
+      let current: ITrackedEntityAttribute = { id: historyId };
+      return of(current);
     }
     return of(null);
   }

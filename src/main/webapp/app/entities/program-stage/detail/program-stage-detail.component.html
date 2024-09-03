@@ -139,7 +139,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.programStage.programStageDataElements">Program Stage Data Elements</span></dt>
         <dd>
           <span *ngFor="let programStageDataElements of programStage.programStageDataElements; let last = last">
-            <a [routerLink]="['/dataelement', programStageDataElements.id, 'view']">{{ programStageDataElements.id }}</a
+            <a [routerLink]="['/dataelement', programStageDataElements.id, 'history']">{{ programStageDataElements.id }}</a
             >{{ last ? '' : ', ' }}
           </span>
         </dd>

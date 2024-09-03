@@ -6,6 +6,7 @@ import { IndicatortypeComponent } from '../list/indicatortype.component';
 import { IndicatortypeDetailComponent } from '../detail/indicatortype-detail.component';
 import { IndicatortypeRoutingResolveService } from './indicatortype-routing-resolve.service';
 import { DESC } from 'app/config/navigation.constants';
+import { IndicatortypeHistoryComponent } from '../history/indicatortype-history.component';
 
 const indicatortypeRoute: Routes = [
   {
@@ -17,10 +18,18 @@ const indicatortypeRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/view',
+    path: ':historyId/compare/:rev1/:rev2',
     component: IndicatortypeDetailComponent,
     resolve: {
       indicatortype: IndicatortypeRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':historyId/history',
+    component: IndicatortypeHistoryComponent,
+    resolve: {
+      program: IndicatortypeRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

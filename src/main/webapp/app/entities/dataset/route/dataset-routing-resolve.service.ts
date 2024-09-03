@@ -13,6 +13,7 @@ export class DatasetRoutingResolveService implements Resolve<IDataset | null> {
 
   resolve(route: ActivatedRouteSnapshot): Observable<IDataset | null | never> {
     const id = route.params['id'];
+    const historyId = route.params['historyId'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((dataset: HttpResponse<IDataset>) => {
@@ -24,6 +25,9 @@ export class DatasetRoutingResolveService implements Resolve<IDataset | null> {
           }
         })
       );
+    } else if (historyId) {
+      let current: IDataset = { id: historyId };
+      return of(current);
     }
     return of(null);
   }

@@ -13,6 +13,7 @@ export class OptionsetRoutingResolveService implements Resolve<IOptionset | null
 
   resolve(route: ActivatedRouteSnapshot): Observable<IOptionset | null | never> {
     const id = route.params['id'];
+    const historyId = route.params['historyId'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((optionset: HttpResponse<IOptionset>) => {
@@ -24,6 +25,9 @@ export class OptionsetRoutingResolveService implements Resolve<IOptionset | null
           }
         })
       );
+    } else if (historyId) {
+      let current: IOptionset = { id: historyId };
+      return of(current);
     }
     return of(null);
   }
