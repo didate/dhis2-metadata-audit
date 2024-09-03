@@ -13,6 +13,7 @@ export class ProgramRuleActionRoutingResolveService implements Resolve<IProgramR
 
   resolve(route: ActivatedRouteSnapshot): Observable<IProgramRuleAction | null | never> {
     const id = route.params['id'];
+    const historyId = route.params['historyId'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((programRuleAction: HttpResponse<IProgramRuleAction>) => {
@@ -24,6 +25,9 @@ export class ProgramRuleActionRoutingResolveService implements Resolve<IProgramR
           }
         })
       );
+    } else if (historyId) {
+      let current: IProgramRuleAction = { id: historyId };
+      return of(current);
     }
     return of(null);
   }

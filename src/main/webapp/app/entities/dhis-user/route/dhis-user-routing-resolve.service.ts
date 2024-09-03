@@ -13,6 +13,7 @@ export class DHISUserRoutingResolveService implements Resolve<IDHISUser | null> 
 
   resolve(route: ActivatedRouteSnapshot): Observable<IDHISUser | null | never> {
     const id = route.params['id'];
+    const historyId = route.params['historyId'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((dHISUser: HttpResponse<IDHISUser>) => {
@@ -24,6 +25,9 @@ export class DHISUserRoutingResolveService implements Resolve<IDHISUser | null> 
           }
         })
       );
+    } else if (historyId) {
+      let current: IDHISUser = { id: historyId };
+      return of(current);
     }
     return of(null);
   }

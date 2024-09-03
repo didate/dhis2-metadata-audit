@@ -6,6 +6,7 @@ import { DatasetComponent } from '../list/dataset.component';
 import { DatasetDetailComponent } from '../detail/dataset-detail.component';
 import { DatasetRoutingResolveService } from './dataset-routing-resolve.service';
 import { DESC } from 'app/config/navigation.constants';
+import { DatasetHistoryComponent } from '../history/dataset-history.component';
 
 const datasetRoute: Routes = [
   {
@@ -17,10 +18,18 @@ const datasetRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/view',
+    path: ':historyId/compare/:rev1/:rev2',
     component: DatasetDetailComponent,
     resolve: {
       dataset: DatasetRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':historyId/history',
+    component: DatasetHistoryComponent,
+    resolve: {
+      program: DatasetRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

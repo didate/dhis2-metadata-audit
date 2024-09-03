@@ -13,6 +13,7 @@ export class ProgramIndicatorRoutingResolveService implements Resolve<IProgramIn
 
   resolve(route: ActivatedRouteSnapshot): Observable<IProgramIndicator | null | never> {
     const id = route.params['id'];
+    const historyId = route.params['historyId'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((programIndicator: HttpResponse<IProgramIndicator>) => {
@@ -24,6 +25,9 @@ export class ProgramIndicatorRoutingResolveService implements Resolve<IProgramIn
           }
         })
       );
+    } else if (historyId) {
+      let current: IProgramIndicator = { id: historyId };
+      return of(current);
     }
     return of(null);
   }

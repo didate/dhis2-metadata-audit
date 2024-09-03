@@ -83,7 +83,7 @@
       <tbody>
         <tr *ngFor="let dataset of datasets; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/dataset', dataset.id, 'view']">{{ dataset.id }}</a>
+            <a [routerLink]="['/dataset', dataset.id, 'history']">{{ dataset.id }}</a>
           </td>
           <td>{{ dataset.name }}</td>
           <td>{{ dataset.created | formatMediumDatetime }}</td>
@@ -106,7 +106,7 @@
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/dataset', dataset.id, 'view']"
+                [routerLink]="['/dataset', dataset.id, 'history']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >

@@ -50,14 +50,14 @@
       <tbody>
         <tr *ngFor="let indicatortype of indicatortypes; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/indicatortype', indicatortype.id, 'view']">{{ indicatortype.id }}</a>
+            <a [routerLink]="['/indicatortype', indicatortype.id, 'history']">{{ indicatortype.id }}</a>
           </td>
           <td>{{ indicatortype.name }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/indicatortype', indicatortype.id, 'view']"
+                [routerLink]="['/indicatortype', indicatortype.id, 'history']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >

@@ -115,7 +115,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.project">Project</span></dt>
         <dd>
           <div *ngIf="trackedEntityAttribute.project">
-            <a [routerLink]="['/project', trackedEntityAttribute.project.id, 'view']">{{ trackedEntityAttribute.project.id }}</a>
+            <a [routerLink]="['/project', trackedEntityAttribute.project.id, 'history']">{{ trackedEntityAttribute.project.id }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.createdBy">Created By</span></dt>
@@ -135,7 +135,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.optionSet">Option Set</span></dt>
         <dd>
           <div *ngIf="trackedEntityAttribute.optionSet">
-            <a [routerLink]="['/optionset', trackedEntityAttribute.optionSet.id, 'view']">{{ trackedEntityAttribute.optionSet.id }}</a>
+            <a [routerLink]="['/optionset', trackedEntityAttribute.optionSet.id, 'history']">{{ trackedEntityAttribute.optionSet.id }}</a>
           </div>
         </dd>
       </dl>

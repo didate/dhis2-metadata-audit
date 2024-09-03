@@ -6,6 +6,7 @@ import { TrackedEntityAttributeComponent } from '../list/tracked-entity-attribut
 import { TrackedEntityAttributeDetailComponent } from '../detail/tracked-entity-attribute-detail.component';
 import { TrackedEntityAttributeRoutingResolveService } from './tracked-entity-attribute-routing-resolve.service';
 import { DESC } from 'app/config/navigation.constants';
+import { TrackedEntityAttributeHistoryComponent } from '../history/tracked-entity-attribute-history.component';
 
 const trackedEntityAttributeRoute: Routes = [
   {
@@ -17,10 +18,18 @@ const trackedEntityAttributeRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/view',
+    path: ':historyId/compare/:rev1/:rev2',
     component: TrackedEntityAttributeDetailComponent,
     resolve: {
       trackedEntityAttribute: TrackedEntityAttributeRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':historyId/history',
+    component: TrackedEntityAttributeHistoryComponent,
+    resolve: {
+      program: TrackedEntityAttributeRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

@@ -17,7 +17,7 @@ const programStageRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/view',
+    path: ':historyId/compare/:rev1/:rev2',
     component: ProgramStageDetailComponent,
     resolve: {
       programStage: ProgramStageRoutingResolveService,

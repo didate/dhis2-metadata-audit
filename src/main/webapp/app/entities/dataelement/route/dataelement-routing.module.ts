@@ -6,6 +6,7 @@ import { DataelementComponent } from '../list/dataelement.component';
 import { DataelementDetailComponent } from '../detail/dataelement-detail.component';
 import { DataelementRoutingResolveService } from './dataelement-routing-resolve.service';
 import { DESC } from 'app/config/navigation.constants';
+import { DataelementHistoryComponent } from '../history/dataelement-history.component';
 
 const dataelementRoute: Routes = [
   {
@@ -17,10 +18,18 @@ const dataelementRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/view',
+    path: ':historyId/compare/:rev1/:rev2',
     component: DataelementDetailComponent,
     resolve: {
       dataelement: DataelementRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':historyId/history',
+    component: DataelementHistoryComponent,
+    resolve: {
+      program: DataelementRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

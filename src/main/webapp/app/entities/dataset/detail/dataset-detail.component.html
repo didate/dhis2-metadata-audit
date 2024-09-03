@@ -157,7 +157,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.dataset.project">Project</span></dt>
         <dd>
           <div *ngIf="dataset.project">
-            <a [routerLink]="['/project', dataset.project.id, 'view']">{{ dataset.project.id }}</a>
+            <a [routerLink]="['/project', dataset.project.id, 'history']">{{ dataset.project.id }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.dataset.createdBy">Created By</span></dt>
@@ -175,27 +175,27 @@
         <dt><span jhiTranslate="dhis2TrackApp.dataset.categoryCombo">Category Combo</span></dt>
         <dd>
           <div *ngIf="dataset.categoryCombo">
-            <a [routerLink]="['/categorycombo', dataset.categoryCombo.id, 'view']">{{ dataset.categoryCombo.id }}</a>
+            <a [routerLink]="['/categorycombo', dataset.categoryCombo.id, 'history']">{{ dataset.categoryCombo.id }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.dataset.dataSetElements">Data Set Elements</span></dt>
         <dd>
           <span *ngFor="let dataSetElements of dataset.dataSetElements; let last = last">
-            <a [routerLink]="['/dataelement', dataSetElements.id, 'view']">{{ dataSetElements.id }}</a
+            <a [routerLink]="['/dataelement', dataSetElements.id, 'history']">{{ dataSetElements.id }}</a
             >{{ last ? '' : ', ' }}
           </span>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.dataset.indicators">Indicators</span></dt>
         <dd>
           <span *ngFor="let indicators of dataset.indicators; let last = last">
-            <a [routerLink]="['/indicator', indicators.id, 'view']">{{ indicators.id }}</a
+            <a [routerLink]="['/indicator', indicators.id, 'history']">{{ indicators.id }}</a
             >{{ last ? '' : ', ' }}
           </span>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.dataset.organisationUnits">Organisation Units</span></dt>
         <dd>
           <span *ngFor="let organisationUnits of dataset.organisationUnits; let last = last">
-            <a [routerLink]="['/organisation-unit', organisationUnits.id, 'view']">{{ organisationUnits.id }}</a
+            <a [routerLink]="['/organisation-unit', organisationUnits.id, 'history']">{{ organisationUnits.id }}</a
             >{{ last ? '' : ', ' }}
           </span>
         </dd>

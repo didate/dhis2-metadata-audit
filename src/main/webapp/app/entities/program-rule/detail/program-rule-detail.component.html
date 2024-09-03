@@ -45,7 +45,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.programRule.project">Project</span></dt>
         <dd>
           <div *ngIf="programRule.project">
-            <a [routerLink]="['/project', programRule.project.id, 'view']">{{ programRule.project.id }}</a>
+            <a [routerLink]="['/project', programRule.project.id, 'history']">{{ programRule.project.id }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.programRule.createdBy">Created By</span></dt>

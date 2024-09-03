@@ -13,6 +13,7 @@ export class IndicatortypeRoutingResolveService implements Resolve<IIndicatortyp
 
   resolve(route: ActivatedRouteSnapshot): Observable<IIndicatortype | null | never> {
     const id = route.params['id'];
+    const historyId = route.params['historyId'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((indicatortype: HttpResponse<IIndicatortype>) => {
@@ -24,6 +25,9 @@ export class IndicatortypeRoutingResolveService implements Resolve<IIndicatortyp
           }
         })
       );
+    } else if (historyId) {
+      let current: IIndicatortype = { id: historyId };
+      return of(current);
     }
     return of(null);
   }

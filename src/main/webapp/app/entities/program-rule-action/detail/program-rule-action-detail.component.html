@@ -55,7 +55,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.project">Project</span></dt>
         <dd>
           <div *ngIf="programRuleAction.project">
-            <a [routerLink]="['/project', programRuleAction.project.id, 'view']">{{ programRuleAction.project.id }}</a>
+            <a [routerLink]="['/project', programRuleAction.project.id, 'history']">{{ programRuleAction.project.id }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.createdBy">Created By</span></dt>
@@ -79,7 +79,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.trackedEntityAttribute">Tracked Entity Attribute</span></dt>
         <dd>
           <div *ngIf="programRuleAction.trackedEntityAttribute">
-            <a [routerLink]="['/tracked-entity-attribute', programRuleAction.trackedEntityAttribute.id, 'view']">{{
+            <a [routerLink]="['/tracked-entity-attribute', programRuleAction.trackedEntityAttribute.id, 'history']">{{
               programRuleAction.trackedEntityAttribute.id
             }}</a>
           </div>
@@ -87,7 +87,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.dataElement">Data Element</span></dt>
         <dd>
           <div *ngIf="programRuleAction.dataElement">
-            <a [routerLink]="['/tracked-entity-attribute', programRuleAction.dataElement.id, 'view']">{{
+            <a [routerLink]="['/tracked-entity-attribute', programRuleAction.dataElement.id, 'history']">{{
               programRuleAction.dataElement.id
             }}</a>
           </div>
@@ -95,7 +95,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.optionGroup">Option Group</span></dt>
         <dd>
           <div *ngIf="programRuleAction.optionGroup">
-            <a [routerLink]="['/option-group', programRuleAction.optionGroup.id, 'view']">{{ programRuleAction.optionGroup.id }}</a>
+            <a [routerLink]="['/option-group', programRuleAction.optionGroup.id, 'history']">{{ programRuleAction.optionGroup.id }}</a>
           </div>
         </dd>
       </dl>

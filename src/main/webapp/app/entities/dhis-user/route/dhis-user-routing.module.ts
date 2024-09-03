@@ -6,6 +6,7 @@ import { DHISUserComponent } from '../list/dhis-user.component';
 import { DHISUserDetailComponent } from '../detail/dhis-user-detail.component';
 import { DHISUserRoutingResolveService } from './dhis-user-routing-resolve.service';
 import { DESC } from 'app/config/navigation.constants';
+import { DhisUserHistoryComponent } from '../history/dhis-user-history.component';
 
 const dHISUserRoute: Routes = [
   {
@@ -17,10 +18,18 @@ const dHISUserRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/view',
+    path: ':historyId/compare/:rev1/:rev2',
     component: DHISUserDetailComponent,
     resolve: {
       dHISUser: DHISUserRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':historyId/history',
+    component: DhisUserHistoryComponent,
+    resolve: {
+      program: DHISUserRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

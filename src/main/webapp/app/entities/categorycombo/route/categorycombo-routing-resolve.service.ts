@@ -13,6 +13,7 @@ export class CategorycomboRoutingResolveService implements Resolve<ICategorycomb
 
   resolve(route: ActivatedRouteSnapshot): Observable<ICategorycombo | null | never> {
     const id = route.params['id'];
+    const historyId = route.params['historyId'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((categorycombo: HttpResponse<ICategorycombo>) => {
@@ -24,6 +25,9 @@ export class CategorycomboRoutingResolveService implements Resolve<ICategorycomb
           }
         })
       );
+    } else if (historyId) {
+      let current: ICategorycombo = { id: historyId };
+      return of(current);
     }
     return of(null);
   }

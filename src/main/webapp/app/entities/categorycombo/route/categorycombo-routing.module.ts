@@ -6,6 +6,7 @@ import { CategorycomboComponent } from '../list/categorycombo.component';
 import { CategorycomboDetailComponent } from '../detail/categorycombo-detail.component';
 import { CategorycomboRoutingResolveService } from './categorycombo-routing-resolve.service';
 import { DESC } from 'app/config/navigation.constants';
+import { CategorycomboHistoryComponent } from '../history/categorycombo-history.component';
 
 const categorycomboRoute: Routes = [
   {
@@ -17,10 +18,18 @@ const categorycomboRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/view',
+    path: ':historyId/compare/:rev1/:rev2',
     component: CategorycomboDetailComponent,
     resolve: {
       categorycombo: CategorycomboRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':historyId/history',
+    component: CategorycomboHistoryComponent,
+    resolve: {
+      program: CategorycomboRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

@@ -89,7 +89,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.indicator.project">Project</span></dt>
         <dd>
           <div *ngIf="indicator.project">
-            <a [routerLink]="['/project', indicator.project.id, 'view']">{{ indicator.project.id }}</a>
+            <a [routerLink]="['/project', indicator.project.id, 'history']">{{ indicator.project.id }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span></dt>

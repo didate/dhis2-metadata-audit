@@ -13,6 +13,7 @@ export class DataelementRoutingResolveService implements Resolve<IDataelement | 
 
   resolve(route: ActivatedRouteSnapshot): Observable<IDataelement | null | never> {
     const id = route.params['id'];
+    const historyId = route.params['historyId'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((dataelement: HttpResponse<IDataelement>) => {
@@ -24,6 +25,9 @@ export class DataelementRoutingResolveService implements Resolve<IDataelement | 
           }
         })
       );
+    } else if (historyId) {
+      let current: IDataelement = { id: historyId };
+      return of(current);
     }
     return of(null);
   }

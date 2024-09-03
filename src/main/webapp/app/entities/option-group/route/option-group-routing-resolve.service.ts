@@ -13,6 +13,7 @@ export class OptionGroupRoutingResolveService implements Resolve<IOptionGroup | 
 
   resolve(route: ActivatedRouteSnapshot): Observable<IOptionGroup | null | never> {
     const id = route.params['id'];
+    const historyId = route.params['historyId'];
     if (id) {
       return this.service.find(id).pipe(
         mergeMap((optionGroup: HttpResponse<IOptionGroup>) => {
@@ -24,6 +25,9 @@ export class OptionGroupRoutingResolveService implements Resolve<IOptionGroup | 
           }
         })
       );
+    } else if (historyId) {
+      let current: IOptionGroup = { id: historyId };
+      return of(current);
     }
     return of(null);
   }
