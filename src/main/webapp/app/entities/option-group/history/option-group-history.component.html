@@ -1,6 +1,9 @@
 <div>
   <h2 id="page-heading" data-cy="OptionGroupHeading">
+    <span jhiTranslate="history.title"></span>
     <span jhiTranslate="dhis2TrackApp.optionGroup.home.title">OptionGroups</span>
+
+    <span *ngIf="optionGroup" id="audit-id"> : {{ optionGroup.id }}</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">

@@ -1,6 +1,9 @@
 <div>
   <h2 id="page-heading" data-cy="CategorycomboHeading">
+    <span jhiTranslate="history.title"></span>
     <span jhiTranslate="dhis2TrackApp.categorycombo.home.title">Categorycombos</span>
+
+    <span *ngIf="categorycombo" id="audit-id"> : {{ categorycombo.id }}</span>
 
     <div class="d-flex justify-content-end">
       <button

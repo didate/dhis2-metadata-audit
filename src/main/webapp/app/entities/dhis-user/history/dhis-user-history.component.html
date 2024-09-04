@@ -1,6 +1,9 @@
 <div>
   <h2 id="page-heading" data-cy="DHISUserHeading">
+    <span jhiTranslate="history.title"></span>
     <span jhiTranslate="dhis2TrackApp.dHISUser.home.title">DHISUsers</span>
+
+    <span *ngIf="dHISUser" id="audit-id"> : {{ dHISUser.id }}</span>
 
     <div class="d-flex justify-content-end">
       <button

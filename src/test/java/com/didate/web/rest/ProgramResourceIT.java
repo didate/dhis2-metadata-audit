@@ -2,6 +2,7 @@ package com.didate.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -12,6 +13,8 @@ import com.didate.domain.Program;
 import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.ProgramRepository;
 import com.didate.service.ProgramService;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -43,11 +46,11 @@ class ProgramResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CREATED = "AAAAAAAAAA";
-    private static final String UPDATED_CREATED = "BBBBBBBBBB";
+    private static final Instant DEFAULT_CREATED = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_CREATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final String DEFAULT_LAST_UPDATED = "AAAAAAAAAA";
-    private static final String UPDATED_LAST_UPDATED = "BBBBBBBBBB";
+    private static final Instant DEFAULT_LAST_UPDATED = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_LAST_UPDATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_SHORT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_SHORT_NAME = "BBBBBBBBBB";
