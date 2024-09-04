@@ -7,9 +7,11 @@ import { IOptionGroup } from 'app/entities/option-group/option-group.model';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface IProgramRuleAction {
+  revisionNumber?: number | null;
+  isSelected?: boolean | null;
   id: string;
   lastUpdated?: dayjs.Dayjs | null;
-  created?: string | null;
+  created?: dayjs.Dayjs | null;
   programRuleActionType?: string | null;
   evaluationTime?: string | null;
   data?: string | null;

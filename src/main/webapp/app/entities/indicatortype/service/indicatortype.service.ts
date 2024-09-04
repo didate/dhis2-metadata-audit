@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IIndicatortype, NewIndicatortype } from '../indicatortype.model';
+import dayjs from 'dayjs/esm';
+
+type RestOf<T extends IIndicatortype | NewIndicatortype> = Omit<T, 'created' | 'lastUpdated'> & {
+  created?: string | null;
+  lastUpdated?: string | null;
+};
+
+export type RestIndicatortype = RestOf<IIndicatortype>;
 
 export type PartialUpdateIndicatortype = Partial<IIndicatortype> & Pick<IIndicatortype, 'id'>;
 
@@ -40,15 +48,21 @@ export class IndicatortypeService {
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IIndicatortype[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestIndicatortype[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   history(id: any): Observable<EntityArrayResponseType> {
-    return this.http.get<IIndicatortype[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' });
+    return this.http
+      .get<RestIndicatortype[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   compare(id: string, rev1: number, rev2: number): Observable<EntityArrayResponseType> {
-    return this.http.get<IIndicatortype[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' });
+    return this.http
+      .get<RestIndicatortype[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: string): Observable<HttpResponse<{}>> {
@@ -83,5 +97,25 @@ export class IndicatortypeService {
       return [...indicatortypesToAdd, ...indicatortypeCollection];
     }
     return indicatortypeCollection;
+  }
+
+  protected convertDateFromServer(restOptionset: RestIndicatortype): IIndicatortype {
+    return {
+      ...restOptionset,
+      created: restOptionset.created ? dayjs.unix(restOptionset.created as unknown as number) : undefined,
+      lastUpdated: restOptionset.lastUpdated ? dayjs.unix(restOptionset.lastUpdated as unknown as number) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestIndicatortype>): HttpResponse<IIndicatortype> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestIndicatortype[]>): HttpResponse<IIndicatortype[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

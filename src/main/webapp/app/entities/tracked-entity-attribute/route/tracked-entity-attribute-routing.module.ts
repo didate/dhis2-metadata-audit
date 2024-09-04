@@ -29,7 +29,7 @@ const trackedEntityAttributeRoute: Routes = [
     path: ':historyId/history',
     component: TrackedEntityAttributeHistoryComponent,
     resolve: {
-      program: TrackedEntityAttributeRoutingResolveService,
+      trackedEntityAttribute: TrackedEntityAttributeRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

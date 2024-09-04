@@ -4,6 +4,8 @@ import { IProgram } from 'app/entities/program/program.model';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface IProgramIndicator {
+  revisionNumber?: number | null;
+  isSelected?: boolean | null;
   id: string;
   name?: string | null;
   created?: dayjs.Dayjs | null;

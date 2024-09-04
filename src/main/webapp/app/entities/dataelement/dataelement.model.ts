@@ -8,6 +8,8 @@ import { IProgramStage } from 'app/entities/program-stage/program-stage.model';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface IDataelement {
+  revisionNumber?: number | null;
+  isSelected?: boolean | null;
   id: string;
   name?: string | null;
   shortName?: string | null;

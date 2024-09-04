@@ -122,6 +122,7 @@ public class ProgramRuleServiceImpl implements ProgramRuleService {
                 ProgramRule programRule = revision.getEntity();
                 Hibernate.unproxy(programRule.getCreatedBy());
                 Hibernate.unproxy(programRule.getLastUpdatedBy());
+                Hibernate.unproxy(programRule.getProgram());
                 return new ProgramRuleDTO(programRule).revisionNumber(revision.getRequiredRevisionNumber());
             })
             .collect(Collectors.toList());
@@ -138,6 +139,7 @@ public class ProgramRuleServiceImpl implements ProgramRuleService {
 
         Hibernate.unproxy(programRule.getCreatedBy());
         Hibernate.unproxy(programRule.getLastUpdatedBy());
+        Hibernate.unproxy(programRule.getProgram());
 
         return new ProgramRuleFullDTO(programRule);
     }

@@ -5,6 +5,7 @@ import com.didate.domain.ProgramRuleVariable;
 public class ProgramRuleVariableDTO extends AbstractDTO {
 
     private Integer revisionNumber;
+    private ProgramDTO program;
 
     public ProgramRuleVariableDTO(ProgramRuleVariable programRuleVariable) {
         super(
@@ -15,6 +16,7 @@ public class ProgramRuleVariableDTO extends AbstractDTO {
             programRuleVariable.getCreatedBy(),
             programRuleVariable.getLastUpdatedBy()
         );
+        this.program = new ProgramDTO(programRuleVariable.getProgram());
     }
 
     public Integer getRevisionNumber() {
@@ -28,5 +30,13 @@ public class ProgramRuleVariableDTO extends AbstractDTO {
     public ProgramRuleVariableDTO revisionNumber(Integer revisionNumber) {
         setRevisionNumber(revisionNumber);
         return this;
+    }
+
+    public ProgramDTO getProgram() {
+        return program;
+    }
+
+    public void setProgram(ProgramDTO program) {
+        this.program = program;
     }
 }

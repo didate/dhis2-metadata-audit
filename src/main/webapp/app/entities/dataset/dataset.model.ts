@@ -8,6 +8,8 @@ import { IOrganisationUnit } from 'app/entities/organisation-unit/organisation-u
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface IDataset {
+  revisionNumber?: number | null;
+  isSelected?: boolean | null;
   id: string;
   name?: string | null;
   created?: dayjs.Dayjs | null;

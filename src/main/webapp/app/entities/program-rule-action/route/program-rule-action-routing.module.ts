@@ -29,7 +29,7 @@ const programRuleActionRoute: Routes = [
     path: ':historyId/history',
     component: ProgramRuleActionHistoryComponent,
     resolve: {
-      program: ProgramRuleActionRoutingResolveService,
+      programRuleAction: ProgramRuleActionRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

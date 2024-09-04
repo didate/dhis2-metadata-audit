@@ -1,1 +1,125 @@
-<p>program-stage-history works!</p>
+<div>
+  <h2 id="page-heading" data-cy="ProgramStageHeading">
+    <span jhiTranslate="dhis2TrackApp.programStage.home.title">ProgramStages</span>
+
+    <div class="d-flex justify-content-end">
+      <button
+        *ngIf="setRev.length == 2"
+        type="submit"
+        [routerLink]="['/program-stage', programStage?.id, 'compare', setRev[0], setRev[1]]"
+        class="me-2 btn btn-warning"
+        data-cy="entityCompareButton"
+      >
+        <fa-icon icon="tasks"></fa-icon>&nbsp;<span jhiTranslate="entity.action.compare">Comparer</span>
+      </button>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="programStages?.length === 0">
+    <span jhiTranslate="dhis2TrackApp.programStage.home.notFound">Aucun Program Stage trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="programStages && programStages.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programStage.id">Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programStage.name">Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programStage.created">Created</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programStage.lastUpdated">Last Updated</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programStage.repeatable">Repeatable</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programStage.createdBy">Created By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programStage.lastUpdatedBy">Last Updated By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programStage.program">Program</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let programStage of programStages; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <input
+              [disabled]="setRev.length == 2 && !programStage.isSelected"
+              type="checkbox"
+              name="select"
+              [(ngModel)]="programStage.isSelected"
+              (change)="selectRev(programStage)"
+            />
+          </td>
+
+          <td>
+            {{ programStage.id }}
+          </td>
+          <td>{{ programStage.name }}</td>
+          <td>{{ programStage.created | formatMediumDatetime }}</td>
+          <td>{{ programStage.lastUpdated | formatMediumDatetime }}</td>
+          <td>{{ programStage.repeatable }}</td>
+
+          <td>
+            <div *ngIf="programStage.createdBy">
+              {{ programStage.createdBy.name }}
+            </div>
+          </td>
+          <td>
+            <div *ngIf="programStage.lastUpdatedBy">
+              {{ programStage.lastUpdatedBy.name }}
+            </div>
+          </td>
+          <td>
+            <div *ngIf="programStage.program">
+              {{ programStage.program.name }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

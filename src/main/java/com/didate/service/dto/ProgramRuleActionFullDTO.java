@@ -1,18 +1,8 @@
 package com.didate.service.dto;
 
-import com.didate.domain.DHISUser;
-import com.didate.domain.DataElement;
-import com.didate.domain.OptionGroup;
-import com.didate.domain.ProgramRule;
 import com.didate.domain.ProgramRuleAction;
 import com.didate.domain.Project;
-import com.didate.domain.TrackedEntityAttribute;
 import com.didate.domain.enumeration.TypeTrack;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.persistence.Column;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
-import org.hibernate.envers.NotAudited;
 
 public class ProgramRuleActionFullDTO extends ProgramRuleActionDTO {
 
@@ -32,13 +22,11 @@ public class ProgramRuleActionFullDTO extends ProgramRuleActionDTO {
 
     private Project project;
 
-    private ProgramRule programRule;
+    private TrackedEntityAttributeDTO trackedEntityAttribute;
 
-    private TrackedEntityAttribute trackedEntityAttribute;
+    private DataElementDTO dataElement;
 
-    private DataElement dataElement;
-
-    private OptionGroup optionGroup;
+    private OptionGroupDTO optionGroup;
 
     public ProgramRuleActionFullDTO(ProgramRuleAction programRuleAction) {
         super(programRuleAction);
@@ -50,10 +38,9 @@ public class ProgramRuleActionFullDTO extends ProgramRuleActionDTO {
         this.displayContent = programRuleAction.getDisplayContent();
         this.track = programRuleAction.getTrack();
         this.project = programRuleAction.getProject();
-        this.programRule = programRuleAction.getProgramRule();
-        this.trackedEntityAttribute = programRuleAction.getTrackedEntityAttribute();
-        this.dataElement = programRuleAction.getDataElement();
-        this.optionGroup = programRuleAction.getOptionGroup();
+        this.trackedEntityAttribute = new TrackedEntityAttributeDTO(programRuleAction.getTrackedEntityAttribute());
+        this.dataElement = new DataElementDTO(programRuleAction.getDataElement());
+        this.optionGroup = new OptionGroupDTO(programRuleAction.getOptionGroup());
     }
 
     public String getProgramRuleActionType() {
@@ -120,35 +107,27 @@ public class ProgramRuleActionFullDTO extends ProgramRuleActionDTO {
         this.project = project;
     }
 
-    public ProgramRule getProgramRule() {
-        return programRule;
-    }
-
-    public void setProgramRule(ProgramRule programRule) {
-        this.programRule = programRule;
-    }
-
-    public TrackedEntityAttribute getTrackedEntityAttribute() {
+    public TrackedEntityAttributeDTO getTrackedEntityAttribute() {
         return trackedEntityAttribute;
     }
 
-    public void setTrackedEntityAttribute(TrackedEntityAttribute trackedEntityAttribute) {
+    public void setTrackedEntityAttribute(TrackedEntityAttributeDTO trackedEntityAttribute) {
         this.trackedEntityAttribute = trackedEntityAttribute;
     }
 
-    public DataElement getDataElement() {
+    public DataElementDTO getDataElement() {
         return dataElement;
     }
 
-    public void setDataElement(DataElement dataElement) {
+    public void setDataElement(DataElementDTO dataElement) {
         this.dataElement = dataElement;
     }
 
-    public OptionGroup getOptionGroup() {
+    public OptionGroupDTO getOptionGroup() {
         return optionGroup;
     }
 
-    public void setOptionGroup(OptionGroup optionGroup) {
+    public void setOptionGroup(OptionGroupDTO optionGroup) {
         this.optionGroup = optionGroup;
     }
 }

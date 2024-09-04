@@ -29,7 +29,7 @@ const organisationUnitRoute: Routes = [
     path: ':historyId/history',
     component: OrganisationUnitHistoryComponent,
     resolve: {
-      program: OrganisationUnitRoutingResolveService,
+      organisationUnit: OrganisationUnitRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

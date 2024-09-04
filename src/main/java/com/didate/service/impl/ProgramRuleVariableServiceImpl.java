@@ -119,6 +119,7 @@ public class ProgramRuleVariableServiceImpl implements ProgramRuleVariableServic
                 ProgramRuleVariable progamRuleVariable = revision.getEntity();
                 Hibernate.unproxy(progamRuleVariable.getCreatedBy());
                 Hibernate.unproxy(progamRuleVariable.getLastUpdatedBy());
+                Hibernate.unproxy(progamRuleVariable.getProgram());
 
                 return new ProgramRuleVariableDTO(progamRuleVariable).revisionNumber(revision.getRequiredRevisionNumber());
             })
@@ -135,6 +136,7 @@ public class ProgramRuleVariableServiceImpl implements ProgramRuleVariableServic
 
         Hibernate.unproxy(programRuleVariable.getCreatedBy());
         Hibernate.unproxy(programRuleVariable.getLastUpdatedBy());
+        Hibernate.unproxy(programRuleVariable.getProgram());
 
         return new ProgramRuleVariableFullDTO(programRuleVariable);
     }

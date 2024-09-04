@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IOptionGroup, NewOptionGroup } from '../option-group.model';
+import dayjs from 'dayjs/esm';
+
+type RestOf<T extends IOptionGroup | NewOptionGroup> = Omit<T, 'created' | 'lastUpdated'> & {
+  created?: string | null;
+  lastUpdated?: string | null;
+};
+
+export type RestOptiongroup = RestOf<IOptionGroup>;
 
 export type PartialUpdateOptionGroup = Partial<IOptionGroup> & Pick<IOptionGroup, 'id'>;
 
@@ -40,15 +48,21 @@ export class OptionGroupService {
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IOptionGroup[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestOptiongroup[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   history(id: any): Observable<EntityArrayResponseType> {
-    return this.http.get<IOptionGroup[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' });
+    return this.http
+      .get<RestOptiongroup[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   compare(id: string, rev1: number, rev2: number): Observable<EntityArrayResponseType> {
-    return this.http.get<IOptionGroup[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' });
+    return this.http
+      .get<RestOptiongroup[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: string): Observable<HttpResponse<{}>> {
@@ -83,5 +97,25 @@ export class OptionGroupService {
       return [...optionGroupsToAdd, ...optionGroupCollection];
     }
     return optionGroupCollection;
+  }
+
+  protected convertDateFromServer(restOptionset: RestOptiongroup): IOptionGroup {
+    return {
+      ...restOptionset,
+      created: restOptionset.created ? dayjs.unix(restOptionset.created as unknown as number) : undefined,
+      lastUpdated: restOptionset.lastUpdated ? dayjs.unix(restOptionset.lastUpdated as unknown as number) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestOptiongroup>): HttpResponse<IOptionGroup> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestOptiongroup[]>): HttpResponse<IOptionGroup[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

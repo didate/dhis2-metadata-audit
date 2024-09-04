@@ -7,16 +7,6 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="dhis2TrackApp.categorycombo.home.refreshListLabel">Actualiser la liste</span>
       </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-categorycombo"
-        [routerLink]="['/categorycombo/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2TrackApp.categorycombo.home.createLabel"> Créer un nouveau Categorycombo </span>
-      </button>
     </div>
   </h2>
 
@@ -44,15 +34,54 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.created">Created</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdated">Last Updated</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.createdBy">Created By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdatedBy">Last Updated By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let categorycombo of categorycombos; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/categorycombo', categorycombo.id, 'history']">{{ categorycombo.id }}</a>
+            {{ categorycombo.id }}
           </td>
           <td>{{ categorycombo.name }}</td>
+
+          <td>{{ categorycombo.created | formatMediumDatetime }}</td>
+          <td>{{ categorycombo.lastUpdated | formatMediumDatetime }}</td>
+
+          <td>
+            <div *ngIf="categorycombo.createdBy">
+              {{ categorycombo.createdBy.name }}
+            </div>
+          </td>
+          <td>
+            <div *ngIf="categorycombo.lastUpdatedBy">
+              {{ categorycombo.lastUpdatedBy.name }}
+            </div>
+          </td>
           <td class="text-end">
             <div class="btn-group">
               <button

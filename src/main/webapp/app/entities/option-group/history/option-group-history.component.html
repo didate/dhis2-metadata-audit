@@ -1,1 +1,91 @@
-<p>option-group-history works!</p>
+<div>
+  <h2 id="page-heading" data-cy="OptionGroupHeading">
+    <span jhiTranslate="dhis2TrackApp.optionGroup.home.title">OptionGroups</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="dhis2TrackApp.optionGroup.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="optionGroups?.length === 0">
+    <span jhiTranslate="dhis2TrackApp.optionGroup.home.notFound">Aucun Option Group trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="optionGroups && optionGroups.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.optionGroup.id">Id</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.categorycombo.name">Name</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.created">Created</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdated">Last Updated</span>
+            </div>
+          </th>
+
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.createdBy">Created By</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdatedBy">Last Updated By</span>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let optionGroup of optionGroups; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <input
+              [disabled]="setRev.length == 2 && !optionGroup.isSelected"
+              type="checkbox"
+              name="select"
+              [(ngModel)]="optionGroup.isSelected"
+              (change)="selectRev(optionGroup)"
+            />
+          </td>
+          <td>
+            {{ optionGroup.id }}
+          </td>
+          <td>{{ optionGroup.name }}</td>
+          <td>{{ optionGroup.created | formatMediumDatetime }}</td>
+          <td>{{ optionGroup.lastUpdated | formatMediumDatetime }}</td>
+
+          <td>
+            <div *ngIf="optionGroup.createdBy">
+              {{ optionGroup.createdBy.name }}
+            </div>
+          </td>
+          <td>
+            <div *ngIf="optionGroup.lastUpdatedBy">
+              {{ optionGroup.lastUpdatedBy.name }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -29,7 +29,7 @@ const indicatortypeRoute: Routes = [
     path: ':historyId/history',
     component: IndicatortypeHistoryComponent,
     resolve: {
-      program: IndicatortypeRoutingResolveService,
+      indicatortype: IndicatortypeRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

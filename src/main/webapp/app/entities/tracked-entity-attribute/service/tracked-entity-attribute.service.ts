@@ -70,11 +70,15 @@ export class TrackedEntityAttributeService {
   }
 
   history(id: any): Observable<EntityArrayResponseType> {
-    return this.http.get<ITrackedEntityAttribute[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' });
+    return this.http
+      .get<RestTrackedEntityAttribute[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   compare(id: string, rev1: number, rev2: number): Observable<EntityArrayResponseType> {
-    return this.http.get<ITrackedEntityAttribute[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' });
+    return this.http
+      .get<RestTrackedEntityAttribute[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: string): Observable<HttpResponse<{}>> {
@@ -124,8 +128,10 @@ export class TrackedEntityAttributeService {
   protected convertDateFromServer(restTrackedEntityAttribute: RestTrackedEntityAttribute): ITrackedEntityAttribute {
     return {
       ...restTrackedEntityAttribute,
-      lastUpdated: restTrackedEntityAttribute.lastUpdated ? dayjs(restTrackedEntityAttribute.lastUpdated) : undefined,
-      created: restTrackedEntityAttribute.created ? dayjs(restTrackedEntityAttribute.created) : undefined,
+      lastUpdated: restTrackedEntityAttribute.lastUpdated
+        ? dayjs.unix(restTrackedEntityAttribute.lastUpdated as unknown as number)
+        : undefined,
+      created: restTrackedEntityAttribute.created ? dayjs.unix(restTrackedEntityAttribute.created as unknown as number) : undefined,
     };
   }
 

@@ -29,7 +29,7 @@ const dHISUserRoute: Routes = [
     path: ':historyId/history',
     component: DhisUserHistoryComponent,
     resolve: {
-      program: DHISUserRoutingResolveService,
+      dHISUser: DHISUserRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

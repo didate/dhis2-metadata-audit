@@ -4,6 +4,8 @@ import { IProgram } from 'app/entities/program/program.model';
 import { IDataelement } from 'app/entities/dataelement/dataelement.model';
 
 export interface IProgramStage {
+  revisionNumber?: number | null;
+  isSelected?: boolean | null;
   id: string;
   name?: string | null;
   created?: dayjs.Dayjs | null;

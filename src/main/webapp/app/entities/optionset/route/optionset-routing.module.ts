@@ -29,7 +29,7 @@ const optionsetRoute: Routes = [
     path: ':historyId/history',
     component: OptionsetHistoryComponent,
     resolve: {
-      program: OptionsetRoutingResolveService,
+      optionset: OptionsetRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

@@ -29,7 +29,7 @@ const dataelementRoute: Routes = [
     path: ':historyId/history',
     component: DataelementHistoryComponent,
     resolve: {
-      program: DataelementRoutingResolveService,
+      dataelement: DataelementRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

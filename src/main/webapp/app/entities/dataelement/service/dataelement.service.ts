@@ -66,11 +66,15 @@ export class DataelementService {
   }
 
   history(id: any): Observable<EntityArrayResponseType> {
-    return this.http.get<IDataelement[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' });
+    return this.http
+      .get<RestDataelement[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   compare(id: string, rev1: number, rev2: number): Observable<EntityArrayResponseType> {
-    return this.http.get<IDataelement[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' });
+    return this.http
+      .get<RestDataelement[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: string): Observable<HttpResponse<{}>> {
@@ -118,8 +122,8 @@ export class DataelementService {
   protected convertDateFromServer(restDataelement: RestDataelement): IDataelement {
     return {
       ...restDataelement,
-      created: restDataelement.created ? dayjs(restDataelement.created) : undefined,
-      lastUpdated: restDataelement.lastUpdated ? dayjs(restDataelement.lastUpdated) : undefined,
+      created: restDataelement.created ? dayjs.unix(restDataelement.created as unknown as number) : undefined,
+      lastUpdated: restDataelement.lastUpdated ? dayjs.unix(restDataelement.lastUpdated as unknown as number) : undefined,
     };
   }
 

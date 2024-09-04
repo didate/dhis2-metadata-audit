@@ -2,6 +2,8 @@ import dayjs from 'dayjs/esm';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface IDHISUser {
+  revisionNumber?: number | null;
+  isSelected?: boolean | null;
   id: string;
   code?: string | null;
   name?: string | null;

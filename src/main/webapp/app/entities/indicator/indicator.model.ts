@@ -6,6 +6,8 @@ import { IDataset } from 'app/entities/dataset/dataset.model';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface IIndicator {
+  revisionNumber?: number | null;
+  isSelected?: boolean | null;
   id: string;
   name?: string | null;
   shortName?: string | null;

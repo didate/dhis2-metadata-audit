@@ -1,20 +1,11 @@
 <div>
-  <h2 id="page-heading" data-cy="IndicatortypeHeading">
-    <span jhiTranslate="dhis2TrackApp.indicatortype.home.title">Indicatortypes</span>
+  <h2 id="page-heading" data-cy="IndicatorHeading">
+    <span jhiTranslate="dhis2TrackApp.indicator.home.title">Indicators</span>
 
     <div class="d-flex justify-content-end">
-      <button
-        *ngIf="setRev.length == 2"
-        type="submit"
-        [routerLink]="['/indicatortype', indicatortype?.id, 'compare', setRev[0], setRev[1]]"
-        class="me-2 btn btn-warning"
-        data-cy="entityCompareButton"
-      >
-        <fa-icon icon="tasks"></fa-icon>&nbsp;<span jhiTranslate="entity.action.compare">Comparer</span>
-      </button>
-
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="dhis2TrackApp.indicator.home.refreshListLabel">Actualiser la liste</span>
       </button>
     </div>
   </h2>
@@ -23,24 +14,30 @@
 
   <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="indicatortypes?.length === 0">
-    <span jhiTranslate="dhis2TrackApp.indicatortype.home.notFound">Aucun Indicatortype trouvé</span>
+  <div class="alert alert-warning" id="no-result" *ngIf="indicators?.length === 0">
+    <span jhiTranslate="dhis2TrackApp.indicator.home.notFound">Aucun Indicator trouvé</span>
   </div>
 
-  <div class="table-responsive table-entities" id="entities" *ngIf="indicatortypes && indicatortypes.length > 0">
+  <div class="table-responsive table-entities" id="entities" *ngIf="indicators && indicators.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr>
           <th scope="col"></th>
           <th scope="col">
             <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicatortype.id">Id</span>
+              <span jhiTranslate="dhis2TrackApp.indicator.id">Id</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
-              <span jhiTranslate="dhis2TrackApp.indicatortype.name">Name</span>
+              <span jhiTranslate="dhis2TrackApp.indicator.name">Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.indicatorType">Indicator Type</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -71,32 +68,38 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let indicatortype of indicatortypes; trackBy: trackId" data-cy="entityTable">
+        <tr *ngFor="let indicator of indicators; trackBy: trackId" data-cy="entityTable">
           <td>
             <input
-              [disabled]="setRev.length == 2 && !indicatortype.isSelected"
+              [disabled]="setRev.length == 2 && !indicator.isSelected"
               type="checkbox"
               name="select"
-              [(ngModel)]="indicatortype.isSelected"
-              (change)="selectRev(indicatortype)"
+              [(ngModel)]="indicator.isSelected"
+              (change)="selectRev(indicator)"
             />
           </td>
           <td>
-            {{ indicatortype.id }}
+            {{ indicator.id }}
           </td>
-          <td>{{ indicatortype.name }}</td>
-
-          <td>{{ indicatortype.created | formatMediumDatetime }}</td>
-          <td>{{ indicatortype.lastUpdated | formatMediumDatetime }}</td>
+          <td>{{ indicator.name }}</td>
 
           <td>
-            <div *ngIf="indicatortype.createdBy">
-              {{ indicatortype.createdBy.name }}
+            <div *ngIf="indicator.indicatorType">
+              {{ indicator.indicatorType.name }}
+            </div>
+          </td>
+
+          <td>{{ indicator.created | formatMediumDatetime }}</td>
+          <td>{{ indicator.lastUpdated | formatMediumDatetime }}</td>
+
+          <td>
+            <div *ngIf="indicator.createdBy">
+              {{ indicator.createdBy.name }}
             </div>
           </td>
           <td>
-            <div *ngIf="indicatortype.lastUpdatedBy">
-              {{ indicatortype.lastUpdatedBy.name }}
+            <div *ngIf="indicator.lastUpdatedBy">
+              {{ indicator.lastUpdatedBy.name }}
             </div>
           </td>
         </tr>
