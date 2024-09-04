@@ -18,13 +18,6 @@ export class ProgramHistoryComponent implements OnInit {
   programs?: IProgram[];
   isLoading = false;
 
-  predicate = 'id';
-  ascending = true;
-
-  itemsPerPage = ITEMS_PER_PAGE;
-  totalItems = 0;
-  page = 1;
-
   setRev: number[] = [];
 
   constructor(
@@ -41,8 +34,6 @@ export class ProgramHistoryComponent implements OnInit {
       this.program = program;
       this.load();
     });
-
-    this.load();
   }
 
   load(): void {
@@ -50,14 +41,8 @@ export class ProgramHistoryComponent implements OnInit {
       .history(this.program?.id)
       .pipe(tap(() => (this.isLoading = false)))
       .subscribe({
-        next: (res: EntityArrayResponseType) => {
-          this.onResponseSuccess(res);
-        },
+        next: (res: EntityArrayResponseType) => (this.programs = res.body ?? []),
       });
-  }
-
-  navigateToWithComponentValues(): void {
-    this.handleNavigation(this.page, this.predicate, this.ascending);
   }
 
   previousState(): void {
@@ -74,42 +59,6 @@ export class ProgramHistoryComponent implements OnInit {
       }
     } else {
       program.isSelected = false;
-    }
-  }
-
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
-    this.fillComponentAttributesFromResponseHeader(response.headers);
-    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-    this.programs = dataFromBody;
-  }
-
-  protected fillComponentAttributesFromResponseBody(data: IProgram[] | null): IProgram[] {
-    return data ?? [];
-  }
-
-  protected fillComponentAttributesFromResponseHeader(headers: HttpHeaders): void {
-    this.totalItems = Number(headers.get(TOTAL_COUNT_RESPONSE_HEADER));
-  }
-
-  protected handleNavigation(page = this.page, predicate?: string, ascending?: boolean): void {
-    const queryParamsObj = {
-      page,
-      size: this.itemsPerPage,
-      sort: this.getSortQueryParam(predicate, ascending),
-    };
-
-    this.router.navigate(['./'], {
-      relativeTo: this.activatedRoute,
-      queryParams: queryParamsObj,
-    });
-  }
-
-  protected getSortQueryParam(predicate = this.predicate, ascending = this.ascending): string[] {
-    const ascendingQueryParam = ascending ? ASC : DESC;
-    if (predicate === '') {
-      return [];
-    } else {
-      return [predicate + ',' + ascendingQueryParam];
     }
   }
 }

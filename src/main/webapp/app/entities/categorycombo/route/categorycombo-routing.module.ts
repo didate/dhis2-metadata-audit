@@ -29,7 +29,7 @@ const categorycomboRoute: Routes = [
     path: ':historyId/history',
     component: CategorycomboHistoryComponent,
     resolve: {
-      program: CategorycomboRoutingResolveService,
+      categorycombo: CategorycomboRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

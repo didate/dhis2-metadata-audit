@@ -1,14 +1,20 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
 
-import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
+import { isPresent } from 'app/core/util/operators';
+import dayjs from 'dayjs/esm';
 import { IProgram, NewProgram } from '../program.model';
 
-export type PartialUpdateProgram = Partial<IProgram> & Pick<IProgram, 'id'>;
+type RestOf<T extends IProgram | NewProgram> = Omit<T, 'created' | 'lastUpdated'> & {
+  created?: string | null;
+  lastUpdated?: string | null;
+};
 
+export type PartialUpdateProgram = Partial<IProgram> & Pick<IProgram, 'id'>;
+export type RestProgram = RestOf<IProgram>;
 export type EntityResponseType = HttpResponse<IProgram>;
 export type EntityArrayResponseType = HttpResponse<IProgram[]>;
 
@@ -24,11 +30,15 @@ export class ProgramService {
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IProgram[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestProgram[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   history(id: any): Observable<EntityArrayResponseType> {
-    return this.http.get<IProgram[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' });
+    return this.http
+      .get<RestProgram[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   compare(id: string, rev1: number, rev2: number): Observable<EntityArrayResponseType> {
@@ -61,5 +71,19 @@ export class ProgramService {
       return [...programsToAdd, ...programCollection];
     }
     return programCollection;
+  }
+
+  protected convertDateFromServer(restProgram: RestProgram): IProgram {
+    return {
+      ...restProgram,
+      created: restProgram.created ? dayjs.unix(restProgram.created as unknown as number) : undefined,
+      lastUpdated: restProgram.lastUpdated ? dayjs.unix(restProgram.lastUpdated as unknown as number) : undefined,
+    };
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestProgram[]>): HttpResponse<IProgram[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

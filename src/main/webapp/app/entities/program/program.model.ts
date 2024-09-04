@@ -6,13 +6,15 @@ import { IOrganisationUnit } from 'app/entities/organisation-unit/organisation-u
 import { IProgramIndicator } from 'app/entities/program-indicator/program-indicator.model';
 import { IProgramStage } from 'app/entities/program-stage/program-stage.model';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
+import dayjs from 'dayjs/esm';
 
 export interface IProgram {
   revisionNumber?: number | null;
+  isSelected?: boolean | null;
   id: string;
   name?: string | null;
-  created?: string | null;
-  lastUpdated?: string | null;
+  created?: dayjs.Dayjs | null;
+  lastUpdated?: dayjs.Dayjs | null;
   shortName?: string | null;
   description?: string | null;
   version?: number | null;
@@ -62,8 +64,6 @@ export interface IProgram {
   organisationUnits?: Pick<IOrganisationUnit, 'id'>[] | null;
   programIndicators?: Pick<IProgramIndicator, 'id'>[] | null;
   programStages?: Pick<IProgramStage, 'id'>[] | null;
-
-  isSelected?: boolean | null;
 }
 
 export type NewProgram = Omit<IProgram, 'id'> & { id: null };

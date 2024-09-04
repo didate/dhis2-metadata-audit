@@ -36,8 +36,8 @@ class ProgramRuleActionResourceIT {
     private static final Instant DEFAULT_LAST_UPDATED = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_LAST_UPDATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final String DEFAULT_CREATED = "AAAAAAAAAA";
-    private static final String UPDATED_CREATED = "BBBBBBBBBB";
+    private static final Instant DEFAULT_CREATED = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_CREATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_PROGRAM_RULE_ACTION_TYPE = "AAAAAAAAAA";
     private static final String UPDATED_PROGRAM_RULE_ACTION_TYPE = "BBBBBBBBBB";

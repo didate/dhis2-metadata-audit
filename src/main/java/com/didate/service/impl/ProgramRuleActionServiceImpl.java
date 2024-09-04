@@ -122,10 +122,12 @@ public class ProgramRuleActionServiceImpl implements ProgramRuleActionService {
             .getContent()
             .stream()
             .map(revision -> {
-                ProgramRuleAction p = revision.getEntity();
-                Hibernate.unproxy(p.getCreatedBy());
-                Hibernate.unproxy(p.getLastUpdatedBy());
-                return new ProgramRuleActionDTO(p).revisionNumber(revision.getRequiredRevisionNumber());
+                ProgramRuleAction program = revision.getEntity();
+                Hibernate.unproxy(program.getCreatedBy());
+                Hibernate.unproxy(program.getLastUpdatedBy());
+                Hibernate.unproxy(program.getProgramRule());
+
+                return new ProgramRuleActionDTO(program).revisionNumber(revision.getRequiredRevisionNumber());
             })
             .collect(Collectors.toList());
     }
@@ -140,6 +142,7 @@ public class ProgramRuleActionServiceImpl implements ProgramRuleActionService {
 
         Hibernate.unproxy(program.getCreatedBy());
         Hibernate.unproxy(program.getLastUpdatedBy());
+        Hibernate.unproxy(program.getProgramRule());
 
         return new ProgramRuleActionFullDTO(program);
     }

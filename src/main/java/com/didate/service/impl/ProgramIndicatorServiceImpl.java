@@ -140,6 +140,7 @@ public class ProgramIndicatorServiceImpl implements ProgramIndicatorService {
                 ProgramIndicator programIndicator = revision.getEntity();
                 Hibernate.unproxy(programIndicator.getCreatedBy());
                 Hibernate.unproxy(programIndicator.getLastUpdatedBy());
+                Hibernate.unproxy(programIndicator.getProgram());
                 return new ProgramIndicatorDTO(programIndicator).revisionNumber(revision.getRequiredRevisionNumber());
             })
             .collect(Collectors.toList());
@@ -156,6 +157,7 @@ public class ProgramIndicatorServiceImpl implements ProgramIndicatorService {
 
         Hibernate.unproxy(programIndicator.getCreatedBy());
         Hibernate.unproxy(programIndicator.getLastUpdatedBy());
+        Hibernate.unproxy(programIndicator.getProgram());
 
         return new ProgramIndicatorFullDTO(programIndicator);
     }

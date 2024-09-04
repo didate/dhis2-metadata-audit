@@ -1,1 +1,111 @@
-<p>program-rule-history works!</p>
+<div>
+  <h2 id="page-heading" data-cy="ProgramRuleHeading">
+    <span jhiTranslate="dhis2TrackApp.programRule.home.title">ProgramRules</span>
+
+    <div class="d-flex justify-content-end">
+      <button
+        *ngIf="setRev.length == 2"
+        type="submit"
+        [routerLink]="['/program-rule', programRule?.id, 'compare', setRev[0], setRev[1]]"
+        class="me-2 btn btn-warning"
+        data-cy="entityCompareButton"
+      >
+        <fa-icon icon="tasks"></fa-icon>&nbsp;<span jhiTranslate="entity.action.compare">Comparer</span>
+      </button>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="programRules?.length === 0">
+    <span jhiTranslate="dhis2TrackApp.programRule.home.notFound">Aucun Program Rule trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="programRules && programRules.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programRule.id">Id</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programRule.lastUpdated">Last Updated</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programRule.created">Created</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programRule.name">Name</span>
+            </div>
+          </th>
+
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programRule.createdBy">Created By</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programRule.lastUpdatedBy">Last Updated By</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.programRule.program">Program</span>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let programRule of programRules; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <input
+              [disabled]="setRev.length == 2 && !programRule.isSelected"
+              type="checkbox"
+              name="select"
+              [(ngModel)]="programRule.isSelected"
+              (change)="selectRev(programRule)"
+            />
+          </td>
+
+          <td>
+            {{ programRule.id }}
+          </td>
+          <td>{{ programRule.lastUpdated | formatMediumDatetime }}</td>
+          <td>{{ programRule.created | formatMediumDatetime }}</td>
+          <td>{{ programRule.name }}</td>
+
+          <td>
+            <div *ngIf="programRule.createdBy">
+              {{ programRule.createdBy.name }}
+            </div>
+          </td>
+          <td>
+            <div *ngIf="programRule.lastUpdatedBy">
+              {{ programRule.lastUpdatedBy.name }}
+            </div>
+          </td>
+          <td>
+            <div *ngIf="programRule.program">
+              {{ programRule.program.name }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

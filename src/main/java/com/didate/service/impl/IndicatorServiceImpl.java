@@ -155,6 +155,8 @@ public class IndicatorServiceImpl implements IndicatorService {
                 Indicator indicator = revision.getEntity();
                 Hibernate.unproxy(indicator.getCreatedBy());
                 Hibernate.unproxy(indicator.getLastUpdatedBy());
+                Hibernate.unproxy(indicator.getIndicatorType());
+
                 return new IndicatorDTO(indicator).revisionNumber(revision.getRequiredRevisionNumber());
             })
             .collect(Collectors.toList());

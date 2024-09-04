@@ -29,7 +29,7 @@ const optionGroupRoute: Routes = [
     path: ':historyId/history',
     component: OptionGroupHistoryComponent,
     resolve: {
-      program: OptionGroupRoutingResolveService,
+      optionGroup: OptionGroupRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

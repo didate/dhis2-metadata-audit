@@ -1,6 +1,5 @@
 package com.didate.service.dto;
 
-import com.didate.domain.Program;
 import com.didate.domain.ProgramRule;
 
 public class ProgramRuleDTO extends AbstractDTO {
@@ -14,9 +13,11 @@ public class ProgramRuleDTO extends AbstractDTO {
             programRule.getCreatedBy(),
             programRule.getLastUpdatedBy()
         );
+        this.program = new ProgramDTO(programRule.getProgram());
     }
 
     private Integer revisionNumber;
+    private ProgramDTO program;
 
     public Integer getRevisionNumber() {
         return revisionNumber;
@@ -29,5 +30,13 @@ public class ProgramRuleDTO extends AbstractDTO {
     public ProgramRuleDTO revisionNumber(Integer revisionNumber) {
         setRevisionNumber(revisionNumber);
         return this;
+    }
+
+    public ProgramDTO getProgram() {
+        return program;
+    }
+
+    public void setProgram(ProgramDTO program) {
+        this.program = program;
     }
 }

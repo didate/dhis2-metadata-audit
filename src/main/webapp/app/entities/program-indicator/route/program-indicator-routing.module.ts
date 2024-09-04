@@ -29,7 +29,7 @@ const programIndicatorRoute: Routes = [
     path: ':historyId/history',
     component: ProgramIndicatorHistoryComponent,
     resolve: {
-      program: ProgramIndicatorRoutingResolveService,
+      programIndicator: ProgramIndicatorRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

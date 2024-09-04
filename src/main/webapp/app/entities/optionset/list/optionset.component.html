@@ -7,16 +7,6 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="dhis2TrackApp.optionset.home.refreshListLabel">Actualiser la liste</span>
       </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-optionset"
-        [routerLink]="['/optionset/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2TrackApp.optionset.home.createLabel"> Créer un nouveau OptionSet </span>
-      </button>
     </div>
   </h2>
 
@@ -44,15 +34,55 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.created">Created</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdated">Last Updated</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.createdBy">Created By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdatedBy">Last Updated By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let optionset of optionsets; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/optionset', optionset.id, 'history']">{{ optionset.id }}</a>
+            {{ optionset.id }}
           </td>
           <td>{{ optionset.name }}</td>
+
+          <td>{{ optionset.created | formatMediumDatetime }}</td>
+          <td>{{ optionset.lastUpdated | formatMediumDatetime }}</td>
+
+          <td>
+            <div *ngIf="optionset.createdBy">
+              {{ optionset.createdBy.name }}
+            </div>
+          </td>
+          <td>
+            <div *ngIf="optionset.lastUpdatedBy">
+              {{ optionset.lastUpdatedBy.name }}
+            </div>
+          </td>
+
           <td class="text-end">
             <div class="btn-group">
               <button

@@ -7,16 +7,6 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="dhis2TrackApp.indicatortype.home.refreshListLabel">Actualiser la liste</span>
       </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-indicatortype"
-        [routerLink]="['/indicatortype/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="dhis2TrackApp.indicatortype.home.createLabel"> Créer un nouveau Indicatortype </span>
-      </button>
     </div>
   </h2>
 
@@ -44,15 +34,54 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="created">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.created">Created</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastUpdated">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.lastUpdated">Last Updated</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="createdBy.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="lastUpdatedBy.id">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.indicator.lastUpdatedBy">Last Updated By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let indicatortype of indicatortypes; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/indicatortype', indicatortype.id, 'history']">{{ indicatortype.id }}</a>
+            {{ indicatortype.id }}
           </td>
           <td>{{ indicatortype.name }}</td>
+
+          <td>{{ indicatortype.created | formatMediumDatetime }}</td>
+          <td>{{ indicatortype.lastUpdated | formatMediumDatetime }}</td>
+
+          <td>
+            <div *ngIf="indicatortype.createdBy">
+              {{ indicatortype.createdBy.name }}
+            </div>
+          </td>
+          <td>
+            <div *ngIf="indicatortype.lastUpdatedBy">
+              {{ indicatortype.lastUpdatedBy.name }}
+            </div>
+          </td>
+
           <td class="text-end">
             <div class="btn-group">
               <button

@@ -7,6 +7,8 @@ import { IDataelement } from 'app/entities/dataelement/dataelement.model';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface IProgramRuleVariable {
+  revisionNumber?: number | null;
+  isSelected?: boolean | null;
   id: string;
   lastUpdated?: dayjs.Dayjs | null;
   created?: dayjs.Dayjs | null;

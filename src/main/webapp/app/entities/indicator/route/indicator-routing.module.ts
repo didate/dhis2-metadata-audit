@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
-import { IndicatorComponent } from '../list/indicator.component';
-import { IndicatorDetailComponent } from '../detail/indicator-detail.component';
-import { IndicatorRoutingResolveService } from './indicator-routing-resolve.service';
 import { DESC } from 'app/config/navigation.constants';
-import { IndicatortypeHistoryComponent } from 'app/entities/indicatortype/history/indicatortype-history.component';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
+import { IndicatorDetailComponent } from '../detail/indicator-detail.component';
+import { IndicatorHistoryComponent } from '../history/indicator-history.component';
+import { IndicatorComponent } from '../list/indicator.component';
+import { IndicatorRoutingResolveService } from './indicator-routing-resolve.service';
 
 const indicatorRoute: Routes = [
   {
@@ -27,9 +27,9 @@ const indicatorRoute: Routes = [
   },
   {
     path: ':historyId/history',
-    component: IndicatortypeHistoryComponent,
+    component: IndicatorHistoryComponent,
     resolve: {
-      program: IndicatorRoutingResolveService,
+      indicator: IndicatorRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

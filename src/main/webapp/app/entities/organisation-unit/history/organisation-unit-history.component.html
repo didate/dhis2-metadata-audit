@@ -1,1 +1,114 @@
-<p>organisation-unit-history works!</p>
+<div>
+  <h2 id="page-heading" data-cy="OrganisationUnitHeading">
+    <span jhiTranslate="dhis2TrackApp.organisationUnit.home.title">OrganisationUnits</span>
+
+    <div class="d-flex justify-content-end">
+      <button
+        *ngIf="setRev.length == 2"
+        type="submit"
+        [routerLink]="['/organisation-unit', organisationUnit?.id, 'compare', setRev[0], setRev[1]]"
+        class="me-2 btn btn-warning"
+        data-cy="entityCompareButton"
+      >
+        <fa-icon icon="tasks"></fa-icon>&nbsp;<span jhiTranslate="entity.action.compare">Comparer</span>
+      </button>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="organisationUnits?.length === 0">
+    <span jhiTranslate="dhis2TrackApp.organisationUnit.home.notFound">Aucun Organisation Unit trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="organisationUnits && organisationUnits.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.id">Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.name">Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.created">Created</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdated">Last Updated</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.level">Level</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.createdBy">Created By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdatedBy">Last Updated By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let organisationUnit of organisationUnits; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <input
+              [disabled]="setRev.length == 2 && !organisationUnit.isSelected"
+              type="checkbox"
+              name="select"
+              [(ngModel)]="organisationUnit.isSelected"
+              (change)="selectRev(organisationUnit)"
+            />
+          </td>
+          <td>
+            {{ organisationUnit.id }}
+          </td>
+          <td>{{ organisationUnit.name }}</td>
+          <td>{{ organisationUnit.created | formatMediumDatetime }}</td>
+          <td>{{ organisationUnit.lastUpdated | formatMediumDatetime }}</td>
+
+          <td>{{ organisationUnit.level }}</td>
+          <td>
+            <div *ngIf="organisationUnit.createdBy">
+              {{ organisationUnit.createdBy.name }}
+            </div>
+          </td>
+          <td>
+            <div *ngIf="organisationUnit.lastUpdatedBy">
+              {{ organisationUnit.lastUpdatedBy.name }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

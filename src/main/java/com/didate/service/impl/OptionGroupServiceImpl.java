@@ -1,12 +1,9 @@
 package com.didate.service.impl;
 
 import com.didate.domain.OptionGroup;
-import com.didate.domain.Program;
 import com.didate.repository.OptionGroupRepository;
 import com.didate.service.OptionGroupService;
 import com.didate.service.dto.OptionGroupDTO;
-import com.didate.service.dto.ProgramDTO;
-import com.didate.service.dto.ProgramFullDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

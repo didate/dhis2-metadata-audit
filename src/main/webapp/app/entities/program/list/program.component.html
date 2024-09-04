@@ -75,8 +75,8 @@
             {{ program.id }}
           </td>
           <td>{{ program.name }}</td>
-          <td>{{ program.created | date: 'short' }}</td>
-          <td>{{ program.lastUpdated | date: 'short' }}</td>
+          <td>{{ program.created | formatMediumDatetime }}</td>
+          <td>{{ program.lastUpdated | formatMediumDatetime }}</td>
 
           <td>{{ program.programType }}</td>
 

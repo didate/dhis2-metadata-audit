@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ICategorycombo, NewCategorycombo } from '../categorycombo.model';
+import dayjs from 'dayjs/esm';
+
+type RestOf<T extends ICategorycombo | NewCategorycombo> = Omit<T, 'created' | 'lastUpdated'> & {
+  created?: string | null;
+  lastUpdated?: string | null;
+};
+
+export type RestCategorycombo = RestOf<ICategorycombo>;
 
 export type PartialUpdateCategorycombo = Partial<ICategorycombo> & Pick<ICategorycombo, 'id'>;
 
@@ -40,15 +48,21 @@ export class CategorycomboService {
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<ICategorycombo[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestCategorycombo[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   history(id: any): Observable<EntityArrayResponseType> {
-    return this.http.get<ICategorycombo[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' });
+    return this.http
+      .get<RestCategorycombo[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   compare(id: string, rev1: number, rev2: number): Observable<EntityArrayResponseType> {
-    return this.http.get<ICategorycombo[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' });
+    return this.http
+      .get<RestCategorycombo[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: string): Observable<HttpResponse<{}>> {
@@ -83,5 +97,25 @@ export class CategorycomboService {
       return [...categorycombosToAdd, ...categorycomboCollection];
     }
     return categorycomboCollection;
+  }
+
+  protected convertDateFromServer(restOrganisationUnit: RestCategorycombo): ICategorycombo {
+    return {
+      ...restOrganisationUnit,
+      created: restOrganisationUnit.created ? dayjs.unix(restOrganisationUnit.created as unknown as number) : undefined,
+      lastUpdated: restOrganisationUnit.lastUpdated ? dayjs.unix(restOrganisationUnit.lastUpdated as unknown as number) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestCategorycombo>): HttpResponse<ICategorycombo> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestCategorycombo[]>): HttpResponse<ICategorycombo[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

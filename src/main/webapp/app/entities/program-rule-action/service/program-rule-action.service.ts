@@ -11,7 +11,8 @@ import { IProgramRuleAction, NewProgramRuleAction } from '../program-rule-action
 
 export type PartialUpdateProgramRuleAction = Partial<IProgramRuleAction> & Pick<IProgramRuleAction, 'id'>;
 
-type RestOf<T extends IProgramRuleAction | NewProgramRuleAction> = Omit<T, 'lastUpdated'> & {
+type RestOf<T extends IProgramRuleAction | NewProgramRuleAction> = Omit<T, 'created' | 'lastUpdated'> & {
+  created?: string | null;
   lastUpdated?: string | null;
 };
 
@@ -69,11 +70,15 @@ export class ProgramRuleActionService {
   }
 
   history(id: any): Observable<EntityArrayResponseType> {
-    return this.http.get<IProgramRuleAction[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' });
+    return this.http
+      .get<RestProgramRuleAction[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   compare(id: string, rev1: number, rev2: number): Observable<EntityArrayResponseType> {
-    return this.http.get<IProgramRuleAction[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' });
+    return this.http
+      .get<RestProgramRuleAction[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: string): Observable<HttpResponse<{}>> {
@@ -115,6 +120,7 @@ export class ProgramRuleActionService {
   ): RestOf<T> {
     return {
       ...programRuleAction,
+      created: programRuleAction.created?.toJSON() ?? null,
       lastUpdated: programRuleAction.lastUpdated?.toJSON() ?? null,
     };
   }
@@ -122,7 +128,8 @@ export class ProgramRuleActionService {
   protected convertDateFromServer(restProgramRuleAction: RestProgramRuleAction): IProgramRuleAction {
     return {
       ...restProgramRuleAction,
-      lastUpdated: restProgramRuleAction.lastUpdated ? dayjs(restProgramRuleAction.lastUpdated) : undefined,
+      created: restProgramRuleAction.created ? dayjs.unix(restProgramRuleAction.created as unknown as number) : undefined,
+      lastUpdated: restProgramRuleAction.lastUpdated ? dayjs.unix(restProgramRuleAction.lastUpdated as unknown as number) : undefined,
     };
   }
 

@@ -6,6 +6,8 @@ import { IProgram } from 'app/entities/program/program.model';
 import { TypeTrack } from 'app/entities/enumerations/type-track.model';
 
 export interface ITrackedEntityAttribute {
+  revisionNumber?: number | null;
+  isSelected?: boolean | null;
   id: string;
   lastUpdated?: dayjs.Dayjs | null;
   created?: dayjs.Dayjs | null;

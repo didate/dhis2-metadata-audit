@@ -68,11 +68,15 @@ export class DHISUserService {
   }
 
   history(id: any): Observable<EntityArrayResponseType> {
-    return this.http.get<IDHISUser[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' });
+    return this.http
+      .get<RestDHISUser[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   compare(id: string, rev1: number, rev2: number): Observable<EntityArrayResponseType> {
-    return this.http.get<IDHISUser[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' });
+    return this.http
+      .get<RestDHISUser[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: string): Observable<HttpResponse<{}>> {
