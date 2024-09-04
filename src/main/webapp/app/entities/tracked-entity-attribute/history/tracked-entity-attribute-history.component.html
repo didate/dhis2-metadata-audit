@@ -38,39 +38,38 @@
 
           <th scope="col">
             <div class="d-flex">
+              <span jhiTranslate="history.number">rev</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.id">Id</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.name">Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.lastUpdated">Last Updated</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.created">Created</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.createdBy">Created By</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.lastUpdatedBy">Last Updated By</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
         </tr>
@@ -86,7 +85,9 @@
               (change)="selectRev(trackedEntityAttribute)"
             />
           </td>
-
+          <td>
+            <div class="float-end">{{ trackedEntityAttribute.revisionNumber }}</div>
+          </td>
           <td>
             {{ trackedEntityAttribute.id }}
           </td>

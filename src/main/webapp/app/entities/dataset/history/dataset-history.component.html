@@ -35,6 +35,11 @@
           <th scope="col"></th>
           <th scope="col">
             <div class="d-flex">
+              <span jhiTranslate="history.number">rev</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dataset.id">Id</span>
             </div>
           </th>
@@ -82,6 +87,9 @@
               [(ngModel)]="dataset.isSelected"
               (change)="selectRev(dataset)"
             />
+          </td>
+          <td>
+            <div class="float-end">{{ dataset.revisionNumber }}</div>
           </td>
           <td>
             {{ dataset.id }}

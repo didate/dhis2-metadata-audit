@@ -35,51 +35,48 @@
       <thead>
         <tr>
           <th scope="col"></th>
-
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="history.number">rev</span>
+            </div>
+          </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dHISUser.id">Id</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dHISUser.name">Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dHISUser.username">Username</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dHISUser.lastLogin">Last Login</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dHISUser.disabled">Disabled</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dHISUser.created">Created</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dHISUser.lastUpdated">Last Updated</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
         </tr>
@@ -94,6 +91,9 @@
               [(ngModel)]="dHISUser.isSelected"
               (change)="selectRev(dHISUser)"
             />
+          </td>
+          <td>
+            <div class="float-end">{{ dHISUser.revisionNumber }}</div>
           </td>
           <td>
             {{ dHISUser.id }}

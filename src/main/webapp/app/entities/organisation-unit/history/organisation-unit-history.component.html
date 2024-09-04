@@ -37,46 +37,44 @@
           <th scope="col"></th>
           <th scope="col">
             <div class="d-flex">
+              <span jhiTranslate="history.number">rev</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.organisationUnit.id">Id</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.organisationUnit.name">Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.organisationUnit.created">Created</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdated">Last Updated</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.organisationUnit.level">Level</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
 
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.organisationUnit.createdBy">Created By</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdatedBy">Last Updated By</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
         </tr>
@@ -91,6 +89,9 @@
               [(ngModel)]="organisationUnit.isSelected"
               (change)="selectRev(organisationUnit)"
             />
+          </td>
+          <td>
+            <div class="float-end">{{ organisationUnit.revisionNumber }}</div>
           </td>
           <td>
             {{ organisationUnit.id }}

@@ -28,6 +28,11 @@
           <th scope="col"></th>
           <th scope="col">
             <div class="d-flex">
+              <span jhiTranslate="history.number">rev</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.optionGroup.id">Id</span>
             </div>
           </th>
@@ -69,6 +74,9 @@
               [(ngModel)]="optionGroup.isSelected"
               (change)="selectRev(optionGroup)"
             />
+          </td>
+          <td>
+            <div class="float-end">{{ optionGroup.revisionNumber }}</div>
           </td>
           <td>
             {{ optionGroup.id }}

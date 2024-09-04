@@ -28,44 +28,42 @@
           <th scope="col"></th>
           <th scope="col">
             <div class="d-flex">
+              <span jhiTranslate="history.number">rev</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicator.id">Id</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicator.name">Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicator.indicatorType">Indicator Type</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicator.created">Created</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicator.lastUpdated">Last Updated</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicator.lastUpdatedBy">Last Updated By</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
         </tr>
@@ -80,6 +78,9 @@
               [(ngModel)]="indicator.isSelected"
               (change)="selectRev(indicator)"
             />
+          </td>
+          <td>
+            <div class="float-end">{{ indicator.revisionNumber }}</div>
           </td>
           <td>
             {{ indicator.id }}
