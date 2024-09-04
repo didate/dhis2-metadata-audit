@@ -37,6 +37,11 @@
           <th scope="col"></th>
           <th scope="col">
             <div class="d-flex">
+              <span jhiTranslate="history.number">rev</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.programRuleAction.id">Id</span>
             </div>
           </th>
@@ -85,7 +90,9 @@
               (change)="selectRev(programRuleAction)"
             />
           </td>
-
+          <td>
+            <div class="float-end">{{ programRuleAction.revisionNumber }}</div>
+          </td>
           <td>
             {{ programRuleAction.id }}
           </td>

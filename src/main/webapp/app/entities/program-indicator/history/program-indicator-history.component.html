@@ -37,6 +37,11 @@
           <th scope="col"></th>
           <th scope="col">
             <div class="d-flex">
+              <span jhiTranslate="history.number">rev</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.programIndicator.id">Id</span>
             </div>
           </th>
@@ -83,6 +88,10 @@
               [(ngModel)]="programIndicator.isSelected"
               (change)="selectRev(programIndicator)"
             />
+          </td>
+
+          <td>
+            <div class="float-end">{{ programIndicator.revisionNumber }}</div>
           </td>
 
           <td>

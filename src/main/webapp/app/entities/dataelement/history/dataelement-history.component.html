@@ -37,6 +37,11 @@
           <th scope="col"></th>
           <th scope="col">
             <div class="d-flex">
+              <span jhiTranslate="history.number">rev</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dataelement.id">Id</span>
             </div>
           </th>
@@ -86,7 +91,9 @@
               (change)="selectRev(dataelement)"
             />
           </td>
-
+          <td>
+            <div class="float-end">{{ dataelement.revisionNumber }}</div>
+          </td>
           <td>
             {{ dataelement.id }}
           </td>

@@ -37,38 +37,37 @@
           <th scope="col"></th>
           <th scope="col">
             <div class="d-flex">
+              <span jhiTranslate="history.number">rev</span>
+            </div>
+          </th>
+          <th scope="col">
+            <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicatortype.id">Id</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicatortype.name">Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicator.created">Created</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicator.lastUpdated">Last Updated</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.indicator.lastUpdatedBy">Last Updated By</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
         </tr>
@@ -83,6 +82,9 @@
               [(ngModel)]="indicatortype.isSelected"
               (change)="selectRev(indicatortype)"
             />
+          </td>
+          <td>
+            <div class="float-end">{{ indicatortype.revisionNumber }}</div>
           </td>
           <td>
             {{ indicatortype.id }}
