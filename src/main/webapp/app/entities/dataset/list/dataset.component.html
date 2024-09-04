@@ -83,7 +83,7 @@
       <tbody>
         <tr *ngFor="let dataset of datasets; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/dataset', dataset.id, 'history']">{{ dataset.id }}</a>
+            {{ dataset.id }}
           </td>
           <td>{{ dataset.name }}</td>
           <td>{{ dataset.created | formatMediumDatetime }}</td>

@@ -1,6 +1,9 @@
 <div>
   <h2 id="page-heading" data-cy="TrackedEntityAttributeHeading">
+    <span jhiTranslate="history.title"></span>
     <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.home.title">TrackedEntityAttributes</span>
+
+    <span *ngIf="trackedEntityAttribute" id="audit-id"> : {{ trackedEntityAttribute.id }}</span>
 
     <div class="d-flex justify-content-end">
       <button

@@ -1,6 +1,9 @@
 <div>
   <h2 id="page-heading" data-cy="ProgramRuleHeading">
+    <span jhiTranslate="history.title"></span>
     <span jhiTranslate="dhis2TrackApp.programRule.home.title">ProgramRules</span>
+
+    <span *ngIf="programRule" id="audit-id"> : {{ programRule.id }}</span>
 
     <div class="d-flex justify-content-end">
       <button

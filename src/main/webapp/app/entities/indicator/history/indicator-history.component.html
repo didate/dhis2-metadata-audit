@@ -1,6 +1,9 @@
 <div>
   <h2 id="page-heading" data-cy="IndicatorHeading">
+    <span jhiTranslate="history.title"></span>
     <span jhiTranslate="dhis2TrackApp.indicator.home.title">Indicators</span>
+
+    <span *ngIf="indicator" id="audit-id"> : {{ indicator.id }}</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">

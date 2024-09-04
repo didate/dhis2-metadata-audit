@@ -29,7 +29,7 @@ const datasetRoute: Routes = [
     path: ':historyId/history',
     component: DatasetHistoryComponent,
     resolve: {
-      program: DatasetRoutingResolveService,
+      dataset: DatasetRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },
