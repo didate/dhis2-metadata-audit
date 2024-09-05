@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="dataset">
+  <div class="col-10">
+    <div *ngIf="dataset && datasetRev1 && datasetRev2">
       <h2 data-cy="datasetDetailsHeading"><span jhiTranslate="dhis2TrackApp.dataset.detail.title">DataSet</span></h2>
 
       <hr />
@@ -9,204 +9,379 @@
 
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.id">Id</span></dt>
-        <dd>
-          <span>{{ dataset.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.name">Name</span></dt>
-        <dd>
-          <span>{{ dataset.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.created">Created</span></dt>
-        <dd>
-          <span>{{ dataset.created | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.lastUpdated">Last Updated</span></dt>
-        <dd>
-          <span>{{ dataset.lastUpdated | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.shortName">Short Name</span></dt>
-        <dd>
-          <span>{{ dataset.shortName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.description">Description</span></dt>
-        <dd>
-          <span>{{ dataset.description }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.dimensionItemType">Dimension Item Type</span></dt>
-        <dd>
-          <span>{{ dataset.dimensionItemType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.periodType">Period Type</span></dt>
-        <dd>
-          <span>{{ dataset.periodType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.mobile">Mobile</span></dt>
-        <dd>
-          <span>{{ dataset.mobile }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.version">Version</span></dt>
-        <dd>
-          <span>{{ dataset.version }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.expiryDays">Expiry Days</span></dt>
-        <dd>
-          <span>{{ dataset.expiryDays }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.timelyDays">Timely Days</span></dt>
-        <dd>
-          <span>{{ dataset.timelyDays }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.notifyCompletingUser">Notify Completing User</span></dt>
-        <dd>
-          <span>{{ dataset.notifyCompletingUser }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.openFuturePeriods">Open Future Periods</span></dt>
-        <dd>
-          <span>{{ dataset.openFuturePeriods }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.openPeriodsAfterCoEndDate">Open Periods After Co End Date</span></dt>
-        <dd>
-          <span>{{ dataset.openPeriodsAfterCoEndDate }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.fieldCombinationRequired">Field Combination Required</span></dt>
-        <dd>
-          <span>{{ dataset.fieldCombinationRequired }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.validCompleteOnly">Valid Complete Only</span></dt>
-        <dd>
-          <span>{{ dataset.validCompleteOnly }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.noValueRequiresComment">No Value Requires Comment</span></dt>
-        <dd>
-          <span>{{ dataset.noValueRequiresComment }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.skipOffline">Skip Offline</span></dt>
-        <dd>
-          <span>{{ dataset.skipOffline }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.dataElementDecoration">Data Element Decoration</span></dt>
-        <dd>
-          <span>{{ dataset.dataElementDecoration }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.renderAsTabs">Render As Tabs</span></dt>
-        <dd>
-          <span>{{ dataset.renderAsTabs }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.renderHorizontally">Render Horizontally</span></dt>
-        <dd>
-          <span>{{ dataset.renderHorizontally }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.compulsoryFieldsCompleteOnly">Compulsory Fields Complete Only</span></dt>
-        <dd>
-          <span>{{ dataset.compulsoryFieldsCompleteOnly }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.formType">Form Type</span></dt>
-        <dd>
-          <span>{{ dataset.formType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.displayName">Display Name</span></dt>
-        <dd>
-          <span>{{ dataset.displayName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.dimensionItem">Dimension Item</span></dt>
-        <dd>
-          <span>{{ dataset.dimensionItem }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.displayShortName">Display Short Name</span></dt>
-        <dd>
-          <span>{{ dataset.displayShortName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.displayDescription">Display Description</span></dt>
-        <dd>
-          <span>{{ dataset.displayDescription }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.displayFormName">Display Form Name</span></dt>
-        <dd>
-          <span>{{ dataset.displayFormName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.dataSetElementsCount">Data Set Elements Count</span></dt>
-        <dd>
-          <span>{{ dataset.dataSetElementsCount }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.indicatorsCount">Indicators Count</span></dt>
-        <dd>
-          <span>{{ dataset.indicatorsCount }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.organisationUnitsCount">Organisation Units Count</span></dt>
-        <dd>
-          <span>{{ dataset.organisationUnitsCount }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.dataSetElementsContent">Data Set Elements Content</span></dt>
-        <dd>
-          <span>{{ dataset.dataSetElementsContent }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.indicatorsContent">Indicators Content</span></dt>
-        <dd>
-          <span>{{ dataset.indicatorsContent }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.organisationUnitsContent">Organisation Units Content</span></dt>
-        <dd>
-          <span>{{ dataset.organisationUnitsContent }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.track">Track</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + dataset.track }}">{{ dataset.track }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.project">Project</span></dt>
-        <dd>
-          <div *ngIf="dataset.project">
-            <a [routerLink]="['/project', dataset.project.id, 'history']">{{ dataset.project.id }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.createdBy">Created By</span></dt>
-        <dd>
-          <div *ngIf="dataset.createdBy">
-            <a [routerLink]="['/dhis-user', dataset.createdBy.name, 'view']">{{ dataset.createdBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.lastUpdatedBy">Last Updated By</span></dt>
-        <dd>
-          <div *ngIf="dataset.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', dataset.lastUpdatedBy.name, 'view']">{{ dataset.lastUpdatedBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.categoryCombo">Category Combo</span></dt>
-        <dd>
-          <div *ngIf="dataset.categoryCombo">
-            <a [routerLink]="['/categorycombo', dataset.categoryCombo.id, 'history']">{{ dataset.categoryCombo.id }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.dataSetElements">Data Set Elements</span></dt>
-        <dd>
-          <span *ngFor="let dataSetElements of dataset.dataSetElements; let last = last">
-            <a [routerLink]="['/dataelement', dataSetElements.id, 'history']">{{ dataSetElements.id }}</a
-            >{{ last ? '' : ', ' }}
-          </span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.indicators">Indicators</span></dt>
-        <dd>
-          <span *ngFor="let indicators of dataset.indicators; let last = last">
-            <a [routerLink]="['/indicator', indicators.id, 'history']">{{ indicators.id }}</a
-            >{{ last ? '' : ', ' }}
-          </span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataset.organisationUnits">Organisation Units</span></dt>
-        <dd>
-          <span *ngFor="let organisationUnits of dataset.organisationUnits; let last = last">
-            <a [routerLink]="['/organisation-unit', organisationUnits.id, 'history']">{{ organisationUnits.id }}</a
-            >{{ last ? '' : ', ' }}
-          </span>
-        </dd>
-      </dl>
+      <table class="table long-table">
+        <thead>
+          <tr>
+            <th><span>Field</span></th>
+            <th><span>DataSet 1</span></th>
+            <th><span>DataSet 2</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.id">Id</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.id, datasetRev1.id)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.id }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.name">Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.name, datasetRev1.name)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.name }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.shortName">Short Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.shortName, datasetRev1.shortName)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.shortName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.createdBy">Created By</span></td>
+            <td>
+              <div *ngIf="datasetRev1.createdBy">
+                {{ datasetRev1.createdBy.name }}
+              </div>
+            </td>
+            <td>
+              <div *ngIf="datasetRev2.createdBy">
+                {{ datasetRev2.createdBy.name }}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.created">Created</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.created | formatMediumDatetime, datasetRev1.created | formatMediumDatetime)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.created | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.lastUpdatedBy">Last Updated By</span></td>
+            <td>
+              <div *ngIf="datasetRev1.lastUpdatedBy && datasetRev2.lastUpdatedBy">
+                <span [innerHTML]="showDiff(datasetRev2.lastUpdatedBy.name, datasetRev1.lastUpdatedBy.name)"></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="datasetRev2.lastUpdatedBy">
+                {{ datasetRev2.lastUpdatedBy.name }}
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.lastUpdated">Last Updated</span></td>
+            <td>
+              <span
+                [innerHTML]="showDiff(datasetRev2.lastUpdated | formatMediumDatetime, datasetRev1.lastUpdated | formatMediumDatetime)"
+              ></span>
+            </td>
+            <td>
+              {{ datasetRev2.lastUpdated | formatMediumDatetime }}
+            </td>
+          </tr>
+
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.description">Description</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.description, datasetRev1.description)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.description }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.dimensionItemType">Dimension Item Type</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.dimensionItemType, datasetRev1.dimensionItemType)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.dimensionItemType }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.periodType">Period Type</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.periodType, datasetRev1.periodType)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.periodType }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.mobile">Mobile</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.mobile, datasetRev1.mobile)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.mobile }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.version">Version</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.version, datasetRev1.version)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.version }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.expiryDays">Expiry Days</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.expiryDays, datasetRev1.expiryDays)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.expiryDays }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.timelyDays">Timely Days</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.timelyDays, datasetRev1.timelyDays)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.timelyDays }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.notifyCompletingUser">Notify Completing User</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.notifyCompletingUser, datasetRev1.notifyCompletingUser)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.notifyCompletingUser }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.openFuturePeriods">Open Future Periods</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.openFuturePeriods, datasetRev1.openFuturePeriods)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.openFuturePeriods }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.openPeriodsAfterCoEndDate">Open Periods After Co End Date</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.openPeriodsAfterCoEndDate, datasetRev1.openPeriodsAfterCoEndDate)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.openPeriodsAfterCoEndDate }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.fieldCombinationRequired">Field Combination Required</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.fieldCombinationRequired, datasetRev1.fieldCombinationRequired)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.fieldCombinationRequired }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.validCompleteOnly">Valid Complete Only</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.validCompleteOnly, datasetRev1.validCompleteOnly)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.validCompleteOnly }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.noValueRequiresComment">No Value Requires Comment</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.noValueRequiresComment, datasetRev1.noValueRequiresComment)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.noValueRequiresComment }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.skipOffline">Skip Offline</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.skipOffline, datasetRev1.skipOffline)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.skipOffline }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.dataElementDecoration">Data Element Decoration</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.dataElementDecoration, datasetRev1.dataElementDecoration)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.dataElementDecoration }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.renderAsTabs">Render As Tabs</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.renderAsTabs, datasetRev1.renderAsTabs)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.renderAsTabs }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.renderHorizontally">Render Horizontally</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.renderHorizontally, datasetRev1.renderHorizontally)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.renderHorizontally }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.compulsoryFieldsCompleteOnly">Compulsory Fields Complete Only</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.compulsoryFieldsCompleteOnly, datasetRev1.compulsoryFieldsCompleteOnly)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.compulsoryFieldsCompleteOnly }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.formType">Form Type</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.formType, datasetRev1.formType)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.formType }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.displayName">Display Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.displayName, datasetRev1.displayName)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.displayName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.dimensionItem">Dimension Item</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.dimensionItem, datasetRev1.dimensionItem)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.dimensionItem }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.displayShortName">Display Short Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.displayShortName, datasetRev1.displayShortName)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.displayShortName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.displayDescription">Display Description</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.displayDescription, datasetRev1.displayDescription)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.displayDescription }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.displayFormName">Display Form Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.displayFormName, datasetRev1.displayFormName)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.displayFormName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.dataSetElementsCount">Data Set Elements Count</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.dataSetElementsCount, datasetRev1.dataSetElementsCount)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.dataSetElementsCount }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.indicatorsCount">Indicators Count</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.indicatorsCount, datasetRev1.indicatorsCount)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.indicatorsCount }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.organisationUnitsCount">Organisation Units Count</span></td>
+            <td>
+              <span [innerHTML]="showDiff(datasetRev2.organisationUnitsCount, datasetRev1.organisationUnitsCount)"></span>
+            </td>
+            <td>
+              {{ datasetRev2.organisationUnitsCount }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.dataSetElementsContent">Data Set Elements Content</span></td>
+            <td>
+              {{ datasetRev1.dataSetElementsContent }}
+            </td>
+            <td>
+              {{ datasetRev2.dataSetElementsContent }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.indicatorsContent">Indicators Content</span></td>
+            <td>
+              {{ datasetRev1.indicatorsContent }}
+            </td>
+            <td>
+              {{ datasetRev2.indicatorsContent }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.organisationUnitsContent">Organisation Units Content</span></td>
+            <td>
+              {{ datasetRev1.organisationUnitsContent }}
+            </td>
+            <td>
+              {{ datasetRev2.organisationUnitsContent }}
+            </td>
+          </tr>
+
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataset.categoryCombo">Category Combo</span></td>
+            <td>
+              <div *ngIf="datasetRev1.categoryCombo && datasetRev2.categoryCombo">
+                <span [innerHTML]="showDiff(datasetRev2.categoryCombo.id, datasetRev1.categoryCombo.id)"></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="datasetRev2.categoryCombo">
+                {{ datasetRev2.categoryCombo.id }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
-
-      <button type="button" [routerLink]="['/dataset', dataset.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
       </button>
     </div>
   </div>
