@@ -120,8 +120,8 @@ export class IndicatorService {
   protected convertDateFromServer(restIndicator: RestIndicator): IIndicator {
     return {
       ...restIndicator,
-      created: restIndicator.created ? dayjs(restIndicator.created) : undefined,
-      lastUpdated: restIndicator.lastUpdated ? dayjs(restIndicator.lastUpdated) : undefined,
+      created: restIndicator.created ? dayjs.unix(restIndicator.created as unknown as number) : undefined,
+      lastUpdated: restIndicator.lastUpdated ? dayjs.unix(restIndicator.lastUpdated as unknown as number) : undefined,
     };
   }
 
