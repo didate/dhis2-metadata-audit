@@ -1,123 +1,190 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="indicator">
+  <div class="col-10">
+    <div *ngIf="indicator && indicatorRev1 && indicatorRev2">
       <h2 data-cy="indicatorDetailsHeading"><span jhiTranslate="dhis2TrackApp.indicator.detail.title">Indicator</span></h2>
+      <table class="table long-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Indicator 1</th>
+            <th>Indicator 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.id">Id</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.id, indicatorRev1.id)"></span>
+            </td>
+            <td>{{ indicatorRev2.id }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.name">Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.name, indicatorRev1.name)"></span>
+            </td>
+            <td>{{ indicatorRev2.name }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.shortName">Short Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.shortName, indicatorRev1.shortName)"></span>
+            </td>
+            <td>{{ indicatorRev2.shortName }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.displayShortName">Display Short Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.displayShortName, indicatorRev1.displayShortName)"></span>
+            </td>
+            <td>{{ indicatorRev2.displayShortName }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.displayName">Display Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.displayName, indicatorRev1.displayName)"></span>
+            </td>
+            <td>{{ indicatorRev2.displayName }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.displayFormName">Display Form Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.displayFormName, indicatorRev1.displayFormName)"></span>
+            </td>
+            <td>{{ indicatorRev2.displayFormName }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.created">Created</span></td>
+            <td>
+              {{ indicatorRev1.created | formatMediumDatetime }}
+            </td>
+            <td>{{ indicatorRev2.created | formatMediumDatetime }}</td>
+          </tr>
 
-      <hr />
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span></td>
+            <td>
+              <div *ngIf="indicatorRev2.createdBy && indicatorRev1.createdBy">
+                <span [innerHTML]="showDiff(indicatorRev2.createdBy.name, indicatorRev1.createdBy.name)"></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="indicatorRev2.createdBy">
+                {{ indicatorRev2.createdBy.name }}
+              </div>
+            </td>
+          </tr>
 
-      <jhi-alert-error></jhi-alert-error>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.lastUpdated">Last Updated</span></td>
+            <td>
+              {{ indicatorRev1.lastUpdated | formatMediumDatetime }}
+            </td>
+            <td>{{ indicatorRev2.lastUpdated | formatMediumDatetime }}</td>
+          </tr>
 
-      <jhi-alert></jhi-alert>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.lastUpdatedBy">Last Updated By</span></td>
+            <td>
+              <div *ngIf="indicatorRev2.lastUpdatedBy && indicatorRev1.lastUpdatedBy">
+                <span [innerHTML]="showDiff(indicatorRev2.lastUpdatedBy.name, indicatorRev1.lastUpdatedBy.name)"></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="indicatorRev2.lastUpdatedBy">
+                {{ indicatorRev2.lastUpdatedBy.name }}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.publicAccess">Public Access</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.publicAccess, indicatorRev1.publicAccess)"></span>
+            </td>
+            <td>{{ indicatorRev2.publicAccess }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.dimensionItemType">Dimension Item Type</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.dimensionItemType, indicatorRev1.dimensionItemType)"></span>
+            </td>
+            <td>{{ indicatorRev2.dimensionItemType }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.annualized">Annualized</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.annualized, indicatorRev1.annualized)"></span>
+            </td>
+            <td>{{ indicatorRev2.annualized }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.numerator">Numerator</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.numerator, indicatorRev1.numerator)"></span>
+            </td>
+            <td>{{ indicatorRev2.numerator }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.numeratorDescription">Numerator Description</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.numeratorDescription, indicatorRev1.numeratorDescription)"></span>
+            </td>
+            <td>{{ indicatorRev2.numeratorDescription }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.denominator">Denominator</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.denominator, indicatorRev1.denominator)"></span>
+            </td>
+            <td>{{ indicatorRev2.denominator }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.denominatorDescription">Denominator Description</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.denominatorDescription, indicatorRev1.denominatorDescription)"></span>
+            </td>
+            <td>{{ indicatorRev2.denominatorDescription }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.displayNumeratorDescription">Display Numerator Description</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.displayNumeratorDescription, indicatorRev1.displayNumeratorDescription)"></span>
+            </td>
+            <td>{{ indicatorRev2.displayNumeratorDescription }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.displayDenominatorDescription">Display Denominator Description</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.displayDenominatorDescription, indicatorRev1.displayDenominatorDescription)"></span>
+            </td>
+            <td>{{ indicatorRev2.displayDenominatorDescription }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.dimensionItem">Dimension Item</span></td>
+            <td>
+              <span [innerHTML]="showDiff(indicatorRev2.dimensionItem, indicatorRev1.dimensionItem)"></span>
+            </td>
+            <td>{{ indicatorRev2.dimensionItem }}</td>
+          </tr>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.id">Id</span></dt>
-        <dd>
-          <span>{{ indicator.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.name">Name</span></dt>
-        <dd>
-          <span>{{ indicator.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.shortName">Short Name</span></dt>
-        <dd>
-          <span>{{ indicator.shortName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.displayShortName">Display Short Name</span></dt>
-        <dd>
-          <span>{{ indicator.displayShortName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.displayName">Display Name</span></dt>
-        <dd>
-          <span>{{ indicator.displayName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.displayFormName">Display Form Name</span></dt>
-        <dd>
-          <span>{{ indicator.displayFormName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.created">Created</span></dt>
-        <dd>
-          <span>{{ indicator.created | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.lastUpdated">Last Updated</span></dt>
-        <dd>
-          <span>{{ indicator.lastUpdated | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.publicAccess">Public Access</span></dt>
-        <dd>
-          <span>{{ indicator.publicAccess }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.dimensionItemType">Dimension Item Type</span></dt>
-        <dd>
-          <span>{{ indicator.dimensionItemType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.annualized">Annualized</span></dt>
-        <dd>
-          <span>{{ indicator.annualized }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.numerator">Numerator</span></dt>
-        <dd>
-          <span>{{ indicator.numerator }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.numeratorDescription">Numerator Description</span></dt>
-        <dd>
-          <span>{{ indicator.numeratorDescription }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.denominator">Denominator</span></dt>
-        <dd>
-          <span>{{ indicator.denominator }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.denominatorDescription">Denominator Description</span></dt>
-        <dd>
-          <span>{{ indicator.denominatorDescription }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.displayNumeratorDescription">Display Numerator Description</span></dt>
-        <dd>
-          <span>{{ indicator.displayNumeratorDescription }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.displayDenominatorDescription">Display Denominator Description</span></dt>
-        <dd>
-          <span>{{ indicator.displayDenominatorDescription }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.dimensionItem">Dimension Item</span></dt>
-        <dd>
-          <span>{{ indicator.dimensionItem }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.track">Track</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + indicator.track }}">{{ indicator.track }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.project">Project</span></dt>
-        <dd>
-          <div *ngIf="indicator.project">
-            <a [routerLink]="['/project', indicator.project.id, 'history']">{{ indicator.project.id }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span></dt>
-        <dd>
-          <div *ngIf="indicator.createdBy">
-            <a [routerLink]="['/dhis-user', indicator.createdBy.name, 'view']">{{ indicator.createdBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.lastUpdatedBy">Last Updated By</span></dt>
-        <dd>
-          <div *ngIf="indicator.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', indicator.lastUpdatedBy.name, 'view']">{{ indicator.lastUpdatedBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.indicator.indicatorType">Indicator Type</span></dt>
-        <dd>
-          <div *ngIf="indicator.indicatorType">
-            <a [routerLink]="['/indicatortype', indicator.indicatorType.name, 'view']">{{ indicator.indicatorType.name }}</a>
-          </div>
-        </dd>
-      </dl>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.indicatorType">Indicator Type</span></td>
+            <td>
+              <div *ngIf="indicatorRev2.indicatorType && indicatorRev1.indicatorType">
+                <span [innerHTML]="showDiff(indicatorRev2.indicatorType.name, indicatorRev1.indicatorType.name)"></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="indicatorRev2.indicatorType">
+                {{ indicatorRev2.indicatorType.name }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
-
-      <button type="button" [routerLink]="['/indicator', indicator.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
       </button>
     </div>
   </div>
