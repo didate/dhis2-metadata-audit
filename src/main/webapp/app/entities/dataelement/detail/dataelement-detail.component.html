@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="dataelement">
+  <div class="col-10">
+    <div *ngIf="dataelement && dataelementRev1 && dataelementRev2">
       <h2 data-cy="dataelementDetailsHeading"><span jhiTranslate="dhis2TrackApp.dataelement.detail.title">Dataelement</span></h2>
 
       <hr />
@@ -9,121 +9,236 @@
 
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.id">Id</span></dt>
-        <dd>
-          <span>{{ dataelement.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.name">Name</span></dt>
-        <dd>
-          <span>{{ dataelement.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.shortName">Short Name</span></dt>
-        <dd>
-          <span>{{ dataelement.shortName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.formName">Form Name</span></dt>
-        <dd>
-          <span>{{ dataelement.formName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.description">Description</span></dt>
-        <dd>
-          <span>{{ dataelement.description }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.displayShortName">Display Short Name</span></dt>
-        <dd>
-          <span>{{ dataelement.displayShortName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.displayName">Display Name</span></dt>
-        <dd>
-          <span>{{ dataelement.displayName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.displayFormName">Display Form Name</span></dt>
-        <dd>
-          <span>{{ dataelement.displayFormName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.created">Created</span></dt>
-        <dd>
-          <span>{{ dataelement.created | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.lastUpdated">Last Updated</span></dt>
-        <dd>
-          <span>{{ dataelement.lastUpdated | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.publicAccess">Public Access</span></dt>
-        <dd>
-          <span>{{ dataelement.publicAccess }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.dimensionItemType">Dimension Item Type</span></dt>
-        <dd>
-          <span>{{ dataelement.dimensionItemType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.aggregationType">Aggregation Type</span></dt>
-        <dd>
-          <span>{{ dataelement.aggregationType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.valueType">Value Type</span></dt>
-        <dd>
-          <span>{{ dataelement.valueType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.domainType">Domain Type</span></dt>
-        <dd>
-          <span>{{ dataelement.domainType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.zeroIsSignificant">Zero Is Significant</span></dt>
-        <dd>
-          <span>{{ dataelement.zeroIsSignificant }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.optionSetValue">Option Set Value</span></dt>
-        <dd>
-          <span>{{ dataelement.optionSetValue }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.dimensionItem">Dimension Item</span></dt>
-        <dd>
-          <span>{{ dataelement.dimensionItem }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.track">Track</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + dataelement.track }}">{{ dataelement.track }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.project">Project</span></dt>
-        <dd>
-          <div *ngIf="dataelement.project">
-            <a [routerLink]="['/project', dataelement.project.id, 'history']">{{ dataelement.project.id }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.createdBy">Created By</span></dt>
-        <dd>
-          <div *ngIf="dataelement.createdBy">
-            <a [routerLink]="['/dhis-user', dataelement.createdBy.name, 'view']">{{ dataelement.createdBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.lastUpdatedBy">Last Updated By</span></dt>
-        <dd>
-          <div *ngIf="dataelement.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', dataelement.lastUpdatedBy.name, 'view']">{{ dataelement.lastUpdatedBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.categoryCombo">Category Combo</span></dt>
-        <dd>
-          <div *ngIf="dataelement.categoryCombo">
-            <a [routerLink]="['/categorycombo', dataelement.categoryCombo.id, 'history']">{{ dataelement.categoryCombo.id }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dataelement.optionSet">Option Set</span></dt>
-        <dd>
-          <div *ngIf="dataelement.optionSet">
-            <a [routerLink]="['/optionset', dataelement.optionSet.id, 'history']">{{ dataelement.optionSet.id }}</a>
-          </div>
-        </dd>
-      </dl>
+      <table class="table long-table">
+        <thead>
+          <tr>
+            <th><span>Field</span></th>
+            <th><span>Data Element 1</span></th>
+            <th><span>Data Element 2</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.id">Id</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.id, dataelementRev1.id)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.id }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.name">Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.name, dataelementRev1.name)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.name }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.shortName">Short Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.shortName, dataelementRev1.shortName)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.shortName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.formName">Form Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.formName, dataelementRev1.formName)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.formName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.description">Description</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.description, dataelementRev1.description)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.description }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.displayShortName">Display Short Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.displayShortName, dataelementRev1.displayShortName)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.displayShortName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.displayName">Display Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.displayName, dataelementRev1.displayName)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.displayName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.displayFormName">Display Form Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.displayFormName, dataelementRev1.displayFormName)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.displayFormName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.created">Created</span></td>
+            <td>
+              <span
+                [innerHTML]="showDiff(dataelementRev2.created | formatMediumDatetime, dataelementRev1.created | formatMediumDatetime)"
+              ></span>
+            </td>
+            <td>
+              {{ dataelementRev2.created | formatMediumDatetime }}
+            </td>
+          </tr>
+
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.createdBy">Created By</span></td>
+            <td>
+              <div *ngIf="dataelementRev1.createdBy">
+                {{ dataelementRev1.createdBy.name }}
+              </div>
+            </td>
+            <td>
+              <div *ngIf="dataelementRev2.createdBy">
+                {{ dataelementRev2.createdBy.name }}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.lastUpdated">Last Updated</span></td>
+            <td>
+              <span
+                [innerHTML]="
+                  showDiff(dataelementRev2.lastUpdated | formatMediumDatetime, dataelementRev1.lastUpdated | formatMediumDatetime)
+                "
+              ></span>
+            </td>
+            <td>
+              {{ dataelementRev2.lastUpdated | formatMediumDatetime }}
+            </td>
+          </tr>
+
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.lastUpdatedBy">Last Updated By</span></td>
+            <td>
+              <div *ngIf="dataelementRev1.lastUpdatedBy && dataelementRev2.lastUpdatedBy">
+                <span [innerHTML]="showDiff(dataelementRev2.lastUpdatedBy.name, dataelementRev1.lastUpdatedBy.name)"></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="dataelementRev2.lastUpdatedBy">
+                {{ dataelementRev2.lastUpdatedBy.name }}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.publicAccess">Public Access</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.publicAccess, dataelementRev1.publicAccess)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.publicAccess }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.aggregationType">Aggregation Type</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.aggregationType, dataelementRev1.aggregationType)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.aggregationType }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.valueType">Value Type</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.valueType, dataelementRev1.valueType)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.valueType }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.domainType">Domain Type</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.domainType, dataelementRev1.domainType)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.domainType }}
+            </td>
+          </tr>
+
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.zeroIsSignificant">Zero Is Significant</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.zeroIsSignificant, dataelementRev1.zeroIsSignificant)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.zeroIsSignificant }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.optionSetValue">Option Set Value</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.optionSetValue, dataelementRev1.optionSetValue)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.optionSetValue }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.dimensionItem">Dimension Item</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dataelementRev2.dimensionItem, dataelementRev1.dimensionItem)"></span>
+            </td>
+            <td>
+              {{ dataelementRev2.dimensionItem }}
+            </td>
+          </tr>
+
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.optionSet">Project</span></td>
+            <td>
+              <div *ngIf="dataelementRev1.optionSet && dataelementRev2.optionSet">
+                <span [innerHTML]="showDiff(dataelementRev2.optionSet.id, dataelementRev1.optionSet.id)"></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="dataelementRev2.optionSet">
+                {{ dataelementRev2.optionSet.id }}
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dataelement.categoryCombo">Category Combo</span></td>
+            <td>
+              <div *ngIf="dataelementRev1.categoryCombo && dataelementRev2.categoryCombo">
+                <span [innerHTML]="showDiff(dataelementRev2.categoryCombo.id, dataelementRev1.categoryCombo.id)"></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="dataelementRev2.categoryCombo">
+                {{ dataelementRev2.categoryCombo.id }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
-
-      <button type="button" [routerLink]="['/dataelement', dataelement.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
       </button>
     </div>
   </div>

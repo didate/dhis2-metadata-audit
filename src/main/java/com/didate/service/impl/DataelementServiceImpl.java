@@ -5,7 +5,6 @@ import com.didate.repository.DataelementRepository;
 import com.didate.service.DataelementService;
 import com.didate.service.dto.DataElementDTO;
 import com.didate.service.dto.DataElementFullDTO;
-import com.didate.service.dto.DataSetFullDTO;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -156,6 +155,7 @@ public class DataelementServiceImpl implements DataelementService {
                 DataElement dataElement = revision.getEntity();
                 Hibernate.unproxy(dataElement.getCreatedBy());
                 Hibernate.unproxy(dataElement.getLastUpdatedBy());
+                Hibernate.unproxy(dataElement.getOptionSet());
                 return new DataElementDTO(dataElement).revisionNumber(revision.getRequiredRevisionNumber());
             })
             .collect(Collectors.toList());
@@ -173,6 +173,7 @@ public class DataelementServiceImpl implements DataelementService {
         Hibernate.unproxy(dataElement.getCreatedBy());
         Hibernate.unproxy(dataElement.getLastUpdatedBy());
         Hibernate.unproxy(dataElement.getCategoryCombo());
+        Hibernate.unproxy(dataElement.getOptionSet());
 
         return new DataElementFullDTO(dataElement);
     }
