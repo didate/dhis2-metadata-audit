@@ -4,6 +4,9 @@ import com.didate.domain.OrganisationUnit;
 
 public class OrganisationUnitDTO extends AbstractDTO {
 
+    private Integer revisionNumber;
+    private Integer level;
+
     public OrganisationUnitDTO(OrganisationUnit organisationUnit) {
         super(
             organisationUnit.getId(),
@@ -13,9 +16,8 @@ public class OrganisationUnitDTO extends AbstractDTO {
             organisationUnit.getCreatedBy(),
             organisationUnit.getLastUpdatedBy()
         );
+        this.level = organisationUnit.getLevel();
     }
-
-    private Integer revisionNumber;
 
     public Integer getRevisionNumber() {
         return revisionNumber;
@@ -28,5 +30,13 @@ public class OrganisationUnitDTO extends AbstractDTO {
     public OrganisationUnitDTO revisionNumber(Integer revisionNumber) {
         setRevisionNumber(revisionNumber);
         return this;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 }

@@ -110,6 +110,13 @@ public class IndicatorServiceImpl implements IndicatorService {
                     existingIndicator.setTrack(indicator.getTrack());
                 }
 
+                if (!indicator.getCreatedBy().equals(existingIndicator.getCreatedBy())) {
+                    existingIndicator.setCreatedBy(indicator.getCreatedBy());
+                }
+                if (!indicator.getLastUpdatedBy().equals(existingIndicator.getLastUpdatedBy())) {
+                    existingIndicator.setLastUpdatedBy(indicator.getLastUpdatedBy());
+                }
+
                 return existingIndicator;
             })
             .map(indicatorRepository::save);

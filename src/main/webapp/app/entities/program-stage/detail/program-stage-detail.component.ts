@@ -19,8 +19,8 @@ export class ProgramStageDetailComponent implements OnInit {
   programStages?: IProgramStage[];
   isLoading = false;
 
-  rev1: number = 0;
-  rev2: number = 0;
+  rev1 = 0;
+  rev2 = 0;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -51,7 +51,7 @@ export class ProgramStageDetailComponent implements OnInit {
       });
   }
 
-  showDiff(text1: any, text2: any) {
+  showDiff(text1: any, text2: any): any {
     if (text1) {
       return this.diffService.generateDiff(text1 as string, text2 as string);
     }

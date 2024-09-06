@@ -134,6 +134,13 @@ public class ProgramStageServiceImpl implements ProgramStageService {
                     existingProgramStage.setProgramStageDataElementsContent(programStage.getProgramStageDataElementsContent());
                 }
 
+                if (!programStage.getCreatedBy().equals(existingProgramStage.getCreatedBy())) {
+                    existingProgramStage.setCreatedBy(programStage.getCreatedBy());
+                }
+                if (!programStage.getLastUpdatedBy().equals(existingProgramStage.getLastUpdatedBy())) {
+                    existingProgramStage.setLastUpdatedBy(programStage.getLastUpdatedBy());
+                }
+
                 return existingProgramStage;
             })
             .map(programStageRepository::save);

@@ -161,6 +161,13 @@ public class DatasetServiceImpl implements DatasetService {
                     existingDataset.setTrack(dataset.getTrack());
                 }
 
+                if (!dataset.getCreatedBy().equals(existingDataset.getCreatedBy())) {
+                    existingDataset.setCreatedBy(dataset.getCreatedBy());
+                }
+                if (!dataset.getLastUpdatedBy().equals(existingDataset.getLastUpdatedBy())) {
+                    existingDataset.setLastUpdatedBy(dataset.getLastUpdatedBy());
+                }
+
                 return existingDataset;
             })
             .map(datasetRepository::save);

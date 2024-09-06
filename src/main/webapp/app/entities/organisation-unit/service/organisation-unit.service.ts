@@ -70,7 +70,7 @@ export class OrganisationUnitService {
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
-  history(id: any): Observable<EntityArrayResponseType> {
+  history(id: string): Observable<EntityArrayResponseType> {
     return this.http
       .get<RestOrganisationUnit[]>(`${this.resourceUrl}/${id}/audit`, { observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));

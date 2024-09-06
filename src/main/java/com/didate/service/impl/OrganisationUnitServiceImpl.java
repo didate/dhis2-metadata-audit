@@ -55,6 +55,10 @@ public class OrganisationUnitServiceImpl implements OrganisationUnitService {
         return organisationUnitRepository
             .findById(organisationUnit.getId())
             .map(existingOrganisationUnit -> {
+                if (existingOrganisationUnit.getLastUpdated().equals(organisationUnit.getLastUpdated())) {
+                    return existingOrganisationUnit;
+                }
+
                 if (organisationUnit.getName() != null) {
                     existingOrganisationUnit.setName(organisationUnit.getName());
                 }
@@ -75,6 +79,13 @@ public class OrganisationUnitServiceImpl implements OrganisationUnitService {
                 }
                 if (organisationUnit.getTrack() != null) {
                     existingOrganisationUnit.setTrack(organisationUnit.getTrack());
+                }
+
+                if (!organisationUnit.getCreatedBy().equals(existingOrganisationUnit.getCreatedBy())) {
+                    existingOrganisationUnit.setCreatedBy(organisationUnit.getCreatedBy());
+                }
+                if (!organisationUnit.getLastUpdatedBy().equals(existingOrganisationUnit.getLastUpdatedBy())) {
+                    existingOrganisationUnit.setLastUpdatedBy(organisationUnit.getLastUpdatedBy());
                 }
 
                 return existingOrganisationUnit;

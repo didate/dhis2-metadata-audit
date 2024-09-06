@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="trackedEntityAttribute">
+  <div class="col-10">
+    <div *ngIf="trackedEntityAttributeRev1 && trackedEntityAttributeRev2">
       <h2 data-cy="trackedEntityAttributeDetailsHeading">
         <span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.detail.title">Tracked Entity Attribute</span>
       </h2>
@@ -11,141 +11,300 @@
 
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.id">Id</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.lastUpdated">Last Updated</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.lastUpdated | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.created">Created</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.created | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.name">Name</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.shortName">Short Name</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.shortName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.generated">Generated</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.generated }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.valueType">Value Type</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.valueType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.confidential">Confidential</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.confidential }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayFormName">Display Form Name</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.displayFormName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.uniquee">Uniquee</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.uniquee }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.dimensionItemType">Dimension Item Type</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.dimensionItemType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.aggregationType">Aggregation Type</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.aggregationType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayInListNoProgram">Display In List No Program</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.displayInListNoProgram }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayName">Display Name</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.displayName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.patterne">Patterne</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.patterne }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.skipSynchronization">Skip Synchronization</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.skipSynchronization }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayShortName">Display Short Name</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.displayShortName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.periodOffset">Period Offset</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.periodOffset }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayOnVisitSchedule">Display On Visit Schedule</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.displayOnVisitSchedule }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.formName">Form Name</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.formName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.orgunitScope">Orgunit Scope</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.orgunitScope }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.dimensionItem">Dimension Item</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.dimensionItem }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.inherit">Inherit</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.inherit }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.optionSetValue">Option Set Value</span></dt>
-        <dd>
-          <span>{{ trackedEntityAttribute.optionSetValue }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.track">Track</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + trackedEntityAttribute.track }}">{{ trackedEntityAttribute.track }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.project">Project</span></dt>
-        <dd>
-          <div *ngIf="trackedEntityAttribute.project">
-            <a [routerLink]="['/project', trackedEntityAttribute.project.id, 'history']">{{ trackedEntityAttribute.project.id }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.createdBy">Created By</span></dt>
-        <dd>
-          <div *ngIf="trackedEntityAttribute.createdBy">
-            <a [routerLink]="['/dhis-user', trackedEntityAttribute.createdBy.name, 'view']">{{ trackedEntityAttribute.createdBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.lastUpdatedBy">Last Updated By</span></dt>
-        <dd>
-          <div *ngIf="trackedEntityAttribute.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', trackedEntityAttribute.lastUpdatedBy.name, 'view']">{{
-              trackedEntityAttribute.lastUpdatedBy.name
-            }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.optionSet">Option Set</span></dt>
-        <dd>
-          <div *ngIf="trackedEntityAttribute.optionSet">
-            <a [routerLink]="['/optionset', trackedEntityAttribute.optionSet.id, 'history']">{{ trackedEntityAttribute.optionSet.id }}</a>
-          </div>
-        </dd>
-      </dl>
+      <table class="table long-table">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Revision 1</th>
+            <th>Revision 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.id">Id</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.id, trackedEntityAttributeRev1.id)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.id }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.lastUpdated">Last Updated</span></td>
+            <td>
+              <span
+                [innerHTML]="
+                  showDiff(
+                    trackedEntityAttributeRev2.lastUpdated | formatMediumDatetime,
+                    trackedEntityAttributeRev1.lastUpdated | formatMediumDatetime
+                  )
+                "
+              ></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.lastUpdated | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.created">Created</span></td>
+            <td>
+              <span
+                [innerHTML]="
+                  showDiff(
+                    trackedEntityAttributeRev2.created | formatMediumDatetime,
+                    trackedEntityAttributeRev1.created | formatMediumDatetime
+                  )
+                "
+              ></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.created | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.name">Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.name, trackedEntityAttributeRev1.name)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.name }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.shortName">Short Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.shortName, trackedEntityAttributeRev1.shortName)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.shortName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.generated">Generated</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.generated, trackedEntityAttributeRev1.generated)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.generated }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.valueType">Value Type</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.valueType, trackedEntityAttributeRev1.valueType)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.valueType }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.confidential">Confidential</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.confidential, trackedEntityAttributeRev1.confidential)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.confidential }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayFormName">Display Form Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.displayFormName, trackedEntityAttributeRev1.displayFormName)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.displayFormName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.uniquee">Uniquee</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.uniquee, trackedEntityAttributeRev1.uniquee)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.uniquee }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.dimensionItemType">Dimension Item Type</span></td>
+            <td>
+              <span
+                [innerHTML]="showDiff(trackedEntityAttributeRev2.dimensionItemType, trackedEntityAttributeRev1.dimensionItemType)"
+              ></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.dimensionItemType }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.aggregationType">Aggregation Type</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.aggregationType, trackedEntityAttributeRev1.aggregationType)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.aggregationType }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayInListNoProgram">Display In List No Program</span></td>
+            <td>
+              <span
+                [innerHTML]="showDiff(trackedEntityAttributeRev2.displayInListNoProgram, trackedEntityAttributeRev1.displayInListNoProgram)"
+              ></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.displayInListNoProgram }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayName">Display Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.displayName, trackedEntityAttributeRev1.displayName)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.displayName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.patterne">Patterne</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.patterne, trackedEntityAttributeRev1.patterne)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.patterne }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.skipSynchronization">Skip Synchronization</span></td>
+            <td>
+              <span
+                [innerHTML]="showDiff(trackedEntityAttributeRev2.skipSynchronization, trackedEntityAttributeRev1.skipSynchronization)"
+              ></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.skipSynchronization }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayShortName">Display Short Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.displayShortName, trackedEntityAttributeRev1.displayShortName)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.displayShortName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.periodOffset">Period Offset</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.periodOffset, trackedEntityAttributeRev1.periodOffset)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.periodOffset }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.displayOnVisitSchedule">Display On Visit Schedule</span></td>
+            <td>
+              <span
+                [innerHTML]="showDiff(trackedEntityAttributeRev2.displayOnVisitSchedule, trackedEntityAttributeRev1.displayOnVisitSchedule)"
+              ></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.displayOnVisitSchedule }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.formName">Form Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.formName, trackedEntityAttributeRev1.formName)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.formName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.orgunitScope">Orgunit Scope</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.orgunitScope, trackedEntityAttributeRev1.orgunitScope)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.orgunitScope }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.dimensionItem">Dimension Item</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.dimensionItem, trackedEntityAttributeRev1.dimensionItem)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.dimensionItem }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.inherit">Inherit</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.inherit, trackedEntityAttributeRev1.inherit)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.inherit }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.optionSetValue">Option Set Value</span></td>
+            <td>
+              <span [innerHTML]="showDiff(trackedEntityAttributeRev2.optionSetValue, trackedEntityAttributeRev1.optionSetValue)"></span>
+            </td>
+            <td>
+              {{ trackedEntityAttributeRev2.optionSetValue }}
+            </td>
+          </tr>
+
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.createdBy">Created By</span></td>
+            <td>
+              <div *ngIf="trackedEntityAttributeRev1.createdBy">
+                {{ trackedEntityAttributeRev1.createdBy.name }}
+              </div>
+            </td>
+            <td>
+              <div *ngIf="trackedEntityAttributeRev2.createdBy">
+                {{ trackedEntityAttributeRev2.createdBy.name }}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.lastUpdatedBy">Last Updated By</span></td>
+            <td>
+              <div *ngIf="trackedEntityAttributeRev2.lastUpdatedBy && trackedEntityAttributeRev1.lastUpdatedBy">
+                <span
+                  [innerHTML]="showDiff(trackedEntityAttributeRev2.lastUpdatedBy.name, trackedEntityAttributeRev1.lastUpdatedBy.name)"
+                ></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="trackedEntityAttributeRev2.lastUpdatedBy">
+                {{ trackedEntityAttributeRev2.lastUpdatedBy.name }}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.trackedEntityAttribute.optionSet">Option Set</span></td>
+            <td>
+              <div *ngIf="trackedEntityAttributeRev2.optionSet && trackedEntityAttributeRev1.optionSet">
+                <span [innerHTML]="showDiff(trackedEntityAttributeRev2.optionSet.id, trackedEntityAttributeRev1.optionSet.id)"></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="trackedEntityAttributeRev2.optionSet">
+                {{ trackedEntityAttributeRev2.optionSet.id }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
-
-      <button type="button" [routerLink]="['/tracked-entity-attribute', trackedEntityAttribute.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
       </button>
     </div>
   </div>

@@ -52,6 +52,9 @@ public class ProgramRuleVariableServiceImpl implements ProgramRuleVariableServic
         return programRuleVariableRepository
             .findById(programRuleVariable.getId())
             .map(existingProgramRuleVariable -> {
+                if (existingProgramRuleVariable.getLastUpdated().equals(programRuleVariable.getLastUpdated())) {
+                    return existingProgramRuleVariable;
+                }
                 if (programRuleVariable.getLastUpdated() != null) {
                     existingProgramRuleVariable.setLastUpdated(programRuleVariable.getLastUpdated());
                 }
@@ -72,6 +75,13 @@ public class ProgramRuleVariableServiceImpl implements ProgramRuleVariableServic
                 }
                 if (programRuleVariable.getTrack() != null) {
                     existingProgramRuleVariable.setTrack(programRuleVariable.getTrack());
+                }
+
+                if (!programRuleVariable.getCreatedBy().equals(existingProgramRuleVariable.getCreatedBy())) {
+                    existingProgramRuleVariable.setCreatedBy(programRuleVariable.getCreatedBy());
+                }
+                if (!programRuleVariable.getLastUpdatedBy().equals(existingProgramRuleVariable.getLastUpdatedBy())) {
+                    existingProgramRuleVariable.setLastUpdatedBy(programRuleVariable.getLastUpdatedBy());
                 }
 
                 return existingProgramRuleVariable;

@@ -95,6 +95,13 @@ public class ProgramIndicatorServiceImpl implements ProgramIndicatorService {
                     existingProgramIndicator.setTrack(programIndicator.getTrack());
                 }
 
+                if (!programIndicator.getCreatedBy().equals(existingProgramIndicator.getCreatedBy())) {
+                    existingProgramIndicator.setCreatedBy(programIndicator.getCreatedBy());
+                }
+                if (!programIndicator.getLastUpdatedBy().equals(existingProgramIndicator.getLastUpdatedBy())) {
+                    existingProgramIndicator.setLastUpdatedBy(programIndicator.getLastUpdatedBy());
+                }
+
                 return existingProgramIndicator;
             })
             .map(programIndicatorRepository::save);

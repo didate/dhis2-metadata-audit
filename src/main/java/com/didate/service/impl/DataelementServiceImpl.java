@@ -110,6 +110,13 @@ public class DataelementServiceImpl implements DataelementService {
                     existingDataelement.setTrack(dataelement.getTrack());
                 }
 
+                if (!dataelement.getCreatedBy().equals(existingDataelement.getCreatedBy())) {
+                    existingDataelement.setCreatedBy(dataelement.getCreatedBy());
+                }
+                if (!dataelement.getLastUpdatedBy().equals(existingDataelement.getLastUpdatedBy())) {
+                    existingDataelement.setLastUpdatedBy(dataelement.getLastUpdatedBy());
+                }
+
                 return existingDataelement;
             })
             .map(dataelementRepository::save);
