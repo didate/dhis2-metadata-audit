@@ -183,6 +183,8 @@ public class ProgramStageServiceImpl implements ProgramStageService {
                 ProgramStage programStage = revision.getEntity();
                 Hibernate.unproxy(programStage.getCreatedBy());
                 Hibernate.unproxy(programStage.getLastUpdatedBy());
+                Hibernate.unproxy(programStage.getProgram());
+
                 return new ProgramStageDTO(programStage).revisionNumber(revision.getRequiredRevisionNumber());
             })
             .collect(Collectors.toList());
@@ -191,15 +193,16 @@ public class ProgramStageServiceImpl implements ProgramStageService {
     @Override
     @Transactional(readOnly = true)
     public ProgramStageFullDTO findAuditRevision(String id, Integer rev) {
-        ProgramStage program = programStageRepository
+        ProgramStage programStage = programStageRepository
             .findRevision(id, rev)
             .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
             .getEntity();
 
-        Hibernate.unproxy(program.getCreatedBy());
-        Hibernate.unproxy(program.getLastUpdatedBy());
+        Hibernate.unproxy(programStage.getCreatedBy());
+        Hibernate.unproxy(programStage.getLastUpdatedBy());
+        Hibernate.unproxy(programStage.getProgram());
 
-        return new ProgramStageFullDTO(program);
+        return new ProgramStageFullDTO(programStage);
     }
 
     @Override
