@@ -51,8 +51,18 @@ public class CategorycomboServiceImpl implements CategorycomboService {
         return categorycomboRepository
             .findById(categorycombo.getId())
             .map(existingCategorycombo -> {
+                if (existingCategorycombo.getLastUpdated().equals(categorycombo.getLastUpdated())) {
+                    return existingCategorycombo;
+                }
                 if (categorycombo.getName() != null) {
                     existingCategorycombo.setName(categorycombo.getName());
+                }
+
+                if (!categorycombo.getCreatedBy().equals(existingCategorycombo.getCreatedBy())) {
+                    existingCategorycombo.setCreatedBy(categorycombo.getCreatedBy());
+                }
+                if (!categorycombo.getLastUpdatedBy().equals(existingCategorycombo.getLastUpdatedBy())) {
+                    existingCategorycombo.setLastUpdatedBy(categorycombo.getLastUpdatedBy());
                 }
 
                 return existingCategorycombo;

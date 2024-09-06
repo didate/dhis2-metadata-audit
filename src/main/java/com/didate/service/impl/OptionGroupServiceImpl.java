@@ -52,8 +52,23 @@ public class OptionGroupServiceImpl implements OptionGroupService {
         return optionGroupRepository
             .findById(optionGroup.getId())
             .map(existingOptionGroup -> {
+                if (!optionGroup.getName().equals(existingOptionGroup.getName())) {
+                    existingOptionGroup.setName(optionGroup.getName());
+                }
+                if (!optionGroup.getShortName().equals(existingOptionGroup.getShortName())) {
+                    existingOptionGroup.setShortName(optionGroup.getShortName());
+                }
+
+                if (!optionGroup.getCreatedBy().equals(existingOptionGroup.getCreatedBy())) {
+                    existingOptionGroup.setCreatedBy(optionGroup.getCreatedBy());
+                }
+                if (!optionGroup.getLastUpdatedBy().equals(existingOptionGroup.getLastUpdatedBy())) {
+                    existingOptionGroup.setLastUpdatedBy(optionGroup.getLastUpdatedBy());
+                }
+
                 return existingOptionGroup;
-            }); // .map(optionGroupRepository::save)
+            })
+            .map(optionGroupRepository::save);
     }
 
     @Override

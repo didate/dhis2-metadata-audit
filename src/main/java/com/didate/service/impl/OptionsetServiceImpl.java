@@ -54,6 +54,22 @@ public class OptionsetServiceImpl implements OptionsetService {
                 if (optionset.getName() != null) {
                     existingOptionset.setName(optionset.getName());
                 }
+                if (!optionset.getName().equals(existingOptionset.getName())) {
+                    existingOptionset.setName(optionset.getName());
+                }
+                if (!optionset.getShortName().equals(existingOptionset.getShortName())) {
+                    existingOptionset.setShortName(optionset.getShortName());
+                }
+                if (!optionset.getTrack().equals(existingOptionset.getTrack())) {
+                    existingOptionset.setTrack(optionset.getTrack());
+                }
+
+                if (!optionset.getCreatedBy().equals(existingOptionset.getCreatedBy())) {
+                    existingOptionset.setCreatedBy(optionset.getCreatedBy());
+                }
+                if (!optionset.getLastUpdatedBy().equals(existingOptionset.getLastUpdatedBy())) {
+                    existingOptionset.setLastUpdatedBy(optionset.getLastUpdatedBy());
+                }
 
                 return existingOptionset;
             })

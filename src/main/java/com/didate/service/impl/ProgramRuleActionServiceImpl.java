@@ -52,6 +52,10 @@ public class ProgramRuleActionServiceImpl implements ProgramRuleActionService {
         return programRuleActionRepository
             .findById(programRuleAction.getId())
             .map(existingProgramRuleAction -> {
+                if (existingProgramRuleAction.getLastUpdated().equals(programRuleAction.getLastUpdated())) {
+                    return existingProgramRuleAction;
+                }
+
                 if (programRuleAction.getLastUpdated() != null) {
                     existingProgramRuleAction.setLastUpdated(programRuleAction.getLastUpdated());
                 }
@@ -78,6 +82,13 @@ public class ProgramRuleActionServiceImpl implements ProgramRuleActionService {
                 }
                 if (programRuleAction.getTrack() != null) {
                     existingProgramRuleAction.setTrack(programRuleAction.getTrack());
+                }
+
+                if (!programRuleAction.getCreatedBy().equals(existingProgramRuleAction.getCreatedBy())) {
+                    existingProgramRuleAction.setCreatedBy(programRuleAction.getCreatedBy());
+                }
+                if (!programRuleAction.getLastUpdatedBy().equals(existingProgramRuleAction.getLastUpdatedBy())) {
+                    existingProgramRuleAction.setLastUpdatedBy(programRuleAction.getLastUpdatedBy());
                 }
 
                 return existingProgramRuleAction;

@@ -128,6 +128,13 @@ public class TrackedEntityAttributeServiceImpl implements TrackedEntityAttribute
                     existingTrackedEntityAttribute.setTrack(trackedEntityAttribute.getTrack());
                 }
 
+                if (!trackedEntityAttribute.getCreatedBy().equals(existingTrackedEntityAttribute.getCreatedBy())) {
+                    existingTrackedEntityAttribute.setCreatedBy(trackedEntityAttribute.getCreatedBy());
+                }
+                if (!trackedEntityAttribute.getLastUpdatedBy().equals(existingTrackedEntityAttribute.getLastUpdatedBy())) {
+                    existingTrackedEntityAttribute.setLastUpdatedBy(trackedEntityAttribute.getLastUpdatedBy());
+                }
+
                 return existingTrackedEntityAttribute;
             })
             .map(trackedEntityAttributeRepository::save);

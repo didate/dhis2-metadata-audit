@@ -47,7 +47,7 @@ export class TrackedEntityAttributeHistoryComponent implements OnInit {
     window.history.back();
   }
 
-  selectRev(trackedEntityAttribute: ITrackedEntityAttribute) {
+  selectRev(trackedEntityAttribute: ITrackedEntityAttribute): any {
     if (this.setRev.length < 2 && trackedEntityAttribute.isSelected) {
       this.setRev.push(trackedEntityAttribute.revisionNumber as number);
     } else if (!trackedEntityAttribute.isSelected) {

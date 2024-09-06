@@ -78,7 +78,7 @@ public class DHISScript {
         List<Project> projects = projectService.findAll();
 
         for (Project project : projects) {
-            userScript.perform(project);
+            /* userScript.perform(project);
             optionGroupScript.perform(project);
             categoryComboScript.perform(project);
             indicatorTypeScript.perform(project);
@@ -86,20 +86,19 @@ public class DHISScript {
             organisationUnitScript.perform(project);
             dataElementScript.perform(project);
             indicatorScript.perform(project);
-            dataSetScript.perform(project);
+            dataSetScript.perform(project); 
 
-            trackedEntityAttributeScript.perform(project);
+              trackedEntityAttributeScript.perform(project);
 
-            programScript.perform(project);
-            programStageScript.perform(project);
+           programScript.perform(project);
+            programStageScript.perform(project);*/
 
             programIndicatorScript.perform(project);
-
-            programRuleScript.perform(project);
+            /*programRuleScript.perform(project);
 
             programRuleVariableScript.perform(project);
 
-            programRuleActionScript.perform(project);
+            programRuleActionScript.perform(project); */
         }
     }
 }

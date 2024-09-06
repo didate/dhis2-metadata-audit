@@ -188,6 +188,13 @@ public class ProgramServiceImpl implements ProgramService {
                     existingProgram.setTrack(program.getTrack());
                 }
 
+                if (!program.getCreatedBy().equals(existingProgram.getCreatedBy())) {
+                    existingProgram.setCreatedBy(program.getCreatedBy());
+                }
+                if (!program.getLastUpdatedBy().equals(existingProgram.getLastUpdatedBy())) {
+                    existingProgram.setLastUpdatedBy(program.getLastUpdatedBy());
+                }
+
                 return existingProgram;
             })
             .map(programRepository::save);

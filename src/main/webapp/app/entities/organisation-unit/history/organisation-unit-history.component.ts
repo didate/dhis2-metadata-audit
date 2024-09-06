@@ -35,7 +35,7 @@ export class OrganisationUnitHistoryComponent implements OnInit {
 
   load(): void {
     this.organisationUnitService
-      .history(this.organisationUnit?.id)
+      .history(this.organisationUnit?.id as string)
       .pipe(tap(() => (this.isLoading = false)))
       .subscribe({
         next: (res: EntityArrayResponseType) => (this.organisationUnits = res.body ?? []),
@@ -46,7 +46,7 @@ export class OrganisationUnitHistoryComponent implements OnInit {
     window.history.back();
   }
 
-  selectRev(organisationUnit: IOrganisationUnit) {
+  selectRev(organisationUnit: IOrganisationUnit): any {
     if (this.setRev.length < 2 && organisationUnit.isSelected) {
       this.setRev.push(organisationUnit.revisionNumber as number);
     } else if (!organisationUnit.isSelected) {

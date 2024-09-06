@@ -1,99 +1,187 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <div *ngIf="programIndicator">
+    <div *ngIf="programIndicatorRev1 && programIndicatorRev2">
       <h2 data-cy="programIndicatorDetailsHeading">
         <span jhiTranslate="dhis2TrackApp.programIndicator.detail.title">Program Indicator</span>
       </h2>
 
       <hr />
 
-      <jhi-alert-error></jhi-alert-error>
+      <table class="table long-table">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Revision 1</th>
+            <th>Revision 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Row for each field -->
+          <tr>
+            <td>Id</td>
+            <td>
+              <span [innerHTML]="showDiff(programIndicatorRev2.id, programIndicatorRev1.id)"></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.id }}
+            </td>
+          </tr>
+          <tr>
+            <td>Name</td>
+            <td>
+              <span [innerHTML]="showDiff(programIndicatorRev2.name, programIndicatorRev1.name)"></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.name }}
+            </td>
+          </tr>
+          <tr>
+            <td>Created</td>
+            <td>
+              <span
+                [innerHTML]="
+                  showDiff(programIndicatorRev2.created | formatMediumDatetime, programIndicatorRev1.created | formatMediumDatetime)
+                "
+              ></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.created | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr>
+            <td>Created By</td>
+            <td>
+              <span
+                *ngIf="programIndicatorRev2.createdBy && programIndicatorRev1.createdBy"
+                [innerHTML]="showDiff(programIndicatorRev2.createdBy.name, programIndicatorRev1.createdBy.name)"
+              ></span>
+            </td>
+            <td>
+              <span *ngIf="programIndicatorRev2.createdBy">{{ programIndicatorRev2.createdBy.name }}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Last Updated</td>
+            <td>
+              <span
+                [innerHTML]="
+                  showDiff(programIndicatorRev2.lastUpdated | formatMediumDatetime, programIndicatorRev1.lastUpdated | formatMediumDatetime)
+                "
+              ></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.lastUpdated | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr></tr>
 
-      <jhi-alert></jhi-alert>
-
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.id">Id</span></dt>
-        <dd>
-          <span>{{ programIndicator.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.name">Name</span></dt>
-        <dd>
-          <span>{{ programIndicator.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.created">Created</span></dt>
-        <dd>
-          <span>{{ programIndicator.created | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.lastUpdated">Last Updated</span></dt>
-        <dd>
-          <span>{{ programIndicator.lastUpdated | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.shortName">Short Name</span></dt>
-        <dd>
-          <span>{{ programIndicator.shortName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.dimensionItemType">Dimension Item Type</span></dt>
-        <dd>
-          <span>{{ programIndicator.dimensionItemType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.expression">Expression</span></dt>
-        <dd>
-          <span>{{ programIndicator.expression }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.filter">Filter</span></dt>
-        <dd>
-          <span>{{ programIndicator.filter }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.analyticsType">Analytics Type</span></dt>
-        <dd>
-          <span>{{ programIndicator.analyticsType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.dimensionItem">Dimension Item</span></dt>
-        <dd>
-          <span>{{ programIndicator.dimensionItem }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.displayShortName">Display Short Name</span></dt>
-        <dd>
-          <span>{{ programIndicator.displayShortName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.displayName">Display Name</span></dt>
-        <dd>
-          <span>{{ programIndicator.displayName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.displayFormName">Display Form Name</span></dt>
-        <dd>
-          <span>{{ programIndicator.displayFormName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.track">Track</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + programIndicator.track }}">{{ programIndicator.track }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.createdBy">Created By</span></dt>
-        <dd>
-          <div *ngIf="programIndicator.createdBy">
-            <a [routerLink]="['/dhis-user', programIndicator.createdBy.name, 'view']">{{ programIndicator.createdBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.lastUpdatedBy">Last Updated By</span></dt>
-        <dd>
-          <div *ngIf="programIndicator.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', programIndicator.lastUpdatedBy.name, 'view']">{{ programIndicator.lastUpdatedBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programIndicator.program">Program</span></dt>
-        <dd>
-          <div *ngIf="programIndicator.program">
-            <a [routerLink]="['/program', programIndicator.program.name, 'view']">{{ programIndicator.program.name }}</a>
-          </div>
-        </dd>
-      </dl>
+          <tr>
+            <td>Last Updated By</td>
+            <td>
+              <span
+                *ngIf="programIndicatorRev2.lastUpdatedBy && programIndicatorRev1.lastUpdatedBy"
+                [innerHTML]="showDiff(programIndicatorRev2.lastUpdatedBy.name, programIndicatorRev1.lastUpdatedBy.name)"
+              ></span>
+            </td>
+            <td *ngIf="programIndicatorRev2.createdBy">
+              {{ programIndicatorRev2.lastUpdatedBy?.name }}
+            </td>
+          </tr>
+          <tr>
+            <td>Short Name</td>
+            <td>
+              <span [innerHTML]="showDiff(programIndicatorRev2.shortName, programIndicatorRev1.shortName)"></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.shortName }}
+            </td>
+          </tr>
+          <tr>
+            <td>Dimension Item Type</td>
+            <td>
+              <span [innerHTML]="showDiff(programIndicatorRev2.dimensionItemType, programIndicatorRev1.dimensionItemType)"></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.dimensionItemType }}
+            </td>
+          </tr>
+          <tr>
+            <td>Expression</td>
+            <td>
+              <span [innerHTML]="showDiff(programIndicatorRev2.expression, programIndicatorRev1.expression)"></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.expression }}
+            </td>
+          </tr>
+          <tr>
+            <td>Filter</td>
+            <td>
+              <span [innerHTML]="showDiff(programIndicatorRev2.filter, programIndicatorRev1.filter)"></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.filter }}
+            </td>
+          </tr>
+          <tr>
+            <td>Analytics Type</td>
+            <td>
+              <span [innerHTML]="showDiff(programIndicatorRev2.analyticsType, programIndicatorRev1.analyticsType)"></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.analyticsType }}
+            </td>
+          </tr>
+          <tr>
+            <td>Dimension Item</td>
+            <td>
+              <span [innerHTML]="showDiff(programIndicatorRev2.dimensionItem, programIndicatorRev1.dimensionItem)"></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.dimensionItem }}
+            </td>
+          </tr>
+          <tr>
+            <td>Display Short Name</td>
+            <td>
+              <span [innerHTML]="showDiff(programIndicatorRev2.displayShortName, programIndicatorRev1.displayShortName)"></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.displayShortName }}
+            </td>
+          </tr>
+          <tr>
+            <td>Display Name</td>
+            <td>
+              <span [innerHTML]="showDiff(programIndicatorRev2.displayName, programIndicatorRev1.displayName)"></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.displayName }}
+            </td>
+          </tr>
+          <tr>
+            <td>Display Form Name</td>
+            <td>
+              <span [innerHTML]="showDiff(programIndicatorRev2.displayFormName, programIndicatorRev1.displayFormName)"></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.displayFormName }}
+            </td>
+          </tr>
+          <tr>
+            <td>Program</td>
+            <td>
+              <span [innerHTML]="showDiff(programIndicatorRev2.program?.name, programIndicatorRev1.program?.name)"></span>
+            </td>
+            <td>
+              {{ programIndicatorRev2.program?.name }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
-
-      <button type="button" [routerLink]="['/program-indicator', programIndicator.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
       </button>
     </div>
   </div>

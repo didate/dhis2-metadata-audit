@@ -77,6 +77,13 @@ public class ProgramRuleServiceImpl implements ProgramRuleService {
                     existingProgramRule.setTrack(programRule.getTrack());
                 }
 
+                if (!programRule.getCreatedBy().equals(existingProgramRule.getCreatedBy())) {
+                    existingProgramRule.setCreatedBy(programRule.getCreatedBy());
+                }
+                if (!programRule.getLastUpdatedBy().equals(existingProgramRule.getLastUpdatedBy())) {
+                    existingProgramRule.setLastUpdatedBy(programRule.getLastUpdatedBy());
+                }
+
                 return existingProgramRule;
             })
             .map(programRuleRepository::save);

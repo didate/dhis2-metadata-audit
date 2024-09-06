@@ -67,6 +67,13 @@ public class DHISUserServiceImpl implements DHISUserService {
                 existingDHISUser.setLastUpdated(dHISUser.getLastUpdated());
                 existingDHISUser.setTrack(dHISUser.getTrack());
 
+                /*  if (!dHISUser.getCreatedBy().equals(existingDHISUser.getCreatedBy())) {
+                    existingDHISUser.setCreatedBy(dHISUser.getCreatedBy());
+                }
+                if (!dHISUser.getLastUpdatedBy().equals(existingDHISUser.getLastUpdatedBy())) {
+                    existingDHISUser.setLastUpdatedBy(dHISUser.getLastUpdatedBy());
+                } */
+
                 return existingDHISUser;
             })
             .map(dHISUserRepository::save);

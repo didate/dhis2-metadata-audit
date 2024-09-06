@@ -47,7 +47,10 @@ public class ProgramRuleVariableScript {
 
         for (ProgramRuleVariable variable : programRuleVariables) {
             TypeTrack typeTrack = determineTypeTrack(variable.getId(), hasExistingVariables);
-            variable = variable.createdBy(variable.getLastUpdatedBy()).track(typeTrack).project(project);
+            if (variable.getCreatedBy() == null) {
+                variable = variable.createdBy(variable.getLastUpdatedBy());
+            }
+            variable = variable.track(typeTrack).project(project);
             if (typeTrack == TypeTrack.UPDATE) {
                 programRuleVariableService.partialUpdate(variable);
             } else {

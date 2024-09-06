@@ -53,6 +53,11 @@ public class TrackedEntityAttributeScript {
             } else {
                 trackedEntityAttributeService.save(attribute);
             }
+            System.out.println("=====================================================");
+            System.out.println(attribute.getCreatedBy());
+            System.out.println("=====================================================");
+            System.out.println(attribute.getLastUpdatedBy());
+            System.out.println("=====================================================");
         }
 
         log.info("Fetched tracked entity attributes: {}", trackedEntityAttributes.size());

@@ -1,111 +1,199 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <div *ngIf="programRuleAction">
+    <div *ngIf="programRuleActionRev1 && programRuleActionRev2">
       <h2 data-cy="programRuleActionDetailsHeading">
         <span jhiTranslate="dhis2TrackApp.programRuleAction.detail.title">Program Rule Action</span>
       </h2>
 
       <hr />
 
-      <jhi-alert-error></jhi-alert-error>
+      <table class="table long-table">
+        <thead>
+          <tr>
+            <th><span>Field</span></th>
+            <th><span>Revision 1</span></th>
+            <th><span>Revision 2</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.id">Id</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programRuleActionRev2.id, programRuleActionRev1.id)"></span>
+            </td>
+            <td>
+              {{ programRuleActionRev2.id }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.lastUpdated">Last Updated</span></td>
+            <td>
+              <span
+                [innerHTML]="
+                  showDiff(
+                    programRuleActionRev2.lastUpdated | formatMediumDatetime,
+                    programRuleActionRev1.lastUpdated | formatMediumDatetime
+                  )
+                "
+              ></span>
+            </td>
+            <td>
+              {{ programRuleActionRev2.lastUpdated | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.created">Created</span></td>
+            <td>
+              <span
+                [innerHTML]="
+                  showDiff(programRuleActionRev2.created | formatMediumDatetime, programRuleActionRev1.created | formatMediumDatetime)
+                "
+              ></span>
+            </td>
+            <td>
+              {{ programRuleActionRev2.created | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.programRuleActionType">Program Rule Action Type</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programRuleActionRev2.programRuleActionType, programRuleActionRev1.programRuleActionType)"></span>
+            </td>
+            <td>
+              {{ programRuleActionRev2.programRuleActionType }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.evaluationTime">Evaluation Time</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programRuleActionRev2.evaluationTime, programRuleActionRev1.evaluationTime)"></span>
+            </td>
+            <td>
+              {{ programRuleActionRev2.evaluationTime }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.data">Data</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programRuleActionRev2.data, programRuleActionRev1.data)"></span>
+            </td>
+            <td>
+              {{ programRuleActionRev2.data }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.templateUid">Template Uid</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programRuleActionRev2.templateUid, programRuleActionRev1.templateUid)"></span>
+            </td>
+            <td>
+              {{ programRuleActionRev2.templateUid }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.content">Content</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programRuleActionRev2.content, programRuleActionRev1.content)"></span>
+            </td>
+            <td>
+              {{ programRuleActionRev2.content }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.displayContent">Display Content</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programRuleActionRev2.displayContent, programRuleActionRev1.displayContent)"></span>
+            </td>
+            <td>
+              {{ programRuleActionRev2.displayContent }}
+            </td>
+          </tr>
 
-      <jhi-alert></jhi-alert>
-
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.id">Id</span></dt>
-        <dd>
-          <span>{{ programRuleAction.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.lastUpdated">Last Updated</span></dt>
-        <dd>
-          <span>{{ programRuleAction.lastUpdated | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.created">Created</span></dt>
-        <dd>
-          <span>{{ programRuleAction.created }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.programRuleActionType">Program Rule Action Type</span></dt>
-        <dd>
-          <span>{{ programRuleAction.programRuleActionType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.evaluationTime">Evaluation Time</span></dt>
-        <dd>
-          <span>{{ programRuleAction.evaluationTime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.data">Data</span></dt>
-        <dd>
-          <span>{{ programRuleAction.data }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.templateUid">Template Uid</span></dt>
-        <dd>
-          <span>{{ programRuleAction.templateUid }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.content">Content</span></dt>
-        <dd>
-          <span>{{ programRuleAction.content }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.displayContent">Display Content</span></dt>
-        <dd>
-          <span>{{ programRuleAction.displayContent }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.track">Track</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + programRuleAction.track }}">{{ programRuleAction.track }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.project">Project</span></dt>
-        <dd>
-          <div *ngIf="programRuleAction.project">
-            <a [routerLink]="['/project', programRuleAction.project.id, 'history']">{{ programRuleAction.project.id }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.createdBy">Created By</span></dt>
-        <dd>
-          <div *ngIf="programRuleAction.createdBy">
-            <a [routerLink]="['/dhis-user', programRuleAction.createdBy.name, 'view']">{{ programRuleAction.createdBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.lastUpdatedBy">Last Updated By</span></dt>
-        <dd>
-          <div *ngIf="programRuleAction.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', programRuleAction.lastUpdatedBy.name, 'view']">{{ programRuleAction.lastUpdatedBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.programRule">Program Rule</span></dt>
-        <dd>
-          <div *ngIf="programRuleAction.programRule">
-            <a [routerLink]="['/program-rule', programRuleAction.programRule.name, 'view']">{{ programRuleAction.programRule.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.trackedEntityAttribute">Tracked Entity Attribute</span></dt>
-        <dd>
-          <div *ngIf="programRuleAction.trackedEntityAttribute">
-            <a [routerLink]="['/tracked-entity-attribute', programRuleAction.trackedEntityAttribute.id, 'history']">{{
-              programRuleAction.trackedEntityAttribute.id
-            }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.dataElement">Data Element</span></dt>
-        <dd>
-          <div *ngIf="programRuleAction.dataElement">
-            <a [routerLink]="['/tracked-entity-attribute', programRuleAction.dataElement.id, 'history']">{{
-              programRuleAction.dataElement.id
-            }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programRuleAction.optionGroup">Option Group</span></dt>
-        <dd>
-          <div *ngIf="programRuleAction.optionGroup">
-            <a [routerLink]="['/option-group', programRuleAction.optionGroup.id, 'history']">{{ programRuleAction.optionGroup.id }}</a>
-          </div>
-        </dd>
-      </dl>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.createdBy">Created By</span></td>
+            <td>
+              <div *ngIf="programRuleActionRev1.createdBy">
+                {{ programRuleActionRev1.createdBy.name }}
+              </div>
+            </td>
+            <td>
+              <div *ngIf="programRuleActionRev2.createdBy">
+                {{ programRuleActionRev2.createdBy.name }}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.lastUpdatedBy">Last Updated By</span></td>
+            <td>
+              <div *ngIf="programRuleActionRev1.lastUpdatedBy && programRuleActionRev2.lastUpdatedBy">
+                <span [innerHTML]="showDiff(programRuleActionRev2.lastUpdatedBy.name, programRuleActionRev1.lastUpdatedBy.name)"></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="programRuleActionRev2.lastUpdatedBy">
+                {{ programRuleActionRev2.lastUpdatedBy.name }}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.programRule">Program Rule</span></td>
+            <td>
+              <div *ngIf="programRuleActionRev1.programRule && programRuleActionRev2.programRule">
+                <span [innerHTML]="showDiff(programRuleActionRev2.programRule.name, programRuleActionRev1.programRule.name)"></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="programRuleActionRev2.programRule">
+                {{ programRuleActionRev2.programRule.name }}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.trackedEntityAttribute">Tracked Entity Attribute</span></td>
+            <td>
+              <div *ngIf="programRuleActionRev1.trackedEntityAttribute && programRuleActionRev2.trackedEntityAttribute">
+                <span
+                  [innerHTML]="showDiff(programRuleActionRev2.trackedEntityAttribute.id, programRuleActionRev1.trackedEntityAttribute.id)"
+                ></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="programRuleActionRev2.trackedEntityAttribute">
+                {{ programRuleActionRev2.trackedEntityAttribute.id }}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.dataElement">Data Element</span></td>
+            <td>
+              <div *ngIf="programRuleActionRev1.dataElement && programRuleActionRev2.dataElement">
+                <span [innerHTML]="showDiff(programRuleActionRev2.dataElement.id, programRuleActionRev1.dataElement.id)"></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="programRuleActionRev2.dataElement">
+                {{ programRuleActionRev2.dataElement.id }}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programRuleAction.optionGroup">Option Group</span></td>
+            <td>
+              <div *ngIf="programRuleActionRev1.optionGroup && programRuleActionRev2.optionGroup">
+                <span [innerHTML]="showDiff(programRuleActionRev2.optionGroup.id, programRuleActionRev1.optionGroup.id)"></span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="programRuleActionRev2.optionGroup">
+                {{ programRuleActionRev2.optionGroup.id }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
-
-      <button type="button" [routerLink]="['/program-rule-action', programRuleAction.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
       </button>
     </div>
   </div>

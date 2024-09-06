@@ -1,69 +1,127 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="organisationUnit">
+  <div class="col-10">
+    <div *ngIf="organisationUnitRev1 && organisationUnitRev2">
       <h2 data-cy="organisationUnitDetailsHeading">
         <span jhiTranslate="dhis2TrackApp.organisationUnit.detail.title">Organisation Unit</span>
       </h2>
 
       <hr />
 
-      <jhi-alert-error></jhi-alert-error>
+      <table class="table long-table">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Revision 1</th>
+            <th>Revision 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Row for each field -->
+          <tr>
+            <td>Id</td>
+            <td>
+              <span [innerHTML]="showDiff(organisationUnitRev2.id, organisationUnitRev1.id)"></span>
+            </td>
+            <td>
+              {{ organisationUnitRev2.id }}
+            </td>
+          </tr>
+          <tr>
+            <td>Name</td>
+            <td>
+              <span [innerHTML]="showDiff(organisationUnitRev2.name, organisationUnitRev1.name)"></span>
+            </td>
+            <td>
+              {{ organisationUnitRev2.name }}
+            </td>
+          </tr>
+          <tr>
+            <td>Path</td>
+            <td>
+              <span [innerHTML]="showDiff(organisationUnitRev2.path, organisationUnitRev1.path)"></span>
+            </td>
+            <td>
+              {{ organisationUnitRev2.path }}
+            </td>
+          </tr>
+          <tr>
+            <td>Opening Date</td>
+            <td>
+              <span
+                [innerHTML]="
+                  showDiff(organisationUnitRev2.openingDate | formatMediumDatetime, organisationUnitRev1.openingDate | formatMediumDatetime)
+                "
+              ></span>
+            </td>
+            <td>
+              {{ organisationUnitRev2.openingDate | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr>
+            <td>Level</td>
+            <td>
+              <span [innerHTML]="showDiff(organisationUnitRev2.level, organisationUnitRev1.level)"></span>
+            </td>
+            <td>
+              {{ organisationUnitRev2.level }}
+            </td>
+          </tr>
 
-      <jhi-alert></jhi-alert>
-
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="dhis2TrackApp.organisationUnit.id">Id</span></dt>
-        <dd>
-          <span>{{ organisationUnit.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.organisationUnit.name">Name</span></dt>
-        <dd>
-          <span>{{ organisationUnit.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.organisationUnit.created">Created</span></dt>
-        <dd>
-          <span>{{ organisationUnit.created | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdated">Last Updated</span></dt>
-        <dd>
-          <span>{{ organisationUnit.lastUpdated | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.organisationUnit.path">Path</span></dt>
-        <dd>
-          <span>{{ organisationUnit.path }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.organisationUnit.openingDate">Opening Date</span></dt>
-        <dd>
-          <span>{{ organisationUnit.openingDate | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.organisationUnit.level">Level</span></dt>
-        <dd>
-          <span>{{ organisationUnit.level }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.organisationUnit.track">Track</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + organisationUnit.track }}">{{ organisationUnit.track }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.organisationUnit.createdBy">Created By</span></dt>
-        <dd>
-          <div *ngIf="organisationUnit.createdBy">
-            <a [routerLink]="['/dhis-user', organisationUnit.createdBy.name, 'view']">{{ organisationUnit.createdBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdatedBy">Last Updated By</span></dt>
-        <dd>
-          <div *ngIf="organisationUnit.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', organisationUnit.lastUpdatedBy.name, 'view']">{{ organisationUnit.lastUpdatedBy.name }}</a>
-          </div>
-        </dd>
-      </dl>
+          <tr>
+            <td>Created</td>
+            <td>
+              <span
+                [innerHTML]="
+                  showDiff(organisationUnitRev2.created | formatMediumDatetime, organisationUnitRev1.created | formatMediumDatetime)
+                "
+              ></span>
+            </td>
+            <td>
+              {{ organisationUnitRev2.created | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr>
+            <td>Last Updated</td>
+            <td>
+              <span
+                [innerHTML]="
+                  showDiff(organisationUnitRev2.lastUpdated | formatMediumDatetime, organisationUnitRev1.lastUpdated | formatMediumDatetime)
+                "
+              ></span>
+            </td>
+            <td>
+              {{ organisationUnitRev2.lastUpdated | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr>
+            <td>Created By</td>
+            <td>
+              <span
+                *ngIf="organisationUnitRev2.createdBy && organisationUnitRev1.createdBy"
+                [innerHTML]="showDiff(organisationUnitRev2.createdBy.name, organisationUnitRev1.createdBy.name)"
+              ></span>
+            </td>
+            <td>
+              <span *ngIf="organisationUnitRev2.createdBy">{{ organisationUnitRev2.createdBy.name }}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Last Updated By</td>
+            <td>
+              <span
+                *ngIf="organisationUnitRev2.lastUpdatedBy && organisationUnitRev1.lastUpdatedBy"
+                [innerHTML]="showDiff(organisationUnitRev2.lastUpdatedBy.name, organisationUnitRev1.lastUpdatedBy.name)"
+              ></span>
+            </td>
+            <td>
+              <span *ngIf="organisationUnitRev2.lastUpdatedBy">{{ organisationUnitRev2.lastUpdatedBy.name }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
-
-      <button type="button" [routerLink]="['/organisation-unit', organisationUnit.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
       </button>
     </div>
   </div>
