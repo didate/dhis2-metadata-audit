@@ -121,8 +121,8 @@ export class ProgramStageService {
   protected convertDateFromServer(restProgramStage: RestProgramStage): IProgramStage {
     return {
       ...restProgramStage,
-      created: restProgramStage.created ? dayjs(restProgramStage.created) : undefined,
-      lastUpdated: restProgramStage.lastUpdated ? dayjs(restProgramStage.lastUpdated) : undefined,
+      created: restProgramStage.created ? dayjs.unix(restProgramStage.created as unknown as number) : undefined,
+      lastUpdated: restProgramStage.lastUpdated ? dayjs.unix(restProgramStage.lastUpdated as unknown as number) : undefined,
     };
   }
 

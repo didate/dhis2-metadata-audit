@@ -1,156 +1,307 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="programStage">
+  <div class="col-10">
+    <div *ngIf="programStage && programStageRev1 && programStageRev2">
       <h2 data-cy="programStageDetailsHeading"><span jhiTranslate="dhis2TrackApp.programStage.detail.title">Program Stage</span></h2>
 
-      <hr />
+      <table class="table long-table">
+        <thead>
+          <tr>
+            <th><span>Field</span></th>
+            <th><span>Revision 1</span></th>
+            <th><span>Revision 2</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.id">Id</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.id, programStageRev1.id)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.id }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.name">Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.name, programStageRev1.name)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.name }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.created">Created</span></td>
+            <td>
+              {{ programStageRev1.created | formatMediumDatetime }}
+            </td>
+            <td>
+              {{ programStageRev2.created | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.createdBy">Created By</span></td>
+            <td>
+              {{ programStageRev1.createdBy?.name }}
+            </td>
+            <td>
+              {{ programStageRev2.createdBy?.name }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.lastUpdated">Last Updated</span></td>
+            <td>
+              <span
+                [innerHTML]="
+                  showDiff(
+                    programStageRev2.lastUpdated ? (programStageRev1.lastUpdated | formatMediumDatetime) : '',
+                    programStageRev1.lastUpdated ? (programStageRev1.lastUpdated | formatMediumDatetime) : ''
+                  )
+                "
+              ></span>
+            </td>
+            <td>
+              {{ programStageRev2.lastUpdated ? (programStageRev2.lastUpdated | formatMediumDatetime) : '' }}
+            </td>
+          </tr>
 
-      <jhi-alert-error></jhi-alert-error>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.lastUpdatedBy">Last Updated By</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.lastUpdatedBy?.name, programStageRev1.lastUpdatedBy?.name)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.lastUpdatedBy?.name }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.minDaysFromStart">Min Days From Start</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.minDaysFromStart, programStageRev1.minDaysFromStart)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.minDaysFromStart }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.executionDateLabel">Execution Date Label</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.executionDateLabel, programStageRev1.executionDateLabel)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.executionDateLabel }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.autoGenerateEvent">Auto Generate Event</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.autoGenerateEvent, programStageRev1.autoGenerateEvent)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.autoGenerateEvent }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.validationStrategy">Validation Strategy</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.validationStrategy, programStageRev1.validationStrategy)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.validationStrategy }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.displayGenerateEventBox">Display Generate Event Box</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.displayGenerateEventBox, programStageRev1.displayGenerateEventBox)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.displayGenerateEventBox }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.featureType">Feature Type</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.featureType, programStageRev1.featureType)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.featureType }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.blockEntryForm">Block Entry Form</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.blockEntryForm, programStageRev1.blockEntryForm)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.blockEntryForm }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.preGenerateUID">Pre Generate UID</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.preGenerateUID, programStageRev1.preGenerateUID)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.preGenerateUID }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.remindCompleted">Remind Completed</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.remindCompleted, programStageRev1.remindCompleted)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.remindCompleted }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.generatedByEnrollmentDate">Generated By Enrollment Date</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.generatedByEnrollmentDate, programStageRev1.generatedByEnrollmentDate)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.generatedByEnrollmentDate }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.allowGenerateNextVisit">Allow Generate Next Visit</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.allowGenerateNextVisit, programStageRev1.allowGenerateNextVisit)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.allowGenerateNextVisit }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.openAfterEnrollment">Open After Enrollment</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.openAfterEnrollment, programStageRev1.openAfterEnrollment)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.openAfterEnrollment }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.sortOrder">Sort Order</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.sortOrder, programStageRev1.sortOrder)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.sortOrder }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.hideDueDate">Hide Due Date</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.hideDueDate, programStageRev1.hideDueDate)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.hideDueDate }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.enableUserAssignment">Enable User Assignment</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.enableUserAssignment, programStageRev1.enableUserAssignment)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.enableUserAssignment }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.referral">Referral</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.referral, programStageRev1.referral)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.referral }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.displayExecutionDateLabel">Display Execution Date Label</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.displayExecutionDateLabel, programStageRev1.displayExecutionDateLabel)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.displayExecutionDateLabel }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.formType">Form Type</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.formType, programStageRev1.formType)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.formType }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.displayFormName">Display Form Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.displayFormName, programStageRev1.displayFormName)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.displayFormName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.displayName">Display Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.displayName, programStageRev1.displayName)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.displayName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.repeatable">Repeatable</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.repeatable, programStageRev1.repeatable)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.repeatable }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.programStageDataElementsCount">Program Stage Data Elements Count</span></td>
+            <td>
+              <span
+                [innerHTML]="showDiff(programStageRev2.programStageDataElementsCount, programStageRev1.programStageDataElementsCount)"
+              ></span>
+            </td>
+            <td>
+              {{ programStageRev2.programStageDataElementsCount }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span jhiTranslate="dhis2TrackApp.programStage.programStageDataElementsContent">Program Stage Data Elements Content</span>
+            </td>
+            <td>
+              <span
+                [innerHTML]="showDiff(programStageRev2.programStageDataElementsContent, programStageRev1.programStageDataElementsContent)"
+              ></span>
+            </td>
+            <td>
+              {{ programStageRev2.programStageDataElementsContent }}
+            </td>
+          </tr>
 
-      <jhi-alert></jhi-alert>
-
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.id">Id</span></dt>
-        <dd>
-          <span>{{ programStage.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.name">Name</span></dt>
-        <dd>
-          <span>{{ programStage.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.created">Created</span></dt>
-        <dd>
-          <span>{{ programStage.created | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.lastUpdated">Last Updated</span></dt>
-        <dd>
-          <span>{{ programStage.lastUpdated | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.minDaysFromStart">Min Days From Start</span></dt>
-        <dd>
-          <span>{{ programStage.minDaysFromStart }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.executionDateLabel">Execution Date Label</span></dt>
-        <dd>
-          <span>{{ programStage.executionDateLabel }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.autoGenerateEvent">Auto Generate Event</span></dt>
-        <dd>
-          <span>{{ programStage.autoGenerateEvent }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.validationStrategy">Validation Strategy</span></dt>
-        <dd>
-          <span>{{ programStage.validationStrategy }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.displayGenerateEventBox">Display Generate Event Box</span></dt>
-        <dd>
-          <span>{{ programStage.displayGenerateEventBox }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.featureType">Feature Type</span></dt>
-        <dd>
-          <span>{{ programStage.featureType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.blockEntryForm">Block Entry Form</span></dt>
-        <dd>
-          <span>{{ programStage.blockEntryForm }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.preGenerateUID">Pre Generate UID</span></dt>
-        <dd>
-          <span>{{ programStage.preGenerateUID }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.remindCompleted">Remind Completed</span></dt>
-        <dd>
-          <span>{{ programStage.remindCompleted }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.generatedByEnrollmentDate">Generated By Enrollment Date</span></dt>
-        <dd>
-          <span>{{ programStage.generatedByEnrollmentDate }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.allowGenerateNextVisit">Allow Generate Next Visit</span></dt>
-        <dd>
-          <span>{{ programStage.allowGenerateNextVisit }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.openAfterEnrollment">Open After Enrollment</span></dt>
-        <dd>
-          <span>{{ programStage.openAfterEnrollment }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.sortOrder">Sort Order</span></dt>
-        <dd>
-          <span>{{ programStage.sortOrder }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.hideDueDate">Hide Due Date</span></dt>
-        <dd>
-          <span>{{ programStage.hideDueDate }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.enableUserAssignment">Enable User Assignment</span></dt>
-        <dd>
-          <span>{{ programStage.enableUserAssignment }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.referral">Referral</span></dt>
-        <dd>
-          <span>{{ programStage.referral }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.displayExecutionDateLabel">Display Execution Date Label</span></dt>
-        <dd>
-          <span>{{ programStage.displayExecutionDateLabel }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.formType">Form Type</span></dt>
-        <dd>
-          <span>{{ programStage.formType }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.displayFormName">Display Form Name</span></dt>
-        <dd>
-          <span>{{ programStage.displayFormName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.displayName">Display Name</span></dt>
-        <dd>
-          <span>{{ programStage.displayName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.repeatable">Repeatable</span></dt>
-        <dd>
-          <span>{{ programStage.repeatable }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.programStageDataElementsCount">Program Stage Data Elements Count</span></dt>
-        <dd>
-          <span>{{ programStage.programStageDataElementsCount }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.programStageDataElementsContent">Program Stage Data Elements Content</span></dt>
-        <dd>
-          <span>{{ programStage.programStageDataElementsContent }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.createdBy">Created By</span></dt>
-        <dd>
-          <div *ngIf="programStage.createdBy">
-            <a [routerLink]="['/dhis-user', programStage.createdBy.name, 'view']">{{ programStage.createdBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.lastUpdatedBy">Last Updated By</span></dt>
-        <dd>
-          <div *ngIf="programStage.lastUpdatedBy">
-            <a [routerLink]="['/dhis-user', programStage.lastUpdatedBy.name, 'view']">{{ programStage.lastUpdatedBy.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.program">Program</span></dt>
-        <dd>
-          <div *ngIf="programStage.program">
-            <a [routerLink]="['/program', programStage.program.name, 'view']">{{ programStage.program.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.programStage.programStageDataElements">Program Stage Data Elements</span></dt>
-        <dd>
-          <span *ngFor="let programStageDataElements of programStage.programStageDataElements; let last = last">
-            <a [routerLink]="['/dataelement', programStageDataElements.id, 'history']">{{ programStageDataElements.id }}</a
-            >{{ last ? '' : ', ' }}
-          </span>
-        </dd>
-      </dl>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.programStage.program">Program</span></td>
+            <td>
+              <span [innerHTML]="showDiff(programStageRev2.program?.name, programStageRev1.program?.name)"></span>
+            </td>
+            <td>
+              {{ programStageRev2.program?.name }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
-
-      <button type="button" [routerLink]="['/program-stage', programStage.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
       </button>
     </div>
   </div>

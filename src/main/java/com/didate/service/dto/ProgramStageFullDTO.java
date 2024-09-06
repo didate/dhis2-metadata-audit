@@ -28,6 +28,7 @@ public class ProgramStageFullDTO extends AbstractDTO implements Serializable {
     private Boolean repeatable;
     private Integer programStageDataElementsCount;
     private String programStageDataElementsContent;
+    private ProgramDTO program;
 
     public ProgramStageFullDTO() {
         // Default constructor
@@ -65,6 +66,7 @@ public class ProgramStageFullDTO extends AbstractDTO implements Serializable {
         this.repeatable = programStage.getRepeatable();
         this.programStageDataElementsCount = programStage.getProgramStageDataElementsCount();
         this.programStageDataElementsContent = programStage.getProgramStageDataElementsContent();
+        this.program = new ProgramDTO(programStage.getProgram());
     }
 
     // Getters and Setters
@@ -250,5 +252,13 @@ public class ProgramStageFullDTO extends AbstractDTO implements Serializable {
 
     public void setProgramStageDataElementsContent(String programStageDataElementsContent) {
         this.programStageDataElementsContent = programStageDataElementsContent;
+    }
+
+    public ProgramDTO getProgram() {
+        return program;
+    }
+
+    public void setProgram(ProgramDTO program) {
+        this.program = program;
     }
 }
