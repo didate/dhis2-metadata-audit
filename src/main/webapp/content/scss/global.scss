@@ -257,4 +257,13 @@ del {
   text-decoration: line-through; /* Keep the strikethrough */
   color: white;
 }
+
+.bg-dark {
+  background-color: #1e72bb !important;
+  color: white !important;
+}
+.navbar-brand {
+  font-size: medium !important;
+}
+
 /* jhipster-needle-scss-add-main JHipster will add new css style */

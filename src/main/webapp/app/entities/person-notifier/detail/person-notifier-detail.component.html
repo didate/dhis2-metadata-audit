@@ -33,7 +33,7 @@
         <dt><span jhiTranslate="dhis2TrackApp.personNotifier.project">Project</span></dt>
         <dd>
           <div *ngIf="personNotifier.project">
-            <a [routerLink]="['/project', personNotifier.project.id, 'history']">{{ personNotifier.project.id }}</a>
+            {{ personNotifier.project.projectName }}
           </div>
         </dd>
       </dl>
