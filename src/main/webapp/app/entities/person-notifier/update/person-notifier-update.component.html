@@ -127,7 +127,9 @@
             [compareWith]="compareProject"
           >
             <option [ngValue]="null"></option>
-            <option [ngValue]="projectOption" *ngFor="let projectOption of projectsSharedCollection">{{ projectOption.id }}</option>
+            <option [ngValue]="projectOption" *ngFor="let projectOption of projectsSharedCollection">
+              {{ projectOption.projectName }}
+            </option>
           </select>
         </div>
       </div>

@@ -6,7 +6,7 @@ export interface IPersonNotifier {
   personPhone?: string | null;
   personEmail?: string | null;
   personOrganization?: string | null;
-  project?: Pick<IProject, 'id'> | null;
+  project?: Pick<IProject, 'id' | 'projectName'> | null;
 }
 
 export type NewPersonNotifier = Omit<IPersonNotifier, 'id'> & { id: null };

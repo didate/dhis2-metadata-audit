@@ -32,12 +32,6 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="id">
-            <div class="d-flex">
-              <span jhiTranslate="global.field.id">ID</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
           <th scope="col" jhiSortBy="personName">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.personNotifier.personName">Person Name</span>
@@ -73,16 +67,13 @@
       </thead>
       <tbody>
         <tr *ngFor="let personNotifier of personNotifiers; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/person-notifier', personNotifier.id, 'view']">{{ personNotifier.id }}</a>
-          </td>
           <td>{{ personNotifier.personName }}</td>
           <td>{{ personNotifier.personPhone }}</td>
           <td>{{ personNotifier.personEmail }}</td>
           <td>{{ personNotifier.personOrganization }}</td>
           <td>
             <div *ngIf="personNotifier.project">
-              <a [routerLink]="['/project', personNotifier.project.id, 'view']">{{ personNotifier.project.id }}</a>
+              {{ personNotifier.project.projectName }}
             </div>
           </td>
           <td class="text-end">
