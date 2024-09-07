@@ -64,6 +64,13 @@ public class OptionsetServiceImpl implements OptionsetService {
                     existingOptionset.setTrack(optionset.getTrack());
                 }
 
+                if (optionset.getCreated() != null) {
+                    existingOptionset.setCreated(optionset.getCreated());
+                }
+                if (optionset.getLastUpdated() != null) {
+                    existingOptionset.setLastUpdated(optionset.getLastUpdated());
+                }
+
                 if (!optionset.getCreatedBy().equals(existingOptionset.getCreatedBy())) {
                     existingOptionset.setCreatedBy(optionset.getCreatedBy());
                 }

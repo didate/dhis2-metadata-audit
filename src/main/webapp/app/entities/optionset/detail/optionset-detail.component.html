@@ -1,31 +1,76 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <div *ngIf="optionset">
+    <div *ngIf="optionsetRev1 && optionsetRev2">
       <h2 data-cy="optionsetDetailsHeading"><span jhiTranslate="dhis2TrackApp.optionset.detail.title">OptionSet</span></h2>
 
       <hr />
 
-      <jhi-alert-error></jhi-alert-error>
+      <table class="table long-table">
+        <thead>
+          <tr>
+            <th><span>Field</span></th>
+            <th><span>Revision 1</span></th>
+            <th><span>Revision 2</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- ID -->
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.optionset.id">Id</span></td>
+            <td>{{ optionsetRev1.id }}</td>
+            <td>{{ optionsetRev2.id }}</td>
+          </tr>
+          <!-- Name -->
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.name">Name</span></td>
+            <td><span [innerHTML]="showDiff(optionsetRev2.name, optionsetRev1.name)"></span></td>
+            <td>{{ optionsetRev2.name }}</td>
+          </tr>
+          <!-- Created Date -->
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.created">Created</span></td>
+            <td>{{ optionsetRev1.created | formatMediumDatetime }}</td>
+            <td>{{ optionsetRev2.created | formatMediumDatetime }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span></td>
+            <td>
+              <span *ngIf="optionsetRev2.createdBy && optionsetRev1.createdBy"> {{ optionsetRev1.createdBy?.name }}</span>
+            </td>
+            <td>
+              <span *ngIf="optionsetRev2.createdBy">{{ optionsetRev2.createdBy?.name }}</span>
+            </td>
+          </tr>
+          <!-- Last Updated Date -->
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.lastUpdated">Last Updated</span></td>
+            <td>
+              <span
+                [innerHTML]="showDiff(optionsetRev2.lastUpdated | formatMediumDatetime, optionsetRev1.lastUpdated | formatMediumDatetime)"
+              ></span>
+            </td>
+            <td>{{ optionsetRev2.lastUpdated | formatMediumDatetime }}</td>
+          </tr>
+          <!-- Created By -->
 
-      <jhi-alert></jhi-alert>
-
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="dhis2TrackApp.optionset.id">Id</span></dt>
-        <dd>
-          <span>{{ optionset.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.optionset.name">Name</span></dt>
-        <dd>
-          <span>{{ optionset.name }}</span>
-        </dd>
-      </dl>
+          <!-- Last Updated By -->
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.lastUpdatedBy">Last Updated By</span></td>
+            <td>
+              <span
+                *ngIf="optionsetRev2.lastUpdatedBy && optionsetRev1.lastUpdatedBy"
+                [innerHTML]="showDiff(optionsetRev2.lastUpdatedBy?.name, optionsetRev1.lastUpdatedBy?.name)"
+              ></span>
+            </td>
+            <td>
+              <span *ngIf="optionsetRev2.lastUpdatedBy">{{ optionsetRev2.lastUpdatedBy?.name }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
-
-      <button type="button" [routerLink]="['/optionset', optionset.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
       </button>
     </div>
   </div>

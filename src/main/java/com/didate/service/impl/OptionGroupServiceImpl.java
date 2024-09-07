@@ -59,6 +59,13 @@ public class OptionGroupServiceImpl implements OptionGroupService {
                     existingOptionGroup.setShortName(optionGroup.getShortName());
                 }
 
+                if (optionGroup.getCreated() != null) {
+                    existingOptionGroup.setCreated(optionGroup.getCreated());
+                }
+                if (optionGroup.getLastUpdated() != null) {
+                    existingOptionGroup.setLastUpdated(optionGroup.getLastUpdated());
+                }
+
                 if (!optionGroup.getCreatedBy().equals(existingOptionGroup.getCreatedBy())) {
                     existingOptionGroup.setCreatedBy(optionGroup.getCreatedBy());
                 }
