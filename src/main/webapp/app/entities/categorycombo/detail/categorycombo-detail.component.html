@@ -1,31 +1,78 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <div *ngIf="categorycombo">
+    <div *ngIf="categorycomboRev1 && categorycomboRev2">
       <h2 data-cy="categorycomboDetailsHeading"><span jhiTranslate="dhis2TrackApp.categorycombo.detail.title">Categorycombo</span></h2>
 
       <hr />
 
-      <jhi-alert-error></jhi-alert-error>
+      <table class="table long-table">
+        <thead>
+          <tr>
+            <th><span>Field</span></th>
+            <th><span>Revision 1</span></th>
+            <th><span>Revision 2</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- ID -->
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.categorycombo.id">Id</span></td>
+            <td>{{ categorycomboRev1.id }}</td>
+            <td>{{ categorycomboRev2.id }}</td>
+          </tr>
+          <!-- Name -->
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.categorycombo.name">Name</span></td>
+            <td><span [innerHTML]="showDiff(categorycomboRev2.name, categorycomboRev1.name)"></span></td>
+            <td>{{ categorycomboRev2.name }}</td>
+          </tr>
+          <!-- Created Date -->
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.created">Created</span></td>
+            <td>{{ categorycomboRev1.created | formatMediumDatetime }}</td>
+            <td>{{ categorycomboRev2.created | formatMediumDatetime }}</td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span></td>
+            <td>
+              <span *ngIf="categorycomboRev2.createdBy && categorycomboRev1.createdBy"> {{ categorycomboRev1.createdBy?.name }}</span>
+            </td>
+            <td>
+              <span *ngIf="categorycomboRev2.createdBy">{{ categorycomboRev2.createdBy?.name }}</span>
+            </td>
+          </tr>
+          <!-- Last Updated Date -->
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.lastUpdated">Last Updated</span></td>
+            <td>
+              <span
+                [innerHTML]="
+                  showDiff(categorycomboRev2.lastUpdated | formatMediumDatetime, categorycomboRev1.lastUpdated | formatMediumDatetime)
+                "
+              ></span>
+            </td>
+            <td>{{ categorycomboRev2.lastUpdated | formatMediumDatetime }}</td>
+          </tr>
+          <!-- Created By -->
 
-      <jhi-alert></jhi-alert>
-
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="dhis2TrackApp.categorycombo.id">Id</span></dt>
-        <dd>
-          <span>{{ categorycombo.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.categorycombo.name">Name</span></dt>
-        <dd>
-          <span>{{ categorycombo.name }}</span>
-        </dd>
-      </dl>
+          <!-- Last Updated By -->
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.indicator.lastUpdatedBy">Last Updated By</span></td>
+            <td>
+              <span
+                *ngIf="categorycomboRev2.lastUpdatedBy && categorycomboRev1.lastUpdatedBy"
+                [innerHTML]="showDiff(categorycomboRev2.lastUpdatedBy?.name, categorycomboRev1.lastUpdatedBy?.name)"
+              ></span>
+            </td>
+            <td>
+              <span *ngIf="categorycomboRev2.lastUpdatedBy">{{ categorycomboRev2.lastUpdatedBy?.name }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
-
-      <button type="button" [routerLink]="['/categorycombo', categorycombo.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
       </button>
     </div>
   </div>

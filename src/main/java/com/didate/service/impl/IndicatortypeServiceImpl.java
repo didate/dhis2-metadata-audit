@@ -58,6 +58,13 @@ public class IndicatortypeServiceImpl implements IndicatortypeService {
                     existingIndicatortype.setName(indicatortype.getName());
                 }
 
+                if (indicatortype.getCreated() != null) {
+                    existingIndicatortype.setCreated(indicatortype.getCreated());
+                }
+                if (indicatortype.getLastUpdated() != null) {
+                    existingIndicatortype.setLastUpdated(indicatortype.getLastUpdated());
+                }
+
                 if (!indicatortype.getCreatedBy().equals(existingIndicatortype.getCreatedBy())) {
                     existingIndicatortype.setCreatedBy(indicatortype.getCreatedBy());
                 }

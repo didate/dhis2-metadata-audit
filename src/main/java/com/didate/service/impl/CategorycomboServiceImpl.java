@@ -58,6 +58,13 @@ public class CategorycomboServiceImpl implements CategorycomboService {
                     existingCategorycombo.setName(categorycombo.getName());
                 }
 
+                if (categorycombo.getCreated() != null) {
+                    existingCategorycombo.setCreated(categorycombo.getCreated());
+                }
+                if (categorycombo.getLastUpdated() != null) {
+                    existingCategorycombo.setLastUpdated(categorycombo.getLastUpdated());
+                }
+
                 if (!categorycombo.getCreatedBy().equals(existingCategorycombo.getCreatedBy())) {
                     existingCategorycombo.setCreatedBy(categorycombo.getCreatedBy());
                 }
