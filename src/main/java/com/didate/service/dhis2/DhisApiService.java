@@ -26,7 +26,6 @@ public class DhisApiService<T> {
         if (!"".equals(date)) {
             url = url + "&filter=lastUpdated:gt:" + date;
         }
-        System.out.println("-----------------" + url + "-------------------");
 
         List<T> data = new ArrayList<>();
         Dhis2ApiResponse<T> response = DhisServiceUtil.fetchPage(client, url, typeReference, objectMapper);
