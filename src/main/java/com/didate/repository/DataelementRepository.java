@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface DataelementRepository extends JpaRepository<DataElement, String>, RevisionRepository<DataElement, String, Integer> {}
+public interface DataelementRepository
+    extends JpaRepository<DataElement, String>, JpaSpecificationExecutor<DataElement>, RevisionRepository<DataElement, String, Integer> {}

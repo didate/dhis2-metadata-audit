@@ -1,10 +1,12 @@
 package com.didate.service.impl;
 
+import com.didate.domain.CategoryCombo;
 import com.didate.domain.DataElement;
 import com.didate.repository.DataelementRepository;
 import com.didate.service.DataelementService;
 import com.didate.service.dto.DataElementDTO;
 import com.didate.service.dto.DataElementFullDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,9 +29,11 @@ public class DataelementServiceImpl implements DataelementService {
     private final Logger log = LoggerFactory.getLogger(DataelementServiceImpl.class);
 
     private final DataelementRepository dataelementRepository;
+    private final GenericFilterService<DataElement> filterService;
 
-    public DataelementServiceImpl(DataelementRepository dataelementRepository) {
+    public DataelementServiceImpl(DataelementRepository dataelementRepository, GenericFilterService<DataElement> filterService) {
         this.dataelementRepository = dataelementRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -188,5 +192,10 @@ public class DataelementServiceImpl implements DataelementService {
     @Override
     public Page<DataElementDTO> findAllDataElements(Pageable pageable) {
         return dataelementRepository.findAll(pageable).map(DataElementDTO::new);
+    }
+
+    @Override
+    public Page<DataElementDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(dataelementRepository, id, name, pageable).map(DataElementDTO::new);
     }
 }

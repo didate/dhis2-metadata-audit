@@ -1,10 +1,12 @@
 package com.didate.service.impl;
 
+import com.didate.domain.ProgramStage;
 import com.didate.domain.TrackedEntityAttribute;
 import com.didate.repository.TrackedEntityAttributeRepository;
 import com.didate.service.TrackedEntityAttributeService;
 import com.didate.service.dto.TrackedEntityAttributeDTO;
 import com.didate.service.dto.TrackedEntityAttributeFullDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,9 +29,14 @@ public class TrackedEntityAttributeServiceImpl implements TrackedEntityAttribute
     private final Logger log = LoggerFactory.getLogger(TrackedEntityAttributeServiceImpl.class);
 
     private final TrackedEntityAttributeRepository trackedEntityAttributeRepository;
+    private final GenericFilterService<TrackedEntityAttribute> filterService;
 
-    public TrackedEntityAttributeServiceImpl(TrackedEntityAttributeRepository trackedEntityAttributeRepository) {
+    public TrackedEntityAttributeServiceImpl(
+        TrackedEntityAttributeRepository trackedEntityAttributeRepository,
+        GenericFilterService<TrackedEntityAttribute> filterService
+    ) {
         this.trackedEntityAttributeRepository = trackedEntityAttributeRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -196,5 +203,10 @@ public class TrackedEntityAttributeServiceImpl implements TrackedEntityAttribute
         Hibernate.unproxy(trackedEntityAttribute.getCreatedBy());
         Hibernate.unproxy(trackedEntityAttribute.getLastUpdatedBy());
         return new TrackedEntityAttributeFullDTO(trackedEntityAttribute);
+    }
+
+    @Override
+    public Page<TrackedEntityAttributeDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(trackedEntityAttributeRepository, id, name, pageable).map(TrackedEntityAttributeDTO::new);
     }
 }

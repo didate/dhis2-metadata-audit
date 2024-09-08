@@ -1,9 +1,12 @@
 package com.didate.service.impl;
 
 import com.didate.domain.CategoryCombo;
+import com.didate.domain.Program;
 import com.didate.repository.CategorycomboRepository;
 import com.didate.service.CategorycomboService;
 import com.didate.service.dto.CategoryComboDTO;
+import com.didate.service.dto.ProgramDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,8 +30,11 @@ public class CategorycomboServiceImpl implements CategorycomboService {
 
     private final CategorycomboRepository categorycomboRepository;
 
-    public CategorycomboServiceImpl(CategorycomboRepository categorycomboRepository) {
+    private final GenericFilterService<CategoryCombo> filterService;
+
+    public CategorycomboServiceImpl(CategorycomboRepository categorycomboRepository, GenericFilterService<CategoryCombo> filterService) {
         this.categorycomboRepository = categorycomboRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -135,5 +141,10 @@ public class CategorycomboServiceImpl implements CategorycomboService {
         Hibernate.unproxy(categoryCombo.getLastUpdatedBy());
 
         return new CategoryComboDTO(categoryCombo);
+    }
+
+    @Override
+    public Page<CategoryComboDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(categorycomboRepository, id, name, pageable).map(CategoryComboDTO::new);
     }
 }

@@ -43,6 +43,9 @@ public interface DatasetService {
      * @return the list of entities.
      */
     Page<DataSet> findAll(Pageable pageable);
+
+    public Page<DataSetDTO> findAll(Pageable pageable, String id, String name);
+
     Page<DataSetDTO> findAllDataSets(Pageable pageable);
 
     /**

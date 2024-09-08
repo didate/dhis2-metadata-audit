@@ -43,6 +43,8 @@ public interface OptionGroupService {
      */
     Page<OptionGroup> findAll(Pageable pageable);
 
+    public Page<OptionGroupDTO> findAll(Pageable pageable, String id, String name);
+
     /**
      * Get the "id" optionGroup.
      *

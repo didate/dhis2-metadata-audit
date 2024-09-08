@@ -43,6 +43,8 @@ public interface OptionsetService {
      */
     Page<OptionSet> findAll(Pageable pageable);
 
+    public Page<OptionSetDTO> findAll(Pageable pageable, String id, String name);
+
     /**
      * Get the "id" optionset.
      *

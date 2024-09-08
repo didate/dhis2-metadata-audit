@@ -46,6 +46,8 @@ public interface ProgramRuleVariableService {
      */
     Page<ProgramRuleVariable> findAll(Pageable pageable);
 
+    public Page<ProgramRuleVariableDTO> findAll(Pageable pageable, String id, String name);
+
     /**
      * Get the "id" programRuleVariable.
      *

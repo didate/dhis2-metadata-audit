@@ -43,6 +43,8 @@ public interface CategorycomboService {
      */
     Page<CategoryCombo> findAll(Pageable pageable);
 
+    public Page<CategoryComboDTO> findAll(Pageable pageable, String id, String name);
+
     /**
      * Get the "id" categorycombo.
      *

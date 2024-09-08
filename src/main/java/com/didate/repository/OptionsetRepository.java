@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface OptionsetRepository extends JpaRepository<OptionSet, String>, RevisionRepository<OptionSet, String, Integer> {}
+public interface OptionsetRepository
+    extends JpaRepository<OptionSet, String>, JpaSpecificationExecutor<OptionSet>, RevisionRepository<OptionSet, String, Integer> {}

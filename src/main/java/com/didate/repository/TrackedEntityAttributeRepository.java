@@ -12,4 +12,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface TrackedEntityAttributeRepository
-    extends JpaRepository<TrackedEntityAttribute, String>, RevisionRepository<TrackedEntityAttribute, String, Integer> {}
+    extends
+        JpaRepository<TrackedEntityAttribute, String>,
+        JpaSpecificationExecutor<TrackedEntityAttribute>,
+        RevisionRepository<TrackedEntityAttribute, String, Integer> {}
