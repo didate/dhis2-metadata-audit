@@ -51,11 +51,13 @@ public class ProgramRuleActionResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of programRuleActions in body.
      */
     @GetMapping("/program-rule-actions")
-    public ResponseEntity<List<ProgramRuleAction>> getAllProgramRuleActions(
-        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    public ResponseEntity<List<ProgramRuleActionDTO>> getAllProgramRuleActions(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false) String id,
+        @RequestParam(required = false) String name
     ) {
         log.debug("REST request to get a page of ProgramRuleActions");
-        Page<ProgramRuleAction> page = programRuleActionService.findAll(pageable);
+        Page<ProgramRuleActionDTO> page = programRuleActionService.findAll(pageable, id, name);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

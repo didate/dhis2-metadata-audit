@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
@@ -45,9 +46,13 @@ public class DataelementResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of dataelements in body.
      */
     @GetMapping("/dataelements")
-    public ResponseEntity<List<DataElementDTO>> getAllDataelements(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<DataElementDTO>> getAllDataelements(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false) String id,
+        @RequestParam(required = false) String name
+    ) {
         log.debug("REST request to get a page of Dataelements");
-        Page<DataElementDTO> page = dataelementService.findAllDataElements(pageable);
+        Page<DataElementDTO> page = dataelementService.findAll(pageable, id, name);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

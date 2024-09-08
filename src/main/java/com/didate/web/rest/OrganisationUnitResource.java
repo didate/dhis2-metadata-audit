@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
@@ -44,11 +45,13 @@ public class OrganisationUnitResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of organisationUnits in body.
      */
     @GetMapping("/organisation-units")
-    public ResponseEntity<List<OrganisationUnit>> getAllOrganisationUnits(
-        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    public ResponseEntity<List<OrganisationUnitDTO>> getAllOrganisationUnits(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false) String id,
+        @RequestParam(required = false) String name
     ) {
         log.debug("REST request to get a page of OrganisationUnits");
-        Page<OrganisationUnit> page = organisationUnitService.findAll(pageable);
+        Page<OrganisationUnitDTO> page = organisationUnitService.findAll(pageable, id, name);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
