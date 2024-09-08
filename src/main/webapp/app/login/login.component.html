@@ -1,13 +1,16 @@
-<div>
+<div class="login-page">
   <div class="d-flex justify-content-center">
-    <div class="col-lg-6 col-md-8 col-sm-10">
-      <h1 jhiTranslate="login.title" data-cy="loginTitle">Authentification</h1>
+    <div class="login-item">
+      <div style="text-align: center">
+        <h1 class="login-title" jhiTranslate="login.title" data-cy="loginTitle">Authentification</h1>
+        <span class="logo-img"></span>
+      </div>
+
       <div class="alert alert-danger" *ngIf="authenticationError" jhiTranslate="login.messages.error.authentication" data-cy="loginError">
         <strong>Erreur d'authentification !</strong> Veuillez vérifier vos identifiants de connexion.
       </div>
       <form class="form" role="form" (ngSubmit)="login()" [formGroup]="loginForm">
         <div class="mb-3">
-          <label class="username-label" for="username" jhiTranslate="global.form.username.label">Nom d'utilisateur</label>
           <input
             type="text"
             class="form-control"
@@ -21,7 +24,6 @@
         </div>
 
         <div class="mb-3">
-          <label for="password" jhiTranslate="login.form.password">Mot de passe</label>
           <input
             type="password"
             class="form-control"
@@ -40,7 +42,11 @@
           </label>
         </div>
 
-        <button type="submit" class="btn btn-primary" jhiTranslate="login.form.button" data-cy="submit">Connexion</button>
+        <div>
+          <button style="width: 100%" type="submit" class="btn btn-primary" jhiTranslate="login.form.button" data-cy="submit">
+            Connexion
+          </button>
+        </div>
       </form>
     </div>
   </div>

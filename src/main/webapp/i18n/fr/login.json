@@ -1,6 +1,6 @@
 {
   "login": {
-    "title": "Authentification",
+    "title": "DHIS2 AUDIT",
     "form": {
       "password": "Mot de passe",
       "password.placeholder": "Votre mot de passe",
