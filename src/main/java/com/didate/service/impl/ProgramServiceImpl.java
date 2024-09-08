@@ -5,6 +5,7 @@ import com.didate.repository.ProgramRepository;
 import com.didate.service.ProgramService;
 import com.didate.service.dto.ProgramDTO;
 import com.didate.service.dto.ProgramFullDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,9 +28,11 @@ public class ProgramServiceImpl implements ProgramService {
     private final Logger log = LoggerFactory.getLogger(ProgramServiceImpl.class);
 
     private final ProgramRepository programRepository;
+    private final GenericFilterService<Program> filterService;
 
-    public ProgramServiceImpl(ProgramRepository programRepository) {
+    public ProgramServiceImpl(ProgramRepository programRepository, GenericFilterService<Program> filterService) {
         this.programRepository = programRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -268,5 +271,10 @@ public class ProgramServiceImpl implements ProgramService {
         Hibernate.unproxy(program.getCategoryCombo());
 
         return new ProgramFullDTO(program);
+    }
+
+    @Override
+    public Page<ProgramDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(programRepository, id, name, pageable).map(ProgramDTO::new);
     }
 }
