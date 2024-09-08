@@ -19,6 +19,8 @@ export class CategorycomboComponent implements OnInit {
   isLoading = false;
 
   predicate = 'id';
+
+  filterCriteria = { id: '', name: '' };
   ascending = true;
 
   itemsPerPage = ITEMS_PER_PAGE;
@@ -46,6 +48,18 @@ export class CategorycomboComponent implements OnInit {
     });
   }
 
+  applyFilters(): void {
+    this.page = 1;
+
+    this.navigateToWithComponentValues();
+  }
+
+  clearFilters(): void {
+    this.filterCriteria = { id: '', name: '' };
+    this.page = 1;
+    this.navigateToWithComponentValues();
+  }
+
   navigateToWithComponentValues(): void {
     this.handleNavigation(this.page, this.predicate, this.ascending);
   }
@@ -67,6 +81,10 @@ export class CategorycomboComponent implements OnInit {
     const sort = (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(',');
     this.predicate = sort[0];
     this.ascending = sort[1] === ASC;
+
+    // Extract filter criteria from route parameters
+    this.filterCriteria.id = params.get('id') ?? '';
+    this.filterCriteria.name = params.get('name') ?? '';
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
@@ -90,6 +108,9 @@ export class CategorycomboComponent implements OnInit {
       page: pageToLoad - 1,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
+
+      id: this.filterCriteria.id,
+      name: this.filterCriteria.name,
     };
     return this.categorycomboService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
@@ -99,6 +120,9 @@ export class CategorycomboComponent implements OnInit {
       page,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
+
+      id: this.filterCriteria.id,
+      name: this.filterCriteria.name,
     };
 
     this.router.navigate(['./'], {

@@ -19,6 +19,7 @@ export class ProgramComponent implements OnInit {
   isLoading = false;
 
   predicate = 'id';
+
   ascending = true;
 
   itemsPerPage = ITEMS_PER_PAGE;
@@ -124,6 +125,7 @@ export class ProgramComponent implements OnInit {
       id: this.filterCriteria.id,
       name: this.filterCriteria.name,
     };
+
     this.router.navigate(['./'], {
       relativeTo: this.activatedRoute,
       queryParams: queryParamsObj,
