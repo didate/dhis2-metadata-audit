@@ -1,0 +1,30 @@
+.login-page {
+  background-color: #106ab9;
+  min-height: 100vh;
+}
+
+.login-item {
+  min-width: 350px;
+  max-width: 400px;
+  background-color: #fff;
+  margin-top: 50px;
+  padding: 40px;
+  box-shadow: 2.3px 4.6px 4.6px hsl(0deg 0% 0% / 0.43);
+}
+
+.logo-img {
+  height: 96px;
+  width: 96px;
+  display: inline-block;
+  vertical-align: middle;
+  background: url('../../content/images/logo.png') no-repeat center center;
+  background-size: contain;
+  margin-bottom: 40px;
+}
+
+.login-title {
+  font-size: x-large;
+  font-weight: 500;
+  margin-bottom: 40px;
+  color: #106ab9;
+}
