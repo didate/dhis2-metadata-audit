@@ -35,10 +35,10 @@
           <tr>
             <td><span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span></td>
             <td>
-              <span *ngIf="optionsetRev2.createdBy && optionsetRev1.createdBy"> {{ optionsetRev1.createdBy?.name }}</span>
+              <span *ngIf="optionsetRev1.createdBy"> {{ optionsetRev1.createdBy.name }}</span>
             </td>
             <td>
-              <span *ngIf="optionsetRev2.createdBy">{{ optionsetRev2.createdBy?.name }}</span>
+              <span *ngIf="optionsetRev2.createdBy">{{ optionsetRev2.createdBy.name }}</span>
             </td>
           </tr>
           <!-- Last Updated Date -->
@@ -59,11 +59,11 @@
             <td>
               <span
                 *ngIf="optionsetRev2.lastUpdatedBy && optionsetRev1.lastUpdatedBy"
-                [innerHTML]="showDiff(optionsetRev2.lastUpdatedBy?.name, optionsetRev1.lastUpdatedBy?.name)"
+                [innerHTML]="showDiff(optionsetRev2.lastUpdatedBy.name, optionsetRev1.lastUpdatedBy.name)"
               ></span>
             </td>
             <td>
-              <span *ngIf="optionsetRev2.lastUpdatedBy">{{ optionsetRev2.lastUpdatedBy?.name }}</span>
+              <span *ngIf="optionsetRev2.lastUpdatedBy">{{ optionsetRev2.lastUpdatedBy.name }}</span>
             </td>
           </tr>
         </tbody>

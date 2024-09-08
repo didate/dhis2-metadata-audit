@@ -35,10 +35,10 @@
           <tr>
             <td><span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span></td>
             <td>
-              <span *ngIf="indicatortypeRev2.createdBy && indicatortypeRev1.createdBy"> {{ indicatortypeRev1.createdBy?.name }}</span>
+              <span *ngIf="indicatortypeRev1.createdBy"> {{ indicatortypeRev1.createdBy.name }}</span>
             </td>
             <td>
-              <span *ngIf="indicatortypeRev2.createdBy">{{ indicatortypeRev2.createdBy?.name }}</span>
+              <span *ngIf="indicatortypeRev2.createdBy">{{ indicatortypeRev2.createdBy.name }}</span>
             </td>
           </tr>
           <!-- Last Updated Date -->
@@ -61,11 +61,11 @@
             <td>
               <span
                 *ngIf="indicatortypeRev2.lastUpdatedBy && indicatortypeRev1.lastUpdatedBy"
-                [innerHTML]="showDiff(indicatortypeRev2.lastUpdatedBy?.name, indicatortypeRev1.lastUpdatedBy?.name)"
+                [innerHTML]="showDiff(indicatortypeRev2.lastUpdatedBy.name, indicatortypeRev1.lastUpdatedBy.name)"
               ></span>
             </td>
             <td>
-              <span *ngIf="indicatortypeRev2.lastUpdatedBy">{{ indicatortypeRev2.lastUpdatedBy?.name }}</span>
+              <span *ngIf="indicatortypeRev2.lastUpdatedBy">{{ indicatortypeRev2.lastUpdatedBy.name }}</span>
             </td>
           </tr>
         </tbody>

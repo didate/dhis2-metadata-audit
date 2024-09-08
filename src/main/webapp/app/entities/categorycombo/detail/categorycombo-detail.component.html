@@ -35,10 +35,10 @@
           <tr>
             <td><span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span></td>
             <td>
-              <span *ngIf="categorycomboRev2.createdBy && categorycomboRev1.createdBy"> {{ categorycomboRev1.createdBy?.name }}</span>
+              <span *ngIf="categorycomboRev2.createdBy && categorycomboRev1.createdBy"> {{ categorycomboRev1.createdBy.name }}</span>
             </td>
             <td>
-              <span *ngIf="categorycomboRev2.createdBy">{{ categorycomboRev2.createdBy?.name }}</span>
+              <span *ngIf="categorycomboRev2.createdBy">{{ categorycomboRev2.createdBy.name }}</span>
             </td>
           </tr>
           <!-- Last Updated Date -->
@@ -61,11 +61,11 @@
             <td>
               <span
                 *ngIf="categorycomboRev2.lastUpdatedBy && categorycomboRev1.lastUpdatedBy"
-                [innerHTML]="showDiff(categorycomboRev2.lastUpdatedBy?.name, categorycomboRev1.lastUpdatedBy?.name)"
+                [innerHTML]="showDiff(categorycomboRev2.lastUpdatedBy.name, categorycomboRev1.lastUpdatedBy.name)"
               ></span>
             </td>
             <td>
-              <span *ngIf="categorycomboRev2.lastUpdatedBy">{{ categorycomboRev2.lastUpdatedBy?.name }}</span>
+              <span *ngIf="categorycomboRev2.lastUpdatedBy">{{ categorycomboRev2.lastUpdatedBy.name }}</span>
             </td>
           </tr>
         </tbody>
