@@ -32,10 +32,10 @@
           <tr>
             <td><span jhiTranslate="dhis2TrackApp.indicator.createdBy">Created By</span></td>
             <td>
-              <span *ngIf="optionGroupRev2.createdBy && optionGroupRev1.createdBy"> {{ optionGroupRev1.createdBy?.name }}</span>
+              <span *ngIf="optionGroupRev1.createdBy"> {{ optionGroupRev1.createdBy.name }}</span>
             </td>
             <td>
-              <span *ngIf="optionGroupRev2.createdBy">{{ optionGroupRev2.createdBy?.name }}</span>
+              <span *ngIf="optionGroupRev2.createdBy">{{ optionGroupRev2.createdBy.name }}</span>
             </td>
           </tr>
           <tr>
@@ -54,11 +54,11 @@
             <td>
               <span
                 *ngIf="optionGroupRev2.lastUpdatedBy && optionGroupRev1.lastUpdatedBy"
-                [innerHTML]="showDiff(optionGroupRev2.lastUpdatedBy?.name, optionGroupRev1.lastUpdatedBy?.name)"
+                [innerHTML]="showDiff(optionGroupRev2.lastUpdatedBy.name, optionGroupRev1.lastUpdatedBy.name)"
               ></span>
             </td>
             <td>
-              <span *ngIf="optionGroupRev2.lastUpdatedBy">{{ optionGroupRev2.lastUpdatedBy?.name }}</span>
+              <span *ngIf="optionGroupRev2.lastUpdatedBy">{{ optionGroupRev2.lastUpdatedBy.name }}</span>
             </td>
           </tr>
         </tbody>

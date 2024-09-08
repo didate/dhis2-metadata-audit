@@ -42,10 +42,10 @@
           <tr>
             <td><span jhiTranslate="dhis2TrackApp.programStage.createdBy">Created By</span></td>
             <td>
-              {{ programStageRev1.createdBy?.name }}
+              <span *ngIf="programStageRev1.createdBy">{{ programStageRev1.createdBy.name }}</span>
             </td>
             <td>
-              {{ programStageRev2.createdBy?.name }}
+              <span *ngIf="programStageRev2.createdBy">{{ programStageRev2.createdBy.name }}</span>
             </td>
           </tr>
           <tr>
@@ -68,10 +68,13 @@
           <tr>
             <td><span jhiTranslate="dhis2TrackApp.programStage.lastUpdatedBy">Last Updated By</span></td>
             <td>
-              <span [innerHTML]="showDiff(programStageRev2.lastUpdatedBy?.name, programStageRev1.lastUpdatedBy?.name)"></span>
+              <span
+                *ngIf="programStageRev2.lastUpdatedBy && programStageRev1.lastUpdatedBy"
+                [innerHTML]="showDiff(programStageRev2.lastUpdatedBy.name, programStageRev1.lastUpdatedBy.name)"
+              ></span>
             </td>
             <td>
-              {{ programStageRev2.lastUpdatedBy?.name }}
+              <span *ngIf="programStageRev2.lastUpdatedBy">{{ programStageRev2.lastUpdatedBy.name }}</span>
             </td>
           </tr>
           <tr>

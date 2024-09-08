@@ -83,8 +83,8 @@
                 [innerHTML]="showDiff(programIndicatorRev2.lastUpdatedBy.name, programIndicatorRev1.lastUpdatedBy.name)"
               ></span>
             </td>
-            <td *ngIf="programIndicatorRev2.createdBy">
-              {{ programIndicatorRev2.lastUpdatedBy?.name }}
+            <td *ngIf="programIndicatorRev2.lastUpdatedBy">
+              {{ programIndicatorRev2.lastUpdatedBy.name }}
             </td>
           </tr>
           <tr>
