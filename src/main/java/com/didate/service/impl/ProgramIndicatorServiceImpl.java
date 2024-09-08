@@ -1,10 +1,12 @@
 package com.didate.service.impl;
 
+import com.didate.domain.OrganisationUnit;
 import com.didate.domain.ProgramIndicator;
 import com.didate.repository.ProgramIndicatorRepository;
 import com.didate.service.ProgramIndicatorService;
 import com.didate.service.dto.ProgramIndicatorDTO;
 import com.didate.service.dto.ProgramIndicatorFullDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,9 +29,14 @@ public class ProgramIndicatorServiceImpl implements ProgramIndicatorService {
     private final Logger log = LoggerFactory.getLogger(ProgramIndicatorServiceImpl.class);
 
     private final ProgramIndicatorRepository programIndicatorRepository;
+    private final GenericFilterService<ProgramIndicator> filterService;
 
-    public ProgramIndicatorServiceImpl(ProgramIndicatorRepository programIndicatorRepository) {
+    public ProgramIndicatorServiceImpl(
+        ProgramIndicatorRepository programIndicatorRepository,
+        GenericFilterService<ProgramIndicator> filterService
+    ) {
         this.programIndicatorRepository = programIndicatorRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -167,5 +174,10 @@ public class ProgramIndicatorServiceImpl implements ProgramIndicatorService {
         Hibernate.unproxy(programIndicator.getProgram());
 
         return new ProgramIndicatorFullDTO(programIndicator);
+    }
+
+    @Override
+    public Page<ProgramIndicatorDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(programIndicatorRepository, id, name, pageable).map(ProgramIndicatorDTO::new);
     }
 }

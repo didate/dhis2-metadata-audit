@@ -20,7 +20,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface DatasetRepository
-    extends DatasetRepositoryWithBagRelationships, JpaRepository<DataSet, String>, RevisionRepository<DataSet, String, Integer> {
+    extends
+        DatasetRepositoryWithBagRelationships,
+        JpaRepository<DataSet, String>,
+        JpaSpecificationExecutor<DataSet>,
+        RevisionRepository<DataSet, String, Integer> {
     default Optional<DataSet> findOneWithEagerRelationships(String id) {
         return this.fetchBagRelationships(this.findById(id));
     }

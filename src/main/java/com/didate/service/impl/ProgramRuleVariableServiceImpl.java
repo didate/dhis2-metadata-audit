@@ -1,10 +1,12 @@
 package com.didate.service.impl;
 
+import com.didate.domain.ProgramRule;
 import com.didate.domain.ProgramRuleVariable;
 import com.didate.repository.ProgramRuleVariableRepository;
 import com.didate.service.ProgramRuleVariableService;
 import com.didate.service.dto.ProgramRuleVariableDTO;
 import com.didate.service.dto.ProgramRuleVariableFullDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,9 +29,14 @@ public class ProgramRuleVariableServiceImpl implements ProgramRuleVariableServic
     private final Logger log = LoggerFactory.getLogger(ProgramRuleVariableServiceImpl.class);
 
     private final ProgramRuleVariableRepository programRuleVariableRepository;
+    private final GenericFilterService<ProgramRuleVariable> filterService;
 
-    public ProgramRuleVariableServiceImpl(ProgramRuleVariableRepository programRuleVariableRepository) {
+    public ProgramRuleVariableServiceImpl(
+        ProgramRuleVariableRepository programRuleVariableRepository,
+        GenericFilterService<ProgramRuleVariable> filterService
+    ) {
         this.programRuleVariableRepository = programRuleVariableRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -149,5 +156,10 @@ public class ProgramRuleVariableServiceImpl implements ProgramRuleVariableServic
         Hibernate.unproxy(programRuleVariable.getProgram());
 
         return new ProgramRuleVariableFullDTO(programRuleVariable);
+    }
+
+    @Override
+    public Page<ProgramRuleVariableDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(programRuleVariableRepository, id, name, pageable).map(ProgramRuleVariableDTO::new);
     }
 }

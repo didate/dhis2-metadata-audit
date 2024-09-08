@@ -1,10 +1,12 @@
 package com.didate.service.impl;
 
+import com.didate.domain.DataSet;
 import com.didate.domain.Indicator;
 import com.didate.repository.IndicatorRepository;
 import com.didate.service.IndicatorService;
 import com.didate.service.dto.IndicatorDTO;
 import com.didate.service.dto.IndicatorFullDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,8 +30,11 @@ public class IndicatorServiceImpl implements IndicatorService {
 
     private final IndicatorRepository indicatorRepository;
 
-    public IndicatorServiceImpl(IndicatorRepository indicatorRepository) {
+    private final GenericFilterService<Indicator> filterService;
+
+    public IndicatorServiceImpl(IndicatorRepository indicatorRepository, GenericFilterService<Indicator> filterService) {
         this.indicatorRepository = indicatorRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -188,5 +193,10 @@ public class IndicatorServiceImpl implements IndicatorService {
     @Override
     public Page<IndicatorDTO> findAllIndicators(Pageable pageable) {
         return indicatorRepository.findAll(pageable).map(IndicatorDTO::new);
+    }
+
+    @Override
+    public Page<IndicatorDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(indicatorRepository, id, name, pageable).map(IndicatorDTO::new);
     }
 }

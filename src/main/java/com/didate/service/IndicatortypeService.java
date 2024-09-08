@@ -43,6 +43,8 @@ public interface IndicatortypeService {
      */
     Page<IndicatorType> findAll(Pageable pageable);
 
+    public Page<IndicatorTypeDTO> findAll(Pageable pageable, String id, String name);
+
     /**
      * Get the "id" indicatortype.
      *

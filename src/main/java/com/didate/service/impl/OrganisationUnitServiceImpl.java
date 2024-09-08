@@ -8,6 +8,7 @@ import com.didate.service.dto.OrganisationUnitDTO;
 import com.didate.service.dto.OrganisationUnitFullDTO;
 import com.didate.service.dto.ProgramDTO;
 import com.didate.service.dto.ProgramFullDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,9 +31,14 @@ public class OrganisationUnitServiceImpl implements OrganisationUnitService {
     private final Logger log = LoggerFactory.getLogger(OrganisationUnitServiceImpl.class);
 
     private final OrganisationUnitRepository organisationUnitRepository;
+    private final GenericFilterService<OrganisationUnit> filterService;
 
-    public OrganisationUnitServiceImpl(OrganisationUnitRepository organisationUnitRepository) {
+    public OrganisationUnitServiceImpl(
+        OrganisationUnitRepository organisationUnitRepository,
+        GenericFilterService<OrganisationUnit> filterService
+    ) {
         this.organisationUnitRepository = organisationUnitRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -150,5 +156,10 @@ public class OrganisationUnitServiceImpl implements OrganisationUnitService {
         Hibernate.unproxy(organisationUnit.getLastUpdatedBy());
 
         return new OrganisationUnitFullDTO(organisationUnit);
+    }
+
+    @Override
+    public Page<OrganisationUnitDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(organisationUnitRepository, id, name, pageable).map(OrganisationUnitDTO::new);
     }
 }

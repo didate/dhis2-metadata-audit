@@ -1,10 +1,12 @@
 package com.didate.service.impl;
 
+import com.didate.domain.ProgramRuleVariable;
 import com.didate.domain.ProgramStage;
 import com.didate.repository.ProgramStageRepository;
 import com.didate.service.ProgramStageService;
 import com.didate.service.dto.ProgramStageDTO;
 import com.didate.service.dto.ProgramStageFullDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,9 +29,11 @@ public class ProgramStageServiceImpl implements ProgramStageService {
     private final Logger log = LoggerFactory.getLogger(ProgramStageServiceImpl.class);
 
     private final ProgramStageRepository programStageRepository;
+    private final GenericFilterService<ProgramStage> filterService;
 
-    public ProgramStageServiceImpl(ProgramStageRepository programStageRepository) {
+    public ProgramStageServiceImpl(ProgramStageRepository programStageRepository, GenericFilterService<ProgramStage> filterService) {
         this.programStageRepository = programStageRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -215,5 +219,10 @@ public class ProgramStageServiceImpl implements ProgramStageService {
     @Override
     public Page<ProgramStageDTO> findAllProgramStage(Pageable pageable) {
         return programStageRepository.findAll(pageable).map(ProgramStageDTO::new);
+    }
+
+    @Override
+    public Page<ProgramStageDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(programStageRepository, id, name, pageable).map(ProgramStageDTO::new);
     }
 }

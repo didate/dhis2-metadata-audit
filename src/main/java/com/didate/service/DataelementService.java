@@ -43,6 +43,9 @@ public interface DataelementService {
      * @return the list of entities.
      */
     Page<DataElement> findAll(Pageable pageable);
+
+    public Page<DataElementDTO> findAll(Pageable pageable, String id, String name);
+
     Page<DataElementDTO> findAllDataElements(Pageable pageable);
 
     /**

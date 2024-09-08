@@ -12,4 +12,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface OrganisationUnitRepository
-    extends JpaRepository<OrganisationUnit, String>, RevisionRepository<OrganisationUnit, String, Integer> {}
+    extends
+        JpaRepository<OrganisationUnit, String>,
+        JpaSpecificationExecutor<OrganisationUnit>,
+        RevisionRepository<OrganisationUnit, String, Integer> {}

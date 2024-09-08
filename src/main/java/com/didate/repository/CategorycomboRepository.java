@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CategorycomboRepository extends JpaRepository<CategoryCombo, String>, RevisionRepository<CategoryCombo, String, Integer> {}
+public interface CategorycomboRepository
+    extends
+        JpaRepository<CategoryCombo, String>, JpaSpecificationExecutor<CategoryCombo>, RevisionRepository<CategoryCombo, String, Integer> {}

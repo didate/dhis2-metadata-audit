@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface DHISUserRepository extends JpaRepository<DHISUser, String>, RevisionRepository<DHISUser, String, Integer> {}
+public interface DHISUserRepository
+    extends JpaRepository<DHISUser, String>, JpaSpecificationExecutor<DHISUser>, RevisionRepository<DHISUser, String, Integer> {}

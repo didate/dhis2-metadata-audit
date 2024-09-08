@@ -1,10 +1,12 @@
 package com.didate.service.impl;
 
 import com.didate.domain.ProgramRule;
+import com.didate.domain.ProgramRuleAction;
 import com.didate.repository.ProgramRuleRepository;
 import com.didate.service.ProgramRuleService;
 import com.didate.service.dto.ProgramRuleDTO;
 import com.didate.service.dto.ProgramRuleFullDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,9 +29,11 @@ public class ProgramRuleServiceImpl implements ProgramRuleService {
     private final Logger log = LoggerFactory.getLogger(ProgramRuleServiceImpl.class);
 
     private final ProgramRuleRepository programRuleRepository;
+    private final GenericFilterService<ProgramRule> filterService;
 
-    public ProgramRuleServiceImpl(ProgramRuleRepository programRuleRepository) {
+    public ProgramRuleServiceImpl(ProgramRuleRepository programRuleRepository, GenericFilterService<ProgramRule> filterService) {
         this.programRuleRepository = programRuleRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -149,5 +153,10 @@ public class ProgramRuleServiceImpl implements ProgramRuleService {
         Hibernate.unproxy(programRule.getProgram());
 
         return new ProgramRuleFullDTO(programRule);
+    }
+
+    @Override
+    public Page<ProgramRuleDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(programRuleRepository, id, name, pageable).map(ProgramRuleDTO::new);
     }
 }

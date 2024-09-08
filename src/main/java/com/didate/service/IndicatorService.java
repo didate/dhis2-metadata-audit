@@ -43,6 +43,9 @@ public interface IndicatorService {
      * @return the list of entities.
      */
     Page<Indicator> findAll(Pageable pageable);
+
+    public Page<IndicatorDTO> findAll(Pageable pageable, String id, String name);
+
     Page<IndicatorDTO> findAllIndicators(Pageable pageable);
 
     /**

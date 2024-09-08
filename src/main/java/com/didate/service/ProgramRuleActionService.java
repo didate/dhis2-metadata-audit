@@ -44,6 +44,8 @@ public interface ProgramRuleActionService {
      */
     Page<ProgramRuleAction> findAll(Pageable pageable);
 
+    public Page<ProgramRuleActionDTO> findAll(Pageable pageable, String id, String name);
+
     /**
      * Get the "id" programRuleAction.
      *

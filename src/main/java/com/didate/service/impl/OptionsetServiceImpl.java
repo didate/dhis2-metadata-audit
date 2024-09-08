@@ -1,9 +1,11 @@
 package com.didate.service.impl;
 
 import com.didate.domain.OptionSet;
+import com.didate.domain.OrganisationUnit;
 import com.didate.repository.OptionsetRepository;
 import com.didate.service.OptionsetService;
 import com.didate.service.dto.OptionSetDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,9 +28,11 @@ public class OptionsetServiceImpl implements OptionsetService {
     private final Logger log = LoggerFactory.getLogger(OptionsetServiceImpl.class);
 
     private final OptionsetRepository optionsetRepository;
+    private final GenericFilterService<OptionSet> filterService;
 
-    public OptionsetServiceImpl(OptionsetRepository optionsetRepository) {
+    public OptionsetServiceImpl(OptionsetRepository optionsetRepository, GenericFilterService<OptionSet> filterService) {
         this.optionsetRepository = optionsetRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -141,5 +145,10 @@ public class OptionsetServiceImpl implements OptionsetService {
         Hibernate.unproxy(optionSet.getLastUpdatedBy());
 
         return new OptionSetDTO(optionSet);
+    }
+
+    @Override
+    public Page<OptionSetDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(optionsetRepository, id, name, pageable).map(OptionSetDTO::new);
     }
 }

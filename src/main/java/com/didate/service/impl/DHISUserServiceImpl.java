@@ -1,10 +1,12 @@
 package com.didate.service.impl;
 
 import com.didate.domain.DHISUser;
+import com.didate.domain.TrackedEntityAttribute;
 import com.didate.repository.DHISUserRepository;
 import com.didate.service.DHISUserService;
 import com.didate.service.dto.DHISUserDTO;
 import com.didate.service.dto.DHISUserFullDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,8 +29,11 @@ public class DHISUserServiceImpl implements DHISUserService {
 
     private final DHISUserRepository dHISUserRepository;
 
-    public DHISUserServiceImpl(DHISUserRepository dHISUserRepository) {
+    private final GenericFilterService<DHISUser> filterService;
+
+    public DHISUserServiceImpl(DHISUserRepository dHISUserRepository, GenericFilterService<DHISUser> filterService) {
         this.dHISUserRepository = dHISUserRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -137,5 +142,10 @@ public class DHISUserServiceImpl implements DHISUserService {
         //Hibernate.unproxy(dhisUser.getLastUpdatedBy());
 
         return new DHISUserFullDTO(dhisUser);
+    }
+
+    @Override
+    public Page<DHISUserDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(dHISUserRepository, id, name, pageable).map(DHISUserDTO::new);
     }
 }

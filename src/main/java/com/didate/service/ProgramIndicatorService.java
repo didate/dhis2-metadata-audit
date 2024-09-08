@@ -44,6 +44,8 @@ public interface ProgramIndicatorService {
      */
     Page<ProgramIndicator> findAll(Pageable pageable);
 
+    public Page<ProgramIndicatorDTO> findAll(Pageable pageable, String id, String name);
+
     /**
      * Get the "id" programIndicator.
      *

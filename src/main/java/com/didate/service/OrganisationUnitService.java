@@ -44,6 +44,8 @@ public interface OrganisationUnitService {
      */
     Page<OrganisationUnit> findAll(Pageable pageable);
 
+    public Page<OrganisationUnitDTO> findAll(Pageable pageable, String id, String name);
+
     /**
      * Get the "id" organisationUnit.
      *

@@ -12,4 +12,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface ProgramIndicatorRepository
-    extends JpaRepository<ProgramIndicator, String>, RevisionRepository<ProgramIndicator, String, Integer> {}
+    extends
+        JpaRepository<ProgramIndicator, String>,
+        JpaSpecificationExecutor<ProgramIndicator>,
+        RevisionRepository<ProgramIndicator, String, Integer> {}

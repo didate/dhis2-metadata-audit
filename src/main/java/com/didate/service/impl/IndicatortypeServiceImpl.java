@@ -1,9 +1,12 @@
 package com.didate.service.impl;
 
+import com.didate.domain.Indicator;
 import com.didate.domain.IndicatorType;
 import com.didate.repository.IndicatortypeRepository;
 import com.didate.service.IndicatortypeService;
+import com.didate.service.dto.IndicatorDTO;
 import com.didate.service.dto.IndicatorTypeDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,9 +29,11 @@ public class IndicatortypeServiceImpl implements IndicatortypeService {
     private final Logger log = LoggerFactory.getLogger(IndicatortypeServiceImpl.class);
 
     private final IndicatortypeRepository indicatortypeRepository;
+    private final GenericFilterService<IndicatorType> filterService;
 
-    public IndicatortypeServiceImpl(IndicatortypeRepository indicatortypeRepository) {
+    public IndicatortypeServiceImpl(IndicatortypeRepository indicatortypeRepository, GenericFilterService<IndicatorType> filterService) {
         this.indicatortypeRepository = indicatortypeRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -135,5 +140,10 @@ public class IndicatortypeServiceImpl implements IndicatortypeService {
         Hibernate.unproxy(indicatorType.getLastUpdatedBy());
 
         return new IndicatorTypeDTO(indicatorType);
+    }
+
+    @Override
+    public Page<IndicatorTypeDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(indicatortypeRepository, id, name, pageable).map(IndicatorTypeDTO::new);
     }
 }

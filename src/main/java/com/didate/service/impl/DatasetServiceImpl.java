@@ -1,10 +1,12 @@
 package com.didate.service.impl;
 
+import com.didate.domain.DataElement;
 import com.didate.domain.DataSet;
 import com.didate.repository.DatasetRepository;
 import com.didate.service.DatasetService;
 import com.didate.service.dto.DataSetDTO;
 import com.didate.service.dto.DataSetFullDTO;
+import com.didate.service.search.GenericFilterService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,8 +30,11 @@ public class DatasetServiceImpl implements DatasetService {
 
     private final DatasetRepository datasetRepository;
 
-    public DatasetServiceImpl(DatasetRepository datasetRepository) {
+    private final GenericFilterService<DataSet> filterService;
+
+    public DatasetServiceImpl(DatasetRepository datasetRepository, GenericFilterService<DataSet> filterService) {
         this.datasetRepository = datasetRepository;
+        this.filterService = filterService;
     }
 
     @Override
@@ -241,5 +246,10 @@ public class DatasetServiceImpl implements DatasetService {
     @Override
     public Page<DataSetDTO> findAllDataSets(Pageable pageable) {
         return datasetRepository.findAll(pageable).map(DataSetDTO::new);
+    }
+
+    @Override
+    public Page<DataSetDTO> findAll(Pageable pageable, String id, String name) {
+        return filterService.filter(datasetRepository, id, name, pageable).map(DataSetDTO::new);
     }
 }

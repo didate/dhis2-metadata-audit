@@ -12,4 +12,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface ProgramRuleActionRepository
-    extends JpaRepository<ProgramRuleAction, String>, RevisionRepository<ProgramRuleAction, String, Integer> {}
+    extends
+        JpaRepository<ProgramRuleAction, String>,
+        JpaSpecificationExecutor<ProgramRuleAction>,
+        RevisionRepository<ProgramRuleAction, String, Integer> {}

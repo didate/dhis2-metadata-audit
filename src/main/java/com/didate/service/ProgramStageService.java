@@ -44,6 +44,9 @@ public interface ProgramStageService {
      * @return the list of entities.
      */
     Page<ProgramStage> findAll(Pageable pageable);
+
+    public Page<ProgramStageDTO> findAll(Pageable pageable, String id, String name);
+
     Page<ProgramStageDTO> findAllProgramStage(Pageable pageable);
 
     /**

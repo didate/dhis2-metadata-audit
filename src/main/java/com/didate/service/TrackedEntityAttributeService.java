@@ -44,6 +44,8 @@ public interface TrackedEntityAttributeService {
      */
     Page<TrackedEntityAttribute> findAll(Pageable pageable);
 
+    public Page<TrackedEntityAttributeDTO> findAll(Pageable pageable, String id, String name);
+
     /**
      * Get the "id" trackedEntityAttribute.
      *
