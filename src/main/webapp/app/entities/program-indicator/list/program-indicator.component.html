@@ -1,14 +1,30 @@
 <div class="page-component">
   <h2 id="page-heading" data-cy="ProgramIndicatorHeading">
     <span jhiTranslate="dhis2TrackApp.programIndicator.home.title">ProgramIndicators</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="dhis2TrackApp.programIndicator.home.refreshListLabel">Actualiser la liste</span>
-      </button>
-    </div>
   </h2>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <form (ngSubmit)="applyFilters()" class="form-inline row gx-3 gy-2 align-items-center">
+        <div class="col-md-4">
+          <input type="text" class="form-control" placeholder="ID" [(ngModel)]="filterCriteria.id" name="id" />
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control" placeholder="Name" [(ngModel)]="filterCriteria.name" name="name" />
+        </div>
+        <div class="col-md-4 d-flex">
+          <button [disabled]="isLoading" type="submit" class="btn btn-primary me-2">
+            <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+            Filter
+          </button>
+          <button [disabled]="isLoading" type="button" class="btn btn-danger" (click)="clearFilters()">
+            <fa-icon icon="times" [spin]="isLoading"></fa-icon>
+            Clear
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <jhi-alert-error></jhi-alert-error>
 
