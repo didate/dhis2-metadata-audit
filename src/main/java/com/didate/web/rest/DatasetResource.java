@@ -52,10 +52,11 @@ public class DatasetResource {
     @GetMapping("/datasets")
     public ResponseEntity<List<DataSetDTO>> getAllDatasetDataSetDTOs(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
-        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+        @RequestParam(required = false) String id,
+        @RequestParam(required = false) String name
     ) {
         log.debug("REST request to get a page of Datasets");
-        Page<DataSetDTO> page = datasetService.findAllDataSets(pageable);
+        Page<DataSetDTO> page = datasetService.findAll(pageable, id, name);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
 
         return ResponseEntity.ok().headers(headers).body(page.getContent());

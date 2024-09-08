@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
@@ -44,9 +45,13 @@ public class IndicatorResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of indicators in body.
      */
     @GetMapping("/indicators")
-    public ResponseEntity<List<IndicatorDTO>> getAllIndicators(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<IndicatorDTO>> getAllIndicators(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false) String id,
+        @RequestParam(required = false) String name
+    ) {
         log.debug("REST request to get a page of Indicators");
-        Page<IndicatorDTO> page = indicatorService.findAllIndicators(pageable);
+        Page<IndicatorDTO> page = indicatorService.findAll(pageable, id, name);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

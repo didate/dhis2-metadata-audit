@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
@@ -43,9 +44,13 @@ public class OptionGroupResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of optionGroups in body.
      */
     @GetMapping("/option-groups")
-    public ResponseEntity<List<OptionGroup>> getAllOptionGroups(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<OptionGroupDTO>> getAllOptionGroups(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false) String id,
+        @RequestParam(required = false) String name
+    ) {
         log.debug("REST request to get a page of OptionGroups");
-        Page<OptionGroup> page = optionGroupService.findAll(pageable);
+        Page<OptionGroupDTO> page = optionGroupService.findAll(pageable, id, name);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
