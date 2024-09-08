@@ -4,7 +4,6 @@ import com.didate.domain.Program;
 import com.didate.service.dto.ProgramDTO;
 import com.didate.service.dto.ProgramFullDTO;
 import java.util.List;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +43,8 @@ public interface ProgramService {
      * @return the list of entities.
      */
     Page<Program> findAll(Pageable pageable);
+
+    public Page<ProgramDTO> findAll(Pageable pageable, String id, String name);
 
     /**
      * Get all the programs.

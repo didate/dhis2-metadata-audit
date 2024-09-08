@@ -25,6 +25,8 @@ export class ProgramComponent implements OnInit {
   totalItems = 0;
   page = 1;
 
+  filterCriteria = { id: '', name: '' };
+
   constructor(
     protected programService: ProgramService,
     protected activatedRoute: ActivatedRoute,
@@ -44,6 +46,18 @@ export class ProgramComponent implements OnInit {
         this.onResponseSuccess(res);
       },
     });
+  }
+
+  applyFilters(): void {
+    this.page = 1;
+
+    this.navigateToWithComponentValues();
+  }
+
+  clearFilters(): void {
+    this.filterCriteria = { id: '', name: '' };
+    this.page = 1;
+    this.navigateToWithComponentValues();
   }
 
   navigateToWithComponentValues(): void {
@@ -67,6 +81,10 @@ export class ProgramComponent implements OnInit {
     const sort = (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(',');
     this.predicate = sort[0];
     this.ascending = sort[1] === ASC;
+
+    // Extract filter criteria from route parameters
+    this.filterCriteria.id = params.get('id') ?? '';
+    this.filterCriteria.name = params.get('name') ?? '';
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
@@ -91,7 +109,10 @@ export class ProgramComponent implements OnInit {
       size: this.itemsPerPage,
       eagerload: true,
       sort: this.getSortQueryParam(predicate, ascending),
+      id: this.filterCriteria.id,
+      name: this.filterCriteria.name,
     };
+
     return this.programService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
@@ -100,8 +121,9 @@ export class ProgramComponent implements OnInit {
       page,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
+      id: this.filterCriteria.id,
+      name: this.filterCriteria.name,
     };
-
     this.router.navigate(['./'], {
       relativeTo: this.activatedRoute,
       queryParams: queryParamsObj,

@@ -56,10 +56,11 @@ public class ProgramResource {
     @GetMapping("/programs")
     public ResponseEntity<List<ProgramDTO>> getAllPrograms(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
-        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+        @RequestParam(required = false) String id,
+        @RequestParam(required = false) String name
     ) {
         log.debug("REST request to get a page of Programs");
-        Page<ProgramDTO> page = programService.findAllPrograms(pageable);
+        Page<ProgramDTO> page = programService.findAll(pageable, id, name);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
