@@ -265,8 +265,10 @@ del {
 .navbar-brand {
   font-size: small !important;
 }
-.navbar {
-  height: 50px !important;
+@media (min-width: 801px) {
+  .navbar {
+    height: 50px !important;
+  }
 }
 
 .nav-link {
