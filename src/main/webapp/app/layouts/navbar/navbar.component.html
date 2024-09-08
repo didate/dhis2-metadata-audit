@@ -18,7 +18,7 @@
     </a>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <li *ngSwitchCase="true" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
             <span>
               <fa-icon icon="home"></fa-icon>
@@ -26,14 +26,14 @@
             </span>
           </a>
         </li>
-        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <li *ngSwitchCase="true" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="program" (click)="collapseNavbar()">
             <fa-icon icon="person-arrow-up-from-line"></fa-icon>
             <span jhiTranslate="global.menu.entities.program">Program</span>
           </a>
         </li>
 
-        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <li *ngSwitchCase="true" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="dataset" (click)="collapseNavbar()">
             <fa-icon icon="database"></fa-icon>
             <span jhiTranslate="global.menu.entities.dataset">DataSet</span>
@@ -277,6 +277,7 @@
           </ul>
         </li>
         <li
+          *ngSwitchCase="true"
           ngbDropdown
           class="nav-item dropdown pointer"
           display="dynamic"

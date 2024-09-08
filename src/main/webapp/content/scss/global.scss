@@ -259,11 +259,19 @@ del {
 }
 
 .bg-dark {
-  background-color: #1e72bb !important;
+  background-color: #106ab9 !important;
   color: white !important;
 }
 .navbar-brand {
   font-size: medium !important;
+}
+
+.nav-link {
+  color: #fff !important;
+}
+
+.nav-link:hover {
+  color: #ccc !important;
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
