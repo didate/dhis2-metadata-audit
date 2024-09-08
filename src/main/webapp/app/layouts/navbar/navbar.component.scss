@@ -27,10 +27,12 @@ Navbar
 Logo styles
 ========================================================================== */
 .logo-img {
-  height: 45px;
-  width: 45px;
+  height: 30px;
+  width: 30px;
   display: inline-block;
   vertical-align: middle;
+  margin-left: 20px;
+  margin-right: 40px;
   background: url('../../../content/images/logo.png') no-repeat center center;
   background-size: contain;
 }
