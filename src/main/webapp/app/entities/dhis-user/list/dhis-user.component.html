@@ -3,27 +3,46 @@
     <span jhiTranslate="dhis2TrackApp.dHISUser.home.title">DHISUsers</span>
   </h2>
 
-  <div class="card mb-4">
-    <div class="card-body">
-      <form (ngSubmit)="applyFilters()" class="form-inline row gx-3 gy-2 align-items-center">
-        <div class="col-md-4">
-          <input type="text" class="form-control" placeholder="ID" [(ngModel)]="filterCriteria.id" name="id" />
-        </div>
-        <div class="col-md-4">
-          <input type="text" class="form-control" placeholder="Name" [(ngModel)]="filterCriteria.name" name="name" />
-        </div>
-        <div class="col-md-4 d-flex">
-          <button [disabled]="isLoading" type="submit" class="btn btn-primary me-2">
-            <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-            Filter
-          </button>
-          <button [disabled]="isLoading" type="button" class="btn btn-danger" (click)="clearFilters()">
-            <fa-icon icon="times" [spin]="isLoading"></fa-icon>
-            Clear
-          </button>
-        </div>
-      </form>
-    </div>
+  <div class="card p-3 mb-4">
+    <form class="row g-3" (ngSubmit)="applyFilters()">
+      <div class="col-md-2">
+        <input type="text" class="form-control" id="id" [(ngModel)]="filterCriteria.id" name="id" placeholder="ID" />
+      </div>
+      <div class="col-md-2">
+        <input type="text" class="form-control" id="name" [(ngModel)]="filterCriteria.name" name="name" placeholder="Name" />
+      </div>
+      <div class="col-md-2">
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          [(ngModel)]="filterCriteria.username"
+          name="username"
+          placeholder="Username"
+        />
+      </div>
+      <div class="col-md-2">
+        <input
+          type="number"
+          class="form-control"
+          id="months"
+          [(ngModel)]="filterCriteria.months"
+          name="months"
+          min="0"
+          placeholder="Months"
+        />
+      </div>
+      <div class="col-md-4 mt-3">
+        <button [disabled]="isLoading" type="submit" class="btn btn-primary me-2">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+          Filter
+        </button>
+        <button [disabled]="isLoading" type="button" class="btn btn-danger" (click)="clearFilters()">
+          <fa-icon icon="times" [spin]="isLoading"></fa-icon>
+          Clear
+        </button>
+      </div>
+    </form>
   </div>
 
   <jhi-alert-error></jhi-alert-error>

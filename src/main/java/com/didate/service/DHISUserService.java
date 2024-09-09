@@ -44,7 +44,7 @@ public interface DHISUserService {
      */
     Page<DHISUser> findAll(Pageable pageable);
 
-    public Page<DHISUserDTO> findAll(Pageable pageable, String id, String name);
+    public Page<DHISUserDTO> findAll(Pageable pageable, String id, String name, String username, Integer months);
 
     /**
      * Get the "id" dHISUser.

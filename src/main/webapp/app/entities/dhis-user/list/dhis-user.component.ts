@@ -20,7 +20,7 @@ export class DHISUserComponent implements OnInit {
 
   predicate = 'id';
 
-  filterCriteria = { id: '', name: '' };
+  filterCriteria = { id: '', name: '', username: '', months: 0 };
   ascending = true;
 
   itemsPerPage = ITEMS_PER_PAGE;
@@ -55,7 +55,7 @@ export class DHISUserComponent implements OnInit {
   }
 
   clearFilters(): void {
-    this.filterCriteria = { id: '', name: '' };
+    this.filterCriteria = { id: '', name: '', username: '', months: 0 };
     this.page = 1;
     this.navigateToWithComponentValues();
   }
@@ -83,8 +83,10 @@ export class DHISUserComponent implements OnInit {
     this.ascending = sort[1] === ASC;
 
     // Extract filter criteria from route parameters
-    this.filterCriteria.id = params.get('id') ?? '';
-    this.filterCriteria.name = params.get('name') ?? '';
+    // this.filterCriteria.id = params.get('id') ?? '';
+    // this.filterCriteria.name = params.get('name') ?? '';
+    // this.filterCriteria.username = params.get('username') ?? '';
+    // this.filterCriteria.months = params.get('months') as unknown as number ?? 0;
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
@@ -109,8 +111,7 @@ export class DHISUserComponent implements OnInit {
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
 
-      id: this.filterCriteria.id,
-      name: this.filterCriteria.name,
+      ...this.filterCriteria,
     };
     return this.dHISUserService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
@@ -120,9 +121,7 @@ export class DHISUserComponent implements OnInit {
       page,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
-
-      id: this.filterCriteria.id,
-      name: this.filterCriteria.name,
+      ...this.filterCriteria,
     };
 
     this.router.navigate(['./'], {

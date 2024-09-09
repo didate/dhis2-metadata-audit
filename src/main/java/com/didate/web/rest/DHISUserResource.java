@@ -48,10 +48,12 @@ public class DHISUserResource {
     public ResponseEntity<List<DHISUserDTO>> getAllDHISUsers(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         @RequestParam(required = false) String id,
-        @RequestParam(required = false) String name
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String username,
+        @RequestParam(required = false) Integer months
     ) {
         log.debug("REST request to get a page of DHISUsers");
-        Page<DHISUserDTO> page = dHISUserService.findAll(pageable, id, name);
+        Page<DHISUserDTO> page = dHISUserService.findAll(pageable, id, name, username, months);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
