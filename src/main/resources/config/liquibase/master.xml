@@ -45,6 +45,11 @@
     <include file="config/liquibase/changelog/20240825221701_others_contraints_changelog.xml" relativeToChangelogFile="false"/>
     
     <include file="config/liquibase/changelog/20240823221701_envers_changelog.xml" relativeToChangelogFile="false"/>
+
+
+    <changeSet id="202403020002" author="didate">
+        <sqlFile splitStatements="false" stripComments="false" path="trigger.sql" relativeToChangelogFile="true"/>
+     </changeSet>
      <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

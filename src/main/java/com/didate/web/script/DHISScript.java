@@ -79,6 +79,7 @@ public class DHISScript {
 
         for (Project project : projects) {
             userScript.perform(project);
+
             optionGroupScript.perform(project);
             categoryComboScript.perform(project);
             indicatorTypeScript.perform(project);

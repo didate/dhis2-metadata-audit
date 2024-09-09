@@ -97,9 +97,24 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.createdBy">Created By</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
           <th scope="col" jhiSortBy="lastUpdated">
             <div class="d-flex">
               <span jhiTranslate="dhis2TrackApp.dHISUser.lastUpdated">Last Updated</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+
+          <th scope="col">
+            <div class="d-flex">
+              <span jhiTranslate="dhis2TrackApp.organisationUnit.lastUpdatedBy">Last Updated By</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -118,7 +133,18 @@
 
           <td>{{ dHISUser.disabled }}</td>
           <td>{{ dHISUser.created | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="dHISUser.createdBy">
+              {{ dHISUser.createdBy.username }}
+            </div>
+          </td>
           <td>{{ dHISUser.lastUpdated | formatMediumDatetime }}</td>
+
+          <td>
+            <div *ngIf="dHISUser.lastUpdatedBy">
+              {{ dHISUser.lastUpdatedBy.username }}
+            </div>
+          </td>
           <td class="text-end">
             <div class="btn-group">
               <button

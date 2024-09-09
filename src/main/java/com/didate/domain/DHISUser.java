@@ -1,8 +1,11 @@
 package com.didate.domain;
 
+import com.didate.deserialize.DataElementSetDeserializer;
+import com.didate.deserialize.UsernameDeserializer;
 import com.didate.domain.enumeration.TypeTrack;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
@@ -64,6 +67,14 @@ public class DHISUser implements Serializable, Persistable<String> {
 
     @Column(name = "last_updated")
     private Instant lastUpdated;
+
+    @Column(name = "created_by")
+    @JsonDeserialize(using = UsernameDeserializer.class)
+    private String createdBy;
+
+    @Column(name = "last_updated_by")
+    @JsonDeserialize(using = UsernameDeserializer.class)
+    private String lastUpdatedBy;
 
     @NotAudited
     @NotNull
@@ -297,23 +308,80 @@ public class DHISUser implements Serializable, Persistable<String> {
         return getClass().hashCode();
     }
 
-    // prettier-ignore
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public DHISUser createdBy(String createdBy) {
+        setCreatedBy(createdBy);
+        return this;
+    }
+
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public DHISUser lastUpdatedBy(String lastUpdatedBy) {
+        setLastUpdatedBy(lastUpdatedBy);
+        return this;
+    }
+
+    public boolean isPersisted() {
+        return isPersisted;
+    }
+
+    public void setPersisted(boolean isPersisted) {
+        this.isPersisted = isPersisted;
+    }
+
     @Override
     public String toString() {
-        return "DHISUser{" +
-            "id=" + getId() +
-            ", code='" + getCode() + "'" +
-            ", name='" + getName() + "'" +
-            ", displayName='" + getDisplayName() + "'" +
-            ", username='" + getUsername() + "'" +
-            ", lastLogin='" + getLastLogin() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", phoneNumber='" + getPhoneNumber() + "'" +
-            ", disabled='" + getDisabled() + "'" +
-            ", passwordLastUpdated='" + getPasswordLastUpdated() + "'" +
-            ", created='" + getCreated() + "'" +
-            ", lastUpdated='" + getLastUpdated() + "'" +
-            ", track='" + getTrack() + "'" +
-            "}";
+        return (
+            "DHISUser [id=" +
+            id +
+            ", name=" +
+            name +
+            ", code=" +
+            code +
+            ", displayName=" +
+            displayName +
+            ", username=" +
+            username +
+            ", lastLogin=" +
+            lastLogin +
+            ", email=" +
+            email +
+            ", phoneNumber=" +
+            phoneNumber +
+            ", disabled=" +
+            disabled +
+            ", passwordLastUpdated=" +
+            passwordLastUpdated +
+            ", created=" +
+            created +
+            ", lastUpdated=" +
+            lastUpdated +
+            ", createdBy=" +
+            createdBy +
+            ", lastUpdatedBy=" +
+            lastUpdatedBy +
+            ", track=" +
+            track +
+            ", project=" +
+            project +
+            "]"
+        );
     }
 }
