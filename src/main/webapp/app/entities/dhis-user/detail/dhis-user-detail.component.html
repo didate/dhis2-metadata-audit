@@ -1,75 +1,162 @@
 <div class="d-flex justify-content-center page-component">
   <div class="col-10">
-    <div *ngIf="dHISUser">
+    <div *ngIf="dHISUserRev1 && dHISUserRev2">
       <h2 data-cy="dHISUserDetailsHeading"><span jhiTranslate="dhis2TrackApp.dHISUser.detail.title">DHIS User</span></h2>
 
       <hr />
 
-      <jhi-alert-error></jhi-alert-error>
+      <table class="table long-table">
+        <thead class="thead-light">
+          <tr>
+            <th><span>Fields</span></th>
+            <th><span>Revision 1</span></th>
+            <th><span>Revision 2</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.id">Id</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dHISUserRev2.id, dHISUserRev1.id)"></span>
+            </td>
+            <td>
+              {{ dHISUserRev2.id }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.code">Code</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dHISUserRev2.code, dHISUserRev1.code)"></span>
+            </td>
+            <td>
+              {{ dHISUserRev2.code }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.name">Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dHISUserRev2.name, dHISUserRev1.name)"></span>
+            </td>
+            <td>
+              {{ dHISUserRev2.name }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.displayName">Display Name</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dHISUserRev2.displayName, dHISUserRev1.displayName)"></span>
+            </td>
+            <td>
+              {{ dHISUserRev2.displayName }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.username">Username</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dHISUserRev2.username, dHISUserRev1.username)"></span>
+            </td>
+            <td>
+              {{ dHISUserRev2.username }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.lastLogin">Last Login</span></td>
+            <td>
+              <span
+                [innerHTML]="showDiff(dHISUserRev2.lastLogin | formatMediumDatetime, dHISUserRev1.lastLogin | formatMediumDatetime)"
+              ></span>
+            </td>
+            <td>
+              {{ dHISUserRev2.lastLogin | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.email">Email</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dHISUserRev2.email, dHISUserRev1.email)"></span>
+            </td>
+            <td>
+              {{ dHISUserRev2.email }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.phoneNumber">Phone Number</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dHISUserRev2.phoneNumber, dHISUserRev1.phoneNumber)"></span>
+            </td>
+            <td>
+              {{ dHISUserRev2.phoneNumber }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.disabled">Disabled</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dHISUserRev2.disabled, dHISUserRev1.disabled)"></span>
+            </td>
+            <td>
+              {{ dHISUserRev2.disabled }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.passwordLastUpdated">Password Last Updated</span></td>
+            <td>
+              <span
+                [innerHTML]="
+                  showDiff(dHISUserRev2.passwordLastUpdated | formatMediumDatetime, dHISUserRev1.passwordLastUpdated | formatMediumDatetime)
+                "
+              ></span>
+            </td>
+            <td>
+              {{ dHISUserRev2.passwordLastUpdated | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.created">Created</span></td>
+            <td>
+              <span [innerHTML]="showDiff(dHISUserRev2.created | formatMediumDatetime, dHISUserRev1.created | formatMediumDatetime)"></span>
+            </td>
+            <td>
+              {{ dHISUserRev2.created | formatMediumDatetime }}
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.created">Created</span></td>
+            <td>
+              <span *ngIf="dHISUserRev1.createdBy">{{ dHISUserRev1.createdBy.username }}</span>
+            </td>
+            <td>
+              <span *ngIf="dHISUserRev2.createdBy">{{ dHISUserRev2.createdBy.username }}</span>
+            </td>
+          </tr>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.lastUpdated">Last Updated</span></td>
+            <td>
+              <span
+                [innerHTML]="showDiff(dHISUserRev2.lastUpdated | formatMediumDatetime, dHISUserRev1.lastUpdated | formatMediumDatetime)"
+              ></span>
+            </td>
+            <td>
+              {{ dHISUserRev2.lastUpdated | formatMediumDatetime }}
+            </td>
+          </tr>
 
-      <jhi-alert></jhi-alert>
-
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.id">Id</span></dt>
-        <dd>
-          <span>{{ dHISUser.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.code">Code</span></dt>
-        <dd>
-          <span>{{ dHISUser.code }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.name">Name</span></dt>
-        <dd>
-          <span>{{ dHISUser.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.displayName">Display Name</span></dt>
-        <dd>
-          <span>{{ dHISUser.displayName }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.username">Username</span></dt>
-        <dd>
-          <span>{{ dHISUser.username }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.lastLogin">Last Login</span></dt>
-        <dd>
-          <span>{{ dHISUser.lastLogin | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.email">Email</span></dt>
-        <dd>
-          <span>{{ dHISUser.email }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.phoneNumber">Phone Number</span></dt>
-        <dd>
-          <span>{{ dHISUser.phoneNumber }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.disabled">Disabled</span></dt>
-        <dd>
-          <span>{{ dHISUser.disabled }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.passwordLastUpdated">Password Last Updated</span></dt>
-        <dd>
-          <span>{{ dHISUser.passwordLastUpdated | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.created">Created</span></dt>
-        <dd>
-          <span>{{ dHISUser.created | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.lastUpdated">Last Updated</span></dt>
-        <dd>
-          <span>{{ dHISUser.lastUpdated | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="dhis2TrackApp.dHISUser.track">Track</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'dhis2TrackApp.TypeTrack.' + dHISUser.track }}">{{ dHISUser.track }}</span>
-        </dd>
-      </dl>
+          <tr>
+            <td><span jhiTranslate="dhis2TrackApp.dHISUser.lastUpdated">Last Updated</span></td>
+            <td>
+              <span
+                *ngIf="dHISUserRev1.lastUpdatedBy && dHISUserRev2.lastUpdatedBy"
+                [innerHTML]="showDiff(dHISUserRev2.lastUpdatedBy.username, dHISUserRev1.lastUpdatedBy.username)"
+              ></span>
+            </td>
+            <td>
+              <span *ngIf="dHISUserRev2.lastUpdatedBy">{{ dHISUserRev2.lastUpdatedBy.username }} </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
-
-      <button type="button" [routerLink]="['/dhis-user', dHISUser.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
       </button>
     </div>
   </div>

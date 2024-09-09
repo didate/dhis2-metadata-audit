@@ -11,7 +11,14 @@ public class DHISUserDTO extends AbstractDTO {
     private Integer revisionNumber;
 
     public DHISUserDTO(DHISUser dhisUser) {
-        super(dhisUser.getId(), dhisUser.getName(), dhisUser.getCreated(), dhisUser.getLastUpdated());
+        super(
+            dhisUser.getId(),
+            dhisUser.getName(),
+            dhisUser.getCreated(),
+            dhisUser.getLastUpdated(),
+            new DHISUser().username(dhisUser.getCreatedBy()),
+            new DHISUser().username(dhisUser.getLastUpdatedBy())
+        );
         this.disabled = dhisUser.getDisabled();
         this.username = dhisUser.getUsername();
         this.lastLogin = dhisUser.getLastLogin();

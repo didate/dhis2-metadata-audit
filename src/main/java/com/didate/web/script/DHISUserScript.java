@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -44,7 +45,8 @@ public class DHISUserScript {
 
         for (DHISUser user : dhisUsers) {
             TypeTrack typeTrack = determineTypeTrack(user.getId(), hasExistingUsers);
-            user = user.track(typeTrack).project(project);
+            user = user.track(typeTrack).project(project).lastLogin(user.getLastLogin() == null ? user.getCreated() : user.getLastLogin());
+
             if (typeTrack == TypeTrack.UPDATE) {
                 dhisUserService.partialUpdate(user);
             } else {

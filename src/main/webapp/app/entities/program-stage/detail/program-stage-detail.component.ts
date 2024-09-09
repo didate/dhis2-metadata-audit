@@ -41,14 +41,16 @@ export class ProgramStageDetailComponent implements OnInit {
   }
 
   load(rev1: number, rev2: number): void {
-    this.programStageService
-      .compare(this.programStage?.id!, rev1, rev2)
-      .pipe(tap(() => (this.isLoading = false)))
-      .subscribe({
-        next: (res: EntityArrayResponseType) => {
-          this.onResponseSuccess(res);
-        },
-      });
+    if (this.programStage) {
+      this.programStageService
+        .compare(this.programStage.id, rev1, rev2)
+        .pipe(tap(() => (this.isLoading = false)))
+        .subscribe({
+          next: (res: EntityArrayResponseType) => {
+            this.onResponseSuccess(res);
+          },
+        });
+    }
   }
 
   showDiff(text1: any, text2: any): any {

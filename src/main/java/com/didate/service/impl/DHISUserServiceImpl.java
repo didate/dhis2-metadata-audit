@@ -12,9 +12,11 @@ import com.didate.service.search.GenericFilterService;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -60,7 +62,7 @@ public class DHISUserServiceImpl implements DHISUserService {
         return dHISUserRepository
             .findById(dHISUser.getId())
             .map(existingDHISUser -> {
-                if (existingDHISUser.getLastUpdated().equals(dHISUser.getLastUpdated())) {
+                if (existingDHISUser.getLastUpdated() == dHISUser.getLastUpdated()) {
                     return existingDHISUser;
                 }
                 existingDHISUser.setCode(dHISUser.getCode());
@@ -76,12 +78,12 @@ public class DHISUserServiceImpl implements DHISUserService {
                 existingDHISUser.setLastUpdated(dHISUser.getLastUpdated());
                 existingDHISUser.setTrack(dHISUser.getTrack());
 
-                /*  if (!dHISUser.getCreatedBy().equals(existingDHISUser.getCreatedBy())) {
+                if (!Objects.equals(existingDHISUser.getCreatedBy(), dHISUser.getCreatedBy())) {
                     existingDHISUser.setCreatedBy(dHISUser.getCreatedBy());
                 }
-                if (!dHISUser.getLastUpdatedBy().equals(existingDHISUser.getLastUpdatedBy())) {
+                if (!Objects.equals(existingDHISUser.getLastUpdatedBy(), dHISUser.getLastUpdatedBy())) {
                     existingDHISUser.setLastUpdatedBy(dHISUser.getLastUpdatedBy());
-                } */
+                }
 
                 return existingDHISUser;
             })
@@ -126,8 +128,8 @@ public class DHISUserServiceImpl implements DHISUserService {
             .stream()
             .map(revision -> {
                 DHISUser dHisUser = revision.getEntity();
-                // Hibernate.unproxy(dHisUser.getCreatedBy());
-                // Hibernate.unproxy(dHisUser.getLastUpdatedBy());
+                Hibernate.unproxy(dHisUser.getCreatedBy());
+                Hibernate.unproxy(dHisUser.getLastUpdatedBy());
                 return new DHISUserDTO(dHisUser).revisionNumber(revision.getRequiredRevisionNumber());
             })
             .collect(Collectors.toList());
@@ -142,8 +144,8 @@ public class DHISUserServiceImpl implements DHISUserService {
             .orElseThrow(() -> new EntityNotFoundException("Revision not found"))
             .getEntity();
 
-        //Hibernate.unproxy(dhisUser.getCreatedBy());
-        //Hibernate.unproxy(dhisUser.getLastUpdatedBy());
+        Hibernate.unproxy(dhisUser.getCreatedBy());
+        Hibernate.unproxy(dhisUser.getLastUpdatedBy());
 
         return new DHISUserFullDTO(dhisUser);
     }

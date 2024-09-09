@@ -54,6 +54,13 @@
             <column name="project_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_updated_by" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="dhis_user" columnName="last_login" columnDataType="${datetimeType}"/>
@@ -61,6 +68,8 @@
         <dropDefaultValue tableName="dhis_user" columnName="created" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="dhis_user" columnName="last_updated" columnDataType="${datetimeType}"/>
     </changeSet>
+
+     
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
