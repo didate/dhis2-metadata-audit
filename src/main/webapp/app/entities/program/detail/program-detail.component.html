@@ -1,9 +1,18 @@
 <div class="d-flex justify-content-center page-component">
   <div class="col-10" *ngIf="programRev1 && programRev2">
-    <table class="table long-table">
+    <h2 data-cy="programDetailsHeading"><span jhiTranslate="dhis2TrackApp.program.detail.title">Program</span></h2>
+
+    <hr />
+
+    <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+      <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour </span>
+    </button>
+    <br /><br />
+
+    <table class="table-responsive">
       <thead>
         <tr>
-          <th></th>
+          <th>Fields</th>
           <th>Program 1</th>
           <th>Program 2</th>
         </tr>
@@ -49,13 +58,13 @@
           <td><span jhiTranslate="dhis2TrackApp.program.created">Created </span></td>
           <td>
             <span>
-              <span [innerHTML]="showDiff(programRev2.created, programRev1.created)"></span>
+              <span [innerHTML]="showDiff(programRev2.created | formatMediumDatetime, programRev1.created | formatMediumDatetime)"></span>
             </span>
           </td>
 
           <td>
             <span>
-              {{ programRev2.created }}
+              {{ programRev2.created | formatMediumDatetime }}
             </span>
           </td>
         </tr>
@@ -63,13 +72,15 @@
           <td><span jhiTranslate="dhis2TrackApp.program.lastUpdated">Last Updated </span></td>
           <td>
             <span>
-              <span [innerHTML]="showDiff(programRev2.lastUpdated, programRev1.lastUpdated)"></span>
+              <span
+                [innerHTML]="showDiff(programRev2.lastUpdated | formatMediumDatetime, programRev1.lastUpdated | formatMediumDatetime)"
+              ></span>
             </span>
           </td>
 
           <td>
             <span>
-              {{ programRev2.lastUpdated }}
+              {{ programRev2.lastUpdated | formatMediumDatetime }}
             </span>
           </td>
         </tr>

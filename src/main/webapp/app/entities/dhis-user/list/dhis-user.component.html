@@ -32,7 +32,14 @@
           placeholder="Months"
         />
       </div>
-      <div class="col-md-4 mt-3">
+      <div class="col-sm-2">
+        <select id="disabledFilter" class="form-control" [(ngModel)]="filterCriteria.disabled" name="disabled">
+          <option [ngValue]="null">All Users</option>
+          <option [ngValue]="false">Enabled Users</option>
+          <option [ngValue]="true">Disabled Users</option>
+        </select>
+      </div>
+      <div class="col-md-2 mt-3">
         <button [disabled]="isLoading" type="submit" class="btn btn-primary me-2">
           <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
           Filter
@@ -53,8 +60,8 @@
     <span jhiTranslate="dhis2TrackApp.dHISUser.home.notFound">Aucun DHIS User trouvé</span>
   </div>
 
-  <div class="table-responsive table-entities" id="entities" *ngIf="dHISUsers && dHISUsers.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
+  <div class="table-entities" id="entities" *ngIf="dHISUsers && dHISUsers.length > 0">
+    <table class="table-responsive table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
           <th scope="col" jhiSortBy="id">

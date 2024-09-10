@@ -1,16 +1,11 @@
 package com.didate.service.impl;
 
 import com.didate.domain.DHISUser;
-import com.didate.domain.TrackedEntityAttribute;
 import com.didate.repository.DHISUserRepository;
 import com.didate.service.DHISUserService;
 import com.didate.service.dto.DHISUserDTO;
 import com.didate.service.dto.DHISUserFullDTO;
-import com.didate.service.search.DHIS2UserEntitySpecification;
 import com.didate.service.search.DHIS2UserFilterService;
-import com.didate.service.search.GenericFilterService;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -151,7 +146,7 @@ public class DHISUserServiceImpl implements DHISUserService {
     }
 
     @Override
-    public Page<DHISUserDTO> findAll(Pageable pageable, String id, String name, String username, Integer months) {
-        return filterService.filter(dHISUserRepository, id, name, username, months, pageable).map(DHISUserDTO::new);
+    public Page<DHISUserDTO> findAll(Pageable pageable, String id, String name, String username, Integer months, Boolean disabled) {
+        return filterService.filter(dHISUserRepository, id, name, username, months, disabled, pageable).map(DHISUserDTO::new);
     }
 }

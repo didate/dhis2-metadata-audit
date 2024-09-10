@@ -5,11 +5,13 @@
 
       <hr />
 
-      <jhi-alert-error></jhi-alert-error>
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour </span>
+      </button>
 
-      <jhi-alert></jhi-alert>
+      <br /><br />
 
-      <table class="table long-table">
+      <table class="table-responsive">
         <thead>
           <tr>
             <th><span>Field</span></th>

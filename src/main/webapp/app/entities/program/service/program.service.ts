@@ -42,7 +42,9 @@ export class ProgramService {
   }
 
   compare(id: string, rev1: number, rev2: number): Observable<EntityArrayResponseType> {
-    return this.http.get<IProgram[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' });
+    return this.http
+      .get<RestProgram[]>(`${this.resourceUrl}/${id}/compare/${rev1}/${rev2}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   getProgramIdentifier(program: Pick<IProgram, 'id'>): string {

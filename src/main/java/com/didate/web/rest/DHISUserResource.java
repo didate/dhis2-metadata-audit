@@ -50,10 +50,11 @@ public class DHISUserResource {
         @RequestParam(required = false) String id,
         @RequestParam(required = false) String name,
         @RequestParam(required = false) String username,
-        @RequestParam(required = false) Integer months
+        @RequestParam(required = false) Integer months,
+        @RequestParam(required = false) Boolean disabled
     ) {
         log.debug("REST request to get a page of DHISUsers");
-        Page<DHISUserDTO> page = dHISUserService.findAll(pageable, id, name, username, months);
+        Page<DHISUserDTO> page = dHISUserService.findAll(pageable, id, name, username, months, disabled);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
