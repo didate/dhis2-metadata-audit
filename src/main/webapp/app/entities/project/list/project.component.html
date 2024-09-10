@@ -29,7 +29,7 @@
   </div>
 
   <div class="table-entities" id="entities" *ngIf="projects && projects.length > 0">
-    <table class="table long-table" aria-describedby="page-heading">
+    <table class="table-responsive" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
           <th scope="col" jhiSortBy="projectName">

@@ -20,6 +20,8 @@ import javax.persistence.PostPersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.domain.Persistable;
@@ -977,55 +979,22 @@ public class Program implements Serializable, Persistable<String> {
         return getClass().hashCode();
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "Program{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", created='" + getCreated() + "'" +
-            ", lastUpdated='" + getLastUpdated() + "'" +
-            ", shortName='" + getShortName() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", version=" + getVersion() +
-            ", enrollmentDateLabel='" + getEnrollmentDateLabel() + "'" +
-            ", incidentDateLabel='" + getIncidentDateLabel() + "'" +
-            ", programType='" + getProgramType() + "'" +
-            ", displayIncidentDate='" + getDisplayIncidentDate() + "'" +
-            ", ignoreOverdueEvents='" + getIgnoreOverdueEvents() + "'" +
-           // ", userRoles='" + getUserRoles() + "'" +
-            ", onlyEnrollOnce='" + getOnlyEnrollOnce() + "'" +
-            //", notificationTemplates='" + getNotificationTemplates() + "'" +
-            ", selectEnrollmentDatesInFuture='" + getSelectEnrollmentDatesInFuture() + "'" +
-            ", selectIncidentDatesInFuture='" + getSelectIncidentDatesInFuture() + "'" +
-            //", trackedEntityType='" + getTrackedEntityType() + "'" +
-           // ", style='" + getStyle() + "'" +
-            ", skipOffline='" + getSkipOffline() + "'" +
-            ", displayFrontPageList='" + getDisplayFrontPageList() + "'" +
-            ", useFirstStageDuringRegistration='" + getUseFirstStageDuringRegistration() + "'" +
-            ", expiryDays=" + getExpiryDays() +
-            ", completeEventsExpiryDays=" + getCompleteEventsExpiryDays() +
-            ", openDaysAfterCoEndDate=" + getOpenDaysAfterCoEndDate() +
-            ", minAttributesRequiredToSearch=" + getMinAttributesRequiredToSearch() +
-            ", maxTeiCountToReturn=" + getMaxTeiCountToReturn() +
-            ", accessLevel='" + getAccessLevel() + "'" +
-            ", displayEnrollmentDateLabel='" + getDisplayEnrollmentDateLabel() + "'" +
-            ", displayIncidentDateLabel='" + getDisplayIncidentDateLabel() + "'" +
-            ", registration='" + getRegistration() + "'" +
-            ", withoutRegistration='" + getWithoutRegistration() + "'" +
-            ", displayShortName='" + getDisplayShortName() + "'" +
-            ", displayDescription='" + getDisplayDescription() + "'" +
-            ", displayFormName='" + getDisplayFormName() + "'" +
-            ", displayName='" + getDisplayName() + "'" +
-            ", organisationUnitsCount=" + getOrganisationUnitsCount() +
-            ", programStagesCount=" + getProgramStagesCount() +
-            ", programIndicatorsCount=" + getProgramIndicatorsCount() +
-            ", programTrackedEntityAttributesCount=" + getProgramTrackedEntityAttributesCount() +
-            ", organisationUnitsContent='" + getOrganisationUnitsContent() + "'" +
-            ", programStagesContent='" + getProgramStagesContent() + "'" +
-            ", programIndicatorsContent='" + getProgramIndicatorsContent() + "'" +
-            ", programTrackedEntityAttributesContent='" + getProgramTrackedEntityAttributesContent() + "'" +
-            ", track='" + getTrack() + "'" +
-            "}";
+        return (
+            "Program [id=" +
+            id +
+            ", name=" +
+            name +
+            ", created=" +
+            created +
+            ", lastUpdated=" +
+            lastUpdated +
+            ", createdBy=" +
+            createdBy +
+            ", lastUpdatedBy=" +
+            lastUpdatedBy +
+            "]"
+        );
     }
 }

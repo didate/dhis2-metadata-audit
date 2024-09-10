@@ -18,6 +18,7 @@ public class DHIS2UserFilterService {
         String name,
         String username,
         Integer months,
+        Boolean disabled,
         Pageable pageable
     ) {
         Specification<DHISUser> specification = Specification.where(null);
@@ -35,6 +36,10 @@ public class DHIS2UserFilterService {
         if (months != null && months != 0) {
             Instant monthsAgo = Instant.now().minus(30l * months, ChronoUnit.DAYS);
             specification = specification.and(DHIS2UserEntitySpecification.lastLoginBefore(monthsAgo));
+        }
+
+        if (disabled != null) {
+            specification = specification.and(DHIS2UserEntitySpecification.disabled(disabled)); // Add this line
         }
         return userRepository.findAll(specification, pageable);
     }

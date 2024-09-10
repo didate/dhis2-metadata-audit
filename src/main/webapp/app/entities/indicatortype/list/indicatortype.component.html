@@ -34,8 +34,8 @@
     <span jhiTranslate="dhis2TrackApp.indicatortype.home.notFound">Aucun Indicatortype trouvé</span>
   </div>
 
-  <div class="table-responsive table-entities" id="entities" *ngIf="indicatortypes && indicatortypes.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
+  <div class="table-entities" id="entities" *ngIf="indicatortypes && indicatortypes.length > 0">
+    <table class="table-responsive table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
           <th scope="col" jhiSortBy="id">

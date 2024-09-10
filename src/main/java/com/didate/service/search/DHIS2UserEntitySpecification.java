@@ -15,4 +15,8 @@ public class DHIS2UserEntitySpecification {
     public static <T> Specification<T> lastLoginBefore(Instant date) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.lessThan(root.get("lastLogin"), date);
     }
+
+    public static <T> Specification<T> disabled(Boolean disabled) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("disabled"), disabled);
+    }
 }

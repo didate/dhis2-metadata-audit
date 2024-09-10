@@ -2,7 +2,14 @@
   <div class="col-10">
     <div *ngIf="indicator && indicatorRev1 && indicatorRev2">
       <h2 data-cy="indicatorDetailsHeading"><span jhiTranslate="dhis2TrackApp.indicator.detail.title">Indicator</span></h2>
-      <table class="table long-table">
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour </span>
+      </button>
+
+      <br /><br />
+
+      <table class="table-responsive">
         <thead>
           <tr>
             <th></th>

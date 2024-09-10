@@ -20,7 +20,7 @@ export class DHISUserComponent implements OnInit {
 
   predicate = 'id';
 
-  filterCriteria = { id: '', name: '', username: '', months: 0 };
+  filterCriteria = { id: '', name: '', username: '', months: 0, disabled: null };
   ascending = true;
 
   itemsPerPage = ITEMS_PER_PAGE;
@@ -55,7 +55,7 @@ export class DHISUserComponent implements OnInit {
   }
 
   clearFilters(): void {
-    this.filterCriteria = { id: '', name: '', username: '', months: 0 };
+    this.filterCriteria = { id: '', name: '', username: '', months: 0, disabled: null };
     this.page = 1;
     this.navigateToWithComponentValues();
   }
