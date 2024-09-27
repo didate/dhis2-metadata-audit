@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,5 +39,11 @@ public class DhisApiService<T> {
         }
 
         return data;
+    }
+
+    public void disableUser(Project project, String userUID) throws java.io.IOException {
+        OkHttpClient client = OkHttpClientConfig.createClient(project.getToken());
+        String url = project.getDhis2URL() + "/api/users/" + userUID + "/disabled";
+        DhisServiceUtil.post(client, url, null);
     }
 }
