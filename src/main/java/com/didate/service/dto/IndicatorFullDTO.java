@@ -4,7 +4,6 @@ import com.didate.domain.Indicator;
 import com.didate.domain.IndicatorType;
 import com.didate.domain.Project;
 import com.didate.domain.enumeration.TypeTrack;
-import org.joda.time.Instant;
 
 public class IndicatorFullDTO extends AbstractDTO {
 

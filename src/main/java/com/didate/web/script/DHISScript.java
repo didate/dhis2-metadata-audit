@@ -1,12 +1,15 @@
 package com.didate.web.script;
 
 import com.didate.domain.Project;
+import com.didate.service.DHISUserService;
 import com.didate.service.ProjectService;
+import com.didate.service.dto.DHISUserDTO;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +35,7 @@ public class DHISScript {
     private final OptionSetScript optionSetScript;
     private final ProgramScript programScript;
     private final DataSetScript dataSetScript;
+    private final DHISUserService dHISUserService;
 
     public DHISScript(
         ProjectService projectService,
@@ -50,7 +54,8 @@ public class DHISScript {
         IndicatorTypeScript indicatorTypeScript,
         OptionSetScript optionSetScript,
         ProgramScript programScript,
-        DataSetScript dataSetScript
+        DataSetScript dataSetScript,
+        DHISUserService dHISUserService
     ) {
         this.projectService = projectService;
         this.userScript = userScript;
@@ -69,11 +74,12 @@ public class DHISScript {
         this.optionSetScript = optionSetScript;
         this.programScript = programScript;
         this.dataSetScript = dataSetScript;
+        this.dHISUserService = dHISUserService;
     }
 
-    @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
+    //@Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
     public void script() throws IOException {
-        log.info("Calling dataElements API...");
+        log.info("Running audit script ...");
 
         List<Project> projects = projectService.findAll();
 
@@ -100,6 +106,23 @@ public class DHISScript {
             programRuleVariableScript.perform(project);
 
             programRuleActionScript.perform(project);
+        }
+    }
+
+    //@Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
+    public void disableUser() throws IOException {
+        log.info("Running disabling users script ...");
+
+        List<DHISUserDTO> dhisUserDTOs = dHISUserService
+            .findAll(PageRequest.of(0, Integer.MAX_VALUE), null, null, null, 4, false)
+            .getContent();
+
+        List<Project> projects = projectService.findAll();
+
+        if (!projects.isEmpty()) {
+            for (DHISUserDTO userDTO : dhisUserDTOs) {
+                userScript.disableUser(projects.get(0), userDTO.getId());
+            }
         }
     }
 }

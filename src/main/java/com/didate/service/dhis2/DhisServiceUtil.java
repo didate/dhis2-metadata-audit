@@ -1,11 +1,13 @@
 package com.didate.service.dhis2;
 
+import com.didate.domain.Project;
 import com.didate.service.dhis2.response.Dhis2ApiResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,5 +38,17 @@ public class DhisServiceUtil {
 
     public static boolean hasNextPage(Pager pager) {
         return pager != null && pager.getNextPage() != null && !"".equals(pager.getNextPage());
+    }
+
+    public static String post(OkHttpClient client, String url, RequestBody requestBody) throws IOException {
+        RequestBody body = RequestBody.create(new byte[] {});
+        Request request = new Request.Builder().url(url).post(body).build();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+
+            return response.body().string();
+        }
     }
 }
