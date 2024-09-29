@@ -130,7 +130,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let dHISUser of dHISUsers; trackBy: trackId" data-cy="entityTable">
+        <tr *ngFor="let dHISUser of dHISUsers; trackBy: trackId" data-cy="entityTable" [ngClass]="dHISUser.disabled ? 'text-danger' : ''">
           <td>
             {{ dHISUser.id }}
           </td>
