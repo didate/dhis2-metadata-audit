@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.DHISUser;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.dto.DHISUserDTO;
 import com.didate.service.dto.DHISUserFullDTO;
 import java.util.List;
@@ -63,6 +64,7 @@ public interface DHISUserService {
 
     Boolean exist(String id);
     Long count();
+    long countByTrack(TypeTrack track);
 
     List<DHISUserDTO> findAudits(String id);
     DHISUserFullDTO findAuditRevision(String id, Integer rev);

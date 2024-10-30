@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.Program;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.dto.ProgramDTO;
 import com.didate.service.dto.ProgramFullDTO;
 import java.util.List;
@@ -79,6 +80,7 @@ public interface ProgramService {
 
     Boolean exist(String id);
     Long count();
+    long countByTrack(TypeTrack track);
 
     List<ProgramDTO> findAudits(String id);
     ProgramFullDTO findAuditRevision(String id, Integer rev);

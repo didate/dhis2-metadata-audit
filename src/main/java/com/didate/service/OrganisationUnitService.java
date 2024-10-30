@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.OrganisationUnit;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.dto.OrganisationUnitDTO;
 import com.didate.service.dto.OrganisationUnitFullDTO;
 import java.util.List;
@@ -63,6 +64,7 @@ public interface OrganisationUnitService {
 
     Boolean exist(String id);
     Long count();
+    long countByTrack(TypeTrack track);
 
     List<OrganisationUnitDTO> findAudits(String id);
     OrganisationUnitFullDTO findAuditRevision(String id, Integer rev);

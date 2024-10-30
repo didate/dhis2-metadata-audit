@@ -2,6 +2,7 @@ package com.didate.service.impl;
 
 import com.didate.domain.ProgramRuleVariable;
 import com.didate.domain.ProgramStage;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.ProgramStageRepository;
 import com.didate.service.ProgramStageService;
 import com.didate.service.dto.ProgramStageDTO;
@@ -224,5 +225,10 @@ public class ProgramStageServiceImpl implements ProgramStageService {
     @Override
     public Page<ProgramStageDTO> findAll(Pageable pageable, String id, String name) {
         return filterService.filter(programStageRepository, id, name, pageable).map(ProgramStageDTO::new);
+    }
+
+    @Override
+    public long countByTrack(TypeTrack track) {
+        return programStageRepository.countByTrack(track);
     }
 }

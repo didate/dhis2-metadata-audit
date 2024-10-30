@@ -1,6 +1,7 @@
 package com.didate.service.impl;
 
 import com.didate.domain.DHISUser;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.DHISUserRepository;
 import com.didate.service.DHISUserService;
 import com.didate.service.dto.DHISUserDTO;
@@ -148,5 +149,10 @@ public class DHISUserServiceImpl implements DHISUserService {
     @Override
     public Page<DHISUserDTO> findAll(Pageable pageable, String id, String name, String username, Integer months, Boolean disabled) {
         return filterService.filter(dHISUserRepository, id, name, username, months, disabled, pageable).map(DHISUserDTO::new);
+    }
+
+    @Override
+    public long countByTrack(TypeTrack track) {
+        return dHISUserRepository.countByTrack(track);
     }
 }

@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.OptionGroup;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.dto.OptionGroupDTO;
 import java.util.List;
 import java.util.Optional;
@@ -62,6 +63,7 @@ public interface OptionGroupService {
 
     Boolean exist(String id);
     Long count();
+    long countByTrack(TypeTrack track);
 
     List<OptionGroupDTO> findAudits(String id);
     OptionGroupDTO findAuditRevision(String id, Integer rev);

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DHIS2 Updates</title>
+
+    <style>
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      tbody th {
+        text-align: left;
+      }
+
+      td,
+      th {
+        padding: 10px;
+      }
+      .has-value {
+        background-color: aqua;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Object</th>
+          <th scope="col">Nombre de mise à jour</th>
+          <th scope="col">Nombre d'ajout</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">DataElement</th>
+          <td th:class="${updateDataElement}>0 ? 'has-value':''" th:text="${updateDataElement}"></td>
+          <td th:class="${newDataElement}>0 ? 'has-value':''" th:text="${newDataElement}"></td>
+        </tr>
+        <tr>
+          <th scope="row">Indicator</th>
+          <td th:class="${updateIndicator}>0 ? 'has-value':''" th:text="${updateIndicator}"></td>
+          <td th:class="${newIndicator}>0 ? 'has-value':''" th:text="${newIndicator}"></td>
+        </tr>
+        <tr>
+          <th scope="row">CategoryCombo</th>
+          <td th:class="${updateCategoryCombo}>0 ? 'has-value':''" th:text="${updateCategoryCombo}"></td>
+          <td th:class="${newCategoryCombo}>0 ? 'has-value':''" th:text="${newCategoryCombo}"></td>
+        </tr>
+        <tr>
+          <th scope="row">OptionGroup</th>
+          <td th:class="${updateOptionGroup}>0 ? 'has-value':''" th:text="${updateOptionGroup}"></td>
+          <td th:class="${newOptionGroup}>0 ? 'has-value':''" th:text="${newOptionGroup}"></td>
+        </tr>
+        <tr>
+          <th scope="row">TrackedEntityAttribute</th>
+          <td th:class="${updateTrackedEntityAttribute}>0 ? 'has-value':''" th:text="${updateTrackedEntityAttribute}"></td>
+          <td th:class="${newTrackedEntityAttribute}>0 ? 'has-value':''" th:text="${newTrackedEntityAttribute}"></td>
+        </tr>
+        <tr>
+          <th scope="row">ProgramStage</th>
+          <td th:class="${updateProgramStage}>0 ? 'has-value':''" th:text="${updateProgramStage}"></td>
+          <td th:class="${newProgramStage}>0 ? 'has-value':''" th:text="${newProgramStage}"></td>
+        </tr>
+        <tr>
+          <th scope="row">ProgramIndicator</th>
+          <td th:class="${updateProgramIndicator}>0 ? 'has-value':''" th:text="${updateProgramIndicator}"></td>
+          <td th:class="${newProgramIndicator}>0 ? 'has-value':''" th:text="${newProgramIndicator}"></td>
+        </tr>
+        <tr>
+          <th scope="row">ProgramRule</th>
+          <td th:class="${updateProgramRule}>0 ? 'has-value':''" th:text="${updateProgramRule}"></td>
+          <td th:class="${newProgramRule}>0 ? 'has-value':''" th:text="${newProgramRule}"></td>
+        </tr>
+        <tr>
+          <th scope="row">ProgramRuleVariable</th>
+          <td th:class="${updateProgramRuleVariable}>0 ? 'has-value':''" th:text="${updateProgramRuleVariable}"></td>
+          <td th:class="${newProgramRuleVariable}>0 ? 'has-value':''" th:text="${newProgramRuleVariable}"></td>
+        </tr>
+        <tr>
+          <th scope="row">ProgramRuleAction</th>
+          <td th:class="${updateProgramRuleAction}>0 ? 'has-value':''" th:text="${updateProgramRuleAction}"></td>
+          <td th:class="${newProgramRuleAction}>0 ? 'has-value':''" th:text="${newProgramRuleAction}"></td>
+        </tr>
+        <tr>
+          <th scope="row">OrganisationUnit</th>
+          <td th:class="${updateOrganisationUnit}>0 ? 'has-value':''" th:text="${updateOrganisationUnit}"></td>
+          <td th:class="${newOrganisationUnit}>0 ? 'has-value':''" th:text="${newOrganisationUnit}"></td>
+        </tr>
+        <tr>
+          <th scope="row">IndicatorType</th>
+          <td th:class="${updateIndicatorType}>0 ? 'has-value':''" th:text="${updateIndicatorType}"></td>
+          <td th:class="${newIndicatorType}>0 ? 'has-value':''" th:text="${newIndicatorType}"></td>
+        </tr>
+        <tr>
+          <th scope="row">OptionSet</th>
+          <td th:class="${updateOptionSet}>0 ? 'has-value':''" th:text="${updateOptionSet}"></td>
+          <td th:class="${newOptionSet}>0 ? 'has-value':''" th:text="${newOptionSet}"></td>
+        </tr>
+        <tr>
+          <th scope="row">Program</th>
+          <td th:class="${updateProgram}>0 ? 'has-value':''" th:text="${updateProgram}"></td>
+          <td th:class="${newProgram}>0 ? 'has-value':''" th:text="${newProgram}"></td>
+        </tr>
+        <tr>
+          <th scope="row">DataSet</th>
+          <td th:class="${updateDataSet}>0 ? 'has-value':''" th:text="${updateDataSet}"></td>
+          <td th:class="${newDataSet}>0 ? 'has-value':''" th:text="${newDataSet}"></td>
+        </tr>
+        <tr>
+          <th scope="row">User</th>
+          <td th:class="${updatedHISUser}>0 ? 'has-value':''" th:text="${updatedHISUser}"></td>
+          <td th:class="${newdHISUser}>0 ? 'has-value':''" th:text="${newdHISUser}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

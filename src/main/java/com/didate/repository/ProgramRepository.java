@@ -1,6 +1,7 @@
 package com.didate.repository;
 
 import com.didate.domain.Program;
+import com.didate.domain.enumeration.TypeTrack;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -34,4 +35,6 @@ public interface ProgramRepository
     default Page<Program> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    long countByTrack(TypeTrack track);
 }

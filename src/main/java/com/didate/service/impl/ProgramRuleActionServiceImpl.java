@@ -2,6 +2,7 @@ package com.didate.service.impl;
 
 import com.didate.domain.ProgramIndicator;
 import com.didate.domain.ProgramRuleAction;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.ProgramRuleActionRepository;
 import com.didate.service.ProgramRuleActionService;
 import com.didate.service.dto.ProgramRuleActionDTO;
@@ -169,5 +170,10 @@ public class ProgramRuleActionServiceImpl implements ProgramRuleActionService {
     @Override
     public Page<ProgramRuleActionDTO> findAll(Pageable pageable, String id, String name) {
         return filterService.filter(programRuleActionRepository, id, name, pageable).map(ProgramRuleActionDTO::new);
+    }
+
+    @Override
+    public long countByTrack(TypeTrack track) {
+        return programRuleActionRepository.countByTrack(track);
     }
 }

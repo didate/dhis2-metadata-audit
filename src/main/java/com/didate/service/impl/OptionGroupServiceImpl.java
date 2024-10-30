@@ -2,6 +2,7 @@ package com.didate.service.impl;
 
 import com.didate.domain.IndicatorType;
 import com.didate.domain.OptionGroup;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.OptionGroupRepository;
 import com.didate.service.OptionGroupService;
 import com.didate.service.dto.OptionGroupDTO;
@@ -144,5 +145,10 @@ public class OptionGroupServiceImpl implements OptionGroupService {
     @Override
     public Page<OptionGroupDTO> findAll(Pageable pageable, String id, String name) {
         return filterService.filter(optionGroupRepository, id, name, pageable).map(OptionGroupDTO::new);
+    }
+
+    @Override
+    public long countByTrack(TypeTrack track) {
+        return optionGroupRepository.countByTrack(track);
     }
 }

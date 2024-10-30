@@ -53,14 +53,7 @@ public class MailService {
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
-        log.debug(
-            "Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
-            isMultipart,
-            isHtml,
-            to,
-            subject,
-            content
-        );
+        log.debug("Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' ", isMultipart, isHtml, to, subject);
 
         // Prepare message using a Spring helper
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -90,6 +83,12 @@ public class MailService {
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
+    }
+
+    @Async
+    public void sendNotification(String email, Context context) {
+        String content = templateEngine.process("mail/notification.html", context);
+        sendEmail(email, "DHIS2 Notification", content, false, true);
     }
 
     @Async

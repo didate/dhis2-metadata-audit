@@ -4,12 +4,10 @@ import com.didate.domain.DataSet;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.hibernate.annotations.QueryHints;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
