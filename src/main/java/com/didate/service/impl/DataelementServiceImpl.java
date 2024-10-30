@@ -2,6 +2,7 @@ package com.didate.service.impl;
 
 import com.didate.domain.CategoryCombo;
 import com.didate.domain.DataElement;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.DataelementRepository;
 import com.didate.service.DataelementService;
 import com.didate.service.dto.DataElementDTO;
@@ -197,5 +198,10 @@ public class DataelementServiceImpl implements DataelementService {
     @Override
     public Page<DataElementDTO> findAll(Pageable pageable, String id, String name) {
         return filterService.filter(dataelementRepository, id, name, pageable).map(DataElementDTO::new);
+    }
+
+    @Override
+    public long countByTrack(TypeTrack track) {
+        return dataelementRepository.countByTrack(track);
     }
 }

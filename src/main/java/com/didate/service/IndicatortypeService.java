@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.IndicatorType;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.dto.IndicatorTypeDTO;
 import java.util.List;
 import java.util.Optional;
@@ -62,6 +63,7 @@ public interface IndicatortypeService {
 
     Boolean exist(String id);
     Long count();
+    long countByTrack(TypeTrack track);
 
     List<IndicatorTypeDTO> findAudits(String id);
     IndicatorTypeDTO findAuditRevision(String id, Integer rev);

@@ -2,6 +2,7 @@ package com.didate.service.impl;
 
 import com.didate.domain.OrganisationUnit;
 import com.didate.domain.Program;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.OrganisationUnitRepository;
 import com.didate.service.OrganisationUnitService;
 import com.didate.service.dto.OrganisationUnitDTO;
@@ -161,5 +162,10 @@ public class OrganisationUnitServiceImpl implements OrganisationUnitService {
     @Override
     public Page<OrganisationUnitDTO> findAll(Pageable pageable, String id, String name) {
         return filterService.filter(organisationUnitRepository, id, name, pageable).map(OrganisationUnitDTO::new);
+    }
+
+    @Override
+    public long countByTrack(TypeTrack track) {
+        return organisationUnitRepository.countByTrack(track);
     }
 }

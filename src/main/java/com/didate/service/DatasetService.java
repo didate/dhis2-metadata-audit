@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.DataSet;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.dto.DataSetDTO;
 import com.didate.service.dto.DataSetFullDTO;
 import java.util.List;
@@ -73,6 +74,7 @@ public interface DatasetService {
 
     Boolean exist(String id);
     Long count();
+    long countByTrack(TypeTrack track);
 
     List<DataSetDTO> findAudits(String id);
     DataSetFullDTO findAuditRevision(String id, Integer rev);

@@ -1,7 +1,7 @@
 package com.didate.service.impl;
 
-import com.didate.domain.ProgramStage;
 import com.didate.domain.TrackedEntityAttribute;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.TrackedEntityAttributeRepository;
 import com.didate.service.TrackedEntityAttributeService;
 import com.didate.service.dto.TrackedEntityAttributeDTO;
@@ -208,5 +208,10 @@ public class TrackedEntityAttributeServiceImpl implements TrackedEntityAttribute
     @Override
     public Page<TrackedEntityAttributeDTO> findAll(Pageable pageable, String id, String name) {
         return filterService.filter(trackedEntityAttributeRepository, id, name, pageable).map(TrackedEntityAttributeDTO::new);
+    }
+
+    @Override
+    public long countByTrack(TypeTrack track) {
+        return trackedEntityAttributeRepository.countByTrack(track);
     }
 }

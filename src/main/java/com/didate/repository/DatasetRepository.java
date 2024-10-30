@@ -1,15 +1,14 @@
 package com.didate.repository;
 
-import com.didate.domain.CategoryCombo;
 import com.didate.domain.DataSet;
-import java.util.List;
+import com.didate.domain.enumeration.TypeTrack;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.history.RevisionRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -36,4 +35,6 @@ public interface DatasetRepository
     default Page<DataSet> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    long countByTrack(TypeTrack track);
 }

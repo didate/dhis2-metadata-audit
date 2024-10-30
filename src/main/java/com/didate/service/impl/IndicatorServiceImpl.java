@@ -2,6 +2,7 @@ package com.didate.service.impl;
 
 import com.didate.domain.DataSet;
 import com.didate.domain.Indicator;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.IndicatorRepository;
 import com.didate.service.IndicatorService;
 import com.didate.service.dto.IndicatorDTO;
@@ -198,5 +199,10 @@ public class IndicatorServiceImpl implements IndicatorService {
     @Override
     public Page<IndicatorDTO> findAll(Pageable pageable, String id, String name) {
         return filterService.filter(indicatorRepository, id, name, pageable).map(IndicatorDTO::new);
+    }
+
+    @Override
+    public long countByTrack(TypeTrack track) {
+        return indicatorRepository.countByTrack(track);
     }
 }

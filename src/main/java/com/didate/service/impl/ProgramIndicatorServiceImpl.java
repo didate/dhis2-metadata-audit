@@ -2,6 +2,7 @@ package com.didate.service.impl;
 
 import com.didate.domain.OrganisationUnit;
 import com.didate.domain.ProgramIndicator;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.ProgramIndicatorRepository;
 import com.didate.service.ProgramIndicatorService;
 import com.didate.service.dto.ProgramIndicatorDTO;
@@ -179,5 +180,10 @@ public class ProgramIndicatorServiceImpl implements ProgramIndicatorService {
     @Override
     public Page<ProgramIndicatorDTO> findAll(Pageable pageable, String id, String name) {
         return filterService.filter(programIndicatorRepository, id, name, pageable).map(ProgramIndicatorDTO::new);
+    }
+
+    @Override
+    public long countByTrack(TypeTrack track) {
+        return programIndicatorRepository.countByTrack(track);
     }
 }

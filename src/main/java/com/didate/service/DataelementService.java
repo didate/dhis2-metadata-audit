@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.DataElement;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.dto.DataElementDTO;
 import com.didate.service.dto.DataElementFullDTO;
 import java.util.List;
@@ -65,6 +66,7 @@ public interface DataelementService {
 
     Boolean exist(String id);
     Long count();
+    long countByTrack(TypeTrack track);
 
     List<DataElementDTO> findAudits(String id);
     DataElementFullDTO findAuditRevision(String id, Integer rev);

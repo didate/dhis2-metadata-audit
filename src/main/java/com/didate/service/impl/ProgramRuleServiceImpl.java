@@ -2,6 +2,7 @@ package com.didate.service.impl;
 
 import com.didate.domain.ProgramRule;
 import com.didate.domain.ProgramRuleAction;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.ProgramRuleRepository;
 import com.didate.service.ProgramRuleService;
 import com.didate.service.dto.ProgramRuleDTO;
@@ -158,5 +159,10 @@ public class ProgramRuleServiceImpl implements ProgramRuleService {
     @Override
     public Page<ProgramRuleDTO> findAll(Pageable pageable, String id, String name) {
         return filterService.filter(programRuleRepository, id, name, pageable).map(ProgramRuleDTO::new);
+    }
+
+    @Override
+    public long countByTrack(TypeTrack track) {
+        return programRuleRepository.countByTrack(track);
     }
 }

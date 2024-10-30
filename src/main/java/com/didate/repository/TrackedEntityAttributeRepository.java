@@ -2,6 +2,7 @@ package com.didate.repository;
 
 import com.didate.domain.CategoryCombo;
 import com.didate.domain.TrackedEntityAttribute;
+import com.didate.domain.enumeration.TypeTrack;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,6 @@ public interface TrackedEntityAttributeRepository
     extends
         JpaRepository<TrackedEntityAttribute, String>,
         JpaSpecificationExecutor<TrackedEntityAttribute>,
-        RevisionRepository<TrackedEntityAttribute, String, Integer> {}
+        RevisionRepository<TrackedEntityAttribute, String, Integer> {
+    long countByTrack(TypeTrack track);
+}

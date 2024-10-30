@@ -2,6 +2,7 @@ package com.didate.service.impl;
 
 import com.didate.domain.CategoryCombo;
 import com.didate.domain.Program;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.CategorycomboRepository;
 import com.didate.service.CategorycomboService;
 import com.didate.service.dto.CategoryComboDTO;
@@ -146,5 +147,10 @@ public class CategorycomboServiceImpl implements CategorycomboService {
     @Override
     public Page<CategoryComboDTO> findAll(Pageable pageable, String id, String name) {
         return filterService.filter(categorycomboRepository, id, name, pageable).map(CategoryComboDTO::new);
+    }
+
+    @Override
+    public long countByTrack(TypeTrack track) {
+        return categorycomboRepository.countByTrack(track);
     }
 }

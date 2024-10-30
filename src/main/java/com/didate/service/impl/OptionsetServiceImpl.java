@@ -2,6 +2,7 @@ package com.didate.service.impl;
 
 import com.didate.domain.OptionSet;
 import com.didate.domain.OrganisationUnit;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.OptionsetRepository;
 import com.didate.service.OptionsetService;
 import com.didate.service.dto.OptionSetDTO;
@@ -150,5 +151,10 @@ public class OptionsetServiceImpl implements OptionsetService {
     @Override
     public Page<OptionSetDTO> findAll(Pageable pageable, String id, String name) {
         return filterService.filter(optionsetRepository, id, name, pageable).map(OptionSetDTO::new);
+    }
+
+    @Override
+    public long countByTrack(TypeTrack track) {
+        return optionsetRepository.countByTrack(track);
     }
 }

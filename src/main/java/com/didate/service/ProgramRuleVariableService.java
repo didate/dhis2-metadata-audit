@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.ProgramRuleVariable;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.dto.AbstractDTO;
 import com.didate.service.dto.ProgramRuleVariableDTO;
 import com.didate.service.dto.ProgramRuleVariableFullDTO;
@@ -65,6 +66,7 @@ public interface ProgramRuleVariableService {
 
     Boolean exist(String id);
     Long count();
+    long countByTrack(TypeTrack track);
 
     List<ProgramRuleVariableDTO> findAudits(String id);
     ProgramRuleVariableFullDTO findAuditRevision(String id, Integer rev);

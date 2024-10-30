@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.CategoryCombo;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.dto.CategoryComboDTO;
 import java.util.List;
 import java.util.Optional;
@@ -62,6 +63,7 @@ public interface CategorycomboService {
 
     Boolean exist(String id);
     Long count();
+    long countByTrack(TypeTrack track);
 
     List<CategoryComboDTO> findAudits(String id);
     CategoryComboDTO findAuditRevision(String id, Integer rev);

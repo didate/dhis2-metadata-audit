@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.ProgramRule;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.dto.ProgramRuleDTO;
 import com.didate.service.dto.ProgramRuleFullDTO;
 import java.util.List;
@@ -63,6 +64,7 @@ public interface ProgramRuleService {
 
     Boolean exist(String id);
     Long count();
+    long countByTrack(TypeTrack track);
 
     List<ProgramRuleDTO> findAudits(String id);
     ProgramRuleFullDTO findAuditRevision(String id, Integer rev);

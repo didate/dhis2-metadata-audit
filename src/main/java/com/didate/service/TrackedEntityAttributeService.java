@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.TrackedEntityAttribute;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.dto.TrackedEntityAttributeDTO;
 import com.didate.service.dto.TrackedEntityAttributeFullDTO;
 import java.util.List;
@@ -63,6 +64,7 @@ public interface TrackedEntityAttributeService {
 
     Boolean exist(String id);
     Long count();
+    long countByTrack(TypeTrack track);
 
     List<TrackedEntityAttributeDTO> findAudits(String id);
     TrackedEntityAttributeFullDTO findAuditRevision(String id, Integer rev);

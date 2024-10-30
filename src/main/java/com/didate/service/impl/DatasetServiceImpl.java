@@ -1,7 +1,7 @@
 package com.didate.service.impl;
 
-import com.didate.domain.DataElement;
 import com.didate.domain.DataSet;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.repository.DatasetRepository;
 import com.didate.service.DatasetService;
 import com.didate.service.dto.DataSetDTO;
@@ -251,5 +251,10 @@ public class DatasetServiceImpl implements DatasetService {
     @Override
     public Page<DataSetDTO> findAll(Pageable pageable, String id, String name) {
         return filterService.filter(datasetRepository, id, name, pageable).map(DataSetDTO::new);
+    }
+
+    @Override
+    public long countByTrack(TypeTrack track) {
+        return datasetRepository.countByTrack(track);
     }
 }

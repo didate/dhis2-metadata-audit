@@ -1,6 +1,7 @@
 package com.didate.service;
 
 import com.didate.domain.ProgramStage;
+import com.didate.domain.enumeration.TypeTrack;
 import com.didate.service.dto.ProgramStageDTO;
 import com.didate.service.dto.ProgramStageFullDTO;
 import java.util.List;
@@ -74,6 +75,7 @@ public interface ProgramStageService {
 
     Boolean exist(String id);
     Long count();
+    long countByTrack(TypeTrack track);
 
     List<ProgramStageDTO> findAudits(String id);
     ProgramStageFullDTO findAuditRevision(String id, Integer rev);

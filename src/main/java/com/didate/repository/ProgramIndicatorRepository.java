@@ -2,6 +2,7 @@ package com.didate.repository;
 
 import com.didate.domain.CategoryCombo;
 import com.didate.domain.ProgramIndicator;
+import com.didate.domain.enumeration.TypeTrack;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,6 @@ public interface ProgramIndicatorRepository
     extends
         JpaRepository<ProgramIndicator, String>,
         JpaSpecificationExecutor<ProgramIndicator>,
-        RevisionRepository<ProgramIndicator, String, Integer> {}
+        RevisionRepository<ProgramIndicator, String, Integer> {
+    long countByTrack(TypeTrack track);
+}
