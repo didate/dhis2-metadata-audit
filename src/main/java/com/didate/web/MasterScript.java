@@ -151,7 +151,7 @@ public class MasterScript {
         this.personNotifierService = personNotifierService;
     }
 
-    //@Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
     public void script() throws IOException {
         log.info("Running audit script ...");
 
@@ -183,7 +183,7 @@ public class MasterScript {
         }
     }
 
-    //@Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
     public void disableUser() throws IOException {
         log.info("Running disabling users script ...");
 
