@@ -183,7 +183,7 @@ public class MasterScript {
         }
     }
 
-    @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
+    // @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
     public void disableUser() throws IOException {
         log.info("Running disabling users script ...");
 
@@ -200,7 +200,7 @@ public class MasterScript {
         }
     }
 
-    @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
+    // @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
     public void sendNotification() {
         long newDataElement = dataElementService.countByTrack(TypeTrack.NEW);
         long newIndicator = indicatorService.countByTrack(TypeTrack.NEW);
