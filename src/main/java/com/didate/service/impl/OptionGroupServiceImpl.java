@@ -154,4 +154,9 @@ public class OptionGroupServiceImpl implements OptionGroupService {
     public long countByTrack(TypeTrack track) {
         return optionGroupRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        optionGroupRepository.setTrackNone();
+    }
 }

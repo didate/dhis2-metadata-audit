@@ -189,4 +189,9 @@ public class ProgramIndicatorServiceImpl implements ProgramIndicatorService {
     public long countByTrack(TypeTrack track) {
         return programIndicatorRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        programIndicatorRepository.setTrackNone();
+    }
 }

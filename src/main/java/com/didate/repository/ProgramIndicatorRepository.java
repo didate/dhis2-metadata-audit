@@ -18,4 +18,8 @@ public interface ProgramIndicatorRepository
         JpaSpecificationExecutor<ProgramIndicator>,
         RevisionRepository<ProgramIndicator, String, Integer> {
     long countByTrack(TypeTrack track);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update program_indicator set track='NONE'")
+    void setTrackNone();
 }

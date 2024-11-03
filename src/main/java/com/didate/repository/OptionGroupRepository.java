@@ -15,4 +15,8 @@ import org.springframework.stereotype.Repository;
 public interface OptionGroupRepository
     extends JpaRepository<OptionGroup, String>, JpaSpecificationExecutor<OptionGroup>, RevisionRepository<OptionGroup, String, Integer> {
     long countByTrack(TypeTrack track);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update option_group set track='NONE'")
+    void setTrackNone();
 }

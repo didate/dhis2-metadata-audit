@@ -234,4 +234,9 @@ public class ProgramStageServiceImpl implements ProgramStageService {
     public long countByTrack(TypeTrack track) {
         return programStageRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        programStageRepository.setTrackNone();
+    }
 }

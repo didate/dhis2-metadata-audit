@@ -66,6 +66,8 @@ public interface OrganisationUnitService {
     Long count();
     long countByTrack(TypeTrack track);
 
+    void setTrackNone();
+
     List<OrganisationUnitDTO> findAudits(String id);
     OrganisationUnitFullDTO findAuditRevision(String id, Integer rev);
 }

@@ -286,4 +286,9 @@ public class ProgramServiceImpl implements ProgramService {
     public long countByTrack(TypeTrack track) {
         return programRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        programRepository.setTrackNone();
+    }
 }

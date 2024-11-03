@@ -65,6 +65,8 @@ public interface IndicatortypeService {
     Long count();
     long countByTrack(TypeTrack track);
 
+    void setTrackNone();
+
     List<IndicatorTypeDTO> findAudits(String id);
     IndicatorTypeDTO findAuditRevision(String id, Integer rev);
 }

@@ -171,4 +171,9 @@ public class OrganisationUnitServiceImpl implements OrganisationUnitService {
     public long countByTrack(TypeTrack track) {
         return organisationUnitRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        organisationUnitRepository.setTrackNone();
+    }
 }

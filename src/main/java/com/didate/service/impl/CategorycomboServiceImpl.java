@@ -156,4 +156,9 @@ public class CategorycomboServiceImpl implements CategorycomboService {
     public long countByTrack(TypeTrack track) {
         return categorycomboRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        categorycomboRepository.setTrackNone();
+    }
 }

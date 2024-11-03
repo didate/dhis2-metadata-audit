@@ -66,6 +66,8 @@ public interface TrackedEntityAttributeService {
     Long count();
     long countByTrack(TypeTrack track);
 
+    void setTrackNone();
+
     List<TrackedEntityAttributeDTO> findAudits(String id);
     TrackedEntityAttributeFullDTO findAuditRevision(String id, Integer rev);
 }

@@ -77,6 +77,8 @@ public interface ProgramStageService {
     Long count();
     long countByTrack(TypeTrack track);
 
+    void setTrackNone();
+
     List<ProgramStageDTO> findAudits(String id);
     ProgramStageFullDTO findAuditRevision(String id, Integer rev);
 }

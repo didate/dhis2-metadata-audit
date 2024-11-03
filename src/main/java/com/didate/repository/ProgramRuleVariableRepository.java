@@ -18,4 +18,8 @@ public interface ProgramRuleVariableRepository
         JpaSpecificationExecutor<ProgramRuleVariable>,
         RevisionRepository<ProgramRuleVariable, String, Integer> {
     long countByTrack(TypeTrack track);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update program_rule_variable set track='NONE'")
+    void setTrackNone();
 }

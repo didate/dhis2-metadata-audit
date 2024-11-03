@@ -76,6 +76,8 @@ public interface DatasetService {
     Long count();
     long countByTrack(TypeTrack track);
 
+    void setTrackNone();
+
     List<DataSetDTO> findAudits(String id);
     DataSetFullDTO findAuditRevision(String id, Integer rev);
 }

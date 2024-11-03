@@ -179,4 +179,9 @@ public class ProgramRuleActionServiceImpl implements ProgramRuleActionService {
     public long countByTrack(TypeTrack track) {
         return programRuleActionRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        programRuleActionRepository.setTrackNone();
+    }
 }

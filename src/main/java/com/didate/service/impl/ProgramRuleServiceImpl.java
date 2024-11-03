@@ -168,4 +168,9 @@ public class ProgramRuleServiceImpl implements ProgramRuleService {
     public long countByTrack(TypeTrack track) {
         return programRuleRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        programRuleRepository.setTrackNone();
+    }
 }

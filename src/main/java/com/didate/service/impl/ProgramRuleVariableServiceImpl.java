@@ -171,4 +171,9 @@ public class ProgramRuleVariableServiceImpl implements ProgramRuleVariableServic
     public long countByTrack(TypeTrack track) {
         return programRuleVariableRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        programRuleVariableRepository.setTrackNone();
+    }
 }

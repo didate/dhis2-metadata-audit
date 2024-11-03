@@ -160,4 +160,10 @@ public class OptionsetServiceImpl implements OptionsetService {
     public long countByTrack(TypeTrack track) {
         return optionsetRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        optionsetRepository.setTrackNone();
+        optionsetRepository.setTrackNone();
+    }
 }

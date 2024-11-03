@@ -261,4 +261,9 @@ public class DatasetServiceImpl implements DatasetService {
     public long countByTrack(TypeTrack track) {
         return datasetRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        datasetRepository.setTrackNone();
+    }
 }

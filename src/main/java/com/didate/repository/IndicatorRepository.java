@@ -15,4 +15,8 @@ import org.springframework.stereotype.Repository;
 public interface IndicatorRepository
     extends JpaRepository<Indicator, String>, JpaSpecificationExecutor<Indicator>, RevisionRepository<Indicator, String, Integer> {
     long countByTrack(TypeTrack track);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update indicator set track='NONE'")
+    void setTrackNone();
 }

@@ -66,6 +66,8 @@ public interface ProgramIndicatorService {
     Long count();
     long countByTrack(TypeTrack track);
 
+    void setTrackNone();
+
     List<ProgramIndicatorDTO> findAudits(String id);
     ProgramIndicatorFullDTO findAuditRevision(String id, Integer rev);
 }

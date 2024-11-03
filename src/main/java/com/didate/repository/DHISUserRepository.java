@@ -15,4 +15,8 @@ import org.springframework.stereotype.Repository;
 public interface DHISUserRepository
     extends JpaRepository<DHISUser, String>, JpaSpecificationExecutor<DHISUser>, RevisionRepository<DHISUser, String, Integer> {
     long countByTrack(TypeTrack track);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update dhis_user set track='NONE'")
+    void setTrackNone();
 }

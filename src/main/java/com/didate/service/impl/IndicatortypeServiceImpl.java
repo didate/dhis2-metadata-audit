@@ -155,4 +155,9 @@ public class IndicatortypeServiceImpl implements IndicatortypeService {
     public long countByTrack(TypeTrack track) {
         return indicatortypeRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        indicatortypeRepository.setTrackNone();
+    }
 }

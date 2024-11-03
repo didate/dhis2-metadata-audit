@@ -18,4 +18,8 @@ public interface TrackedEntityAttributeRepository
         JpaSpecificationExecutor<TrackedEntityAttribute>,
         RevisionRepository<TrackedEntityAttribute, String, Integer> {
     long countByTrack(TypeTrack track);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update tracked_entity_attribute set track='NONE'")
+    void setTrackNone();
 }

@@ -15,4 +15,8 @@ import org.springframework.stereotype.Repository;
 public interface OptionsetRepository
     extends JpaRepository<OptionSet, String>, JpaSpecificationExecutor<OptionSet>, RevisionRepository<OptionSet, String, Integer> {
     long countByTrack(TypeTrack track);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update optionset set track='NONE'")
+    void setTrackNone();
 }

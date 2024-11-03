@@ -217,4 +217,9 @@ public class TrackedEntityAttributeServiceImpl implements TrackedEntityAttribute
     public long countByTrack(TypeTrack track) {
         return trackedEntityAttributeRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        trackedEntityAttributeRepository.setTrackNone();
+    }
 }

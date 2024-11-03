@@ -65,6 +65,8 @@ public interface OptionsetService {
     Long count();
     long countByTrack(TypeTrack track);
 
+    void setTrackNone();
+
     List<OptionSetDTO> findAudits(String id);
     OptionSetDTO findAuditRevision(String id, Integer rev);
 }

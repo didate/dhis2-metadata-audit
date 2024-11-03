@@ -16,4 +16,8 @@ public interface CategorycomboRepository
     extends
         JpaRepository<CategoryCombo, String>, JpaSpecificationExecutor<CategoryCombo>, RevisionRepository<CategoryCombo, String, Integer> {
     long countByTrack(TypeTrack track);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update categorycombo set track='NONE'")
+    void setTrackNone();
 }

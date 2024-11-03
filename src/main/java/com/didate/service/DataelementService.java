@@ -68,6 +68,8 @@ public interface DataelementService {
     Long count();
     long countByTrack(TypeTrack track);
 
+    void setTrackNone();
+
     List<DataElementDTO> findAudits(String id);
     DataElementFullDTO findAuditRevision(String id, Integer rev);
 }

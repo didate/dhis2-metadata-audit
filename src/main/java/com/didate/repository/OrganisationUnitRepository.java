@@ -18,4 +18,8 @@ public interface OrganisationUnitRepository
         JpaSpecificationExecutor<OrganisationUnit>,
         RevisionRepository<OrganisationUnit, String, Integer> {
     long countByTrack(TypeTrack track);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update organisation_unit set track='NONE'")
+    void setTrackNone();
 }

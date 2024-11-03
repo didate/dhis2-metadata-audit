@@ -65,6 +65,8 @@ public interface CategorycomboService {
     Long count();
     long countByTrack(TypeTrack track);
 
+    void setTrackNone();
+
     List<CategoryComboDTO> findAudits(String id);
     CategoryComboDTO findAuditRevision(String id, Integer rev);
 }

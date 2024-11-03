@@ -68,6 +68,8 @@ public interface ProgramRuleVariableService {
     Long count();
     long countByTrack(TypeTrack track);
 
+    void setTrackNone();
+
     List<ProgramRuleVariableDTO> findAudits(String id);
     ProgramRuleVariableFullDTO findAuditRevision(String id, Integer rev);
 }

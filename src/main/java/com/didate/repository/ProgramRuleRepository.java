@@ -15,4 +15,8 @@ import org.springframework.stereotype.Repository;
 public interface ProgramRuleRepository
     extends JpaRepository<ProgramRule, String>, JpaSpecificationExecutor<ProgramRule>, RevisionRepository<ProgramRule, String, Integer> {
     long countByTrack(TypeTrack track);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update program_rule set track='NONE'")
+    void setTrackNone();
 }

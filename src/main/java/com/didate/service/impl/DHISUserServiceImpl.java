@@ -159,4 +159,9 @@ public class DHISUserServiceImpl implements DHISUserService {
     public long countByTrack(TypeTrack track) {
         return dHISUserRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        dHISUserRepository.setTrackNone();
+    }
 }

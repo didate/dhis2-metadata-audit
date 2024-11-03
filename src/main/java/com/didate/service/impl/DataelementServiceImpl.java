@@ -207,4 +207,9 @@ public class DataelementServiceImpl implements DataelementService {
     public long countByTrack(TypeTrack track) {
         return dataelementRepository.countByTrack(track);
     }
+
+    @Override
+    public void setTrackNone() {
+        dataelementRepository.setTrackNone();
+    }
 }

@@ -66,6 +66,8 @@ public interface ProgramRuleActionService {
     Long count();
     long countByTrack(TypeTrack track);
 
+    void setTrackNone();
+
     List<ProgramRuleActionDTO> findAudits(String id);
     ProgramRuleActionFullDTO findAuditRevision(String id, Integer rev);
 }

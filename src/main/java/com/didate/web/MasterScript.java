@@ -200,7 +200,7 @@ public class MasterScript {
         }
     }
 
-    // @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
     public void sendNotification() {
         long newDataElement = dataElementService.countByTrack(TypeTrack.NEW);
         long newIndicator = indicatorService.countByTrack(TypeTrack.NEW);
@@ -276,5 +276,22 @@ public class MasterScript {
         for (PersonNotifier personNotifier : personNotifiers) {
             mailService.sendNotification(personNotifier.getPersonEmail(), context);
         }
+
+        dataElementService.setTrackNone();
+        indicatorService.setTrackNone();
+        categoryComboService.setTrackNone();
+        optionGroupService.setTrackNone();
+        trackedEntityAttributeService.setTrackNone();
+        programStageService.setTrackNone();
+        programIndicatorService.setTrackNone();
+        programRuleService.setTrackNone();
+        programRuleVariableService.setTrackNone();
+        programRuleActionService.setTrackNone();
+        organisationUnitService.setTrackNone();
+        indicatorTypeService.setTrackNone();
+        optionSetService.setTrackNone();
+        programService.setTrackNone();
+        dataSetService.setTrackNone();
+        dHISUserService.setTrackNone();
     }
 }

@@ -18,4 +18,8 @@ public interface ProgramRuleActionRepository
         JpaSpecificationExecutor<ProgramRuleAction>,
         RevisionRepository<ProgramRuleAction, String, Integer> {
     long countByTrack(TypeTrack track);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update program_rule_action set track='NONE'")
+    void setTrackNone();
 }

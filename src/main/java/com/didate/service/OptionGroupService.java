@@ -65,6 +65,8 @@ public interface OptionGroupService {
     Long count();
     long countByTrack(TypeTrack track);
 
+    void setTrackNone();
+
     List<OptionGroupDTO> findAudits(String id);
     OptionGroupDTO findAuditRevision(String id, Integer rev);
 }

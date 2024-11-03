@@ -16,4 +16,8 @@ public interface IndicatortypeRepository
     extends
         JpaRepository<IndicatorType, String>, JpaSpecificationExecutor<IndicatorType>, RevisionRepository<IndicatorType, String, Integer> {
     long countByTrack(TypeTrack track);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update indicatortype set track='NONE'")
+    void setTrackNone();
 }

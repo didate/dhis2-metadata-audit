@@ -15,4 +15,8 @@ import org.springframework.stereotype.Repository;
 public interface DataelementRepository
     extends JpaRepository<DataElement, String>, JpaSpecificationExecutor<DataElement>, RevisionRepository<DataElement, String, Integer> {
     long countByTrack(TypeTrack track);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update dataelement set track='NONE'")
+    void setTrackNone();
 }

@@ -66,6 +66,8 @@ public interface DHISUserService {
     Long count();
     long countByTrack(TypeTrack track);
 
+    void setTrackNone();
+
     List<DHISUserDTO> findAudits(String id);
     DHISUserFullDTO findAuditRevision(String id, Integer rev);
 }
