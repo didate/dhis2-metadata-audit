@@ -1,1 +1,18 @@
-<div class="row"></div>
+<div class="container">
+  <div class="row mt-5">
+    <div *ngFor="let menu of menus" class="card shadow-sm bg-white rounded m-2" style="max-width: 15rem">
+      <div class="card-header">
+        <h6>{{ menu.title }}</h6>
+      </div>
+      <div class="card-body">
+        <p class="card-text">{{ menu.description }}</p>
+        <div class=""></div>
+      </div>
+      <div class="card-footer bg-transparent text-end">
+        <a routerLink="{{ menu.link }}">
+          <fa-icon icon="list" [fixedWidth]="true"></fa-icon>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
