@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         {
           title: 'Programmes',
           description: 'Audit des modifications sur les elements de donnees',
-          link: '/dataElements',
+          link: '/program',
         },
 
         {
